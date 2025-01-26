@@ -1,0 +1,9 @@
+p, admin, ldx, data1, read
+p, admin, ldx, data1, write
+p, admin, hisense, data2, read
+p, admin, hisense, data2, write
+
+g, alice, admin, ldx
+g, bob, admin, domain2
+
+

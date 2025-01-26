@@ -1,0 +1,647 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/api/v1/user/": {
+      "get": {
+        "summary": "获取用户列表",
+        "operationId": "List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "current",
+            "description": " 当前页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "page_size",
+            "description": " 每页大小",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "user"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      },
+      "post": {
+        "summary": "创建用户",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateUserResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateUserReq"
+            }
+          }
+        ],
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/admin/api/v1/user/{id}": {
+      "get": {
+        "summary": "获取用户详情",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetUserResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "user"
+        ]
+      },
+      "delete": {
+        "summary": "删除用户",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeleteUserResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteUserReq"
+            }
+          }
+        ],
+        "tags": [
+          "user"
+        ]
+      },
+      "put": {
+        "summary": "更新用户",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UpdateUserResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateUserReq"
+            }
+          }
+        ],
+        "tags": [
+          "user"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "CreateUserReq": {
+      "type": "object",
+      "properties": {
+        "no": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "role": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pwd_hashed": {
+          "type": "string"
+        },
+        "pwd_salt": {
+          "type": "string"
+        },
+        "disable_status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "parent_disable_status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "company": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "roleIDs": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": " 角色ID列表"
+        }
+      },
+      "title": "CreateUserReq",
+      "required": [
+        "no",
+        "name",
+        "phone",
+        "role",
+        "pwd_hashed",
+        "pwd_salt",
+        "disable_status",
+        "parent_disable_status",
+        "company",
+        "email",
+        "gender",
+        "icon",
+        "roleIDs"
+      ]
+    },
+    "CreateUserResp": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "CreateUserResp",
+      "required": [
+        "id"
+      ]
+    },
+    "DeleteUserReq": {
+      "type": "object",
+      "title": "DeleteUserReq"
+    },
+    "DeleteUserResp": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      },
+      "title": "DeleteUserResp",
+      "required": [
+        "success"
+      ]
+    },
+    "GetUserReq": {
+      "type": "object",
+      "title": "GetUserReq"
+    },
+    "GetUserResp": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 用户id"
+        },
+        "uid": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 用户id"
+        },
+        "name": {
+          "type": "string",
+          "description": " 企业名称"
+        },
+        "no": {
+          "type": "string",
+          "description": " 企业编号"
+        },
+        "phone": {
+          "type": "string",
+          "description": " 企业号码"
+        },
+        "start_at": {
+          "type": "string",
+          "description": " 合作开始时间"
+        },
+        "end_at": {
+          "type": "string",
+          "description": " 合作结束时间"
+        },
+        "email": {
+          "type": "string",
+          "description": " 邮箱"
+        },
+        "province": {
+          "type": "string",
+          "description": " 所在省份"
+        },
+        "city": {
+          "type": "string",
+          "description": " 所在地区"
+        },
+        "address": {
+          "type": "string",
+          "description": " 具体地址"
+        },
+        "company_desc": {
+          "type": "string",
+          "description": " 企业介绍"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
+        "roleIDs": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": " 角色ID列表"
+        }
+      },
+      "title": "GetUserResp"
+    },
+    "IDRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " ID"
+        }
+      },
+      "title": "IDRequest",
+      "required": [
+        "id"
+      ]
+    },
+    "PageJsonRequest": {
+      "type": "object",
+      "properties": {
+        "current": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 当前页"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 每页大小"
+        }
+      },
+      "title": "PageJsonRequest",
+      "required": [
+        "current",
+        "page_size"
+      ]
+    },
+    "PageRequest": {
+      "type": "object",
+      "properties": {
+        "current": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 当前页"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 每页大小"
+        }
+      },
+      "title": "PageRequest",
+      "required": [
+        "current",
+        "page_size"
+      ]
+    },
+    "PageResponse": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 总数"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 当前页大小"
+        },
+        "request_page_size": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 请求页大小"
+        },
+        "current": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 当前页"
+        }
+      },
+      "title": "PageResponse",
+      "required": [
+        "total",
+        "page_size",
+        "request_page_size",
+        "current"
+      ]
+    },
+    "StatusRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " ID"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        }
+      },
+      "title": "StatusRequest",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "TimeRange": {
+      "type": "object",
+      "properties": {
+        "start_time": {
+          "type": "string",
+          "description": " 开始时间"
+        },
+        "end_time": {
+          "type": "string",
+          "description": " 结束时间"
+        }
+      },
+      "title": "TimeRange"
+    },
+    "UpdateUserReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "UpdateUserReq",
+      "required": [
+        "name"
+      ]
+    },
+    "UpdateUserResp": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      },
+      "title": "UpdateUserResp",
+      "required": [
+        "success"
+      ]
+    },
+    "UserInfoResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 用户id"
+        },
+        "uid": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 用户id"
+        },
+        "name": {
+          "type": "string",
+          "description": " 企业名称"
+        },
+        "no": {
+          "type": "string",
+          "description": " 企业编号"
+        },
+        "phone": {
+          "type": "string",
+          "description": " 企业号码"
+        },
+        "start_at": {
+          "type": "string",
+          "description": " 合作开始时间"
+        },
+        "end_at": {
+          "type": "string",
+          "description": " 合作结束时间"
+        },
+        "email": {
+          "type": "string",
+          "description": " 邮箱"
+        },
+        "province": {
+          "type": "string",
+          "description": " 所在省份"
+        },
+        "city": {
+          "type": "string",
+          "description": " 所在地区"
+        },
+        "address": {
+          "type": "string",
+          "description": " 具体地址"
+        },
+        "company_desc": {
+          "type": "string",
+          "description": " 企业介绍"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
+        "roleIDs": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": " 角色ID列表"
+        }
+      },
+      "title": "UserInfoResponse",
+      "required": [
+        "id",
+        "uid",
+        "name",
+        "no",
+        "phone",
+        "start_at",
+        "end_at",
+        "email",
+        "province",
+        "city",
+        "address",
+        "company_desc",
+        "status",
+        "roleIDs"
+      ]
+    },
+    "UserListReq": {
+      "type": "object",
+      "properties": {
+        "current": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 当前页"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 每页大小"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "UserListReq"
+    },
+    "UserListResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageResponse",
+          "description": " 分页"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserInfoResponse"
+          },
+          "description": " 列表"
+        }
+      },
+      "title": "UserListResp",
+      "required": [
+        "page",
+        "list"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

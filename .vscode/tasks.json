@@ -1,0 +1,68 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "gen-orm",
+            "type": "shell",
+            "command": "go run -mod=mod entgo.io/ent/cmd/ent generate --target ./ent/generated --feature sql/upsert,sql/versioned-migration,sql/modifier ./ent/schema",
+            "options": {
+                "cwd": "${workspaceFolder}/pkg"
+            },
+            "group": {
+                "kind": "build",
+            },
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "goctl-api",
+            "type": "shell",
+            "command": "goctl api go -api admin.api -dir .. -style=go_zero",
+            "options": {
+                "cwd": "${workspaceFolder}/app/admin/desc"
+            },
+            "group": {
+                "kind": "build",
+            },
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "goctl-api-doc",
+            "type": "shell",
+            "command": "goctl api plugin -plugin goctl-swagger='swagger -filename admin.json' -api admin.api -dir ./json",
+            "options": {
+                "cwd": "${workspaceFolder}/app/admin/desc"
+            },
+            "group": {
+                "kind": "build",
+            },
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "go run admin.go -f etc/admin.yaml",
+            "options": {
+                "cwd": "${workspaceFolder}/app/admin"
+            },
+            "group": {
+                "kind": "build",
+            },
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+    ],
+    "inputs": [
+        {
+            "id": "modelName",
+            "type": "promptString",
+            "description": "Please enter the model name"
+        }
+    ]
+}
