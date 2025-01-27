@@ -10,10 +10,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/solate/admin_backend/pkg/ent/generated/permission"
 	"github.com/solate/admin_backend/pkg/ent/generated/predicate"
 	"github.com/solate/admin_backend/pkg/ent/generated/role"
-	"github.com/solate/admin_backend/pkg/ent/generated/user"
 )
 
 // RoleUpdate is the builder for updating Role entities.
@@ -48,6 +46,33 @@ func (ru *RoleUpdate) SetNillableUpdatedAt(i *int) *RoleUpdate {
 // AddUpdatedAt adds i to the "updated_at" field.
 func (ru *RoleUpdate) AddUpdatedAt(i int) *RoleUpdate {
 	ru.mutation.AddUpdatedAt(i)
+	return ru
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (ru *RoleUpdate) SetDeletedAt(i int) *RoleUpdate {
+	ru.mutation.ResetDeletedAt()
+	ru.mutation.SetDeletedAt(i)
+	return ru
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (ru *RoleUpdate) SetNillableDeletedAt(i *int) *RoleUpdate {
+	if i != nil {
+		ru.SetDeletedAt(*i)
+	}
+	return ru
+}
+
+// AddDeletedAt adds i to the "deleted_at" field.
+func (ru *RoleUpdate) AddDeletedAt(i int) *RoleUpdate {
+	ru.mutation.AddDeletedAt(i)
+	return ru
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (ru *RoleUpdate) ClearDeletedAt() *RoleUpdate {
+	ru.mutation.ClearDeletedAt()
 	return ru
 }
 
@@ -120,81 +145,30 @@ func (ru *RoleUpdate) AddStatus(i int) *RoleUpdate {
 	return ru
 }
 
-// AddUserIDs adds the "users" edge to the User entity by IDs.
-func (ru *RoleUpdate) AddUserIDs(ids ...int) *RoleUpdate {
-	ru.mutation.AddUserIDs(ids...)
+// SetSort sets the "sort" field.
+func (ru *RoleUpdate) SetSort(i int) *RoleUpdate {
+	ru.mutation.ResetSort()
+	ru.mutation.SetSort(i)
 	return ru
 }
 
-// AddUsers adds the "users" edges to the User entity.
-func (ru *RoleUpdate) AddUsers(u ...*User) *RoleUpdate {
-	ids := make([]int, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
+// SetNillableSort sets the "sort" field if the given value is not nil.
+func (ru *RoleUpdate) SetNillableSort(i *int) *RoleUpdate {
+	if i != nil {
+		ru.SetSort(*i)
 	}
-	return ru.AddUserIDs(ids...)
-}
-
-// AddPermissionIDs adds the "permissions" edge to the Permission entity by IDs.
-func (ru *RoleUpdate) AddPermissionIDs(ids ...int) *RoleUpdate {
-	ru.mutation.AddPermissionIDs(ids...)
 	return ru
 }
 
-// AddPermissions adds the "permissions" edges to the Permission entity.
-func (ru *RoleUpdate) AddPermissions(p ...*Permission) *RoleUpdate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return ru.AddPermissionIDs(ids...)
+// AddSort adds i to the "sort" field.
+func (ru *RoleUpdate) AddSort(i int) *RoleUpdate {
+	ru.mutation.AddSort(i)
+	return ru
 }
 
 // Mutation returns the RoleMutation object of the builder.
 func (ru *RoleUpdate) Mutation() *RoleMutation {
 	return ru.mutation
-}
-
-// ClearUsers clears all "users" edges to the User entity.
-func (ru *RoleUpdate) ClearUsers() *RoleUpdate {
-	ru.mutation.ClearUsers()
-	return ru
-}
-
-// RemoveUserIDs removes the "users" edge to User entities by IDs.
-func (ru *RoleUpdate) RemoveUserIDs(ids ...int) *RoleUpdate {
-	ru.mutation.RemoveUserIDs(ids...)
-	return ru
-}
-
-// RemoveUsers removes "users" edges to User entities.
-func (ru *RoleUpdate) RemoveUsers(u ...*User) *RoleUpdate {
-	ids := make([]int, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
-	}
-	return ru.RemoveUserIDs(ids...)
-}
-
-// ClearPermissions clears all "permissions" edges to the Permission entity.
-func (ru *RoleUpdate) ClearPermissions() *RoleUpdate {
-	ru.mutation.ClearPermissions()
-	return ru
-}
-
-// RemovePermissionIDs removes the "permissions" edge to Permission entities by IDs.
-func (ru *RoleUpdate) RemovePermissionIDs(ids ...int) *RoleUpdate {
-	ru.mutation.RemovePermissionIDs(ids...)
-	return ru
-}
-
-// RemovePermissions removes "permissions" edges to Permission entities.
-func (ru *RoleUpdate) RemovePermissions(p ...*Permission) *RoleUpdate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return ru.RemovePermissionIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -263,6 +237,15 @@ func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := ru.mutation.AddedUpdatedAt(); ok {
 		_spec.AddField(role.FieldUpdatedAt, field.TypeInt, value)
 	}
+	if value, ok := ru.mutation.DeletedAt(); ok {
+		_spec.SetField(role.FieldDeletedAt, field.TypeInt, value)
+	}
+	if value, ok := ru.mutation.AddedDeletedAt(); ok {
+		_spec.AddField(role.FieldDeletedAt, field.TypeInt, value)
+	}
+	if ru.mutation.DeletedAtCleared() {
+		_spec.ClearField(role.FieldDeletedAt, field.TypeInt)
+	}
 	if value, ok := ru.mutation.Name(); ok {
 		_spec.SetField(role.FieldName, field.TypeString, value)
 	}
@@ -281,95 +264,11 @@ func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := ru.mutation.AddedStatus(); ok {
 		_spec.AddField(role.FieldStatus, field.TypeInt, value)
 	}
-	if ru.mutation.UsersCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   role.UsersTable,
-			Columns: role.UsersPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	if value, ok := ru.mutation.Sort(); ok {
+		_spec.SetField(role.FieldSort, field.TypeInt, value)
 	}
-	if nodes := ru.mutation.RemovedUsersIDs(); len(nodes) > 0 && !ru.mutation.UsersCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   role.UsersTable,
-			Columns: role.UsersPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := ru.mutation.UsersIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   role.UsersTable,
-			Columns: role.UsersPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if ru.mutation.PermissionsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   role.PermissionsTable,
-			Columns: role.PermissionsPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(permission.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := ru.mutation.RemovedPermissionsIDs(); len(nodes) > 0 && !ru.mutation.PermissionsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   role.PermissionsTable,
-			Columns: role.PermissionsPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(permission.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := ru.mutation.PermissionsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   role.PermissionsTable,
-			Columns: role.PermissionsPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(permission.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	if value, ok := ru.mutation.AddedSort(); ok {
+		_spec.AddField(role.FieldSort, field.TypeInt, value)
 	}
 	_spec.AddModifiers(ru.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, ru.driver, _spec); err != nil {
@@ -411,6 +310,33 @@ func (ruo *RoleUpdateOne) SetNillableUpdatedAt(i *int) *RoleUpdateOne {
 // AddUpdatedAt adds i to the "updated_at" field.
 func (ruo *RoleUpdateOne) AddUpdatedAt(i int) *RoleUpdateOne {
 	ruo.mutation.AddUpdatedAt(i)
+	return ruo
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (ruo *RoleUpdateOne) SetDeletedAt(i int) *RoleUpdateOne {
+	ruo.mutation.ResetDeletedAt()
+	ruo.mutation.SetDeletedAt(i)
+	return ruo
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (ruo *RoleUpdateOne) SetNillableDeletedAt(i *int) *RoleUpdateOne {
+	if i != nil {
+		ruo.SetDeletedAt(*i)
+	}
+	return ruo
+}
+
+// AddDeletedAt adds i to the "deleted_at" field.
+func (ruo *RoleUpdateOne) AddDeletedAt(i int) *RoleUpdateOne {
+	ruo.mutation.AddDeletedAt(i)
+	return ruo
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (ruo *RoleUpdateOne) ClearDeletedAt() *RoleUpdateOne {
+	ruo.mutation.ClearDeletedAt()
 	return ruo
 }
 
@@ -483,81 +409,30 @@ func (ruo *RoleUpdateOne) AddStatus(i int) *RoleUpdateOne {
 	return ruo
 }
 
-// AddUserIDs adds the "users" edge to the User entity by IDs.
-func (ruo *RoleUpdateOne) AddUserIDs(ids ...int) *RoleUpdateOne {
-	ruo.mutation.AddUserIDs(ids...)
+// SetSort sets the "sort" field.
+func (ruo *RoleUpdateOne) SetSort(i int) *RoleUpdateOne {
+	ruo.mutation.ResetSort()
+	ruo.mutation.SetSort(i)
 	return ruo
 }
 
-// AddUsers adds the "users" edges to the User entity.
-func (ruo *RoleUpdateOne) AddUsers(u ...*User) *RoleUpdateOne {
-	ids := make([]int, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
+// SetNillableSort sets the "sort" field if the given value is not nil.
+func (ruo *RoleUpdateOne) SetNillableSort(i *int) *RoleUpdateOne {
+	if i != nil {
+		ruo.SetSort(*i)
 	}
-	return ruo.AddUserIDs(ids...)
-}
-
-// AddPermissionIDs adds the "permissions" edge to the Permission entity by IDs.
-func (ruo *RoleUpdateOne) AddPermissionIDs(ids ...int) *RoleUpdateOne {
-	ruo.mutation.AddPermissionIDs(ids...)
 	return ruo
 }
 
-// AddPermissions adds the "permissions" edges to the Permission entity.
-func (ruo *RoleUpdateOne) AddPermissions(p ...*Permission) *RoleUpdateOne {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return ruo.AddPermissionIDs(ids...)
+// AddSort adds i to the "sort" field.
+func (ruo *RoleUpdateOne) AddSort(i int) *RoleUpdateOne {
+	ruo.mutation.AddSort(i)
+	return ruo
 }
 
 // Mutation returns the RoleMutation object of the builder.
 func (ruo *RoleUpdateOne) Mutation() *RoleMutation {
 	return ruo.mutation
-}
-
-// ClearUsers clears all "users" edges to the User entity.
-func (ruo *RoleUpdateOne) ClearUsers() *RoleUpdateOne {
-	ruo.mutation.ClearUsers()
-	return ruo
-}
-
-// RemoveUserIDs removes the "users" edge to User entities by IDs.
-func (ruo *RoleUpdateOne) RemoveUserIDs(ids ...int) *RoleUpdateOne {
-	ruo.mutation.RemoveUserIDs(ids...)
-	return ruo
-}
-
-// RemoveUsers removes "users" edges to User entities.
-func (ruo *RoleUpdateOne) RemoveUsers(u ...*User) *RoleUpdateOne {
-	ids := make([]int, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
-	}
-	return ruo.RemoveUserIDs(ids...)
-}
-
-// ClearPermissions clears all "permissions" edges to the Permission entity.
-func (ruo *RoleUpdateOne) ClearPermissions() *RoleUpdateOne {
-	ruo.mutation.ClearPermissions()
-	return ruo
-}
-
-// RemovePermissionIDs removes the "permissions" edge to Permission entities by IDs.
-func (ruo *RoleUpdateOne) RemovePermissionIDs(ids ...int) *RoleUpdateOne {
-	ruo.mutation.RemovePermissionIDs(ids...)
-	return ruo
-}
-
-// RemovePermissions removes "permissions" edges to Permission entities.
-func (ruo *RoleUpdateOne) RemovePermissions(p ...*Permission) *RoleUpdateOne {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return ruo.RemovePermissionIDs(ids...)
 }
 
 // Where appends a list predicates to the RoleUpdate builder.
@@ -656,6 +531,15 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 	if value, ok := ruo.mutation.AddedUpdatedAt(); ok {
 		_spec.AddField(role.FieldUpdatedAt, field.TypeInt, value)
 	}
+	if value, ok := ruo.mutation.DeletedAt(); ok {
+		_spec.SetField(role.FieldDeletedAt, field.TypeInt, value)
+	}
+	if value, ok := ruo.mutation.AddedDeletedAt(); ok {
+		_spec.AddField(role.FieldDeletedAt, field.TypeInt, value)
+	}
+	if ruo.mutation.DeletedAtCleared() {
+		_spec.ClearField(role.FieldDeletedAt, field.TypeInt)
+	}
 	if value, ok := ruo.mutation.Name(); ok {
 		_spec.SetField(role.FieldName, field.TypeString, value)
 	}
@@ -674,95 +558,11 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 	if value, ok := ruo.mutation.AddedStatus(); ok {
 		_spec.AddField(role.FieldStatus, field.TypeInt, value)
 	}
-	if ruo.mutation.UsersCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   role.UsersTable,
-			Columns: role.UsersPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	if value, ok := ruo.mutation.Sort(); ok {
+		_spec.SetField(role.FieldSort, field.TypeInt, value)
 	}
-	if nodes := ruo.mutation.RemovedUsersIDs(); len(nodes) > 0 && !ruo.mutation.UsersCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   role.UsersTable,
-			Columns: role.UsersPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := ruo.mutation.UsersIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   role.UsersTable,
-			Columns: role.UsersPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if ruo.mutation.PermissionsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   role.PermissionsTable,
-			Columns: role.PermissionsPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(permission.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := ruo.mutation.RemovedPermissionsIDs(); len(nodes) > 0 && !ruo.mutation.PermissionsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   role.PermissionsTable,
-			Columns: role.PermissionsPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(permission.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := ruo.mutation.PermissionsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   role.PermissionsTable,
-			Columns: role.PermissionsPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(permission.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	if value, ok := ruo.mutation.AddedSort(); ok {
+		_spec.AddField(role.FieldSort, field.TypeInt, value)
 	}
 	_spec.AddModifiers(ruo.modifiers...)
 	_node = &Role{config: ruo.config}

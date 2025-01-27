@@ -12,6 +12,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/solate/admin_backend/pkg/ent/generated/loginlog"
 	"github.com/solate/admin_backend/pkg/ent/generated/permission"
 	"github.com/solate/admin_backend/pkg/ent/generated/role"
 	"github.com/solate/admin_backend/pkg/ent/generated/user"
@@ -75,6 +76,7 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
+			loginlog.Table:   loginlog.ValidColumn,
 			permission.Table: permission.ValidColumn,
 			role.Table:       role.ValidColumn,
 			user.Table:       user.ValidColumn,

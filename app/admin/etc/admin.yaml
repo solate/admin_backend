@@ -10,7 +10,7 @@ Logx:
   Stat: false
 
 # DB 配置
-DataSource: postgres://root:root@127.0.0.1:5432/testdb?sslmode=disable
+DataSource: user=root password=root host=127.0.0.1 port=5432 dbname=testdb sslmode=disable
 ShowSQL: true
 
 

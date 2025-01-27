@@ -20,56 +20,37 @@ type User struct {
 	CreatedAt int `json:"created_at,omitempty"`
 	// 修改时间
 	UpdatedAt int `json:"updated_at,omitempty"`
-	// 编号
-	No string `json:"no,omitempty"`
-	// 角色，1：超级管理员 2：代理商 3：商户 --  废弃
-	Role int `json:"role,omitempty"`
-	// 真实姓名
-	Name string `json:"name,omitempty"`
+	// 删除时间
+	DeletedAt *int `json:"deleted_at,omitempty"`
+	// 用户ID
+	UserID uint64 `json:"user_id,omitempty"`
+	// 用户名
+	UserName string `json:"user_name,omitempty"`
+	// 密码
+	Password string `json:"password,omitempty"`
+	// 密码加盐
+	Salt string `json:"salt,omitempty"`
+	// 登录后的token信息
+	Token string `json:"token,omitempty"`
+	// 昵称
+	NickName string `json:"nick_name,omitempty"`
+	// 头像
+	Avatar string `json:"avatar,omitempty"`
 	// 电话
 	Phone string `json:"phone,omitempty"`
 	// 邮箱
 	Email string `json:"email,omitempty"`
-	// 性别，1：男 2：女
-	Gender int `json:"gender,omitempty"`
-	// hash后的密码
-	PwdHashed string `json:"pwd_hashed,omitempty"`
-	// 密码加盐
-	PwdSalt string `json:"pwd_salt,omitempty"`
-	// 登录后的token信息
-	Token string `json:"token,omitempty"`
-	// 禁用状态，0：正常 1：禁用
-	DisableStatus int `json:"disable_status,omitempty"`
-	// 所属企业
-	Company string `json:"company,omitempty"`
-	// 上级禁用状态，0：正常 1：禁用
-	ParentDisableStatus int `json:"parent_disable_status,omitempty"`
-	// 用户头像
-	Icon string `json:"icon,omitempty"`
+	// 性别: 1：男 2：女
+	Sex int `json:"sex,omitempty"`
 	// 状态: 1:启用, 2:禁用
 	Status int `json:"status,omitempty"`
-	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the UserQuery when eager-loading is set.
-	Edges        UserEdges `json:"edges"`
+	// 角色ID
+	RoleID uint64 `json:"role_id,omitempty"`
+	// 部门ID
+	DeptID uint64 `json:"dept_id,omitempty"`
+	// 岗位ID
+	PostID       uint64 `json:"post_id,omitempty"`
 	selectValues sql.SelectValues
-}
-
-// UserEdges holds the relations/edges for other nodes in the graph.
-type UserEdges struct {
-	// Roles holds the value of the roles edge.
-	Roles []*Role `json:"roles,omitempty"`
-	// loadedTypes holds the information for reporting if a
-	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
-}
-
-// RolesOrErr returns the Roles value or an error if the edge
-// was not loaded in eager-loading.
-func (e UserEdges) RolesOrErr() ([]*Role, error) {
-	if e.loadedTypes[0] {
-		return e.Roles, nil
-	}
-	return nil, &NotLoadedError{edge: "roles"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -77,9 +58,9 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldID, user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldRole, user.FieldGender, user.FieldDisableStatus, user.FieldParentDisableStatus, user.FieldStatus:
+		case user.FieldID, user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldUserID, user.FieldSex, user.FieldStatus, user.FieldRoleID, user.FieldDeptID, user.FieldPostID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldNo, user.FieldName, user.FieldPhone, user.FieldEmail, user.FieldPwdHashed, user.FieldPwdSalt, user.FieldToken, user.FieldCompany, user.FieldIcon:
+		case user.FieldUserName, user.FieldPassword, user.FieldSalt, user.FieldToken, user.FieldNickName, user.FieldAvatar, user.FieldPhone, user.FieldEmail:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -114,23 +95,54 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.UpdatedAt = int(value.Int64)
 			}
-		case user.FieldNo:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field no", values[i])
-			} else if value.Valid {
-				u.No = value.String
-			}
-		case user.FieldRole:
+		case user.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field role", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
-				u.Role = int(value.Int64)
+				u.DeletedAt = new(int)
+				*u.DeletedAt = int(value.Int64)
 			}
-		case user.FieldName:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field name", values[i])
+		case user.FieldUserID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value.Valid {
-				u.Name = value.String
+				u.UserID = uint64(value.Int64)
+			}
+		case user.FieldUserName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field user_name", values[i])
+			} else if value.Valid {
+				u.UserName = value.String
+			}
+		case user.FieldPassword:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field password", values[i])
+			} else if value.Valid {
+				u.Password = value.String
+			}
+		case user.FieldSalt:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field salt", values[i])
+			} else if value.Valid {
+				u.Salt = value.String
+			}
+		case user.FieldToken:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field token", values[i])
+			} else if value.Valid {
+				u.Token = value.String
+			}
+		case user.FieldNickName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field nick_name", values[i])
+			} else if value.Valid {
+				u.NickName = value.String
+			}
+		case user.FieldAvatar:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field avatar", values[i])
+			} else if value.Valid {
+				u.Avatar = value.String
 			}
 		case user.FieldPhone:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -144,59 +156,35 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.Email = value.String
 			}
-		case user.FieldGender:
+		case user.FieldSex:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field gender", values[i])
+				return fmt.Errorf("unexpected type %T for field sex", values[i])
 			} else if value.Valid {
-				u.Gender = int(value.Int64)
-			}
-		case user.FieldPwdHashed:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field pwd_hashed", values[i])
-			} else if value.Valid {
-				u.PwdHashed = value.String
-			}
-		case user.FieldPwdSalt:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field pwd_salt", values[i])
-			} else if value.Valid {
-				u.PwdSalt = value.String
-			}
-		case user.FieldToken:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field token", values[i])
-			} else if value.Valid {
-				u.Token = value.String
-			}
-		case user.FieldDisableStatus:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field disable_status", values[i])
-			} else if value.Valid {
-				u.DisableStatus = int(value.Int64)
-			}
-		case user.FieldCompany:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field company", values[i])
-			} else if value.Valid {
-				u.Company = value.String
-			}
-		case user.FieldParentDisableStatus:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field parent_disable_status", values[i])
-			} else if value.Valid {
-				u.ParentDisableStatus = int(value.Int64)
-			}
-		case user.FieldIcon:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field icon", values[i])
-			} else if value.Valid {
-				u.Icon = value.String
+				u.Sex = int(value.Int64)
 			}
 		case user.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				u.Status = int(value.Int64)
+			}
+		case user.FieldRoleID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field role_id", values[i])
+			} else if value.Valid {
+				u.RoleID = uint64(value.Int64)
+			}
+		case user.FieldDeptID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field dept_id", values[i])
+			} else if value.Valid {
+				u.DeptID = uint64(value.Int64)
+			}
+		case user.FieldPostID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field post_id", values[i])
+			} else if value.Valid {
+				u.PostID = uint64(value.Int64)
 			}
 		default:
 			u.selectValues.Set(columns[i], values[i])
@@ -209,11 +197,6 @@ func (u *User) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (u *User) Value(name string) (ent.Value, error) {
 	return u.selectValues.Get(name)
-}
-
-// QueryRoles queries the "roles" edge of the User entity.
-func (u *User) QueryRoles() *RoleQuery {
-	return NewUserClient(u.config).QueryRoles(u)
 }
 
 // Update returns a builder for updating this User.
@@ -245,14 +228,31 @@ func (u *User) String() string {
 	builder.WriteString("updated_at=")
 	builder.WriteString(fmt.Sprintf("%v", u.UpdatedAt))
 	builder.WriteString(", ")
-	builder.WriteString("no=")
-	builder.WriteString(u.No)
+	if v := u.DeletedAt; v != nil {
+		builder.WriteString("deleted_at=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
-	builder.WriteString("role=")
-	builder.WriteString(fmt.Sprintf("%v", u.Role))
+	builder.WriteString("user_id=")
+	builder.WriteString(fmt.Sprintf("%v", u.UserID))
 	builder.WriteString(", ")
-	builder.WriteString("name=")
-	builder.WriteString(u.Name)
+	builder.WriteString("user_name=")
+	builder.WriteString(u.UserName)
+	builder.WriteString(", ")
+	builder.WriteString("password=")
+	builder.WriteString(u.Password)
+	builder.WriteString(", ")
+	builder.WriteString("salt=")
+	builder.WriteString(u.Salt)
+	builder.WriteString(", ")
+	builder.WriteString("token=")
+	builder.WriteString(u.Token)
+	builder.WriteString(", ")
+	builder.WriteString("nick_name=")
+	builder.WriteString(u.NickName)
+	builder.WriteString(", ")
+	builder.WriteString("avatar=")
+	builder.WriteString(u.Avatar)
 	builder.WriteString(", ")
 	builder.WriteString("phone=")
 	builder.WriteString(u.Phone)
@@ -260,32 +260,20 @@ func (u *User) String() string {
 	builder.WriteString("email=")
 	builder.WriteString(u.Email)
 	builder.WriteString(", ")
-	builder.WriteString("gender=")
-	builder.WriteString(fmt.Sprintf("%v", u.Gender))
-	builder.WriteString(", ")
-	builder.WriteString("pwd_hashed=")
-	builder.WriteString(u.PwdHashed)
-	builder.WriteString(", ")
-	builder.WriteString("pwd_salt=")
-	builder.WriteString(u.PwdSalt)
-	builder.WriteString(", ")
-	builder.WriteString("token=")
-	builder.WriteString(u.Token)
-	builder.WriteString(", ")
-	builder.WriteString("disable_status=")
-	builder.WriteString(fmt.Sprintf("%v", u.DisableStatus))
-	builder.WriteString(", ")
-	builder.WriteString("company=")
-	builder.WriteString(u.Company)
-	builder.WriteString(", ")
-	builder.WriteString("parent_disable_status=")
-	builder.WriteString(fmt.Sprintf("%v", u.ParentDisableStatus))
-	builder.WriteString(", ")
-	builder.WriteString("icon=")
-	builder.WriteString(u.Icon)
+	builder.WriteString("sex=")
+	builder.WriteString(fmt.Sprintf("%v", u.Sex))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", u.Status))
+	builder.WriteString(", ")
+	builder.WriteString("role_id=")
+	builder.WriteString(fmt.Sprintf("%v", u.RoleID))
+	builder.WriteString(", ")
+	builder.WriteString("dept_id=")
+	builder.WriteString(fmt.Sprintf("%v", u.DeptID))
+	builder.WriteString(", ")
+	builder.WriteString("post_id=")
+	builder.WriteString(fmt.Sprintf("%v", u.PostID))
 	builder.WriteByte(')')
 	return builder.String()
 }

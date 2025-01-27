@@ -20,6 +20,8 @@ type Permission struct {
 	CreatedAt int `json:"created_at,omitempty"`
 	// 修改时间
 	UpdatedAt int `json:"updated_at,omitempty"`
+	// 删除时间
+	DeletedAt *int `json:"deleted_at,omitempty"`
 	// 权限名称
 	Name string `json:"name,omitempty"`
 	// 权限编码
@@ -35,29 +37,8 @@ type Permission struct {
 	// 描述
 	Description string `json:"description,omitempty"`
 	// 状态 1:启用 2:禁用
-	Status int `json:"status,omitempty"`
-	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the PermissionQuery when eager-loading is set.
-	Edges        PermissionEdges `json:"edges"`
+	Status       int `json:"status,omitempty"`
 	selectValues sql.SelectValues
-}
-
-// PermissionEdges holds the relations/edges for other nodes in the graph.
-type PermissionEdges struct {
-	// Roles holds the value of the roles edge.
-	Roles []*Role `json:"roles,omitempty"`
-	// loadedTypes holds the information for reporting if a
-	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
-}
-
-// RolesOrErr returns the Roles value or an error if the edge
-// was not loaded in eager-loading.
-func (e PermissionEdges) RolesOrErr() ([]*Role, error) {
-	if e.loadedTypes[0] {
-		return e.Roles, nil
-	}
-	return nil, &NotLoadedError{edge: "roles"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -65,7 +46,7 @@ func (*Permission) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case permission.FieldID, permission.FieldCreatedAt, permission.FieldUpdatedAt, permission.FieldType, permission.FieldAction, permission.FieldParentID, permission.FieldStatus:
+		case permission.FieldID, permission.FieldCreatedAt, permission.FieldUpdatedAt, permission.FieldDeletedAt, permission.FieldType, permission.FieldAction, permission.FieldParentID, permission.FieldStatus:
 			values[i] = new(sql.NullInt64)
 		case permission.FieldName, permission.FieldCode, permission.FieldPath, permission.FieldDescription:
 			values[i] = new(sql.NullString)
@@ -101,6 +82,13 @@ func (pe *Permission) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				pe.UpdatedAt = int(value.Int64)
+			}
+		case permission.FieldDeletedAt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
+			} else if value.Valid {
+				pe.DeletedAt = new(int)
+				*pe.DeletedAt = int(value.Int64)
 			}
 		case permission.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -163,11 +151,6 @@ func (pe *Permission) Value(name string) (ent.Value, error) {
 	return pe.selectValues.Get(name)
 }
 
-// QueryRoles queries the "roles" edge of the Permission entity.
-func (pe *Permission) QueryRoles() *RoleQuery {
-	return NewPermissionClient(pe.config).QueryRoles(pe)
-}
-
 // Update returns a builder for updating this Permission.
 // Note that you need to call Permission.Unwrap() before calling this method if this Permission
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -196,6 +179,11 @@ func (pe *Permission) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
 	builder.WriteString(fmt.Sprintf("%v", pe.UpdatedAt))
+	builder.WriteString(", ")
+	if v := pe.DeletedAt; v != nil {
+		builder.WriteString("deleted_at=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(pe.Name)

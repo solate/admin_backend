@@ -4,7 +4,6 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
-	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 )
@@ -27,19 +26,20 @@ func (Role) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("created_at").Immutable().Default(0).Comment("创建时间"),
 		field.Int("updated_at").Default(0).Comment("修改时间"),
+		field.Int("deleted_at").Optional().Nillable().Comment("删除时间"),
+
+		field.Uint64("role_id").Unique().Immutable().Comment("角色ID"),
 		field.String("name").NotEmpty().Comment("角色名"),
 		field.String("code").NotEmpty().Unique().Comment("角色编码"),
 		field.String("description").Optional().Comment("角色描述"),
 		field.Int("status").Default(1).Comment("状态: 1:启用, 2:禁用"),
+		field.Int("sort").Default(0).Comment("排序"),
 	}
 }
 
 // Edges of the Role.
 func (Role) Edges() []ent.Edge {
-	return []ent.Edge{
-		edge.From("users", User.Type).Ref("roles"),
-		edge.To("permissions", Permission.Type),
-	}
+	return []ent.Edge{}
 }
 
 func (Role) Indexes() []ent.Index {

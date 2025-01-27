@@ -1,24 +1,35 @@
 package casbin_sdk
 
 import (
+	"sync"
+
+	"entgo.io/ent/dialect"
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
 	entadapter "github.com/casbin/ent-adapter"
 )
 
-type CasbinSdk struct {
-	DataSource string // mysql 数据库
-}
+var (
+	enforcer *casbin.Enforcer
+	once     sync.Once
+	initErr  error
+)
 
 func NewCasbin(dataSource string) (*casbin.Enforcer, error) {
+	once.Do(func() {
+		initCasbin(dataSource)
+	})
 
-	a, err := entadapter.NewAdapter("mysql", dataSource)
+	return enforcer, initErr
+}
+func initCasbin(dataSource string) {
+	a, err := entadapter.NewAdapter(dialect.Postgres, dataSource)
 	if err != nil {
-		return nil, err
+		initErr = err
+		return
 	}
 
 	m, err := model.NewModelFromString(`
-
 [request_definition]
 r = sub, dom, obj, act
 
@@ -33,16 +44,14 @@ e = some(where (p.eft == allow))
 
 [matchers]
 m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act || r.sub == "root"
-
 	`)
 	if err != nil {
-		return nil, err
+		initErr = err
+		return
 	}
 
-	e, err := casbin.NewEnforcer(m, a)
+	enforcer, err = casbin.NewEnforcer(m, a)
 	if err != nil {
-		return nil, err
+		initErr = err
 	}
-
-	return e, nil
 }

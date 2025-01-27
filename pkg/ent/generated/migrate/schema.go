@@ -9,11 +9,43 @@ import (
 )
 
 var (
+	// LoginLogColumns holds the columns for the "login_log" table.
+	LoginLogColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeInt, Default: 0},
+		{Name: "updated_at", Type: field.TypeInt, Default: 0},
+		{Name: "log_id", Type: field.TypeUint64, Unique: true},
+		{Name: "user_id", Type: field.TypeUint64},
+		{Name: "user_name", Type: field.TypeString},
+		{Name: "ip", Type: field.TypeString},
+		{Name: "status", Type: field.TypeInt, Default: 1},
+		{Name: "message", Type: field.TypeString, Nullable: true},
+		{Name: "browser", Type: field.TypeString, Nullable: true},
+		{Name: "os", Type: field.TypeString, Nullable: true},
+		{Name: "user_agent", Type: field.TypeString, Nullable: true},
+		{Name: "device", Type: field.TypeString, Nullable: true},
+		{Name: "location", Type: field.TypeString, Nullable: true},
+		{Name: "login_time", Type: field.TypeTime, Nullable: true},
+	}
+	// LoginLogTable holds the schema information for the "login_log" table.
+	LoginLogTable = &schema.Table{
+		Name:       "login_log",
+		Columns:    LoginLogColumns,
+		PrimaryKey: []*schema.Column{LoginLogColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "loginlog_user_id",
+				Unique:  false,
+				Columns: []*schema.Column{LoginLogColumns[4]},
+			},
+		},
+	}
 	// PermissionsColumns holds the columns for the "permissions" table.
 	PermissionsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt, Comment: "修改时间", Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt, Nullable: true, Comment: "删除时间"},
 		{Name: "name", Type: field.TypeString, Comment: "权限名称"},
 		{Name: "code", Type: field.TypeString, Unique: true, Comment: "权限编码"},
 		{Name: "type", Type: field.TypeInt, Comment: "类型 1:菜单menu 2:按钮buttn 3:接口 api"},
@@ -35,10 +67,13 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt, Comment: "修改时间", Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt, Nullable: true, Comment: "删除时间"},
+		{Name: "role_id", Type: field.TypeUint64, Unique: true, Comment: "角色ID"},
 		{Name: "name", Type: field.TypeString, Comment: "角色名"},
 		{Name: "code", Type: field.TypeString, Unique: true, Comment: "角色编码"},
 		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "角色描述"},
 		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
+		{Name: "sort", Type: field.TypeInt, Comment: "排序", Default: 0},
 	}
 	// RolesTable holds the schema information for the "roles" table.
 	RolesTable = &schema.Table{
@@ -50,7 +85,7 @@ var (
 			{
 				Name:    "role_code",
 				Unique:  true,
-				Columns: []*schema.Column{RolesColumns[4]},
+				Columns: []*schema.Column{RolesColumns[6]},
 			},
 		},
 	}
@@ -59,20 +94,21 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt, Comment: "修改时间", Default: 0},
-		{Name: "no", Type: field.TypeString, Comment: "编号", Default: ""},
-		{Name: "role", Type: field.TypeInt, Comment: "角色，1：超级管理员 2：代理商 3：商户 --  废弃"},
-		{Name: "name", Type: field.TypeString, Comment: "真实姓名", Default: ""},
+		{Name: "deleted_at", Type: field.TypeInt, Nullable: true, Comment: "删除时间"},
+		{Name: "user_id", Type: field.TypeUint64, Unique: true, Comment: "用户ID"},
+		{Name: "user_name", Type: field.TypeString, Comment: "用户名", Default: ""},
+		{Name: "password", Type: field.TypeString, Comment: "密码", Default: ""},
+		{Name: "salt", Type: field.TypeString, Comment: "密码加盐", Default: ""},
+		{Name: "token", Type: field.TypeString, Comment: "登录后的token信息", Default: ""},
+		{Name: "nick_name", Type: field.TypeString, Comment: "昵称", Default: ""},
+		{Name: "avatar", Type: field.TypeString, Comment: "头像", Default: ""},
 		{Name: "phone", Type: field.TypeString, Comment: "电话", Default: ""},
 		{Name: "email", Type: field.TypeString, Comment: "邮箱", Default: ""},
-		{Name: "gender", Type: field.TypeInt, Comment: "性别，1：男 2：女", Default: 0},
-		{Name: "pwd_hashed", Type: field.TypeString, Comment: "hash后的密码"},
-		{Name: "pwd_salt", Type: field.TypeString, Comment: "密码加盐"},
-		{Name: "token", Type: field.TypeString, Comment: "登录后的token信息", Default: ""},
-		{Name: "disable_status", Type: field.TypeInt, Comment: "禁用状态，0：正常 1：禁用", Default: 0},
-		{Name: "company", Type: field.TypeString, Comment: "所属企业", Default: ""},
-		{Name: "parent_disable_status", Type: field.TypeInt, Comment: "上级禁用状态，0：正常 1：禁用", Default: 0},
-		{Name: "icon", Type: field.TypeString, Comment: "用户头像", Default: ""},
+		{Name: "sex", Type: field.TypeInt, Comment: "性别: 1：男 2：女", Default: 0},
 		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
+		{Name: "role_id", Type: field.TypeUint64, Comment: "角色ID", Default: 0},
+		{Name: "dept_id", Type: field.TypeUint64, Comment: "部门ID", Default: 0},
+		{Name: "post_id", Type: field.TypeUint64, Comment: "岗位ID", Default: 0},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{
@@ -84,71 +120,28 @@ var (
 			{
 				Name:    "user_phone",
 				Unique:  false,
-				Columns: []*schema.Column{UsersColumns[6]},
-			},
-		},
-	}
-	// RolePermissionsColumns holds the columns for the "role_permissions" table.
-	RolePermissionsColumns = []*schema.Column{
-		{Name: "role_id", Type: field.TypeInt},
-		{Name: "permission_id", Type: field.TypeInt},
-	}
-	// RolePermissionsTable holds the schema information for the "role_permissions" table.
-	RolePermissionsTable = &schema.Table{
-		Name:       "role_permissions",
-		Columns:    RolePermissionsColumns,
-		PrimaryKey: []*schema.Column{RolePermissionsColumns[0], RolePermissionsColumns[1]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "role_permissions_role_id",
-				Columns:    []*schema.Column{RolePermissionsColumns[0]},
-				RefColumns: []*schema.Column{RolesColumns[0]},
-				OnDelete:   schema.Cascade,
+				Columns: []*schema.Column{UsersColumns[11]},
 			},
 			{
-				Symbol:     "role_permissions_permission_id",
-				Columns:    []*schema.Column{RolePermissionsColumns[1]},
-				RefColumns: []*schema.Column{PermissionsColumns[0]},
-				OnDelete:   schema.Cascade,
-			},
-		},
-	}
-	// UserRolesColumns holds the columns for the "user_roles" table.
-	UserRolesColumns = []*schema.Column{
-		{Name: "user_id", Type: field.TypeInt},
-		{Name: "role_id", Type: field.TypeInt},
-	}
-	// UserRolesTable holds the schema information for the "user_roles" table.
-	UserRolesTable = &schema.Table{
-		Name:       "user_roles",
-		Columns:    UserRolesColumns,
-		PrimaryKey: []*schema.Column{UserRolesColumns[0], UserRolesColumns[1]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "user_roles_user_id",
-				Columns:    []*schema.Column{UserRolesColumns[0]},
-				RefColumns: []*schema.Column{UsersColumns[0]},
-				OnDelete:   schema.Cascade,
-			},
-			{
-				Symbol:     "user_roles_role_id",
-				Columns:    []*schema.Column{UserRolesColumns[1]},
-				RefColumns: []*schema.Column{RolesColumns[0]},
-				OnDelete:   schema.Cascade,
+				Name:    "user_user_id",
+				Unique:  false,
+				Columns: []*schema.Column{UsersColumns[4]},
 			},
 		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		LoginLogTable,
 		PermissionsTable,
 		RolesTable,
 		UsersTable,
-		RolePermissionsTable,
-		UserRolesTable,
 	}
 )
 
 func init() {
+	LoginLogTable.Annotation = &entsql.Annotation{
+		Table: "login_log",
+	}
 	PermissionsTable.Annotation = &entsql.Annotation{
 		Table: "permissions",
 	}
@@ -158,8 +151,4 @@ func init() {
 	UsersTable.Annotation = &entsql.Annotation{
 		Table: "users",
 	}
-	RolePermissionsTable.ForeignKeys[0].RefTable = RolesTable
-	RolePermissionsTable.ForeignKeys[1].RefTable = PermissionsTable
-	UserRolesTable.ForeignKeys[0].RefTable = UsersTable
-	UserRolesTable.ForeignKeys[1].RefTable = RolesTable
 }

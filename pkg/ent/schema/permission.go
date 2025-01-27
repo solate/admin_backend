@@ -4,7 +4,6 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
-	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -26,6 +25,8 @@ func (Permission) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("created_at").Immutable().Default(0).Comment("创建时间"),
 		field.Int("updated_at").Default(0).Comment("修改时间"),
+		field.Int("deleted_at").Optional().Nillable().Comment("删除时间"),
+
 		field.String("name").NotEmpty().Comment("权限名称"),
 		field.String("code").Unique().NotEmpty().Comment("权限编码"),
 		field.Int("type").Comment("类型 1:菜单menu 2:按钮buttn 3:接口 api"),
@@ -39,7 +40,5 @@ func (Permission) Fields() []ent.Field {
 
 // Edges of the Permission.
 func (Permission) Edges() []ent.Edge {
-	return []ent.Edge{
-		edge.From("roles", Role.Type).Ref("permissions"),
-	}
+	return []ent.Edge{}
 }

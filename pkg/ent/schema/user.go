@@ -4,7 +4,6 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
-	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 )
@@ -27,32 +26,35 @@ func (User) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("created_at").Immutable().Default(0).Comment("创建时间"),
 		field.Int("updated_at").Default(0).Comment("修改时间"),
-		field.String("no").Default("").Comment("编号"),
-		field.Int("role").Range(1, 3).Comment("角色，1：超级管理员 2：代理商 3：商户 --  废弃"),
-		field.String("name").NotEmpty().Default("").Comment("真实姓名"),
+		field.Int("deleted_at").Optional().Nillable().Comment("删除时间"),
+
+		field.Uint64("user_id").Unique().Immutable().Comment("用户ID"),
+		field.String("user_name").NotEmpty().Default("").Comment("用户名"),
+		field.String("password").NotEmpty().Default("").Comment("密码"),
+		field.String("salt").NotEmpty().Default("").Comment("密码加盐"),
+		field.String("token").Default("").Comment("登录后的token信息"),
+
+		field.String("nick_name").Default("").Comment("昵称"),
+		field.String("avatar").Default("").Comment("头像"),
 		field.String("phone").NotEmpty().Default("").Comment("电话"),
 		field.String("email").Default("").Comment("邮箱"),
-		field.Int("gender").Default(0).Comment("性别，1：男 2：女"),
-		field.String("pwd_hashed").NotEmpty().Comment("hash后的密码"),
-		field.String("pwd_salt").NotEmpty().Comment("密码加盐"),
-		field.String("token").Default("").Comment("登录后的token信息"),
-		field.Int("disable_status").Default(0).Comment("禁用状态，0：正常 1：禁用"),
-		field.String("company").Default("").Comment("所属企业"),
-		field.Int("parent_disable_status").Default(0).Comment("上级禁用状态，0：正常 1：禁用"),
-		field.String("icon").Default("").Comment("用户头像"),
+		field.Int("sex").Default(0).Comment("性别: 1：男 2：女"),
 		field.Int("status").Default(1).Comment("状态: 1:启用, 2:禁用"),
+
+		field.Uint64("role_id").Default(0).Comment("角色ID"),
+		field.Uint64("dept_id").Default(0).Comment("部门ID"),
+		field.Uint64("post_id").Default(0).Comment("岗位ID"),
 	}
 }
 
 // Edges of the User.
 func (User) Edges() []ent.Edge {
-	return []ent.Edge{
-		edge.To("roles", Role.Type),
-	}
+	return []ent.Edge{}
 }
 
 func (User) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("phone"),
+		index.Fields("user_id"),
 	}
 }

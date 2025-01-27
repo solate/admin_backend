@@ -4,7 +4,6 @@ package user
 
 import (
 	"entgo.io/ent/dialect/sql"
-	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -16,43 +15,38 @@ const (
 	FieldCreatedAt = "created_at"
 	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldNo holds the string denoting the no field in the database.
-	FieldNo = "no"
-	// FieldRole holds the string denoting the role field in the database.
-	FieldRole = "role"
-	// FieldName holds the string denoting the name field in the database.
-	FieldName = "name"
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
+	FieldDeletedAt = "deleted_at"
+	// FieldUserID holds the string denoting the user_id field in the database.
+	FieldUserID = "user_id"
+	// FieldUserName holds the string denoting the user_name field in the database.
+	FieldUserName = "user_name"
+	// FieldPassword holds the string denoting the password field in the database.
+	FieldPassword = "password"
+	// FieldSalt holds the string denoting the salt field in the database.
+	FieldSalt = "salt"
+	// FieldToken holds the string denoting the token field in the database.
+	FieldToken = "token"
+	// FieldNickName holds the string denoting the nick_name field in the database.
+	FieldNickName = "nick_name"
+	// FieldAvatar holds the string denoting the avatar field in the database.
+	FieldAvatar = "avatar"
 	// FieldPhone holds the string denoting the phone field in the database.
 	FieldPhone = "phone"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
-	// FieldGender holds the string denoting the gender field in the database.
-	FieldGender = "gender"
-	// FieldPwdHashed holds the string denoting the pwd_hashed field in the database.
-	FieldPwdHashed = "pwd_hashed"
-	// FieldPwdSalt holds the string denoting the pwd_salt field in the database.
-	FieldPwdSalt = "pwd_salt"
-	// FieldToken holds the string denoting the token field in the database.
-	FieldToken = "token"
-	// FieldDisableStatus holds the string denoting the disable_status field in the database.
-	FieldDisableStatus = "disable_status"
-	// FieldCompany holds the string denoting the company field in the database.
-	FieldCompany = "company"
-	// FieldParentDisableStatus holds the string denoting the parent_disable_status field in the database.
-	FieldParentDisableStatus = "parent_disable_status"
-	// FieldIcon holds the string denoting the icon field in the database.
-	FieldIcon = "icon"
+	// FieldSex holds the string denoting the sex field in the database.
+	FieldSex = "sex"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// EdgeRoles holds the string denoting the roles edge name in mutations.
-	EdgeRoles = "roles"
+	// FieldRoleID holds the string denoting the role_id field in the database.
+	FieldRoleID = "role_id"
+	// FieldDeptID holds the string denoting the dept_id field in the database.
+	FieldDeptID = "dept_id"
+	// FieldPostID holds the string denoting the post_id field in the database.
+	FieldPostID = "post_id"
 	// Table holds the table name of the user in the database.
 	Table = "users"
-	// RolesTable is the table that holds the roles relation/edge. The primary key declared below.
-	RolesTable = "user_roles"
-	// RolesInverseTable is the table name for the Role entity.
-	// It exists in this package in order to avoid circular dependency with the "role" package.
-	RolesInverseTable = "roles"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -60,27 +54,22 @@ var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
 	FieldUpdatedAt,
-	FieldNo,
-	FieldRole,
-	FieldName,
+	FieldDeletedAt,
+	FieldUserID,
+	FieldUserName,
+	FieldPassword,
+	FieldSalt,
+	FieldToken,
+	FieldNickName,
+	FieldAvatar,
 	FieldPhone,
 	FieldEmail,
-	FieldGender,
-	FieldPwdHashed,
-	FieldPwdSalt,
-	FieldToken,
-	FieldDisableStatus,
-	FieldCompany,
-	FieldParentDisableStatus,
-	FieldIcon,
+	FieldSex,
 	FieldStatus,
+	FieldRoleID,
+	FieldDeptID,
+	FieldPostID,
 }
-
-var (
-	// RolesPrimaryKey and RolesColumn2 are the table columns denoting the
-	// primary key for the roles relation (M2M).
-	RolesPrimaryKey = []string{"user_id", "role_id"}
-)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -97,38 +86,40 @@ var (
 	DefaultCreatedAt int
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt int
-	// DefaultNo holds the default value on creation for the "no" field.
-	DefaultNo string
-	// RoleValidator is a validator for the "role" field. It is called by the builders before save.
-	RoleValidator func(int) error
-	// DefaultName holds the default value on creation for the "name" field.
-	DefaultName string
-	// NameValidator is a validator for the "name" field. It is called by the builders before save.
-	NameValidator func(string) error
+	// DefaultUserName holds the default value on creation for the "user_name" field.
+	DefaultUserName string
+	// UserNameValidator is a validator for the "user_name" field. It is called by the builders before save.
+	UserNameValidator func(string) error
+	// DefaultPassword holds the default value on creation for the "password" field.
+	DefaultPassword string
+	// PasswordValidator is a validator for the "password" field. It is called by the builders before save.
+	PasswordValidator func(string) error
+	// DefaultSalt holds the default value on creation for the "salt" field.
+	DefaultSalt string
+	// SaltValidator is a validator for the "salt" field. It is called by the builders before save.
+	SaltValidator func(string) error
+	// DefaultToken holds the default value on creation for the "token" field.
+	DefaultToken string
+	// DefaultNickName holds the default value on creation for the "nick_name" field.
+	DefaultNickName string
+	// DefaultAvatar holds the default value on creation for the "avatar" field.
+	DefaultAvatar string
 	// DefaultPhone holds the default value on creation for the "phone" field.
 	DefaultPhone string
 	// PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
 	PhoneValidator func(string) error
 	// DefaultEmail holds the default value on creation for the "email" field.
 	DefaultEmail string
-	// DefaultGender holds the default value on creation for the "gender" field.
-	DefaultGender int
-	// PwdHashedValidator is a validator for the "pwd_hashed" field. It is called by the builders before save.
-	PwdHashedValidator func(string) error
-	// PwdSaltValidator is a validator for the "pwd_salt" field. It is called by the builders before save.
-	PwdSaltValidator func(string) error
-	// DefaultToken holds the default value on creation for the "token" field.
-	DefaultToken string
-	// DefaultDisableStatus holds the default value on creation for the "disable_status" field.
-	DefaultDisableStatus int
-	// DefaultCompany holds the default value on creation for the "company" field.
-	DefaultCompany string
-	// DefaultParentDisableStatus holds the default value on creation for the "parent_disable_status" field.
-	DefaultParentDisableStatus int
-	// DefaultIcon holds the default value on creation for the "icon" field.
-	DefaultIcon string
+	// DefaultSex holds the default value on creation for the "sex" field.
+	DefaultSex int
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
+	// DefaultRoleID holds the default value on creation for the "role_id" field.
+	DefaultRoleID uint64
+	// DefaultDeptID holds the default value on creation for the "dept_id" field.
+	DefaultDeptID uint64
+	// DefaultPostID holds the default value on creation for the "post_id" field.
+	DefaultPostID uint64
 )
 
 // OrderOption defines the ordering options for the User queries.
@@ -149,19 +140,44 @@ func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByNo orders the results by the no field.
-func ByNo(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldNo, opts...).ToFunc()
+// ByDeletedAt orders the results by the deleted_at field.
+func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
-// ByRole orders the results by the role field.
-func ByRole(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldRole, opts...).ToFunc()
+// ByUserID orders the results by the user_id field.
+func ByUserID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUserID, opts...).ToFunc()
 }
 
-// ByName orders the results by the name field.
-func ByName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldName, opts...).ToFunc()
+// ByUserName orders the results by the user_name field.
+func ByUserName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUserName, opts...).ToFunc()
+}
+
+// ByPassword orders the results by the password field.
+func ByPassword(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPassword, opts...).ToFunc()
+}
+
+// BySalt orders the results by the salt field.
+func BySalt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSalt, opts...).ToFunc()
+}
+
+// ByToken orders the results by the token field.
+func ByToken(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldToken, opts...).ToFunc()
+}
+
+// ByNickName orders the results by the nick_name field.
+func ByNickName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldNickName, opts...).ToFunc()
+}
+
+// ByAvatar orders the results by the avatar field.
+func ByAvatar(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAvatar, opts...).ToFunc()
 }
 
 // ByPhone orders the results by the phone field.
@@ -174,44 +190,9 @@ func ByEmail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEmail, opts...).ToFunc()
 }
 
-// ByGender orders the results by the gender field.
-func ByGender(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldGender, opts...).ToFunc()
-}
-
-// ByPwdHashed orders the results by the pwd_hashed field.
-func ByPwdHashed(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPwdHashed, opts...).ToFunc()
-}
-
-// ByPwdSalt orders the results by the pwd_salt field.
-func ByPwdSalt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPwdSalt, opts...).ToFunc()
-}
-
-// ByToken orders the results by the token field.
-func ByToken(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldToken, opts...).ToFunc()
-}
-
-// ByDisableStatus orders the results by the disable_status field.
-func ByDisableStatus(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDisableStatus, opts...).ToFunc()
-}
-
-// ByCompany orders the results by the company field.
-func ByCompany(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCompany, opts...).ToFunc()
-}
-
-// ByParentDisableStatus orders the results by the parent_disable_status field.
-func ByParentDisableStatus(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldParentDisableStatus, opts...).ToFunc()
-}
-
-// ByIcon orders the results by the icon field.
-func ByIcon(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIcon, opts...).ToFunc()
+// BySex orders the results by the sex field.
+func BySex(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSex, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.
@@ -219,23 +200,17 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
-// ByRolesCount orders the results by roles count.
-func ByRolesCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newRolesStep(), opts...)
-	}
+// ByRoleID orders the results by the role_id field.
+func ByRoleID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRoleID, opts...).ToFunc()
 }
 
-// ByRoles orders the results by roles terms.
-func ByRoles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newRolesStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
+// ByDeptID orders the results by the dept_id field.
+func ByDeptID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDeptID, opts...).ToFunc()
 }
-func newRolesStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(RolesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2M, false, RolesTable, RolesPrimaryKey...),
-	)
+
+// ByPostID orders the results by the post_id field.
+func ByPostID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPostID, opts...).ToFunc()
 }

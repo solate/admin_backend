@@ -4,7 +4,6 @@ package role
 
 import (
 	"entgo.io/ent/dialect/sql"
-	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/solate/admin_backend/pkg/ent/generated/predicate"
 )
 
@@ -63,6 +62,16 @@ func UpdatedAt(v int) predicate.Role {
 	return predicate.Role(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
+// DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
+func DeletedAt(v int) predicate.Role {
+	return predicate.Role(sql.FieldEQ(FieldDeletedAt, v))
+}
+
+// RoleID applies equality check predicate on the "role_id" field. It's identical to RoleIDEQ.
+func RoleID(v uint64) predicate.Role {
+	return predicate.Role(sql.FieldEQ(FieldRoleID, v))
+}
+
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
 func Name(v string) predicate.Role {
 	return predicate.Role(sql.FieldEQ(FieldName, v))
@@ -81,6 +90,11 @@ func Description(v string) predicate.Role {
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
 func Status(v int) predicate.Role {
 	return predicate.Role(sql.FieldEQ(FieldStatus, v))
+}
+
+// Sort applies equality check predicate on the "sort" field. It's identical to SortEQ.
+func Sort(v int) predicate.Role {
+	return predicate.Role(sql.FieldEQ(FieldSort, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -161,6 +175,96 @@ func UpdatedAtLT(v int) predicate.Role {
 // UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v int) predicate.Role {
 	return predicate.Role(sql.FieldLTE(FieldUpdatedAt, v))
+}
+
+// DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
+func DeletedAtEQ(v int) predicate.Role {
+	return predicate.Role(sql.FieldEQ(FieldDeletedAt, v))
+}
+
+// DeletedAtNEQ applies the NEQ predicate on the "deleted_at" field.
+func DeletedAtNEQ(v int) predicate.Role {
+	return predicate.Role(sql.FieldNEQ(FieldDeletedAt, v))
+}
+
+// DeletedAtIn applies the In predicate on the "deleted_at" field.
+func DeletedAtIn(vs ...int) predicate.Role {
+	return predicate.Role(sql.FieldIn(FieldDeletedAt, vs...))
+}
+
+// DeletedAtNotIn applies the NotIn predicate on the "deleted_at" field.
+func DeletedAtNotIn(vs ...int) predicate.Role {
+	return predicate.Role(sql.FieldNotIn(FieldDeletedAt, vs...))
+}
+
+// DeletedAtGT applies the GT predicate on the "deleted_at" field.
+func DeletedAtGT(v int) predicate.Role {
+	return predicate.Role(sql.FieldGT(FieldDeletedAt, v))
+}
+
+// DeletedAtGTE applies the GTE predicate on the "deleted_at" field.
+func DeletedAtGTE(v int) predicate.Role {
+	return predicate.Role(sql.FieldGTE(FieldDeletedAt, v))
+}
+
+// DeletedAtLT applies the LT predicate on the "deleted_at" field.
+func DeletedAtLT(v int) predicate.Role {
+	return predicate.Role(sql.FieldLT(FieldDeletedAt, v))
+}
+
+// DeletedAtLTE applies the LTE predicate on the "deleted_at" field.
+func DeletedAtLTE(v int) predicate.Role {
+	return predicate.Role(sql.FieldLTE(FieldDeletedAt, v))
+}
+
+// DeletedAtIsNil applies the IsNil predicate on the "deleted_at" field.
+func DeletedAtIsNil() predicate.Role {
+	return predicate.Role(sql.FieldIsNull(FieldDeletedAt))
+}
+
+// DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
+func DeletedAtNotNil() predicate.Role {
+	return predicate.Role(sql.FieldNotNull(FieldDeletedAt))
+}
+
+// RoleIDEQ applies the EQ predicate on the "role_id" field.
+func RoleIDEQ(v uint64) predicate.Role {
+	return predicate.Role(sql.FieldEQ(FieldRoleID, v))
+}
+
+// RoleIDNEQ applies the NEQ predicate on the "role_id" field.
+func RoleIDNEQ(v uint64) predicate.Role {
+	return predicate.Role(sql.FieldNEQ(FieldRoleID, v))
+}
+
+// RoleIDIn applies the In predicate on the "role_id" field.
+func RoleIDIn(vs ...uint64) predicate.Role {
+	return predicate.Role(sql.FieldIn(FieldRoleID, vs...))
+}
+
+// RoleIDNotIn applies the NotIn predicate on the "role_id" field.
+func RoleIDNotIn(vs ...uint64) predicate.Role {
+	return predicate.Role(sql.FieldNotIn(FieldRoleID, vs...))
+}
+
+// RoleIDGT applies the GT predicate on the "role_id" field.
+func RoleIDGT(v uint64) predicate.Role {
+	return predicate.Role(sql.FieldGT(FieldRoleID, v))
+}
+
+// RoleIDGTE applies the GTE predicate on the "role_id" field.
+func RoleIDGTE(v uint64) predicate.Role {
+	return predicate.Role(sql.FieldGTE(FieldRoleID, v))
+}
+
+// RoleIDLT applies the LT predicate on the "role_id" field.
+func RoleIDLT(v uint64) predicate.Role {
+	return predicate.Role(sql.FieldLT(FieldRoleID, v))
+}
+
+// RoleIDLTE applies the LTE predicate on the "role_id" field.
+func RoleIDLTE(v uint64) predicate.Role {
+	return predicate.Role(sql.FieldLTE(FieldRoleID, v))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.
@@ -408,50 +512,44 @@ func StatusLTE(v int) predicate.Role {
 	return predicate.Role(sql.FieldLTE(FieldStatus, v))
 }
 
-// HasUsers applies the HasEdge predicate on the "users" edge.
-func HasUsers() predicate.Role {
-	return predicate.Role(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, UsersTable, UsersPrimaryKey...),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
+// SortEQ applies the EQ predicate on the "sort" field.
+func SortEQ(v int) predicate.Role {
+	return predicate.Role(sql.FieldEQ(FieldSort, v))
 }
 
-// HasUsersWith applies the HasEdge predicate on the "users" edge with a given conditions (other predicates).
-func HasUsersWith(preds ...predicate.User) predicate.Role {
-	return predicate.Role(func(s *sql.Selector) {
-		step := newUsersStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
+// SortNEQ applies the NEQ predicate on the "sort" field.
+func SortNEQ(v int) predicate.Role {
+	return predicate.Role(sql.FieldNEQ(FieldSort, v))
 }
 
-// HasPermissions applies the HasEdge predicate on the "permissions" edge.
-func HasPermissions() predicate.Role {
-	return predicate.Role(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, PermissionsTable, PermissionsPrimaryKey...),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
+// SortIn applies the In predicate on the "sort" field.
+func SortIn(vs ...int) predicate.Role {
+	return predicate.Role(sql.FieldIn(FieldSort, vs...))
 }
 
-// HasPermissionsWith applies the HasEdge predicate on the "permissions" edge with a given conditions (other predicates).
-func HasPermissionsWith(preds ...predicate.Permission) predicate.Role {
-	return predicate.Role(func(s *sql.Selector) {
-		step := newPermissionsStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
+// SortNotIn applies the NotIn predicate on the "sort" field.
+func SortNotIn(vs ...int) predicate.Role {
+	return predicate.Role(sql.FieldNotIn(FieldSort, vs...))
+}
+
+// SortGT applies the GT predicate on the "sort" field.
+func SortGT(v int) predicate.Role {
+	return predicate.Role(sql.FieldGT(FieldSort, v))
+}
+
+// SortGTE applies the GTE predicate on the "sort" field.
+func SortGTE(v int) predicate.Role {
+	return predicate.Role(sql.FieldGTE(FieldSort, v))
+}
+
+// SortLT applies the LT predicate on the "sort" field.
+func SortLT(v int) predicate.Role {
+	return predicate.Role(sql.FieldLT(FieldSort, v))
+}
+
+// SortLTE applies the LTE predicate on the "sort" field.
+func SortLTE(v int) predicate.Role {
+	return predicate.Role(sql.FieldLTE(FieldSort, v))
 }
 
 // And groups predicates with the AND operator between them.

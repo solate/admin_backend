@@ -14,7 +14,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
-	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/solate/admin_backend/pkg/ent/generated/loginlog"
 	"github.com/solate/admin_backend/pkg/ent/generated/permission"
 	"github.com/solate/admin_backend/pkg/ent/generated/role"
 	"github.com/solate/admin_backend/pkg/ent/generated/user"
@@ -25,6 +25,8 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// LoginLog is the client for interacting with the LoginLog builders.
+	LoginLog *LoginLogClient
 	// Permission is the client for interacting with the Permission builders.
 	Permission *PermissionClient
 	// Role is the client for interacting with the Role builders.
@@ -42,6 +44,7 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.LoginLog = NewLoginLogClient(c.config)
 	c.Permission = NewPermissionClient(c.config)
 	c.Role = NewRoleClient(c.config)
 	c.User = NewUserClient(c.config)
@@ -137,6 +140,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:        ctx,
 		config:     cfg,
+		LoginLog:   NewLoginLogClient(cfg),
 		Permission: NewPermissionClient(cfg),
 		Role:       NewRoleClient(cfg),
 		User:       NewUserClient(cfg),
@@ -159,6 +163,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	return &Tx{
 		ctx:        ctx,
 		config:     cfg,
+		LoginLog:   NewLoginLogClient(cfg),
 		Permission: NewPermissionClient(cfg),
 		Role:       NewRoleClient(cfg),
 		User:       NewUserClient(cfg),
@@ -168,7 +173,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		Permission.
+//		LoginLog.
 //		Query().
 //		Count(ctx)
 func (c *Client) Debug() *Client {
@@ -190,6 +195,7 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
+	c.LoginLog.Use(hooks...)
 	c.Permission.Use(hooks...)
 	c.Role.Use(hooks...)
 	c.User.Use(hooks...)
@@ -198,6 +204,7 @@ func (c *Client) Use(hooks ...Hook) {
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
+	c.LoginLog.Intercept(interceptors...)
 	c.Permission.Intercept(interceptors...)
 	c.Role.Intercept(interceptors...)
 	c.User.Intercept(interceptors...)
@@ -206,6 +213,8 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 // Mutate implements the ent.Mutator interface.
 func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
+	case *LoginLogMutation:
+		return c.LoginLog.mutate(ctx, m)
 	case *PermissionMutation:
 		return c.Permission.mutate(ctx, m)
 	case *RoleMutation:
@@ -214,6 +223,139 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.User.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("generated: unknown mutation type %T", m)
+	}
+}
+
+// LoginLogClient is a client for the LoginLog schema.
+type LoginLogClient struct {
+	config
+}
+
+// NewLoginLogClient returns a client for the LoginLog from the given config.
+func NewLoginLogClient(c config) *LoginLogClient {
+	return &LoginLogClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `loginlog.Hooks(f(g(h())))`.
+func (c *LoginLogClient) Use(hooks ...Hook) {
+	c.hooks.LoginLog = append(c.hooks.LoginLog, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `loginlog.Intercept(f(g(h())))`.
+func (c *LoginLogClient) Intercept(interceptors ...Interceptor) {
+	c.inters.LoginLog = append(c.inters.LoginLog, interceptors...)
+}
+
+// Create returns a builder for creating a LoginLog entity.
+func (c *LoginLogClient) Create() *LoginLogCreate {
+	mutation := newLoginLogMutation(c.config, OpCreate)
+	return &LoginLogCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of LoginLog entities.
+func (c *LoginLogClient) CreateBulk(builders ...*LoginLogCreate) *LoginLogCreateBulk {
+	return &LoginLogCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *LoginLogClient) MapCreateBulk(slice any, setFunc func(*LoginLogCreate, int)) *LoginLogCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &LoginLogCreateBulk{err: fmt.Errorf("calling to LoginLogClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*LoginLogCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &LoginLogCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for LoginLog.
+func (c *LoginLogClient) Update() *LoginLogUpdate {
+	mutation := newLoginLogMutation(c.config, OpUpdate)
+	return &LoginLogUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *LoginLogClient) UpdateOne(ll *LoginLog) *LoginLogUpdateOne {
+	mutation := newLoginLogMutation(c.config, OpUpdateOne, withLoginLog(ll))
+	return &LoginLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *LoginLogClient) UpdateOneID(id int) *LoginLogUpdateOne {
+	mutation := newLoginLogMutation(c.config, OpUpdateOne, withLoginLogID(id))
+	return &LoginLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for LoginLog.
+func (c *LoginLogClient) Delete() *LoginLogDelete {
+	mutation := newLoginLogMutation(c.config, OpDelete)
+	return &LoginLogDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *LoginLogClient) DeleteOne(ll *LoginLog) *LoginLogDeleteOne {
+	return c.DeleteOneID(ll.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *LoginLogClient) DeleteOneID(id int) *LoginLogDeleteOne {
+	builder := c.Delete().Where(loginlog.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &LoginLogDeleteOne{builder}
+}
+
+// Query returns a query builder for LoginLog.
+func (c *LoginLogClient) Query() *LoginLogQuery {
+	return &LoginLogQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeLoginLog},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a LoginLog entity by its id.
+func (c *LoginLogClient) Get(ctx context.Context, id int) (*LoginLog, error) {
+	return c.Query().Where(loginlog.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *LoginLogClient) GetX(ctx context.Context, id int) *LoginLog {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *LoginLogClient) Hooks() []Hook {
+	return c.hooks.LoginLog
+}
+
+// Interceptors returns the client interceptors.
+func (c *LoginLogClient) Interceptors() []Interceptor {
+	return c.inters.LoginLog
+}
+
+func (c *LoginLogClient) mutate(ctx context.Context, m *LoginLogMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&LoginLogCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&LoginLogUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&LoginLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&LoginLogDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown LoginLog mutation op: %q", m.Op())
 	}
 }
 
@@ -323,22 +465,6 @@ func (c *PermissionClient) GetX(ctx context.Context, id int) *Permission {
 		panic(err)
 	}
 	return obj
-}
-
-// QueryRoles queries the roles edge of a Permission.
-func (c *PermissionClient) QueryRoles(pe *Permission) *RoleQuery {
-	query := (&RoleClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := pe.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(permission.Table, permission.FieldID, id),
-			sqlgraph.To(role.Table, role.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, permission.RolesTable, permission.RolesPrimaryKey...),
-		)
-		fromV = sqlgraph.Neighbors(pe.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
 }
 
 // Hooks returns the client hooks.
@@ -474,38 +600,6 @@ func (c *RoleClient) GetX(ctx context.Context, id int) *Role {
 	return obj
 }
 
-// QueryUsers queries the users edge of a Role.
-func (c *RoleClient) QueryUsers(r *Role) *UserQuery {
-	query := (&UserClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := r.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(role.Table, role.FieldID, id),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, role.UsersTable, role.UsersPrimaryKey...),
-		)
-		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryPermissions queries the permissions edge of a Role.
-func (c *RoleClient) QueryPermissions(r *Role) *PermissionQuery {
-	query := (&PermissionClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := r.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(role.Table, role.FieldID, id),
-			sqlgraph.To(permission.Table, permission.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, role.PermissionsTable, role.PermissionsPrimaryKey...),
-		)
-		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // Hooks returns the client hooks.
 func (c *RoleClient) Hooks() []Hook {
 	return c.hooks.Role
@@ -639,22 +733,6 @@ func (c *UserClient) GetX(ctx context.Context, id int) *User {
 	return obj
 }
 
-// QueryRoles queries the roles edge of a User.
-func (c *UserClient) QueryRoles(u *User) *RoleQuery {
-	query := (&RoleClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := u.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(user.Table, user.FieldID, id),
-			sqlgraph.To(role.Table, role.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, user.RolesTable, user.RolesPrimaryKey...),
-		)
-		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // Hooks returns the client hooks.
 func (c *UserClient) Hooks() []Hook {
 	return c.hooks.User
@@ -683,9 +761,9 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Permission, Role, User []ent.Hook
+		LoginLog, Permission, Role, User []ent.Hook
 	}
 	inters struct {
-		Permission, Role, User []ent.Interceptor
+		LoginLog, Permission, Role, User []ent.Interceptor
 	}
 )

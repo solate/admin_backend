@@ -20,6 +20,10 @@ type Role struct {
 	CreatedAt int `json:"created_at,omitempty"`
 	// 修改时间
 	UpdatedAt int `json:"updated_at,omitempty"`
+	// 删除时间
+	DeletedAt *int `json:"deleted_at,omitempty"`
+	// 角色ID
+	RoleID uint64 `json:"role_id,omitempty"`
 	// 角色名
 	Name string `json:"name,omitempty"`
 	// 角色编码
@@ -28,39 +32,9 @@ type Role struct {
 	Description string `json:"description,omitempty"`
 	// 状态: 1:启用, 2:禁用
 	Status int `json:"status,omitempty"`
-	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the RoleQuery when eager-loading is set.
-	Edges        RoleEdges `json:"edges"`
+	// 排序
+	Sort         int `json:"sort,omitempty"`
 	selectValues sql.SelectValues
-}
-
-// RoleEdges holds the relations/edges for other nodes in the graph.
-type RoleEdges struct {
-	// Users holds the value of the users edge.
-	Users []*User `json:"users,omitempty"`
-	// Permissions holds the value of the permissions edge.
-	Permissions []*Permission `json:"permissions,omitempty"`
-	// loadedTypes holds the information for reporting if a
-	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
-}
-
-// UsersOrErr returns the Users value or an error if the edge
-// was not loaded in eager-loading.
-func (e RoleEdges) UsersOrErr() ([]*User, error) {
-	if e.loadedTypes[0] {
-		return e.Users, nil
-	}
-	return nil, &NotLoadedError{edge: "users"}
-}
-
-// PermissionsOrErr returns the Permissions value or an error if the edge
-// was not loaded in eager-loading.
-func (e RoleEdges) PermissionsOrErr() ([]*Permission, error) {
-	if e.loadedTypes[1] {
-		return e.Permissions, nil
-	}
-	return nil, &NotLoadedError{edge: "permissions"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -68,7 +42,7 @@ func (*Role) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case role.FieldID, role.FieldCreatedAt, role.FieldUpdatedAt, role.FieldStatus:
+		case role.FieldID, role.FieldCreatedAt, role.FieldUpdatedAt, role.FieldDeletedAt, role.FieldRoleID, role.FieldStatus, role.FieldSort:
 			values[i] = new(sql.NullInt64)
 		case role.FieldName, role.FieldCode, role.FieldDescription:
 			values[i] = new(sql.NullString)
@@ -105,6 +79,19 @@ func (r *Role) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				r.UpdatedAt = int(value.Int64)
 			}
+		case role.FieldDeletedAt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
+			} else if value.Valid {
+				r.DeletedAt = new(int)
+				*r.DeletedAt = int(value.Int64)
+			}
+		case role.FieldRoleID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field role_id", values[i])
+			} else if value.Valid {
+				r.RoleID = uint64(value.Int64)
+			}
 		case role.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
@@ -129,6 +116,12 @@ func (r *Role) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				r.Status = int(value.Int64)
 			}
+		case role.FieldSort:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field sort", values[i])
+			} else if value.Valid {
+				r.Sort = int(value.Int64)
+			}
 		default:
 			r.selectValues.Set(columns[i], values[i])
 		}
@@ -140,16 +133,6 @@ func (r *Role) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (r *Role) Value(name string) (ent.Value, error) {
 	return r.selectValues.Get(name)
-}
-
-// QueryUsers queries the "users" edge of the Role entity.
-func (r *Role) QueryUsers() *UserQuery {
-	return NewRoleClient(r.config).QueryUsers(r)
-}
-
-// QueryPermissions queries the "permissions" edge of the Role entity.
-func (r *Role) QueryPermissions() *PermissionQuery {
-	return NewRoleClient(r.config).QueryPermissions(r)
 }
 
 // Update returns a builder for updating this Role.
@@ -181,6 +164,14 @@ func (r *Role) String() string {
 	builder.WriteString("updated_at=")
 	builder.WriteString(fmt.Sprintf("%v", r.UpdatedAt))
 	builder.WriteString(", ")
+	if v := r.DeletedAt; v != nil {
+		builder.WriteString("deleted_at=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	builder.WriteString("role_id=")
+	builder.WriteString(fmt.Sprintf("%v", r.RoleID))
+	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(r.Name)
 	builder.WriteString(", ")
@@ -192,6 +183,9 @@ func (r *Role) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", r.Status))
+	builder.WriteString(", ")
+	builder.WriteString("sort=")
+	builder.WriteString(fmt.Sprintf("%v", r.Sort))
 	builder.WriteByte(')')
 	return builder.String()
 }

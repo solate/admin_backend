@@ -11,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/solate/admin_backend/pkg/ent/generated/permission"
-	"github.com/solate/admin_backend/pkg/ent/generated/role"
 )
 
 // PermissionCreate is the builder for creating a Permission entity.
@@ -46,6 +45,20 @@ func (pc *PermissionCreate) SetUpdatedAt(i int) *PermissionCreate {
 func (pc *PermissionCreate) SetNillableUpdatedAt(i *int) *PermissionCreate {
 	if i != nil {
 		pc.SetUpdatedAt(*i)
+	}
+	return pc
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (pc *PermissionCreate) SetDeletedAt(i int) *PermissionCreate {
+	pc.mutation.SetDeletedAt(i)
+	return pc
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (pc *PermissionCreate) SetNillableDeletedAt(i *int) *PermissionCreate {
+	if i != nil {
+		pc.SetDeletedAt(*i)
 	}
 	return pc
 }
@@ -136,21 +149,6 @@ func (pc *PermissionCreate) SetNillableStatus(i *int) *PermissionCreate {
 		pc.SetStatus(*i)
 	}
 	return pc
-}
-
-// AddRoleIDs adds the "roles" edge to the Role entity by IDs.
-func (pc *PermissionCreate) AddRoleIDs(ids ...int) *PermissionCreate {
-	pc.mutation.AddRoleIDs(ids...)
-	return pc
-}
-
-// AddRoles adds the "roles" edges to the Role entity.
-func (pc *PermissionCreate) AddRoles(r ...*Role) *PermissionCreate {
-	ids := make([]int, len(r))
-	for i := range r {
-		ids[i] = r[i].ID
-	}
-	return pc.AddRoleIDs(ids...)
 }
 
 // Mutation returns the PermissionMutation object of the builder.
@@ -271,6 +269,10 @@ func (pc *PermissionCreate) createSpec() (*Permission, *sqlgraph.CreateSpec) {
 		_spec.SetField(permission.FieldUpdatedAt, field.TypeInt, value)
 		_node.UpdatedAt = value
 	}
+	if value, ok := pc.mutation.DeletedAt(); ok {
+		_spec.SetField(permission.FieldDeletedAt, field.TypeInt, value)
+		_node.DeletedAt = &value
+	}
 	if value, ok := pc.mutation.Name(); ok {
 		_spec.SetField(permission.FieldName, field.TypeString, value)
 		_node.Name = value
@@ -302,22 +304,6 @@ func (pc *PermissionCreate) createSpec() (*Permission, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.Status(); ok {
 		_spec.SetField(permission.FieldStatus, field.TypeInt, value)
 		_node.Status = value
-	}
-	if nodes := pc.mutation.RolesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   permission.RolesTable,
-			Columns: permission.RolesPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(role.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }
@@ -386,6 +372,30 @@ func (u *PermissionUpsert) UpdateUpdatedAt() *PermissionUpsert {
 // AddUpdatedAt adds v to the "updated_at" field.
 func (u *PermissionUpsert) AddUpdatedAt(v int) *PermissionUpsert {
 	u.Add(permission.FieldUpdatedAt, v)
+	return u
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (u *PermissionUpsert) SetDeletedAt(v int) *PermissionUpsert {
+	u.Set(permission.FieldDeletedAt, v)
+	return u
+}
+
+// UpdateDeletedAt sets the "deleted_at" field to the value that was provided on create.
+func (u *PermissionUpsert) UpdateDeletedAt() *PermissionUpsert {
+	u.SetExcluded(permission.FieldDeletedAt)
+	return u
+}
+
+// AddDeletedAt adds v to the "deleted_at" field.
+func (u *PermissionUpsert) AddDeletedAt(v int) *PermissionUpsert {
+	u.Add(permission.FieldDeletedAt, v)
+	return u
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (u *PermissionUpsert) ClearDeletedAt() *PermissionUpsert {
+	u.SetNull(permission.FieldDeletedAt)
 	return u
 }
 
@@ -596,6 +606,34 @@ func (u *PermissionUpsertOne) AddUpdatedAt(v int) *PermissionUpsertOne {
 func (u *PermissionUpsertOne) UpdateUpdatedAt() *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
 		s.UpdateUpdatedAt()
+	})
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (u *PermissionUpsertOne) SetDeletedAt(v int) *PermissionUpsertOne {
+	return u.Update(func(s *PermissionUpsert) {
+		s.SetDeletedAt(v)
+	})
+}
+
+// AddDeletedAt adds v to the "deleted_at" field.
+func (u *PermissionUpsertOne) AddDeletedAt(v int) *PermissionUpsertOne {
+	return u.Update(func(s *PermissionUpsert) {
+		s.AddDeletedAt(v)
+	})
+}
+
+// UpdateDeletedAt sets the "deleted_at" field to the value that was provided on create.
+func (u *PermissionUpsertOne) UpdateDeletedAt() *PermissionUpsertOne {
+	return u.Update(func(s *PermissionUpsert) {
+		s.UpdateDeletedAt()
+	})
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (u *PermissionUpsertOne) ClearDeletedAt() *PermissionUpsertOne {
+	return u.Update(func(s *PermissionUpsert) {
+		s.ClearDeletedAt()
 	})
 }
 
@@ -996,6 +1034,34 @@ func (u *PermissionUpsertBulk) AddUpdatedAt(v int) *PermissionUpsertBulk {
 func (u *PermissionUpsertBulk) UpdateUpdatedAt() *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
 		s.UpdateUpdatedAt()
+	})
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (u *PermissionUpsertBulk) SetDeletedAt(v int) *PermissionUpsertBulk {
+	return u.Update(func(s *PermissionUpsert) {
+		s.SetDeletedAt(v)
+	})
+}
+
+// AddDeletedAt adds v to the "deleted_at" field.
+func (u *PermissionUpsertBulk) AddDeletedAt(v int) *PermissionUpsertBulk {
+	return u.Update(func(s *PermissionUpsert) {
+		s.AddDeletedAt(v)
+	})
+}
+
+// UpdateDeletedAt sets the "deleted_at" field to the value that was provided on create.
+func (u *PermissionUpsertBulk) UpdateDeletedAt() *PermissionUpsertBulk {
+	return u.Update(func(s *PermissionUpsert) {
+		s.UpdateDeletedAt()
+	})
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (u *PermissionUpsertBulk) ClearDeletedAt() *PermissionUpsertBulk {
+	return u.Update(func(s *PermissionUpsert) {
+		s.ClearDeletedAt()
 	})
 }
 

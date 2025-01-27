@@ -10,9 +10,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/solate/admin_backend/pkg/ent/generated/permission"
 	"github.com/solate/admin_backend/pkg/ent/generated/role"
-	"github.com/solate/admin_backend/pkg/ent/generated/user"
 )
 
 // RoleCreate is the builder for creating a Role entity.
@@ -48,6 +46,26 @@ func (rc *RoleCreate) SetNillableUpdatedAt(i *int) *RoleCreate {
 	if i != nil {
 		rc.SetUpdatedAt(*i)
 	}
+	return rc
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (rc *RoleCreate) SetDeletedAt(i int) *RoleCreate {
+	rc.mutation.SetDeletedAt(i)
+	return rc
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (rc *RoleCreate) SetNillableDeletedAt(i *int) *RoleCreate {
+	if i != nil {
+		rc.SetDeletedAt(*i)
+	}
+	return rc
+}
+
+// SetRoleID sets the "role_id" field.
+func (rc *RoleCreate) SetRoleID(u uint64) *RoleCreate {
+	rc.mutation.SetRoleID(u)
 	return rc
 }
 
@@ -91,34 +109,18 @@ func (rc *RoleCreate) SetNillableStatus(i *int) *RoleCreate {
 	return rc
 }
 
-// AddUserIDs adds the "users" edge to the User entity by IDs.
-func (rc *RoleCreate) AddUserIDs(ids ...int) *RoleCreate {
-	rc.mutation.AddUserIDs(ids...)
+// SetSort sets the "sort" field.
+func (rc *RoleCreate) SetSort(i int) *RoleCreate {
+	rc.mutation.SetSort(i)
 	return rc
 }
 
-// AddUsers adds the "users" edges to the User entity.
-func (rc *RoleCreate) AddUsers(u ...*User) *RoleCreate {
-	ids := make([]int, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
+// SetNillableSort sets the "sort" field if the given value is not nil.
+func (rc *RoleCreate) SetNillableSort(i *int) *RoleCreate {
+	if i != nil {
+		rc.SetSort(*i)
 	}
-	return rc.AddUserIDs(ids...)
-}
-
-// AddPermissionIDs adds the "permissions" edge to the Permission entity by IDs.
-func (rc *RoleCreate) AddPermissionIDs(ids ...int) *RoleCreate {
-	rc.mutation.AddPermissionIDs(ids...)
 	return rc
-}
-
-// AddPermissions adds the "permissions" edges to the Permission entity.
-func (rc *RoleCreate) AddPermissions(p ...*Permission) *RoleCreate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return rc.AddPermissionIDs(ids...)
 }
 
 // Mutation returns the RoleMutation object of the builder.
@@ -168,6 +170,10 @@ func (rc *RoleCreate) defaults() {
 		v := role.DefaultStatus
 		rc.mutation.SetStatus(v)
 	}
+	if _, ok := rc.mutation.Sort(); !ok {
+		v := role.DefaultSort
+		rc.mutation.SetSort(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -177,6 +183,9 @@ func (rc *RoleCreate) check() error {
 	}
 	if _, ok := rc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Role.updated_at"`)}
+	}
+	if _, ok := rc.mutation.RoleID(); !ok {
+		return &ValidationError{Name: "role_id", err: errors.New(`generated: missing required field "Role.role_id"`)}
 	}
 	if _, ok := rc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Role.name"`)}
@@ -196,6 +205,9 @@ func (rc *RoleCreate) check() error {
 	}
 	if _, ok := rc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "Role.status"`)}
+	}
+	if _, ok := rc.mutation.Sort(); !ok {
+		return &ValidationError{Name: "sort", err: errors.New(`generated: missing required field "Role.sort"`)}
 	}
 	return nil
 }
@@ -232,6 +244,14 @@ func (rc *RoleCreate) createSpec() (*Role, *sqlgraph.CreateSpec) {
 		_spec.SetField(role.FieldUpdatedAt, field.TypeInt, value)
 		_node.UpdatedAt = value
 	}
+	if value, ok := rc.mutation.DeletedAt(); ok {
+		_spec.SetField(role.FieldDeletedAt, field.TypeInt, value)
+		_node.DeletedAt = &value
+	}
+	if value, ok := rc.mutation.RoleID(); ok {
+		_spec.SetField(role.FieldRoleID, field.TypeUint64, value)
+		_node.RoleID = value
+	}
 	if value, ok := rc.mutation.Name(); ok {
 		_spec.SetField(role.FieldName, field.TypeString, value)
 		_node.Name = value
@@ -248,37 +268,9 @@ func (rc *RoleCreate) createSpec() (*Role, *sqlgraph.CreateSpec) {
 		_spec.SetField(role.FieldStatus, field.TypeInt, value)
 		_node.Status = value
 	}
-	if nodes := rc.mutation.UsersIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   role.UsersTable,
-			Columns: role.UsersPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := rc.mutation.PermissionsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   role.PermissionsTable,
-			Columns: role.PermissionsPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(permission.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
+	if value, ok := rc.mutation.Sort(); ok {
+		_spec.SetField(role.FieldSort, field.TypeInt, value)
+		_node.Sort = value
 	}
 	return _node, _spec
 }
@@ -350,6 +342,30 @@ func (u *RoleUpsert) AddUpdatedAt(v int) *RoleUpsert {
 	return u
 }
 
+// SetDeletedAt sets the "deleted_at" field.
+func (u *RoleUpsert) SetDeletedAt(v int) *RoleUpsert {
+	u.Set(role.FieldDeletedAt, v)
+	return u
+}
+
+// UpdateDeletedAt sets the "deleted_at" field to the value that was provided on create.
+func (u *RoleUpsert) UpdateDeletedAt() *RoleUpsert {
+	u.SetExcluded(role.FieldDeletedAt)
+	return u
+}
+
+// AddDeletedAt adds v to the "deleted_at" field.
+func (u *RoleUpsert) AddDeletedAt(v int) *RoleUpsert {
+	u.Add(role.FieldDeletedAt, v)
+	return u
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (u *RoleUpsert) ClearDeletedAt() *RoleUpsert {
+	u.SetNull(role.FieldDeletedAt)
+	return u
+}
+
 // SetName sets the "name" field.
 func (u *RoleUpsert) SetName(v string) *RoleUpsert {
 	u.Set(role.FieldName, v)
@@ -410,6 +426,24 @@ func (u *RoleUpsert) AddStatus(v int) *RoleUpsert {
 	return u
 }
 
+// SetSort sets the "sort" field.
+func (u *RoleUpsert) SetSort(v int) *RoleUpsert {
+	u.Set(role.FieldSort, v)
+	return u
+}
+
+// UpdateSort sets the "sort" field to the value that was provided on create.
+func (u *RoleUpsert) UpdateSort() *RoleUpsert {
+	u.SetExcluded(role.FieldSort)
+	return u
+}
+
+// AddSort adds v to the "sort" field.
+func (u *RoleUpsert) AddSort(v int) *RoleUpsert {
+	u.Add(role.FieldSort, v)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create.
 // Using this option is equivalent to using:
 //
@@ -423,6 +457,9 @@ func (u *RoleUpsertOne) UpdateNewValues() *RoleUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
 		if _, exists := u.create.mutation.CreatedAt(); exists {
 			s.SetIgnore(role.FieldCreatedAt)
+		}
+		if _, exists := u.create.mutation.RoleID(); exists {
+			s.SetIgnore(role.FieldRoleID)
 		}
 	}))
 	return u
@@ -473,6 +510,34 @@ func (u *RoleUpsertOne) AddUpdatedAt(v int) *RoleUpsertOne {
 func (u *RoleUpsertOne) UpdateUpdatedAt() *RoleUpsertOne {
 	return u.Update(func(s *RoleUpsert) {
 		s.UpdateUpdatedAt()
+	})
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (u *RoleUpsertOne) SetDeletedAt(v int) *RoleUpsertOne {
+	return u.Update(func(s *RoleUpsert) {
+		s.SetDeletedAt(v)
+	})
+}
+
+// AddDeletedAt adds v to the "deleted_at" field.
+func (u *RoleUpsertOne) AddDeletedAt(v int) *RoleUpsertOne {
+	return u.Update(func(s *RoleUpsert) {
+		s.AddDeletedAt(v)
+	})
+}
+
+// UpdateDeletedAt sets the "deleted_at" field to the value that was provided on create.
+func (u *RoleUpsertOne) UpdateDeletedAt() *RoleUpsertOne {
+	return u.Update(func(s *RoleUpsert) {
+		s.UpdateDeletedAt()
+	})
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (u *RoleUpsertOne) ClearDeletedAt() *RoleUpsertOne {
+	return u.Update(func(s *RoleUpsert) {
+		s.ClearDeletedAt()
 	})
 }
 
@@ -543,6 +608,27 @@ func (u *RoleUpsertOne) AddStatus(v int) *RoleUpsertOne {
 func (u *RoleUpsertOne) UpdateStatus() *RoleUpsertOne {
 	return u.Update(func(s *RoleUpsert) {
 		s.UpdateStatus()
+	})
+}
+
+// SetSort sets the "sort" field.
+func (u *RoleUpsertOne) SetSort(v int) *RoleUpsertOne {
+	return u.Update(func(s *RoleUpsert) {
+		s.SetSort(v)
+	})
+}
+
+// AddSort adds v to the "sort" field.
+func (u *RoleUpsertOne) AddSort(v int) *RoleUpsertOne {
+	return u.Update(func(s *RoleUpsert) {
+		s.AddSort(v)
+	})
+}
+
+// UpdateSort sets the "sort" field to the value that was provided on create.
+func (u *RoleUpsertOne) UpdateSort() *RoleUpsertOne {
+	return u.Update(func(s *RoleUpsert) {
+		s.UpdateSort()
 	})
 }
 
@@ -725,6 +811,9 @@ func (u *RoleUpsertBulk) UpdateNewValues() *RoleUpsertBulk {
 			if _, exists := b.mutation.CreatedAt(); exists {
 				s.SetIgnore(role.FieldCreatedAt)
 			}
+			if _, exists := b.mutation.RoleID(); exists {
+				s.SetIgnore(role.FieldRoleID)
+			}
 		}
 	}))
 	return u
@@ -775,6 +864,34 @@ func (u *RoleUpsertBulk) AddUpdatedAt(v int) *RoleUpsertBulk {
 func (u *RoleUpsertBulk) UpdateUpdatedAt() *RoleUpsertBulk {
 	return u.Update(func(s *RoleUpsert) {
 		s.UpdateUpdatedAt()
+	})
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (u *RoleUpsertBulk) SetDeletedAt(v int) *RoleUpsertBulk {
+	return u.Update(func(s *RoleUpsert) {
+		s.SetDeletedAt(v)
+	})
+}
+
+// AddDeletedAt adds v to the "deleted_at" field.
+func (u *RoleUpsertBulk) AddDeletedAt(v int) *RoleUpsertBulk {
+	return u.Update(func(s *RoleUpsert) {
+		s.AddDeletedAt(v)
+	})
+}
+
+// UpdateDeletedAt sets the "deleted_at" field to the value that was provided on create.
+func (u *RoleUpsertBulk) UpdateDeletedAt() *RoleUpsertBulk {
+	return u.Update(func(s *RoleUpsert) {
+		s.UpdateDeletedAt()
+	})
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (u *RoleUpsertBulk) ClearDeletedAt() *RoleUpsertBulk {
+	return u.Update(func(s *RoleUpsert) {
+		s.ClearDeletedAt()
 	})
 }
 
@@ -845,6 +962,27 @@ func (u *RoleUpsertBulk) AddStatus(v int) *RoleUpsertBulk {
 func (u *RoleUpsertBulk) UpdateStatus() *RoleUpsertBulk {
 	return u.Update(func(s *RoleUpsert) {
 		s.UpdateStatus()
+	})
+}
+
+// SetSort sets the "sort" field.
+func (u *RoleUpsertBulk) SetSort(v int) *RoleUpsertBulk {
+	return u.Update(func(s *RoleUpsert) {
+		s.SetSort(v)
+	})
+}
+
+// AddSort adds v to the "sort" field.
+func (u *RoleUpsertBulk) AddSort(v int) *RoleUpsertBulk {
+	return u.Update(func(s *RoleUpsert) {
+		s.AddSort(v)
+	})
+}
+
+// UpdateSort sets the "sort" field to the value that was provided on create.
+func (u *RoleUpsertBulk) UpdateSort() *RoleUpsertBulk {
+	return u.Update(func(s *RoleUpsert) {
+		s.UpdateSort()
 	})
 }
 
