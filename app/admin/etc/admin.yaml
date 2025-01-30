@@ -1,4 +1,4 @@
-Name: admin-api
+Name: admin
 Host: 0.0.0.0
 Port: 8888
 
@@ -22,5 +22,7 @@ Redis:
   Pass:  # 如果Redis设置了密码，请填写这里
 
 
-# 内部Token鉴权
-InnerToken: "123456"
+JwtAuth:
+  AccessSecret: "admin123456" # 从环境变量读取
+  AccessExpire: 2592000         # 30天
+  TenantField: "tenantId"       # 租户ID字段名

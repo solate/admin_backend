@@ -22,11 +22,11 @@ type (
     }
 
     CreateUserResp {
-        ID int `json:"id"`
+        UserID int `json:"user_id"`
     }
 
     DeleteUserReq {
-        Id   int  `path:"id"`
+        UserID   int  `path:"user_id"`
     }
 
     DeleteUserResp {
@@ -34,7 +34,7 @@ type (
     }
 
     UpdateUserReq {
-        Id   int  `path:"id"`
+        UserID   int  `path:"user_id"`
         Name string `json:"name"`
     }
 
@@ -55,8 +55,7 @@ type (
     }
 
     UserInfoResponse {
-        ID      int    `json:"id"`       // 用户id
-        Uid     int    `json:"uid"`      // 用户id
+        UserID      int    `json:"user_id"`       // 用户id
         Name    string `json:"name"`     // 企业名称
         No      string `json:"no"`       // 企业编号
         Phone   string `json:"phone"`    // 企业号码
@@ -72,7 +71,7 @@ type (
     }
 
     GetUserReq {
-        Id int `path:"id"`
+        UserID int `path:"user_id"`
     }
 
     GetUserResp {
@@ -85,18 +84,18 @@ type (
     group: user
     middleware: AuthMiddleware
 )
-service admin-api {
+service admin {
     @doc "创建用户"
     @handler Create
     post / (CreateUserReq) returns (CreateUserResp)
 
     @doc "删除用户"
     @handler Delete
-    delete /:id (DeleteUserReq) returns (DeleteUserResp)
+    delete /:userID (DeleteUserReq) returns (DeleteUserResp)
 
     @doc "更新用户"
     @handler Update
-    put /:id (UpdateUserReq) returns (UpdateUserResp)
+    put /:userID (UpdateUserReq) returns (UpdateUserResp)
 
     @doc "获取用户列表"
     @handler List
@@ -104,5 +103,5 @@ service admin-api {
 
     @doc "获取用户详情"
     @handler Get
-    get /:id (GetUserReq) returns (GetUserResp)
+    get /:userID (GetUserReq) returns (GetUserResp)
 }

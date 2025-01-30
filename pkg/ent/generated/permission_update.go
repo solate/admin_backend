@@ -76,6 +76,20 @@ func (pu *PermissionUpdate) ClearDeletedAt() *PermissionUpdate {
 	return pu
 }
 
+// SetTenantCode sets the "tenant_code" field.
+func (pu *PermissionUpdate) SetTenantCode(s string) *PermissionUpdate {
+	pu.mutation.SetTenantCode(s)
+	return pu
+}
+
+// SetNillableTenantCode sets the "tenant_code" field if the given value is not nil.
+func (pu *PermissionUpdate) SetNillableTenantCode(s *string) *PermissionUpdate {
+	if s != nil {
+		pu.SetTenantCode(*s)
+	}
+	return pu
+}
+
 // SetName sets the "name" field.
 func (pu *PermissionUpdate) SetName(s string) *PermissionUpdate {
 	pu.mutation.SetName(s)
@@ -274,6 +288,11 @@ func (pu *PermissionUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (pu *PermissionUpdate) check() error {
+	if v, ok := pu.mutation.TenantCode(); ok {
+		if err := permission.TenantCodeValidator(v); err != nil {
+			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "Permission.tenant_code": %w`, err)}
+		}
+	}
 	if v, ok := pu.mutation.Name(); ok {
 		if err := permission.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Permission.name": %w`, err)}
@@ -319,6 +338,9 @@ func (pu *PermissionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.DeletedAtCleared() {
 		_spec.ClearField(permission.FieldDeletedAt, field.TypeInt)
+	}
+	if value, ok := pu.mutation.TenantCode(); ok {
+		_spec.SetField(permission.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := pu.mutation.Name(); ok {
 		_spec.SetField(permission.FieldName, field.TypeString, value)
@@ -435,6 +457,20 @@ func (puo *PermissionUpdateOne) AddDeletedAt(i int) *PermissionUpdateOne {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (puo *PermissionUpdateOne) ClearDeletedAt() *PermissionUpdateOne {
 	puo.mutation.ClearDeletedAt()
+	return puo
+}
+
+// SetTenantCode sets the "tenant_code" field.
+func (puo *PermissionUpdateOne) SetTenantCode(s string) *PermissionUpdateOne {
+	puo.mutation.SetTenantCode(s)
+	return puo
+}
+
+// SetNillableTenantCode sets the "tenant_code" field if the given value is not nil.
+func (puo *PermissionUpdateOne) SetNillableTenantCode(s *string) *PermissionUpdateOne {
+	if s != nil {
+		puo.SetTenantCode(*s)
+	}
 	return puo
 }
 
@@ -649,6 +685,11 @@ func (puo *PermissionUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (puo *PermissionUpdateOne) check() error {
+	if v, ok := puo.mutation.TenantCode(); ok {
+		if err := permission.TenantCodeValidator(v); err != nil {
+			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "Permission.tenant_code": %w`, err)}
+		}
+	}
 	if v, ok := puo.mutation.Name(); ok {
 		if err := permission.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Permission.name": %w`, err)}
@@ -711,6 +752,9 @@ func (puo *PermissionUpdateOne) sqlSave(ctx context.Context) (_node *Permission,
 	}
 	if puo.mutation.DeletedAtCleared() {
 		_spec.ClearField(permission.FieldDeletedAt, field.TypeInt)
+	}
+	if value, ok := puo.mutation.TenantCode(); ok {
+		_spec.SetField(permission.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := puo.mutation.Name(); ok {
 		_spec.SetField(permission.FieldName, field.TypeString, value)

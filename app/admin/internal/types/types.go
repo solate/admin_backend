@@ -20,11 +20,11 @@ type CreateUserReq struct {
 }
 
 type CreateUserResp struct {
-	ID int `json:"id"`
+	UserID int `json:"user_id"`
 }
 
 type DeleteUserReq struct {
-	Id int `path:"id"`
+	UserID int `path:"user_id"`
 }
 
 type DeleteUserResp struct {
@@ -32,7 +32,7 @@ type DeleteUserResp struct {
 }
 
 type GetUserReq struct {
-	Id int `path:"id"`
+	UserID int `path:"user_id"`
 }
 
 type GetUserResp struct {
@@ -71,8 +71,8 @@ type TimeRange struct {
 }
 
 type UpdateUserReq struct {
-	Id   int    `path:"id"`
-	Name string `json:"name"`
+	UserID int    `path:"user_id"`
+	Name   string `json:"name"`
 }
 
 type UpdateUserResp struct {
@@ -80,8 +80,7 @@ type UpdateUserResp struct {
 }
 
 type UserInfoResponse struct {
-	ID          int    `json:"id"`           // 用户id
-	Uid         int    `json:"uid"`          // 用户id
+	UserID      int    `json:"user_id"`      // 用户id
 	Name        string `json:"name"`         // 企业名称
 	No          string `json:"no"`           // 企业编号
 	Phone       string `json:"phone"`        // 企业号码

@@ -1,11 +1,11 @@
 package response
 
 import (
-	"auth/pkg/utils/xerr"
 	"context"
 	"net/http"
 
 	"github.com/pkg/errors"
+	"github.com/solate/admin_backend/pkg/common/xerr"
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/status"
 )
@@ -39,7 +39,7 @@ func ErrHandler(name string) func(ctx context.Context, err error) (int, any) {
 	return func(ctx context.Context, err error) (int, any) {
 
 		//错误返回
-		errcode := xerr.ServerCommonError
+		errcode := xerr.ServerError
 		errmsg := "服务器开小差啦，稍后再来试一试"
 
 		causeErr := errors.Cause(err)                // err类型

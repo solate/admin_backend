@@ -17,11 +17,13 @@ type User struct {
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// 创建时间
-	CreatedAt int `json:"created_at,omitempty"`
+	CreatedAt int64 `json:"created_at,omitempty"`
 	// 修改时间
-	UpdatedAt int `json:"updated_at,omitempty"`
+	UpdatedAt int64 `json:"updated_at,omitempty"`
 	// 删除时间
-	DeletedAt *int `json:"deleted_at,omitempty"`
+	DeletedAt *int64 `json:"deleted_at,omitempty"`
+	// 租户编码
+	TenantCode string `json:"tenant_code,omitempty"`
 	// 用户ID
 	UserID uint64 `json:"user_id,omitempty"`
 	// 用户名
@@ -60,7 +62,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case user.FieldID, user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldUserID, user.FieldSex, user.FieldStatus, user.FieldRoleID, user.FieldDeptID, user.FieldPostID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldUserName, user.FieldPassword, user.FieldSalt, user.FieldToken, user.FieldNickName, user.FieldAvatar, user.FieldPhone, user.FieldEmail:
+		case user.FieldTenantCode, user.FieldUserName, user.FieldPassword, user.FieldSalt, user.FieldToken, user.FieldNickName, user.FieldAvatar, user.FieldPhone, user.FieldEmail:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -87,20 +89,26 @@ func (u *User) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				u.CreatedAt = int(value.Int64)
+				u.CreatedAt = value.Int64
 			}
 		case user.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				u.UpdatedAt = int(value.Int64)
+				u.UpdatedAt = value.Int64
 			}
 		case user.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
-				u.DeletedAt = new(int)
-				*u.DeletedAt = int(value.Int64)
+				u.DeletedAt = new(int64)
+				*u.DeletedAt = value.Int64
+			}
+		case user.FieldTenantCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tenant_code", values[i])
+			} else if value.Valid {
+				u.TenantCode = value.String
 			}
 		case user.FieldUserID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -232,6 +240,9 @@ func (u *User) String() string {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
+	builder.WriteString(", ")
+	builder.WriteString("tenant_code=")
+	builder.WriteString(u.TenantCode)
 	builder.WriteString(", ")
 	builder.WriteString("user_id=")
 	builder.WriteString(fmt.Sprintf("%v", u.UserID))

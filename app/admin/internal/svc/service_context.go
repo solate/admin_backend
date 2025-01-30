@@ -5,10 +5,10 @@ import (
 	"fmt"
 
 	"entgo.io/ent/dialect"
-	"github.com/casbin/ent-adapter/ent"
 	_ "github.com/lib/pq"
 	"github.com/solate/admin_backend/app/admin/internal/config"
 	"github.com/solate/admin_backend/app/admin/internal/middleware"
+	"github.com/solate/admin_backend/pkg/ent/generated"
 	"github.com/solate/admin_backend/pkg/ent/generated/migrate"
 	"github.com/solate/admin_backend/pkg/utils/cache"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -18,7 +18,7 @@ import (
 
 type ServiceContext struct {
 	Config          config.Config
-	Orm             *ent.Client
+	Orm             *generated.Client
 	Redis           *redis.Redis
 	AuthMiddleware  rest.Middleware
 	PermissionCache *cache.PermissionCache
@@ -33,18 +33,18 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Config:          c,
 		Orm:             client,
 		Redis:           initRedis(c),
-		AuthMiddleware:  middleware.NewAuthMiddleware(c, client).Handle,
+		AuthMiddleware:  middleware.NewAuthMiddleware(c).Handle,
 		PermissionCache: cache.NewPermissionCache(rdb),
 	}
 }
 
 // initOrm
-func initOrm(c config.Config) *ent.Client {
-	ops := make([]ent.Option, 0)
+func initOrm(c config.Config) *generated.Client {
+	ops := make([]generated.Option, 0)
 	if c.ShowSQL {
-		ops = append(ops, ent.Debug())
+		ops = append(ops, generated.Debug())
 	}
-	client, err := ent.Open(dialect.Postgres, c.DataSource, ops...)
+	client, err := generated.Open(dialect.Postgres, c.DataSource, ops...)
 	if err != nil {
 		logx.Errorf("ent.Open error: %v", err)
 		panic(err)

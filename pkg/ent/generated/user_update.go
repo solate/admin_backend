@@ -29,14 +29,14 @@ func (uu *UserUpdate) Where(ps ...predicate.User) *UserUpdate {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (uu *UserUpdate) SetUpdatedAt(i int) *UserUpdate {
+func (uu *UserUpdate) SetUpdatedAt(i int64) *UserUpdate {
 	uu.mutation.ResetUpdatedAt()
 	uu.mutation.SetUpdatedAt(i)
 	return uu
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableUpdatedAt(i *int) *UserUpdate {
+func (uu *UserUpdate) SetNillableUpdatedAt(i *int64) *UserUpdate {
 	if i != nil {
 		uu.SetUpdatedAt(*i)
 	}
@@ -44,20 +44,20 @@ func (uu *UserUpdate) SetNillableUpdatedAt(i *int) *UserUpdate {
 }
 
 // AddUpdatedAt adds i to the "updated_at" field.
-func (uu *UserUpdate) AddUpdatedAt(i int) *UserUpdate {
+func (uu *UserUpdate) AddUpdatedAt(i int64) *UserUpdate {
 	uu.mutation.AddUpdatedAt(i)
 	return uu
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (uu *UserUpdate) SetDeletedAt(i int) *UserUpdate {
+func (uu *UserUpdate) SetDeletedAt(i int64) *UserUpdate {
 	uu.mutation.ResetDeletedAt()
 	uu.mutation.SetDeletedAt(i)
 	return uu
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableDeletedAt(i *int) *UserUpdate {
+func (uu *UserUpdate) SetNillableDeletedAt(i *int64) *UserUpdate {
 	if i != nil {
 		uu.SetDeletedAt(*i)
 	}
@@ -65,7 +65,7 @@ func (uu *UserUpdate) SetNillableDeletedAt(i *int) *UserUpdate {
 }
 
 // AddDeletedAt adds i to the "deleted_at" field.
-func (uu *UserUpdate) AddDeletedAt(i int) *UserUpdate {
+func (uu *UserUpdate) AddDeletedAt(i int64) *UserUpdate {
 	uu.mutation.AddDeletedAt(i)
 	return uu
 }
@@ -73,6 +73,20 @@ func (uu *UserUpdate) AddDeletedAt(i int) *UserUpdate {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (uu *UserUpdate) ClearDeletedAt() *UserUpdate {
 	uu.mutation.ClearDeletedAt()
+	return uu
+}
+
+// SetTenantCode sets the "tenant_code" field.
+func (uu *UserUpdate) SetTenantCode(s string) *UserUpdate {
+	uu.mutation.SetTenantCode(s)
+	return uu
+}
+
+// SetNillableTenantCode sets the "tenant_code" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableTenantCode(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetTenantCode(*s)
+	}
 	return uu
 }
 
@@ -327,6 +341,11 @@ func (uu *UserUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (uu *UserUpdate) check() error {
+	if v, ok := uu.mutation.TenantCode(); ok {
+		if err := user.TenantCodeValidator(v); err != nil {
+			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "User.tenant_code": %w`, err)}
+		}
+	}
 	if v, ok := uu.mutation.UserName(); ok {
 		if err := user.UserNameValidator(v); err != nil {
 			return &ValidationError{Name: "user_name", err: fmt.Errorf(`generated: validator failed for field "User.user_name": %w`, err)}
@@ -369,19 +388,22 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 	}
 	if value, ok := uu.mutation.UpdatedAt(); ok {
-		_spec.SetField(user.FieldUpdatedAt, field.TypeInt, value)
+		_spec.SetField(user.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := uu.mutation.AddedUpdatedAt(); ok {
-		_spec.AddField(user.FieldUpdatedAt, field.TypeInt, value)
+		_spec.AddField(user.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := uu.mutation.DeletedAt(); ok {
-		_spec.SetField(user.FieldDeletedAt, field.TypeInt, value)
+		_spec.SetField(user.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if value, ok := uu.mutation.AddedDeletedAt(); ok {
-		_spec.AddField(user.FieldDeletedAt, field.TypeInt, value)
+		_spec.AddField(user.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if uu.mutation.DeletedAtCleared() {
-		_spec.ClearField(user.FieldDeletedAt, field.TypeInt)
+		_spec.ClearField(user.FieldDeletedAt, field.TypeInt64)
+	}
+	if value, ok := uu.mutation.TenantCode(); ok {
+		_spec.SetField(user.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := uu.mutation.UserName(); ok {
 		_spec.SetField(user.FieldUserName, field.TypeString, value)
@@ -460,14 +482,14 @@ type UserUpdateOne struct {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (uuo *UserUpdateOne) SetUpdatedAt(i int) *UserUpdateOne {
+func (uuo *UserUpdateOne) SetUpdatedAt(i int64) *UserUpdateOne {
 	uuo.mutation.ResetUpdatedAt()
 	uuo.mutation.SetUpdatedAt(i)
 	return uuo
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableUpdatedAt(i *int) *UserUpdateOne {
+func (uuo *UserUpdateOne) SetNillableUpdatedAt(i *int64) *UserUpdateOne {
 	if i != nil {
 		uuo.SetUpdatedAt(*i)
 	}
@@ -475,20 +497,20 @@ func (uuo *UserUpdateOne) SetNillableUpdatedAt(i *int) *UserUpdateOne {
 }
 
 // AddUpdatedAt adds i to the "updated_at" field.
-func (uuo *UserUpdateOne) AddUpdatedAt(i int) *UserUpdateOne {
+func (uuo *UserUpdateOne) AddUpdatedAt(i int64) *UserUpdateOne {
 	uuo.mutation.AddUpdatedAt(i)
 	return uuo
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (uuo *UserUpdateOne) SetDeletedAt(i int) *UserUpdateOne {
+func (uuo *UserUpdateOne) SetDeletedAt(i int64) *UserUpdateOne {
 	uuo.mutation.ResetDeletedAt()
 	uuo.mutation.SetDeletedAt(i)
 	return uuo
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableDeletedAt(i *int) *UserUpdateOne {
+func (uuo *UserUpdateOne) SetNillableDeletedAt(i *int64) *UserUpdateOne {
 	if i != nil {
 		uuo.SetDeletedAt(*i)
 	}
@@ -496,7 +518,7 @@ func (uuo *UserUpdateOne) SetNillableDeletedAt(i *int) *UserUpdateOne {
 }
 
 // AddDeletedAt adds i to the "deleted_at" field.
-func (uuo *UserUpdateOne) AddDeletedAt(i int) *UserUpdateOne {
+func (uuo *UserUpdateOne) AddDeletedAt(i int64) *UserUpdateOne {
 	uuo.mutation.AddDeletedAt(i)
 	return uuo
 }
@@ -504,6 +526,20 @@ func (uuo *UserUpdateOne) AddDeletedAt(i int) *UserUpdateOne {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (uuo *UserUpdateOne) ClearDeletedAt() *UserUpdateOne {
 	uuo.mutation.ClearDeletedAt()
+	return uuo
+}
+
+// SetTenantCode sets the "tenant_code" field.
+func (uuo *UserUpdateOne) SetTenantCode(s string) *UserUpdateOne {
+	uuo.mutation.SetTenantCode(s)
+	return uuo
+}
+
+// SetNillableTenantCode sets the "tenant_code" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableTenantCode(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetTenantCode(*s)
+	}
 	return uuo
 }
 
@@ -771,6 +807,11 @@ func (uuo *UserUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (uuo *UserUpdateOne) check() error {
+	if v, ok := uuo.mutation.TenantCode(); ok {
+		if err := user.TenantCodeValidator(v); err != nil {
+			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "User.tenant_code": %w`, err)}
+		}
+	}
 	if v, ok := uuo.mutation.UserName(); ok {
 		if err := user.UserNameValidator(v); err != nil {
 			return &ValidationError{Name: "user_name", err: fmt.Errorf(`generated: validator failed for field "User.user_name": %w`, err)}
@@ -830,19 +871,22 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 		}
 	}
 	if value, ok := uuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(user.FieldUpdatedAt, field.TypeInt, value)
+		_spec.SetField(user.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := uuo.mutation.AddedUpdatedAt(); ok {
-		_spec.AddField(user.FieldUpdatedAt, field.TypeInt, value)
+		_spec.AddField(user.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := uuo.mutation.DeletedAt(); ok {
-		_spec.SetField(user.FieldDeletedAt, field.TypeInt, value)
+		_spec.SetField(user.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if value, ok := uuo.mutation.AddedDeletedAt(); ok {
-		_spec.AddField(user.FieldDeletedAt, field.TypeInt, value)
+		_spec.AddField(user.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if uuo.mutation.DeletedAtCleared() {
-		_spec.ClearField(user.FieldDeletedAt, field.TypeInt)
+		_spec.ClearField(user.FieldDeletedAt, field.TypeInt64)
+	}
+	if value, ok := uuo.mutation.TenantCode(); ok {
+		_spec.SetField(user.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := uuo.mutation.UserName(); ok {
 		_spec.SetField(user.FieldUserName, field.TypeString, value)

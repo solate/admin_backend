@@ -67,6 +67,11 @@ func DeletedAt(v int) predicate.Permission {
 	return predicate.Permission(sql.FieldEQ(FieldDeletedAt, v))
 }
 
+// TenantCode applies equality check predicate on the "tenant_code" field. It's identical to TenantCodeEQ.
+func TenantCode(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldEQ(FieldTenantCode, v))
+}
+
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
 func Name(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldEQ(FieldName, v))
@@ -235,6 +240,71 @@ func DeletedAtIsNil() predicate.Permission {
 // DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
 func DeletedAtNotNil() predicate.Permission {
 	return predicate.Permission(sql.FieldNotNull(FieldDeletedAt))
+}
+
+// TenantCodeEQ applies the EQ predicate on the "tenant_code" field.
+func TenantCodeEQ(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldEQ(FieldTenantCode, v))
+}
+
+// TenantCodeNEQ applies the NEQ predicate on the "tenant_code" field.
+func TenantCodeNEQ(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldNEQ(FieldTenantCode, v))
+}
+
+// TenantCodeIn applies the In predicate on the "tenant_code" field.
+func TenantCodeIn(vs ...string) predicate.Permission {
+	return predicate.Permission(sql.FieldIn(FieldTenantCode, vs...))
+}
+
+// TenantCodeNotIn applies the NotIn predicate on the "tenant_code" field.
+func TenantCodeNotIn(vs ...string) predicate.Permission {
+	return predicate.Permission(sql.FieldNotIn(FieldTenantCode, vs...))
+}
+
+// TenantCodeGT applies the GT predicate on the "tenant_code" field.
+func TenantCodeGT(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldGT(FieldTenantCode, v))
+}
+
+// TenantCodeGTE applies the GTE predicate on the "tenant_code" field.
+func TenantCodeGTE(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldGTE(FieldTenantCode, v))
+}
+
+// TenantCodeLT applies the LT predicate on the "tenant_code" field.
+func TenantCodeLT(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldLT(FieldTenantCode, v))
+}
+
+// TenantCodeLTE applies the LTE predicate on the "tenant_code" field.
+func TenantCodeLTE(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldLTE(FieldTenantCode, v))
+}
+
+// TenantCodeContains applies the Contains predicate on the "tenant_code" field.
+func TenantCodeContains(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldContains(FieldTenantCode, v))
+}
+
+// TenantCodeHasPrefix applies the HasPrefix predicate on the "tenant_code" field.
+func TenantCodeHasPrefix(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldHasPrefix(FieldTenantCode, v))
+}
+
+// TenantCodeHasSuffix applies the HasSuffix predicate on the "tenant_code" field.
+func TenantCodeHasSuffix(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldHasSuffix(FieldTenantCode, v))
+}
+
+// TenantCodeEqualFold applies the EqualFold predicate on the "tenant_code" field.
+func TenantCodeEqualFold(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldEqualFold(FieldTenantCode, v))
+}
+
+// TenantCodeContainsFold applies the ContainsFold predicate on the "tenant_code" field.
+func TenantCodeContainsFold(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldContainsFold(FieldTenantCode, v))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.

@@ -63,6 +63,12 @@ func (pc *PermissionCreate) SetNillableDeletedAt(i *int) *PermissionCreate {
 	return pc
 }
 
+// SetTenantCode sets the "tenant_code" field.
+func (pc *PermissionCreate) SetTenantCode(s string) *PermissionCreate {
+	pc.mutation.SetTenantCode(s)
+	return pc
+}
+
 // SetName sets the "name" field.
 func (pc *PermissionCreate) SetName(s string) *PermissionCreate {
 	pc.mutation.SetName(s)
@@ -212,6 +218,14 @@ func (pc *PermissionCreate) check() error {
 	if _, ok := pc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Permission.updated_at"`)}
 	}
+	if _, ok := pc.mutation.TenantCode(); !ok {
+		return &ValidationError{Name: "tenant_code", err: errors.New(`generated: missing required field "Permission.tenant_code"`)}
+	}
+	if v, ok := pc.mutation.TenantCode(); ok {
+		if err := permission.TenantCodeValidator(v); err != nil {
+			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "Permission.tenant_code": %w`, err)}
+		}
+	}
 	if _, ok := pc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Permission.name"`)}
 	}
@@ -272,6 +286,10 @@ func (pc *PermissionCreate) createSpec() (*Permission, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.DeletedAt(); ok {
 		_spec.SetField(permission.FieldDeletedAt, field.TypeInt, value)
 		_node.DeletedAt = &value
+	}
+	if value, ok := pc.mutation.TenantCode(); ok {
+		_spec.SetField(permission.FieldTenantCode, field.TypeString, value)
+		_node.TenantCode = value
 	}
 	if value, ok := pc.mutation.Name(); ok {
 		_spec.SetField(permission.FieldName, field.TypeString, value)
@@ -396,6 +414,18 @@ func (u *PermissionUpsert) AddDeletedAt(v int) *PermissionUpsert {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (u *PermissionUpsert) ClearDeletedAt() *PermissionUpsert {
 	u.SetNull(permission.FieldDeletedAt)
+	return u
+}
+
+// SetTenantCode sets the "tenant_code" field.
+func (u *PermissionUpsert) SetTenantCode(v string) *PermissionUpsert {
+	u.Set(permission.FieldTenantCode, v)
+	return u
+}
+
+// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
+func (u *PermissionUpsert) UpdateTenantCode() *PermissionUpsert {
+	u.SetExcluded(permission.FieldTenantCode)
 	return u
 }
 
@@ -634,6 +664,20 @@ func (u *PermissionUpsertOne) UpdateDeletedAt() *PermissionUpsertOne {
 func (u *PermissionUpsertOne) ClearDeletedAt() *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
 		s.ClearDeletedAt()
+	})
+}
+
+// SetTenantCode sets the "tenant_code" field.
+func (u *PermissionUpsertOne) SetTenantCode(v string) *PermissionUpsertOne {
+	return u.Update(func(s *PermissionUpsert) {
+		s.SetTenantCode(v)
+	})
+}
+
+// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
+func (u *PermissionUpsertOne) UpdateTenantCode() *PermissionUpsertOne {
+	return u.Update(func(s *PermissionUpsert) {
+		s.UpdateTenantCode()
 	})
 }
 
@@ -1062,6 +1106,20 @@ func (u *PermissionUpsertBulk) UpdateDeletedAt() *PermissionUpsertBulk {
 func (u *PermissionUpsertBulk) ClearDeletedAt() *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
 		s.ClearDeletedAt()
+	})
+}
+
+// SetTenantCode sets the "tenant_code" field.
+func (u *PermissionUpsertBulk) SetTenantCode(v string) *PermissionUpsertBulk {
+	return u.Update(func(s *PermissionUpsert) {
+		s.SetTenantCode(v)
+	})
+}
+
+// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
+func (u *PermissionUpsertBulk) UpdateTenantCode() *PermissionUpsertBulk {
+	return u.Update(func(s *PermissionUpsert) {
+		s.UpdateTenantCode()
 	})
 }
 

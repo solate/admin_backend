@@ -17,6 +17,8 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
+	// FieldTenantCode holds the string denoting the tenant_code field in the database.
+	FieldTenantCode = "tenant_code"
 	// FieldRoleID holds the string denoting the role_id field in the database.
 	FieldRoleID = "role_id"
 	// FieldName holds the string denoting the name field in the database.
@@ -39,6 +41,7 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
+	FieldTenantCode,
 	FieldRoleID,
 	FieldName,
 	FieldCode,
@@ -62,6 +65,8 @@ var (
 	DefaultCreatedAt int
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt int
+	// TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
+	TenantCodeValidator func(string) error
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
 	// CodeValidator is a validator for the "code" field. It is called by the builders before save.
@@ -93,6 +98,11 @@ func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 // ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
+}
+
+// ByTenantCode orders the results by the tenant_code field.
+func ByTenantCode(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenantCode, opts...).ToFunc()
 }
 
 // ByRoleID orders the results by the role_id field.

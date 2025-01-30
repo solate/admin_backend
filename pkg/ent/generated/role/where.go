@@ -67,6 +67,11 @@ func DeletedAt(v int) predicate.Role {
 	return predicate.Role(sql.FieldEQ(FieldDeletedAt, v))
 }
 
+// TenantCode applies equality check predicate on the "tenant_code" field. It's identical to TenantCodeEQ.
+func TenantCode(v string) predicate.Role {
+	return predicate.Role(sql.FieldEQ(FieldTenantCode, v))
+}
+
 // RoleID applies equality check predicate on the "role_id" field. It's identical to RoleIDEQ.
 func RoleID(v uint64) predicate.Role {
 	return predicate.Role(sql.FieldEQ(FieldRoleID, v))
@@ -225,6 +230,71 @@ func DeletedAtIsNil() predicate.Role {
 // DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
 func DeletedAtNotNil() predicate.Role {
 	return predicate.Role(sql.FieldNotNull(FieldDeletedAt))
+}
+
+// TenantCodeEQ applies the EQ predicate on the "tenant_code" field.
+func TenantCodeEQ(v string) predicate.Role {
+	return predicate.Role(sql.FieldEQ(FieldTenantCode, v))
+}
+
+// TenantCodeNEQ applies the NEQ predicate on the "tenant_code" field.
+func TenantCodeNEQ(v string) predicate.Role {
+	return predicate.Role(sql.FieldNEQ(FieldTenantCode, v))
+}
+
+// TenantCodeIn applies the In predicate on the "tenant_code" field.
+func TenantCodeIn(vs ...string) predicate.Role {
+	return predicate.Role(sql.FieldIn(FieldTenantCode, vs...))
+}
+
+// TenantCodeNotIn applies the NotIn predicate on the "tenant_code" field.
+func TenantCodeNotIn(vs ...string) predicate.Role {
+	return predicate.Role(sql.FieldNotIn(FieldTenantCode, vs...))
+}
+
+// TenantCodeGT applies the GT predicate on the "tenant_code" field.
+func TenantCodeGT(v string) predicate.Role {
+	return predicate.Role(sql.FieldGT(FieldTenantCode, v))
+}
+
+// TenantCodeGTE applies the GTE predicate on the "tenant_code" field.
+func TenantCodeGTE(v string) predicate.Role {
+	return predicate.Role(sql.FieldGTE(FieldTenantCode, v))
+}
+
+// TenantCodeLT applies the LT predicate on the "tenant_code" field.
+func TenantCodeLT(v string) predicate.Role {
+	return predicate.Role(sql.FieldLT(FieldTenantCode, v))
+}
+
+// TenantCodeLTE applies the LTE predicate on the "tenant_code" field.
+func TenantCodeLTE(v string) predicate.Role {
+	return predicate.Role(sql.FieldLTE(FieldTenantCode, v))
+}
+
+// TenantCodeContains applies the Contains predicate on the "tenant_code" field.
+func TenantCodeContains(v string) predicate.Role {
+	return predicate.Role(sql.FieldContains(FieldTenantCode, v))
+}
+
+// TenantCodeHasPrefix applies the HasPrefix predicate on the "tenant_code" field.
+func TenantCodeHasPrefix(v string) predicate.Role {
+	return predicate.Role(sql.FieldHasPrefix(FieldTenantCode, v))
+}
+
+// TenantCodeHasSuffix applies the HasSuffix predicate on the "tenant_code" field.
+func TenantCodeHasSuffix(v string) predicate.Role {
+	return predicate.Role(sql.FieldHasSuffix(FieldTenantCode, v))
+}
+
+// TenantCodeEqualFold applies the EqualFold predicate on the "tenant_code" field.
+func TenantCodeEqualFold(v string) predicate.Role {
+	return predicate.Role(sql.FieldEqualFold(FieldTenantCode, v))
+}
+
+// TenantCodeContainsFold applies the ContainsFold predicate on the "tenant_code" field.
+func TenantCodeContainsFold(v string) predicate.Role {
+	return predicate.Role(sql.FieldContainsFold(FieldTenantCode, v))
 }
 
 // RoleIDEQ applies the EQ predicate on the "role_id" field.

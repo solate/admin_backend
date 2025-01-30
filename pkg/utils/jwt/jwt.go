@@ -1,56 +1,41 @@
 package jwt
 
 import (
-	"auth/pkg/ent"
-	"errors"
-	"fmt"
 	"time"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
-type Claims struct {
-	UserId  int     `json:"userId"`
-	Phone   string  `json:"phone"`
-	RoleIds []int64 `json:"roleIds"`
-	jwt.StandardClaims
+var secret = []byte("your-secret-key")
+
+type TenantClaims struct {
+	TenantID string `json:"tenantID"`
+	jwt.RegisteredClaims
 }
 
-const (
-	UserLoginKeepAliveTime = time.Hour * 720         // 用户保持登录时间
-	UserSignHmacKey        = "LDX_HDZ_USER_SIGN_KEY" // 用户签名key
-	UserSessionKey         = "user_session"
-)
-
-func GenerateToken(user *ent.User, roleIds []int64) (string, error) {
-	claims := Claims{
-		UserId:  user.ID,
-		Phone:   user.Phone,
-		RoleIds: roleIds,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(UserLoginKeepAliveTime).Unix(),
-			IssuedAt:  time.Now().Unix(),
+// 生成带租户ID的Token
+func GenerateToken(tenantID string, userID string) (string, error) {
+	claims := TenantClaims{
+		TenantID: tenantID,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			Subject:   userID,
 		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(UserSignHmacKey))
+	return token.SignedString(secret)
 }
 
-func ParseToken(tokenString string) (*Claims, error) {
-	claims := &Claims{}
-
-	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(UserSignHmacKey), nil
+// 解析并验证Token
+func ParseToken(tokenString string) (*TenantClaims, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &TenantClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return secret, nil
 	})
 
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse token: %v", err)
+	if claims, ok := token.Claims.(*TenantClaims); ok && token.Valid {
+		return claims, nil
 	}
-
-	if !token.Valid {
-		return nil, errors.New("invalid token")
-	}
-
-	return claims, nil
+	return nil, err
 }

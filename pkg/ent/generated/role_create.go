@@ -63,6 +63,12 @@ func (rc *RoleCreate) SetNillableDeletedAt(i *int) *RoleCreate {
 	return rc
 }
 
+// SetTenantCode sets the "tenant_code" field.
+func (rc *RoleCreate) SetTenantCode(s string) *RoleCreate {
+	rc.mutation.SetTenantCode(s)
+	return rc
+}
+
 // SetRoleID sets the "role_id" field.
 func (rc *RoleCreate) SetRoleID(u uint64) *RoleCreate {
 	rc.mutation.SetRoleID(u)
@@ -184,6 +190,14 @@ func (rc *RoleCreate) check() error {
 	if _, ok := rc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Role.updated_at"`)}
 	}
+	if _, ok := rc.mutation.TenantCode(); !ok {
+		return &ValidationError{Name: "tenant_code", err: errors.New(`generated: missing required field "Role.tenant_code"`)}
+	}
+	if v, ok := rc.mutation.TenantCode(); ok {
+		if err := role.TenantCodeValidator(v); err != nil {
+			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "Role.tenant_code": %w`, err)}
+		}
+	}
 	if _, ok := rc.mutation.RoleID(); !ok {
 		return &ValidationError{Name: "role_id", err: errors.New(`generated: missing required field "Role.role_id"`)}
 	}
@@ -247,6 +261,10 @@ func (rc *RoleCreate) createSpec() (*Role, *sqlgraph.CreateSpec) {
 	if value, ok := rc.mutation.DeletedAt(); ok {
 		_spec.SetField(role.FieldDeletedAt, field.TypeInt, value)
 		_node.DeletedAt = &value
+	}
+	if value, ok := rc.mutation.TenantCode(); ok {
+		_spec.SetField(role.FieldTenantCode, field.TypeString, value)
+		_node.TenantCode = value
 	}
 	if value, ok := rc.mutation.RoleID(); ok {
 		_spec.SetField(role.FieldRoleID, field.TypeUint64, value)
@@ -363,6 +381,18 @@ func (u *RoleUpsert) AddDeletedAt(v int) *RoleUpsert {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (u *RoleUpsert) ClearDeletedAt() *RoleUpsert {
 	u.SetNull(role.FieldDeletedAt)
+	return u
+}
+
+// SetTenantCode sets the "tenant_code" field.
+func (u *RoleUpsert) SetTenantCode(v string) *RoleUpsert {
+	u.Set(role.FieldTenantCode, v)
+	return u
+}
+
+// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
+func (u *RoleUpsert) UpdateTenantCode() *RoleUpsert {
+	u.SetExcluded(role.FieldTenantCode)
 	return u
 }
 
@@ -538,6 +568,20 @@ func (u *RoleUpsertOne) UpdateDeletedAt() *RoleUpsertOne {
 func (u *RoleUpsertOne) ClearDeletedAt() *RoleUpsertOne {
 	return u.Update(func(s *RoleUpsert) {
 		s.ClearDeletedAt()
+	})
+}
+
+// SetTenantCode sets the "tenant_code" field.
+func (u *RoleUpsertOne) SetTenantCode(v string) *RoleUpsertOne {
+	return u.Update(func(s *RoleUpsert) {
+		s.SetTenantCode(v)
+	})
+}
+
+// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
+func (u *RoleUpsertOne) UpdateTenantCode() *RoleUpsertOne {
+	return u.Update(func(s *RoleUpsert) {
+		s.UpdateTenantCode()
 	})
 }
 
@@ -892,6 +936,20 @@ func (u *RoleUpsertBulk) UpdateDeletedAt() *RoleUpsertBulk {
 func (u *RoleUpsertBulk) ClearDeletedAt() *RoleUpsertBulk {
 	return u.Update(func(s *RoleUpsert) {
 		s.ClearDeletedAt()
+	})
+}
+
+// SetTenantCode sets the "tenant_code" field.
+func (u *RoleUpsertBulk) SetTenantCode(v string) *RoleUpsertBulk {
+	return u.Update(func(s *RoleUpsert) {
+		s.SetTenantCode(v)
+	})
+}
+
+// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
+func (u *RoleUpsertBulk) UpdateTenantCode() *RoleUpsertBulk {
+	return u.Update(func(s *RoleUpsert) {
+		s.UpdateTenantCode()
 	})
 }
 

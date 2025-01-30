@@ -32,19 +32,19 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					// 删除用户
 					Method:  http.MethodDelete,
-					Path:    "/:id",
+					Path:    "/:userID",
 					Handler: user.DeleteHandler(serverCtx),
 				},
 				{
 					// 更新用户
 					Method:  http.MethodPut,
-					Path:    "/:id",
+					Path:    "/:userID",
 					Handler: user.UpdateHandler(serverCtx),
 				},
 				{
 					// 获取用户详情
 					Method:  http.MethodGet,
-					Path:    "/:id",
+					Path:    "/:userID",
 					Handler: user.GetHandler(serverCtx),
 				},
 			}...,

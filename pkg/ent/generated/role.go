@@ -22,6 +22,8 @@ type Role struct {
 	UpdatedAt int `json:"updated_at,omitempty"`
 	// 删除时间
 	DeletedAt *int `json:"deleted_at,omitempty"`
+	// 租户编码
+	TenantCode string `json:"tenant_code,omitempty"`
 	// 角色ID
 	RoleID uint64 `json:"role_id,omitempty"`
 	// 角色名
@@ -44,7 +46,7 @@ func (*Role) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case role.FieldID, role.FieldCreatedAt, role.FieldUpdatedAt, role.FieldDeletedAt, role.FieldRoleID, role.FieldStatus, role.FieldSort:
 			values[i] = new(sql.NullInt64)
-		case role.FieldName, role.FieldCode, role.FieldDescription:
+		case role.FieldTenantCode, role.FieldName, role.FieldCode, role.FieldDescription:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -85,6 +87,12 @@ func (r *Role) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				r.DeletedAt = new(int)
 				*r.DeletedAt = int(value.Int64)
+			}
+		case role.FieldTenantCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tenant_code", values[i])
+			} else if value.Valid {
+				r.TenantCode = value.String
 			}
 		case role.FieldRoleID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -168,6 +176,9 @@ func (r *Role) String() string {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
+	builder.WriteString(", ")
+	builder.WriteString("tenant_code=")
+	builder.WriteString(r.TenantCode)
 	builder.WriteString(", ")
 	builder.WriteString("role_id=")
 	builder.WriteString(fmt.Sprintf("%v", r.RoleID))

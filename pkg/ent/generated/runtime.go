@@ -6,6 +6,7 @@ import (
 	"github.com/solate/admin_backend/pkg/ent/generated/loginlog"
 	"github.com/solate/admin_backend/pkg/ent/generated/permission"
 	"github.com/solate/admin_backend/pkg/ent/generated/role"
+	"github.com/solate/admin_backend/pkg/ent/generated/tenant"
 	"github.com/solate/admin_backend/pkg/ent/generated/user"
 	"github.com/solate/admin_backend/pkg/ent/schema"
 )
@@ -46,20 +47,24 @@ func init() {
 	permissionDescUpdatedAt := permissionFields[1].Descriptor()
 	// permission.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	permission.DefaultUpdatedAt = permissionDescUpdatedAt.Default.(int)
+	// permissionDescTenantCode is the schema descriptor for tenant_code field.
+	permissionDescTenantCode := permissionFields[3].Descriptor()
+	// permission.TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
+	permission.TenantCodeValidator = permissionDescTenantCode.Validators[0].(func(string) error)
 	// permissionDescName is the schema descriptor for name field.
-	permissionDescName := permissionFields[3].Descriptor()
+	permissionDescName := permissionFields[4].Descriptor()
 	// permission.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	permission.NameValidator = permissionDescName.Validators[0].(func(string) error)
 	// permissionDescCode is the schema descriptor for code field.
-	permissionDescCode := permissionFields[4].Descriptor()
+	permissionDescCode := permissionFields[5].Descriptor()
 	// permission.CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	permission.CodeValidator = permissionDescCode.Validators[0].(func(string) error)
 	// permissionDescAction is the schema descriptor for action field.
-	permissionDescAction := permissionFields[7].Descriptor()
+	permissionDescAction := permissionFields[8].Descriptor()
 	// permission.DefaultAction holds the default value on creation for the action field.
 	permission.DefaultAction = permissionDescAction.Default.(int)
 	// permissionDescStatus is the schema descriptor for status field.
-	permissionDescStatus := permissionFields[10].Descriptor()
+	permissionDescStatus := permissionFields[11].Descriptor()
 	// permission.DefaultStatus holds the default value on creation for the status field.
 	permission.DefaultStatus = permissionDescStatus.Default.(int)
 	roleFields := schema.Role{}.Fields()
@@ -72,90 +77,128 @@ func init() {
 	roleDescUpdatedAt := roleFields[1].Descriptor()
 	// role.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	role.DefaultUpdatedAt = roleDescUpdatedAt.Default.(int)
+	// roleDescTenantCode is the schema descriptor for tenant_code field.
+	roleDescTenantCode := roleFields[3].Descriptor()
+	// role.TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
+	role.TenantCodeValidator = roleDescTenantCode.Validators[0].(func(string) error)
 	// roleDescName is the schema descriptor for name field.
-	roleDescName := roleFields[4].Descriptor()
+	roleDescName := roleFields[5].Descriptor()
 	// role.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	role.NameValidator = roleDescName.Validators[0].(func(string) error)
 	// roleDescCode is the schema descriptor for code field.
-	roleDescCode := roleFields[5].Descriptor()
+	roleDescCode := roleFields[6].Descriptor()
 	// role.CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	role.CodeValidator = roleDescCode.Validators[0].(func(string) error)
 	// roleDescStatus is the schema descriptor for status field.
-	roleDescStatus := roleFields[7].Descriptor()
+	roleDescStatus := roleFields[8].Descriptor()
 	// role.DefaultStatus holds the default value on creation for the status field.
 	role.DefaultStatus = roleDescStatus.Default.(int)
 	// roleDescSort is the schema descriptor for sort field.
-	roleDescSort := roleFields[8].Descriptor()
+	roleDescSort := roleFields[9].Descriptor()
 	// role.DefaultSort holds the default value on creation for the sort field.
 	role.DefaultSort = roleDescSort.Default.(int)
+	tenantFields := schema.Tenant{}.Fields()
+	_ = tenantFields
+	// tenantDescCreatedAt is the schema descriptor for created_at field.
+	tenantDescCreatedAt := tenantFields[0].Descriptor()
+	// tenant.DefaultCreatedAt holds the default value on creation for the created_at field.
+	tenant.DefaultCreatedAt = tenantDescCreatedAt.Default.(int)
+	// tenantDescUpdatedAt is the schema descriptor for updated_at field.
+	tenantDescUpdatedAt := tenantFields[1].Descriptor()
+	// tenant.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	tenant.DefaultUpdatedAt = tenantDescUpdatedAt.Default.(int)
+	// tenantDescName is the schema descriptor for name field.
+	tenantDescName := tenantFields[3].Descriptor()
+	// tenant.DefaultName holds the default value on creation for the name field.
+	tenant.DefaultName = tenantDescName.Default.(string)
+	// tenant.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	tenant.NameValidator = tenantDescName.Validators[0].(func(string) error)
+	// tenantDescCode is the schema descriptor for code field.
+	tenantDescCode := tenantFields[4].Descriptor()
+	// tenant.DefaultCode holds the default value on creation for the code field.
+	tenant.DefaultCode = tenantDescCode.Default.(string)
+	// tenant.CodeValidator is a validator for the "code" field. It is called by the builders before save.
+	tenant.CodeValidator = tenantDescCode.Validators[0].(func(string) error)
+	// tenantDescDescription is the schema descriptor for description field.
+	tenantDescDescription := tenantFields[5].Descriptor()
+	// tenant.DefaultDescription holds the default value on creation for the description field.
+	tenant.DefaultDescription = tenantDescDescription.Default.(string)
+	// tenantDescStatus is the schema descriptor for status field.
+	tenantDescStatus := tenantFields[6].Descriptor()
+	// tenant.DefaultStatus holds the default value on creation for the status field.
+	tenant.DefaultStatus = tenantDescStatus.Default.(int)
 	userFields := schema.User{}.Fields()
 	_ = userFields
 	// userDescCreatedAt is the schema descriptor for created_at field.
 	userDescCreatedAt := userFields[0].Descriptor()
 	// user.DefaultCreatedAt holds the default value on creation for the created_at field.
-	user.DefaultCreatedAt = userDescCreatedAt.Default.(int)
+	user.DefaultCreatedAt = userDescCreatedAt.Default.(int64)
 	// userDescUpdatedAt is the schema descriptor for updated_at field.
 	userDescUpdatedAt := userFields[1].Descriptor()
 	// user.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(int)
+	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(int64)
+	// userDescTenantCode is the schema descriptor for tenant_code field.
+	userDescTenantCode := userFields[3].Descriptor()
+	// user.TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
+	user.TenantCodeValidator = userDescTenantCode.Validators[0].(func(string) error)
 	// userDescUserName is the schema descriptor for user_name field.
-	userDescUserName := userFields[4].Descriptor()
+	userDescUserName := userFields[5].Descriptor()
 	// user.DefaultUserName holds the default value on creation for the user_name field.
 	user.DefaultUserName = userDescUserName.Default.(string)
 	// user.UserNameValidator is a validator for the "user_name" field. It is called by the builders before save.
 	user.UserNameValidator = userDescUserName.Validators[0].(func(string) error)
 	// userDescPassword is the schema descriptor for password field.
-	userDescPassword := userFields[5].Descriptor()
+	userDescPassword := userFields[6].Descriptor()
 	// user.DefaultPassword holds the default value on creation for the password field.
 	user.DefaultPassword = userDescPassword.Default.(string)
 	// user.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
 	user.PasswordValidator = userDescPassword.Validators[0].(func(string) error)
 	// userDescSalt is the schema descriptor for salt field.
-	userDescSalt := userFields[6].Descriptor()
+	userDescSalt := userFields[7].Descriptor()
 	// user.DefaultSalt holds the default value on creation for the salt field.
 	user.DefaultSalt = userDescSalt.Default.(string)
 	// user.SaltValidator is a validator for the "salt" field. It is called by the builders before save.
 	user.SaltValidator = userDescSalt.Validators[0].(func(string) error)
 	// userDescToken is the schema descriptor for token field.
-	userDescToken := userFields[7].Descriptor()
+	userDescToken := userFields[8].Descriptor()
 	// user.DefaultToken holds the default value on creation for the token field.
 	user.DefaultToken = userDescToken.Default.(string)
 	// userDescNickName is the schema descriptor for nick_name field.
-	userDescNickName := userFields[8].Descriptor()
+	userDescNickName := userFields[9].Descriptor()
 	// user.DefaultNickName holds the default value on creation for the nick_name field.
 	user.DefaultNickName = userDescNickName.Default.(string)
 	// userDescAvatar is the schema descriptor for avatar field.
-	userDescAvatar := userFields[9].Descriptor()
+	userDescAvatar := userFields[10].Descriptor()
 	// user.DefaultAvatar holds the default value on creation for the avatar field.
 	user.DefaultAvatar = userDescAvatar.Default.(string)
 	// userDescPhone is the schema descriptor for phone field.
-	userDescPhone := userFields[10].Descriptor()
+	userDescPhone := userFields[11].Descriptor()
 	// user.DefaultPhone holds the default value on creation for the phone field.
 	user.DefaultPhone = userDescPhone.Default.(string)
 	// user.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
 	user.PhoneValidator = userDescPhone.Validators[0].(func(string) error)
 	// userDescEmail is the schema descriptor for email field.
-	userDescEmail := userFields[11].Descriptor()
+	userDescEmail := userFields[12].Descriptor()
 	// user.DefaultEmail holds the default value on creation for the email field.
 	user.DefaultEmail = userDescEmail.Default.(string)
 	// userDescSex is the schema descriptor for sex field.
-	userDescSex := userFields[12].Descriptor()
+	userDescSex := userFields[13].Descriptor()
 	// user.DefaultSex holds the default value on creation for the sex field.
 	user.DefaultSex = userDescSex.Default.(int)
 	// userDescStatus is the schema descriptor for status field.
-	userDescStatus := userFields[13].Descriptor()
+	userDescStatus := userFields[14].Descriptor()
 	// user.DefaultStatus holds the default value on creation for the status field.
 	user.DefaultStatus = userDescStatus.Default.(int)
 	// userDescRoleID is the schema descriptor for role_id field.
-	userDescRoleID := userFields[14].Descriptor()
+	userDescRoleID := userFields[15].Descriptor()
 	// user.DefaultRoleID holds the default value on creation for the role_id field.
 	user.DefaultRoleID = userDescRoleID.Default.(uint64)
 	// userDescDeptID is the schema descriptor for dept_id field.
-	userDescDeptID := userFields[15].Descriptor()
+	userDescDeptID := userFields[16].Descriptor()
 	// user.DefaultDeptID holds the default value on creation for the dept_id field.
 	user.DefaultDeptID = userDescDeptID.Default.(uint64)
 	// userDescPostID is the schema descriptor for post_id field.
-	userDescPostID := userFields[16].Descriptor()
+	userDescPostID := userFields[17].Descriptor()
 	// user.DefaultPostID holds the default value on creation for the post_id field.
 	user.DefaultPostID = userDescPostID.Default.(uint64)
 }

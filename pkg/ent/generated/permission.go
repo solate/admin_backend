@@ -22,6 +22,8 @@ type Permission struct {
 	UpdatedAt int `json:"updated_at,omitempty"`
 	// 删除时间
 	DeletedAt *int `json:"deleted_at,omitempty"`
+	// 租户编码
+	TenantCode string `json:"tenant_code,omitempty"`
 	// 权限名称
 	Name string `json:"name,omitempty"`
 	// 权限编码
@@ -48,7 +50,7 @@ func (*Permission) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case permission.FieldID, permission.FieldCreatedAt, permission.FieldUpdatedAt, permission.FieldDeletedAt, permission.FieldType, permission.FieldAction, permission.FieldParentID, permission.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case permission.FieldName, permission.FieldCode, permission.FieldPath, permission.FieldDescription:
+		case permission.FieldTenantCode, permission.FieldName, permission.FieldCode, permission.FieldPath, permission.FieldDescription:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -89,6 +91,12 @@ func (pe *Permission) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pe.DeletedAt = new(int)
 				*pe.DeletedAt = int(value.Int64)
+			}
+		case permission.FieldTenantCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tenant_code", values[i])
+			} else if value.Valid {
+				pe.TenantCode = value.String
 			}
 		case permission.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -184,6 +192,9 @@ func (pe *Permission) String() string {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
+	builder.WriteString(", ")
+	builder.WriteString("tenant_code=")
+	builder.WriteString(pe.TenantCode)
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(pe.Name)

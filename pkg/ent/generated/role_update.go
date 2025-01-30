@@ -76,6 +76,20 @@ func (ru *RoleUpdate) ClearDeletedAt() *RoleUpdate {
 	return ru
 }
 
+// SetTenantCode sets the "tenant_code" field.
+func (ru *RoleUpdate) SetTenantCode(s string) *RoleUpdate {
+	ru.mutation.SetTenantCode(s)
+	return ru
+}
+
+// SetNillableTenantCode sets the "tenant_code" field if the given value is not nil.
+func (ru *RoleUpdate) SetNillableTenantCode(s *string) *RoleUpdate {
+	if s != nil {
+		ru.SetTenantCode(*s)
+	}
+	return ru
+}
+
 // SetName sets the "name" field.
 func (ru *RoleUpdate) SetName(s string) *RoleUpdate {
 	ru.mutation.SetName(s)
@@ -200,6 +214,11 @@ func (ru *RoleUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (ru *RoleUpdate) check() error {
+	if v, ok := ru.mutation.TenantCode(); ok {
+		if err := role.TenantCodeValidator(v); err != nil {
+			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "Role.tenant_code": %w`, err)}
+		}
+	}
 	if v, ok := ru.mutation.Name(); ok {
 		if err := role.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Role.name": %w`, err)}
@@ -245,6 +264,9 @@ func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if ru.mutation.DeletedAtCleared() {
 		_spec.ClearField(role.FieldDeletedAt, field.TypeInt)
+	}
+	if value, ok := ru.mutation.TenantCode(); ok {
+		_spec.SetField(role.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := ru.mutation.Name(); ok {
 		_spec.SetField(role.FieldName, field.TypeString, value)
@@ -337,6 +359,20 @@ func (ruo *RoleUpdateOne) AddDeletedAt(i int) *RoleUpdateOne {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (ruo *RoleUpdateOne) ClearDeletedAt() *RoleUpdateOne {
 	ruo.mutation.ClearDeletedAt()
+	return ruo
+}
+
+// SetTenantCode sets the "tenant_code" field.
+func (ruo *RoleUpdateOne) SetTenantCode(s string) *RoleUpdateOne {
+	ruo.mutation.SetTenantCode(s)
+	return ruo
+}
+
+// SetNillableTenantCode sets the "tenant_code" field if the given value is not nil.
+func (ruo *RoleUpdateOne) SetNillableTenantCode(s *string) *RoleUpdateOne {
+	if s != nil {
+		ruo.SetTenantCode(*s)
+	}
 	return ruo
 }
 
@@ -477,6 +513,11 @@ func (ruo *RoleUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (ruo *RoleUpdateOne) check() error {
+	if v, ok := ruo.mutation.TenantCode(); ok {
+		if err := role.TenantCodeValidator(v); err != nil {
+			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "Role.tenant_code": %w`, err)}
+		}
+	}
 	if v, ok := ruo.mutation.Name(); ok {
 		if err := role.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Role.name": %w`, err)}
@@ -539,6 +580,9 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 	}
 	if ruo.mutation.DeletedAtCleared() {
 		_spec.ClearField(role.FieldDeletedAt, field.TypeInt)
+	}
+	if value, ok := ruo.mutation.TenantCode(); ok {
+		_spec.SetField(role.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := ruo.mutation.Name(); ok {
 		_spec.SetField(role.FieldName, field.TypeString, value)
