@@ -13,14 +13,14 @@ var (
 	sfOnce sync.Once
 )
 
-// SFID 定义为 uint64 类型
-type SFID uint64
+// // SFID 定义为 uint64 类型
+// type SFID uint64
 
-// UUID 使用类型别名将 UUID 定义为 SFID
-type UUID = SFID
+// // UUID 使用类型别名将 UUID 定义为 SFID
+// type UUID = SFID
 
-// SFIDs 定义为 UUID 的切片
-type SFIDs []UUID
+// // SFIDs 定义为 UUID 的切片
+// type SFIDs []UUID
 
 // GetSonyflake 返回一个单例的 Sonyflake 实例
 func GetSonyflake() (*sonyflake.Sonyflake, error) {
@@ -41,7 +41,7 @@ func GetSonyflake() (*sonyflake.Sonyflake, error) {
 }
 
 // GenerateUUID 生成一个 UUID
-func GenerateUUID() (UUID, error) {
+func GenerateUUID() (uint64, error) {
 	sf, err := GetSonyflake()
 	if err != nil {
 		return 0, err
@@ -50,12 +50,12 @@ func GenerateUUID() (UUID, error) {
 	if err != nil {
 		return 0, err
 	}
-	return UUID(id), nil
+	return id, nil
 }
 
 // GenerateUUIDs 生成多个 UUIDs
-func GenerateUUIDs(n int) (SFIDs, error) {
-	var uuids SFIDs
+func GenerateUUIDs(n int) ([]uint64, error) {
+	var uuids []uint64
 	for i := 0; i < n; i++ {
 		uuid, err := GenerateUUID()
 		if err != nil {

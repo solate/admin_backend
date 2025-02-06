@@ -6,6 +6,7 @@ package handler
 import (
 	"net/http"
 
+	auth "github.com/solate/admin_backend/app/admin/internal/handler/auth"
 	user "github.com/solate/admin_backend/app/admin/internal/handler/user"
 	"github.com/solate/admin_backend/app/admin/internal/svc"
 
@@ -13,6 +14,30 @@ import (
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				// 用户登录
+				Method:  http.MethodPost,
+				Path:    "/login",
+				Handler: auth.LoginHandler(serverCtx),
+			},
+			{
+				// 用户登出
+				Method:  http.MethodPost,
+				Path:    "/logout",
+				Handler: auth.LogoutHandler(serverCtx),
+			},
+			{
+				// 用户注册
+				Method:  http.MethodPost,
+				Path:    "/register",
+				Handler: auth.RegisterHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/admin/api/v1/auth"),
+	)
+
 	server.AddRoutes(
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.AuthMiddleware},

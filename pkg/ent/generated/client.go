@@ -17,6 +17,7 @@ import (
 	"github.com/solate/admin_backend/pkg/ent/generated/loginlog"
 	"github.com/solate/admin_backend/pkg/ent/generated/permission"
 	"github.com/solate/admin_backend/pkg/ent/generated/role"
+	"github.com/solate/admin_backend/pkg/ent/generated/systemlog"
 	"github.com/solate/admin_backend/pkg/ent/generated/tenant"
 	"github.com/solate/admin_backend/pkg/ent/generated/user"
 )
@@ -32,6 +33,8 @@ type Client struct {
 	Permission *PermissionClient
 	// Role is the client for interacting with the Role builders.
 	Role *RoleClient
+	// SystemLog is the client for interacting with the SystemLog builders.
+	SystemLog *SystemLogClient
 	// Tenant is the client for interacting with the Tenant builders.
 	Tenant *TenantClient
 	// User is the client for interacting with the User builders.
@@ -50,6 +53,7 @@ func (c *Client) init() {
 	c.LoginLog = NewLoginLogClient(c.config)
 	c.Permission = NewPermissionClient(c.config)
 	c.Role = NewRoleClient(c.config)
+	c.SystemLog = NewSystemLogClient(c.config)
 	c.Tenant = NewTenantClient(c.config)
 	c.User = NewUserClient(c.config)
 }
@@ -147,6 +151,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		LoginLog:   NewLoginLogClient(cfg),
 		Permission: NewPermissionClient(cfg),
 		Role:       NewRoleClient(cfg),
+		SystemLog:  NewSystemLogClient(cfg),
 		Tenant:     NewTenantClient(cfg),
 		User:       NewUserClient(cfg),
 	}, nil
@@ -171,6 +176,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		LoginLog:   NewLoginLogClient(cfg),
 		Permission: NewPermissionClient(cfg),
 		Role:       NewRoleClient(cfg),
+		SystemLog:  NewSystemLogClient(cfg),
 		Tenant:     NewTenantClient(cfg),
 		User:       NewUserClient(cfg),
 	}, nil
@@ -201,21 +207,21 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.LoginLog.Use(hooks...)
-	c.Permission.Use(hooks...)
-	c.Role.Use(hooks...)
-	c.Tenant.Use(hooks...)
-	c.User.Use(hooks...)
+	for _, n := range []interface{ Use(...Hook) }{
+		c.LoginLog, c.Permission, c.Role, c.SystemLog, c.Tenant, c.User,
+	} {
+		n.Use(hooks...)
+	}
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
-	c.LoginLog.Intercept(interceptors...)
-	c.Permission.Intercept(interceptors...)
-	c.Role.Intercept(interceptors...)
-	c.Tenant.Intercept(interceptors...)
-	c.User.Intercept(interceptors...)
+	for _, n := range []interface{ Intercept(...Interceptor) }{
+		c.LoginLog, c.Permission, c.Role, c.SystemLog, c.Tenant, c.User,
+	} {
+		n.Intercept(interceptors...)
+	}
 }
 
 // Mutate implements the ent.Mutator interface.
@@ -227,6 +233,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Permission.mutate(ctx, m)
 	case *RoleMutation:
 		return c.Role.mutate(ctx, m)
+	case *SystemLogMutation:
+		return c.SystemLog.mutate(ctx, m)
 	case *TenantMutation:
 		return c.Tenant.mutate(ctx, m)
 	case *UserMutation:
@@ -635,6 +643,139 @@ func (c *RoleClient) mutate(ctx context.Context, m *RoleMutation) (Value, error)
 	}
 }
 
+// SystemLogClient is a client for the SystemLog schema.
+type SystemLogClient struct {
+	config
+}
+
+// NewSystemLogClient returns a client for the SystemLog from the given config.
+func NewSystemLogClient(c config) *SystemLogClient {
+	return &SystemLogClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `systemlog.Hooks(f(g(h())))`.
+func (c *SystemLogClient) Use(hooks ...Hook) {
+	c.hooks.SystemLog = append(c.hooks.SystemLog, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `systemlog.Intercept(f(g(h())))`.
+func (c *SystemLogClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SystemLog = append(c.inters.SystemLog, interceptors...)
+}
+
+// Create returns a builder for creating a SystemLog entity.
+func (c *SystemLogClient) Create() *SystemLogCreate {
+	mutation := newSystemLogMutation(c.config, OpCreate)
+	return &SystemLogCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SystemLog entities.
+func (c *SystemLogClient) CreateBulk(builders ...*SystemLogCreate) *SystemLogCreateBulk {
+	return &SystemLogCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SystemLogClient) MapCreateBulk(slice any, setFunc func(*SystemLogCreate, int)) *SystemLogCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SystemLogCreateBulk{err: fmt.Errorf("calling to SystemLogClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SystemLogCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SystemLogCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SystemLog.
+func (c *SystemLogClient) Update() *SystemLogUpdate {
+	mutation := newSystemLogMutation(c.config, OpUpdate)
+	return &SystemLogUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SystemLogClient) UpdateOne(sl *SystemLog) *SystemLogUpdateOne {
+	mutation := newSystemLogMutation(c.config, OpUpdateOne, withSystemLog(sl))
+	return &SystemLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SystemLogClient) UpdateOneID(id int) *SystemLogUpdateOne {
+	mutation := newSystemLogMutation(c.config, OpUpdateOne, withSystemLogID(id))
+	return &SystemLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SystemLog.
+func (c *SystemLogClient) Delete() *SystemLogDelete {
+	mutation := newSystemLogMutation(c.config, OpDelete)
+	return &SystemLogDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SystemLogClient) DeleteOne(sl *SystemLog) *SystemLogDeleteOne {
+	return c.DeleteOneID(sl.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SystemLogClient) DeleteOneID(id int) *SystemLogDeleteOne {
+	builder := c.Delete().Where(systemlog.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SystemLogDeleteOne{builder}
+}
+
+// Query returns a query builder for SystemLog.
+func (c *SystemLogClient) Query() *SystemLogQuery {
+	return &SystemLogQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSystemLog},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SystemLog entity by its id.
+func (c *SystemLogClient) Get(ctx context.Context, id int) (*SystemLog, error) {
+	return c.Query().Where(systemlog.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SystemLogClient) GetX(ctx context.Context, id int) *SystemLog {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SystemLogClient) Hooks() []Hook {
+	return c.hooks.SystemLog
+}
+
+// Interceptors returns the client interceptors.
+func (c *SystemLogClient) Interceptors() []Interceptor {
+	return c.inters.SystemLog
+}
+
+func (c *SystemLogClient) mutate(ctx context.Context, m *SystemLogMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SystemLogCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SystemLogUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SystemLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SystemLogDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown SystemLog mutation op: %q", m.Op())
+	}
+}
+
 // TenantClient is a client for the Tenant schema.
 type TenantClient struct {
 	config
@@ -904,9 +1045,9 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		LoginLog, Permission, Role, Tenant, User []ent.Hook
+		LoginLog, Permission, Role, SystemLog, Tenant, User []ent.Hook
 	}
 	inters struct {
-		LoginLog, Permission, Role, Tenant, User []ent.Interceptor
+		LoginLog, Permission, Role, SystemLog, Tenant, User []ent.Interceptor
 	}
 )

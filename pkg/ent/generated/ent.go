@@ -15,6 +15,7 @@ import (
 	"github.com/solate/admin_backend/pkg/ent/generated/loginlog"
 	"github.com/solate/admin_backend/pkg/ent/generated/permission"
 	"github.com/solate/admin_backend/pkg/ent/generated/role"
+	"github.com/solate/admin_backend/pkg/ent/generated/systemlog"
 	"github.com/solate/admin_backend/pkg/ent/generated/tenant"
 	"github.com/solate/admin_backend/pkg/ent/generated/user"
 )
@@ -80,6 +81,7 @@ func checkColumn(table, column string) error {
 			loginlog.Table:   loginlog.ValidColumn,
 			permission.Table: permission.ValidColumn,
 			role.Table:       role.ValidColumn,
+			systemlog.Table:  systemlog.ValidColumn,
 			tenant.Table:     tenant.ValidColumn,
 			user.Table:       user.ValidColumn,
 		})

@@ -43,6 +43,26 @@ type IDRequest struct {
 	ID int `json:"id"` // ID
 }
 
+type LoginReq struct {
+	UserName string `json:"user_name"`
+	Password string `json:"password"`
+}
+
+type LoginResp struct {
+	UserID   uint64 `json:"user_id"`
+	Token    string `json:"token"`
+	UserName string `json:"user_name"`
+	Phone    string `json:"phone"`
+	Email    string `json:"email"`
+}
+
+type LogoutReq struct {
+	UserID uint64 `json:"user_id"`
+}
+
+type LogoutResp struct {
+}
+
 type PageJsonRequest struct {
 	Current  int32 `json:"current"`   // 当前页
 	PageSize int32 `json:"page_size"` // 每页大小
@@ -58,6 +78,20 @@ type PageResponse struct {
 	PageSize        int32 `json:"page_size"`         // 当前页大小
 	RequestPageSize int32 `json:"request_page_size"` // 请求页大小
 	Current         int32 `json:"current"`           // 当前页
+}
+
+type RegisterReq struct {
+	UserName string `json:"user_name"`
+	Password string `json:"password"`
+	NickName string `json:"nick_name"`
+	Avatar   string `json:"avatar,optional"`
+	Phone    string `json:"phone"`
+	Email    string `json:"email,optional"`
+	Sex      int    `json:"sex,optional"`
+}
+
+type RegisterResp struct {
+	UserID uint64 `json:"user_id"`
 }
 
 type StatusRequest struct {

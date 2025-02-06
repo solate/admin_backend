@@ -45,6 +45,18 @@ func (f RoleFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.V
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.RoleMutation", m)
 }
 
+// The SystemLogFunc type is an adapter to allow the use of ordinary
+// function as SystemLog mutator.
+type SystemLogFunc func(context.Context, *generated.SystemLogMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SystemLogFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.SystemLogMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.SystemLogMutation", m)
+}
+
 // The TenantFunc type is an adapter to allow the use of ordinary
 // function as Tenant mutator.
 type TenantFunc func(context.Context, *generated.TenantMutation) (generated.Value, error)

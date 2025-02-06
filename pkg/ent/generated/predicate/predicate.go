@@ -15,6 +15,9 @@ type Permission func(*sql.Selector)
 // Role is the predicate function for role builders.
 type Role func(*sql.Selector)
 
+// SystemLog is the predicate function for systemlog builders.
+type SystemLog func(*sql.Selector)
+
 // Tenant is the predicate function for tenant builders.
 type Tenant func(*sql.Selector)
 

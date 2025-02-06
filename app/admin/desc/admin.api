@@ -3,5 +3,6 @@ syntax = "v1"
 import (
 	"type/base_type.api"
 	"type/user_type.api"
+	"type/auth_type.api"
 )
 

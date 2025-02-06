@@ -6,36 +6,58 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var secret = []byte("your-secret-key")
+const (
+	TenantIDKey = "tenantID"
+	UserIDKey   = "userID"
+)
 
-type TenantClaims struct {
-	TenantID string `json:"tenantID"`
+type Claims struct {
+	UserID   int64  `json:"user_id"`
+	TenantID string `json:"tenant_id"`
 	jwt.RegisteredClaims
 }
 
-// 生成带租户ID的Token
-func GenerateToken(tenantID string, userID string) (string, error) {
-	claims := TenantClaims{
+type JWTConfig struct {
+	AccessSecret []byte // 密钥
+	AccessExpire int64  // 过期时间
+}
+
+// 生成JWT Token
+func GenerateToken(userID int64, tenantID string, config JWTConfig) (string, error) {
+	now := time.Now()
+	claims := Claims{
+		UserID:   userID,
 		TenantID: tenantID,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
-			Subject:   userID,
+			ExpiresAt: jwt.NewNumericDate(now.Add(time.Duration(config.AccessExpire) * time.Second)),
+			IssuedAt:  jwt.NewNumericDate(now),
+			NotBefore: jwt.NewNumericDate(now),
 		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(secret)
+	return token.SignedString(config.AccessSecret)
 }
 
-// 解析并验证Token
-func ParseToken(tokenString string) (*TenantClaims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &TenantClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return secret, nil
+// 解析JWT Token
+func ParseToken(tokenString string, accessSecret []byte) (*Claims, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+		return accessSecret, nil
 	})
 
-	if claims, ok := token.Claims.(*TenantClaims); ok && token.Valid {
+	if err != nil {
+		return nil, err
+	}
+
+	if claims, ok := token.Claims.(*Claims); ok && token.Valid {
 		return claims, nil
 	}
-	return nil, err
+
+	return nil, jwt.ErrSignatureInvalid
+}
+
+// 验证Token是否有效
+func ValidateToken(tokenString string, accessSecret []byte) bool {
+	_, err := ParseToken(tokenString, accessSecret)
+	return err == nil
 }

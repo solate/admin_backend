@@ -11,6 +11,7 @@ type Config struct {
 	ShowSQL    bool
 	Logx       Logx  `json:"Logx"`
 	Redis      Redis `json:"Redis"`
+	JwtAuth    JwtAuth
 }
 
 type Logx struct {
@@ -28,6 +29,8 @@ type Redis struct {
 }
 
 type JwtAuth struct {
+	AccessSecret string
+	AccessExpire int64
 }
 
 func (c Config) LoadLogConf() {

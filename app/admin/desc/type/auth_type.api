@@ -1,1 +1,60 @@
 syntax = "v1"
+
+type (
+
+
+    RegisterReq {
+        UserName string `json:"user_name"`
+        Password string `json:"password"`
+        NickName string `json:"nick_name"`
+        Avatar   string `json:"avatar,optional"`
+        Phone    string `json:"phone"`
+        Email    string `json:"email,optional"`
+        Sex      int    `json:"sex,optional"`
+    }
+
+    RegisterResp {
+        UserID uint64  `json:"user_id"`
+    }
+
+    LoginReq {
+        UserName string `json:"user_name"`
+        Password string `json:"password"`
+    }
+
+    LoginResp {
+        UserID   uint64  `json:"user_id"`
+        Token    string `json:"token"`
+        UserName string `json:"user_name"`
+        Phone    string `json:"phone"`
+        Email    string `json:"email"`
+    }
+
+    LogoutReq {
+        UserID uint64  `json:"user_id"`
+    }
+
+    LogoutResp {
+    }
+
+
+)
+
+
+@server (
+    prefix: /admin/api/v1/auth
+    group: auth
+)
+service admin {
+    @doc "用户注册"
+    @handler Register
+    post /register (RegisterReq) returns (RegisterResp)
+
+    @doc "用户登录"
+    @handler Login
+    post /login (LoginReq) returns (LoginResp)
+
+    @doc "用户登出"
+    @handler Logout
+    post /logout (LogoutReq) returns (bool)
+}

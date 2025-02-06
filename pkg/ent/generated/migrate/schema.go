@@ -91,6 +91,37 @@ var (
 			},
 		},
 	}
+	// SystemLogsColumns holds the columns for the "system_logs" table.
+	SystemLogsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
+		{Name: "tenant_code", Type: field.TypeString, Comment: "租户编码"},
+		{Name: "module", Type: field.TypeString, Comment: "所属模块", Default: ""},
+		{Name: "action", Type: field.TypeString, Comment: "操作类型", Default: ""},
+		{Name: "content", Type: field.TypeString, Comment: "操作内容", Default: ""},
+		{Name: "operator", Type: field.TypeString, Comment: "操作人", Default: ""},
+		{Name: "user_id", Type: field.TypeUint64, Comment: "用户ID", Default: 0},
+	}
+	// SystemLogsTable holds the schema information for the "system_logs" table.
+	SystemLogsTable = &schema.Table{
+		Name:       "system_logs",
+		Comment:    "系统日志",
+		Columns:    SystemLogsColumns,
+		PrimaryKey: []*schema.Column{SystemLogsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "systemlog_user_id",
+				Unique:  false,
+				Columns: []*schema.Column{SystemLogsColumns[8]},
+			},
+			{
+				Name:    "systemlog_module",
+				Unique:  false,
+				Columns: []*schema.Column{SystemLogsColumns[4]},
+			},
+		},
+	}
 	// TenantsColumns holds the columns for the "tenants" table.
 	TenantsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -162,6 +193,7 @@ var (
 		LoginLogTable,
 		PermissionsTable,
 		RolesTable,
+		SystemLogsTable,
 		TenantsTable,
 		UsersTable,
 	}
@@ -176,6 +208,9 @@ func init() {
 	}
 	RolesTable.Annotation = &entsql.Annotation{
 		Table: "roles",
+	}
+	SystemLogsTable.Annotation = &entsql.Annotation{
+		Table: "system_logs",
 	}
 	TenantsTable.Annotation = &entsql.Annotation{
 		Table: "tenants",
