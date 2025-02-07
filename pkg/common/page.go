@@ -26,8 +26,8 @@ func (pb *PageBuilder[T]) Next(limit int) ([]*T, error) {
 }
 
 // Offset 计算offset
-func Offset(page, pageSize int32) int32 {
-	offset := int32(0)
+func Offset(page, pageSize int) int {
+	offset := int(0)
 	limit := pageSize
 	if page == 1 {
 		offset = 0

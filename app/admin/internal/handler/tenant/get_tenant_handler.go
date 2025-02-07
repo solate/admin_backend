@@ -1,25 +1,25 @@
-package user
+package tenant
 
 import (
 	"net/http"
 
-	"github.com/solate/admin_backend/app/admin/internal/logic/user"
+	"github.com/solate/admin_backend/app/admin/internal/logic/tenant"
 	"github.com/solate/admin_backend/app/admin/internal/svc"
 	"github.com/solate/admin_backend/app/admin/internal/types"
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-// 获取用户列表
-func ListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+// 获取租户详情
+func GetTenantHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.UserListReq
+		var req types.GetTenantReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := user.NewListLogic(r.Context(), svcCtx)
-		resp, err := l.List(&req)
+		l := tenant.NewGetTenantLogic(r.Context(), svcCtx)
+		resp, err := l.GetTenant(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

@@ -31,7 +31,7 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 
 func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterResp, err error) {
 	// 1. 检查手机号是否已存在
-	exist, err := l.svcCtx.Orm.User.Query().Where(user.Phone(req.Phone)).Exist(l.ctx)
+	exist, err := l.svcCtx.DB.User.Query().Where(user.Phone(req.Phone)).Exist(l.ctx)
 	if err != nil {
 		return nil, xerr.NewErrCode(xerr.DbError)
 	}
@@ -57,7 +57,7 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterRe
 
 	// 4. 创建用户
 	now := time.Now().UnixMilli()
-	user, err := l.svcCtx.Orm.User.Create().
+	user, err := l.svcCtx.DB.User.Create().
 		SetCreatedAt(now).
 		SetUpdatedAt(now).
 		SetUserID(userID).

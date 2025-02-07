@@ -18,7 +18,7 @@ import (
 
 type ServiceContext struct {
 	Config          config.Config
-	Orm             *generated.Client
+	DB              *generated.Client
 	Redis           *redis.Redis
 	AuthMiddleware  rest.Middleware
 	PermissionCache *cache.PermissionCache
@@ -31,7 +31,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 	return &ServiceContext{
 		Config:          c,
-		Orm:             client,
+		DB:              client,
 		Redis:           initRedis(c),
 		AuthMiddleware:  middleware.NewAuthMiddleware(c).Handle,
 		PermissionCache: cache.NewPermissionCache(rdb),

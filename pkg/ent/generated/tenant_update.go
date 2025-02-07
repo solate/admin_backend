@@ -29,14 +29,14 @@ func (tu *TenantUpdate) Where(ps ...predicate.Tenant) *TenantUpdate {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (tu *TenantUpdate) SetUpdatedAt(i int) *TenantUpdate {
+func (tu *TenantUpdate) SetUpdatedAt(i int64) *TenantUpdate {
 	tu.mutation.ResetUpdatedAt()
 	tu.mutation.SetUpdatedAt(i)
 	return tu
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (tu *TenantUpdate) SetNillableUpdatedAt(i *int) *TenantUpdate {
+func (tu *TenantUpdate) SetNillableUpdatedAt(i *int64) *TenantUpdate {
 	if i != nil {
 		tu.SetUpdatedAt(*i)
 	}
@@ -44,20 +44,20 @@ func (tu *TenantUpdate) SetNillableUpdatedAt(i *int) *TenantUpdate {
 }
 
 // AddUpdatedAt adds i to the "updated_at" field.
-func (tu *TenantUpdate) AddUpdatedAt(i int) *TenantUpdate {
+func (tu *TenantUpdate) AddUpdatedAt(i int64) *TenantUpdate {
 	tu.mutation.AddUpdatedAt(i)
 	return tu
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (tu *TenantUpdate) SetDeletedAt(i int) *TenantUpdate {
+func (tu *TenantUpdate) SetDeletedAt(i int64) *TenantUpdate {
 	tu.mutation.ResetDeletedAt()
 	tu.mutation.SetDeletedAt(i)
 	return tu
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (tu *TenantUpdate) SetNillableDeletedAt(i *int) *TenantUpdate {
+func (tu *TenantUpdate) SetNillableDeletedAt(i *int64) *TenantUpdate {
 	if i != nil {
 		tu.SetDeletedAt(*i)
 	}
@@ -65,7 +65,7 @@ func (tu *TenantUpdate) SetNillableDeletedAt(i *int) *TenantUpdate {
 }
 
 // AddDeletedAt adds i to the "deleted_at" field.
-func (tu *TenantUpdate) AddDeletedAt(i int) *TenantUpdate {
+func (tu *TenantUpdate) AddDeletedAt(i int64) *TenantUpdate {
 	tu.mutation.AddDeletedAt(i)
 	return tu
 }
@@ -73,6 +73,27 @@ func (tu *TenantUpdate) AddDeletedAt(i int) *TenantUpdate {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (tu *TenantUpdate) ClearDeletedAt() *TenantUpdate {
 	tu.mutation.ClearDeletedAt()
+	return tu
+}
+
+// SetTenantID sets the "tenant_id" field.
+func (tu *TenantUpdate) SetTenantID(u uint64) *TenantUpdate {
+	tu.mutation.ResetTenantID()
+	tu.mutation.SetTenantID(u)
+	return tu
+}
+
+// SetNillableTenantID sets the "tenant_id" field if the given value is not nil.
+func (tu *TenantUpdate) SetNillableTenantID(u *uint64) *TenantUpdate {
+	if u != nil {
+		tu.SetTenantID(*u)
+	}
+	return tu
+}
+
+// AddTenantID adds u to the "tenant_id" field.
+func (tu *TenantUpdate) AddTenantID(u int64) *TenantUpdate {
+	tu.mutation.AddTenantID(u)
 	return tu
 }
 
@@ -86,20 +107,6 @@ func (tu *TenantUpdate) SetName(s string) *TenantUpdate {
 func (tu *TenantUpdate) SetNillableName(s *string) *TenantUpdate {
 	if s != nil {
 		tu.SetName(*s)
-	}
-	return tu
-}
-
-// SetCode sets the "code" field.
-func (tu *TenantUpdate) SetCode(s string) *TenantUpdate {
-	tu.mutation.SetCode(s)
-	return tu
-}
-
-// SetNillableCode sets the "code" field if the given value is not nil.
-func (tu *TenantUpdate) SetNillableCode(s *string) *TenantUpdate {
-	if s != nil {
-		tu.SetCode(*s)
 	}
 	return tu
 }
@@ -178,11 +185,6 @@ func (tu *TenantUpdate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Tenant.name": %w`, err)}
 		}
 	}
-	if v, ok := tu.mutation.Code(); ok {
-		if err := tenant.CodeValidator(v); err != nil {
-			return &ValidationError{Name: "code", err: fmt.Errorf(`generated: validator failed for field "Tenant.code": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -205,25 +207,28 @@ func (tu *TenantUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 	}
 	if value, ok := tu.mutation.UpdatedAt(); ok {
-		_spec.SetField(tenant.FieldUpdatedAt, field.TypeInt, value)
+		_spec.SetField(tenant.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := tu.mutation.AddedUpdatedAt(); ok {
-		_spec.AddField(tenant.FieldUpdatedAt, field.TypeInt, value)
+		_spec.AddField(tenant.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := tu.mutation.DeletedAt(); ok {
-		_spec.SetField(tenant.FieldDeletedAt, field.TypeInt, value)
+		_spec.SetField(tenant.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if value, ok := tu.mutation.AddedDeletedAt(); ok {
-		_spec.AddField(tenant.FieldDeletedAt, field.TypeInt, value)
+		_spec.AddField(tenant.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if tu.mutation.DeletedAtCleared() {
-		_spec.ClearField(tenant.FieldDeletedAt, field.TypeInt)
+		_spec.ClearField(tenant.FieldDeletedAt, field.TypeInt64)
+	}
+	if value, ok := tu.mutation.TenantID(); ok {
+		_spec.SetField(tenant.FieldTenantID, field.TypeUint64, value)
+	}
+	if value, ok := tu.mutation.AddedTenantID(); ok {
+		_spec.AddField(tenant.FieldTenantID, field.TypeUint64, value)
 	}
 	if value, ok := tu.mutation.Name(); ok {
 		_spec.SetField(tenant.FieldName, field.TypeString, value)
-	}
-	if value, ok := tu.mutation.Code(); ok {
-		_spec.SetField(tenant.FieldCode, field.TypeString, value)
 	}
 	if value, ok := tu.mutation.Description(); ok {
 		_spec.SetField(tenant.FieldDescription, field.TypeString, value)
@@ -257,14 +262,14 @@ type TenantUpdateOne struct {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (tuo *TenantUpdateOne) SetUpdatedAt(i int) *TenantUpdateOne {
+func (tuo *TenantUpdateOne) SetUpdatedAt(i int64) *TenantUpdateOne {
 	tuo.mutation.ResetUpdatedAt()
 	tuo.mutation.SetUpdatedAt(i)
 	return tuo
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (tuo *TenantUpdateOne) SetNillableUpdatedAt(i *int) *TenantUpdateOne {
+func (tuo *TenantUpdateOne) SetNillableUpdatedAt(i *int64) *TenantUpdateOne {
 	if i != nil {
 		tuo.SetUpdatedAt(*i)
 	}
@@ -272,20 +277,20 @@ func (tuo *TenantUpdateOne) SetNillableUpdatedAt(i *int) *TenantUpdateOne {
 }
 
 // AddUpdatedAt adds i to the "updated_at" field.
-func (tuo *TenantUpdateOne) AddUpdatedAt(i int) *TenantUpdateOne {
+func (tuo *TenantUpdateOne) AddUpdatedAt(i int64) *TenantUpdateOne {
 	tuo.mutation.AddUpdatedAt(i)
 	return tuo
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (tuo *TenantUpdateOne) SetDeletedAt(i int) *TenantUpdateOne {
+func (tuo *TenantUpdateOne) SetDeletedAt(i int64) *TenantUpdateOne {
 	tuo.mutation.ResetDeletedAt()
 	tuo.mutation.SetDeletedAt(i)
 	return tuo
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (tuo *TenantUpdateOne) SetNillableDeletedAt(i *int) *TenantUpdateOne {
+func (tuo *TenantUpdateOne) SetNillableDeletedAt(i *int64) *TenantUpdateOne {
 	if i != nil {
 		tuo.SetDeletedAt(*i)
 	}
@@ -293,7 +298,7 @@ func (tuo *TenantUpdateOne) SetNillableDeletedAt(i *int) *TenantUpdateOne {
 }
 
 // AddDeletedAt adds i to the "deleted_at" field.
-func (tuo *TenantUpdateOne) AddDeletedAt(i int) *TenantUpdateOne {
+func (tuo *TenantUpdateOne) AddDeletedAt(i int64) *TenantUpdateOne {
 	tuo.mutation.AddDeletedAt(i)
 	return tuo
 }
@@ -301,6 +306,27 @@ func (tuo *TenantUpdateOne) AddDeletedAt(i int) *TenantUpdateOne {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (tuo *TenantUpdateOne) ClearDeletedAt() *TenantUpdateOne {
 	tuo.mutation.ClearDeletedAt()
+	return tuo
+}
+
+// SetTenantID sets the "tenant_id" field.
+func (tuo *TenantUpdateOne) SetTenantID(u uint64) *TenantUpdateOne {
+	tuo.mutation.ResetTenantID()
+	tuo.mutation.SetTenantID(u)
+	return tuo
+}
+
+// SetNillableTenantID sets the "tenant_id" field if the given value is not nil.
+func (tuo *TenantUpdateOne) SetNillableTenantID(u *uint64) *TenantUpdateOne {
+	if u != nil {
+		tuo.SetTenantID(*u)
+	}
+	return tuo
+}
+
+// AddTenantID adds u to the "tenant_id" field.
+func (tuo *TenantUpdateOne) AddTenantID(u int64) *TenantUpdateOne {
+	tuo.mutation.AddTenantID(u)
 	return tuo
 }
 
@@ -314,20 +340,6 @@ func (tuo *TenantUpdateOne) SetName(s string) *TenantUpdateOne {
 func (tuo *TenantUpdateOne) SetNillableName(s *string) *TenantUpdateOne {
 	if s != nil {
 		tuo.SetName(*s)
-	}
-	return tuo
-}
-
-// SetCode sets the "code" field.
-func (tuo *TenantUpdateOne) SetCode(s string) *TenantUpdateOne {
-	tuo.mutation.SetCode(s)
-	return tuo
-}
-
-// SetNillableCode sets the "code" field if the given value is not nil.
-func (tuo *TenantUpdateOne) SetNillableCode(s *string) *TenantUpdateOne {
-	if s != nil {
-		tuo.SetCode(*s)
 	}
 	return tuo
 }
@@ -419,11 +431,6 @@ func (tuo *TenantUpdateOne) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Tenant.name": %w`, err)}
 		}
 	}
-	if v, ok := tuo.mutation.Code(); ok {
-		if err := tenant.CodeValidator(v); err != nil {
-			return &ValidationError{Name: "code", err: fmt.Errorf(`generated: validator failed for field "Tenant.code": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -463,25 +470,28 @@ func (tuo *TenantUpdateOne) sqlSave(ctx context.Context) (_node *Tenant, err err
 		}
 	}
 	if value, ok := tuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(tenant.FieldUpdatedAt, field.TypeInt, value)
+		_spec.SetField(tenant.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := tuo.mutation.AddedUpdatedAt(); ok {
-		_spec.AddField(tenant.FieldUpdatedAt, field.TypeInt, value)
+		_spec.AddField(tenant.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := tuo.mutation.DeletedAt(); ok {
-		_spec.SetField(tenant.FieldDeletedAt, field.TypeInt, value)
+		_spec.SetField(tenant.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if value, ok := tuo.mutation.AddedDeletedAt(); ok {
-		_spec.AddField(tenant.FieldDeletedAt, field.TypeInt, value)
+		_spec.AddField(tenant.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if tuo.mutation.DeletedAtCleared() {
-		_spec.ClearField(tenant.FieldDeletedAt, field.TypeInt)
+		_spec.ClearField(tenant.FieldDeletedAt, field.TypeInt64)
+	}
+	if value, ok := tuo.mutation.TenantID(); ok {
+		_spec.SetField(tenant.FieldTenantID, field.TypeUint64, value)
+	}
+	if value, ok := tuo.mutation.AddedTenantID(); ok {
+		_spec.AddField(tenant.FieldTenantID, field.TypeUint64, value)
 	}
 	if value, ok := tuo.mutation.Name(); ok {
 		_spec.SetField(tenant.FieldName, field.TypeString, value)
-	}
-	if value, ok := tuo.mutation.Code(); ok {
-		_spec.SetField(tenant.FieldCode, field.TypeString, value)
 	}
 	if value, ok := tuo.mutation.Description(); ok {
 		_spec.SetField(tenant.FieldDescription, field.TypeString, value)

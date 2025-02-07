@@ -22,13 +22,13 @@ type TenantCreate struct {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (tc *TenantCreate) SetCreatedAt(i int) *TenantCreate {
+func (tc *TenantCreate) SetCreatedAt(i int64) *TenantCreate {
 	tc.mutation.SetCreatedAt(i)
 	return tc
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (tc *TenantCreate) SetNillableCreatedAt(i *int) *TenantCreate {
+func (tc *TenantCreate) SetNillableCreatedAt(i *int64) *TenantCreate {
 	if i != nil {
 		tc.SetCreatedAt(*i)
 	}
@@ -36,13 +36,13 @@ func (tc *TenantCreate) SetNillableCreatedAt(i *int) *TenantCreate {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (tc *TenantCreate) SetUpdatedAt(i int) *TenantCreate {
+func (tc *TenantCreate) SetUpdatedAt(i int64) *TenantCreate {
 	tc.mutation.SetUpdatedAt(i)
 	return tc
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (tc *TenantCreate) SetNillableUpdatedAt(i *int) *TenantCreate {
+func (tc *TenantCreate) SetNillableUpdatedAt(i *int64) *TenantCreate {
 	if i != nil {
 		tc.SetUpdatedAt(*i)
 	}
@@ -50,16 +50,22 @@ func (tc *TenantCreate) SetNillableUpdatedAt(i *int) *TenantCreate {
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (tc *TenantCreate) SetDeletedAt(i int) *TenantCreate {
+func (tc *TenantCreate) SetDeletedAt(i int64) *TenantCreate {
 	tc.mutation.SetDeletedAt(i)
 	return tc
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (tc *TenantCreate) SetNillableDeletedAt(i *int) *TenantCreate {
+func (tc *TenantCreate) SetNillableDeletedAt(i *int64) *TenantCreate {
 	if i != nil {
 		tc.SetDeletedAt(*i)
 	}
+	return tc
+}
+
+// SetTenantID sets the "tenant_id" field.
+func (tc *TenantCreate) SetTenantID(u uint64) *TenantCreate {
+	tc.mutation.SetTenantID(u)
 	return tc
 }
 
@@ -73,20 +79,6 @@ func (tc *TenantCreate) SetName(s string) *TenantCreate {
 func (tc *TenantCreate) SetNillableName(s *string) *TenantCreate {
 	if s != nil {
 		tc.SetName(*s)
-	}
-	return tc
-}
-
-// SetCode sets the "code" field.
-func (tc *TenantCreate) SetCode(s string) *TenantCreate {
-	tc.mutation.SetCode(s)
-	return tc
-}
-
-// SetNillableCode sets the "code" field if the given value is not nil.
-func (tc *TenantCreate) SetNillableCode(s *string) *TenantCreate {
-	if s != nil {
-		tc.SetCode(*s)
 	}
 	return tc
 }
@@ -166,10 +158,6 @@ func (tc *TenantCreate) defaults() {
 		v := tenant.DefaultName
 		tc.mutation.SetName(v)
 	}
-	if _, ok := tc.mutation.Code(); !ok {
-		v := tenant.DefaultCode
-		tc.mutation.SetCode(v)
-	}
 	if _, ok := tc.mutation.Description(); !ok {
 		v := tenant.DefaultDescription
 		tc.mutation.SetDescription(v)
@@ -188,20 +176,15 @@ func (tc *TenantCreate) check() error {
 	if _, ok := tc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Tenant.updated_at"`)}
 	}
+	if _, ok := tc.mutation.TenantID(); !ok {
+		return &ValidationError{Name: "tenant_id", err: errors.New(`generated: missing required field "Tenant.tenant_id"`)}
+	}
 	if _, ok := tc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Tenant.name"`)}
 	}
 	if v, ok := tc.mutation.Name(); ok {
 		if err := tenant.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Tenant.name": %w`, err)}
-		}
-	}
-	if _, ok := tc.mutation.Code(); !ok {
-		return &ValidationError{Name: "code", err: errors.New(`generated: missing required field "Tenant.code"`)}
-	}
-	if v, ok := tc.mutation.Code(); ok {
-		if err := tenant.CodeValidator(v); err != nil {
-			return &ValidationError{Name: "code", err: fmt.Errorf(`generated: validator failed for field "Tenant.code": %w`, err)}
 		}
 	}
 	if _, ok := tc.mutation.Description(); !ok {
@@ -238,24 +221,24 @@ func (tc *TenantCreate) createSpec() (*Tenant, *sqlgraph.CreateSpec) {
 	)
 	_spec.OnConflict = tc.conflict
 	if value, ok := tc.mutation.CreatedAt(); ok {
-		_spec.SetField(tenant.FieldCreatedAt, field.TypeInt, value)
+		_spec.SetField(tenant.FieldCreatedAt, field.TypeInt64, value)
 		_node.CreatedAt = value
 	}
 	if value, ok := tc.mutation.UpdatedAt(); ok {
-		_spec.SetField(tenant.FieldUpdatedAt, field.TypeInt, value)
+		_spec.SetField(tenant.FieldUpdatedAt, field.TypeInt64, value)
 		_node.UpdatedAt = value
 	}
 	if value, ok := tc.mutation.DeletedAt(); ok {
-		_spec.SetField(tenant.FieldDeletedAt, field.TypeInt, value)
+		_spec.SetField(tenant.FieldDeletedAt, field.TypeInt64, value)
 		_node.DeletedAt = &value
+	}
+	if value, ok := tc.mutation.TenantID(); ok {
+		_spec.SetField(tenant.FieldTenantID, field.TypeUint64, value)
+		_node.TenantID = value
 	}
 	if value, ok := tc.mutation.Name(); ok {
 		_spec.SetField(tenant.FieldName, field.TypeString, value)
 		_node.Name = value
-	}
-	if value, ok := tc.mutation.Code(); ok {
-		_spec.SetField(tenant.FieldCode, field.TypeString, value)
-		_node.Code = value
 	}
 	if value, ok := tc.mutation.Description(); ok {
 		_spec.SetField(tenant.FieldDescription, field.TypeString, value)
@@ -318,7 +301,7 @@ type (
 )
 
 // SetUpdatedAt sets the "updated_at" field.
-func (u *TenantUpsert) SetUpdatedAt(v int) *TenantUpsert {
+func (u *TenantUpsert) SetUpdatedAt(v int64) *TenantUpsert {
 	u.Set(tenant.FieldUpdatedAt, v)
 	return u
 }
@@ -330,13 +313,13 @@ func (u *TenantUpsert) UpdateUpdatedAt() *TenantUpsert {
 }
 
 // AddUpdatedAt adds v to the "updated_at" field.
-func (u *TenantUpsert) AddUpdatedAt(v int) *TenantUpsert {
+func (u *TenantUpsert) AddUpdatedAt(v int64) *TenantUpsert {
 	u.Add(tenant.FieldUpdatedAt, v)
 	return u
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (u *TenantUpsert) SetDeletedAt(v int) *TenantUpsert {
+func (u *TenantUpsert) SetDeletedAt(v int64) *TenantUpsert {
 	u.Set(tenant.FieldDeletedAt, v)
 	return u
 }
@@ -348,7 +331,7 @@ func (u *TenantUpsert) UpdateDeletedAt() *TenantUpsert {
 }
 
 // AddDeletedAt adds v to the "deleted_at" field.
-func (u *TenantUpsert) AddDeletedAt(v int) *TenantUpsert {
+func (u *TenantUpsert) AddDeletedAt(v int64) *TenantUpsert {
 	u.Add(tenant.FieldDeletedAt, v)
 	return u
 }
@@ -356,6 +339,24 @@ func (u *TenantUpsert) AddDeletedAt(v int) *TenantUpsert {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (u *TenantUpsert) ClearDeletedAt() *TenantUpsert {
 	u.SetNull(tenant.FieldDeletedAt)
+	return u
+}
+
+// SetTenantID sets the "tenant_id" field.
+func (u *TenantUpsert) SetTenantID(v uint64) *TenantUpsert {
+	u.Set(tenant.FieldTenantID, v)
+	return u
+}
+
+// UpdateTenantID sets the "tenant_id" field to the value that was provided on create.
+func (u *TenantUpsert) UpdateTenantID() *TenantUpsert {
+	u.SetExcluded(tenant.FieldTenantID)
+	return u
+}
+
+// AddTenantID adds v to the "tenant_id" field.
+func (u *TenantUpsert) AddTenantID(v uint64) *TenantUpsert {
+	u.Add(tenant.FieldTenantID, v)
 	return u
 }
 
@@ -368,18 +369,6 @@ func (u *TenantUpsert) SetName(v string) *TenantUpsert {
 // UpdateName sets the "name" field to the value that was provided on create.
 func (u *TenantUpsert) UpdateName() *TenantUpsert {
 	u.SetExcluded(tenant.FieldName)
-	return u
-}
-
-// SetCode sets the "code" field.
-func (u *TenantUpsert) SetCode(v string) *TenantUpsert {
-	u.Set(tenant.FieldCode, v)
-	return u
-}
-
-// UpdateCode sets the "code" field to the value that was provided on create.
-func (u *TenantUpsert) UpdateCode() *TenantUpsert {
-	u.SetExcluded(tenant.FieldCode)
 	return u
 }
 
@@ -459,14 +448,14 @@ func (u *TenantUpsertOne) Update(set func(*TenantUpsert)) *TenantUpsertOne {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (u *TenantUpsertOne) SetUpdatedAt(v int) *TenantUpsertOne {
+func (u *TenantUpsertOne) SetUpdatedAt(v int64) *TenantUpsertOne {
 	return u.Update(func(s *TenantUpsert) {
 		s.SetUpdatedAt(v)
 	})
 }
 
 // AddUpdatedAt adds v to the "updated_at" field.
-func (u *TenantUpsertOne) AddUpdatedAt(v int) *TenantUpsertOne {
+func (u *TenantUpsertOne) AddUpdatedAt(v int64) *TenantUpsertOne {
 	return u.Update(func(s *TenantUpsert) {
 		s.AddUpdatedAt(v)
 	})
@@ -480,14 +469,14 @@ func (u *TenantUpsertOne) UpdateUpdatedAt() *TenantUpsertOne {
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (u *TenantUpsertOne) SetDeletedAt(v int) *TenantUpsertOne {
+func (u *TenantUpsertOne) SetDeletedAt(v int64) *TenantUpsertOne {
 	return u.Update(func(s *TenantUpsert) {
 		s.SetDeletedAt(v)
 	})
 }
 
 // AddDeletedAt adds v to the "deleted_at" field.
-func (u *TenantUpsertOne) AddDeletedAt(v int) *TenantUpsertOne {
+func (u *TenantUpsertOne) AddDeletedAt(v int64) *TenantUpsertOne {
 	return u.Update(func(s *TenantUpsert) {
 		s.AddDeletedAt(v)
 	})
@@ -507,6 +496,27 @@ func (u *TenantUpsertOne) ClearDeletedAt() *TenantUpsertOne {
 	})
 }
 
+// SetTenantID sets the "tenant_id" field.
+func (u *TenantUpsertOne) SetTenantID(v uint64) *TenantUpsertOne {
+	return u.Update(func(s *TenantUpsert) {
+		s.SetTenantID(v)
+	})
+}
+
+// AddTenantID adds v to the "tenant_id" field.
+func (u *TenantUpsertOne) AddTenantID(v uint64) *TenantUpsertOne {
+	return u.Update(func(s *TenantUpsert) {
+		s.AddTenantID(v)
+	})
+}
+
+// UpdateTenantID sets the "tenant_id" field to the value that was provided on create.
+func (u *TenantUpsertOne) UpdateTenantID() *TenantUpsertOne {
+	return u.Update(func(s *TenantUpsert) {
+		s.UpdateTenantID()
+	})
+}
+
 // SetName sets the "name" field.
 func (u *TenantUpsertOne) SetName(v string) *TenantUpsertOne {
 	return u.Update(func(s *TenantUpsert) {
@@ -518,20 +528,6 @@ func (u *TenantUpsertOne) SetName(v string) *TenantUpsertOne {
 func (u *TenantUpsertOne) UpdateName() *TenantUpsertOne {
 	return u.Update(func(s *TenantUpsert) {
 		s.UpdateName()
-	})
-}
-
-// SetCode sets the "code" field.
-func (u *TenantUpsertOne) SetCode(v string) *TenantUpsertOne {
-	return u.Update(func(s *TenantUpsert) {
-		s.SetCode(v)
-	})
-}
-
-// UpdateCode sets the "code" field to the value that was provided on create.
-func (u *TenantUpsertOne) UpdateCode() *TenantUpsertOne {
-	return u.Update(func(s *TenantUpsert) {
-		s.UpdateCode()
 	})
 }
 
@@ -782,14 +778,14 @@ func (u *TenantUpsertBulk) Update(set func(*TenantUpsert)) *TenantUpsertBulk {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (u *TenantUpsertBulk) SetUpdatedAt(v int) *TenantUpsertBulk {
+func (u *TenantUpsertBulk) SetUpdatedAt(v int64) *TenantUpsertBulk {
 	return u.Update(func(s *TenantUpsert) {
 		s.SetUpdatedAt(v)
 	})
 }
 
 // AddUpdatedAt adds v to the "updated_at" field.
-func (u *TenantUpsertBulk) AddUpdatedAt(v int) *TenantUpsertBulk {
+func (u *TenantUpsertBulk) AddUpdatedAt(v int64) *TenantUpsertBulk {
 	return u.Update(func(s *TenantUpsert) {
 		s.AddUpdatedAt(v)
 	})
@@ -803,14 +799,14 @@ func (u *TenantUpsertBulk) UpdateUpdatedAt() *TenantUpsertBulk {
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (u *TenantUpsertBulk) SetDeletedAt(v int) *TenantUpsertBulk {
+func (u *TenantUpsertBulk) SetDeletedAt(v int64) *TenantUpsertBulk {
 	return u.Update(func(s *TenantUpsert) {
 		s.SetDeletedAt(v)
 	})
 }
 
 // AddDeletedAt adds v to the "deleted_at" field.
-func (u *TenantUpsertBulk) AddDeletedAt(v int) *TenantUpsertBulk {
+func (u *TenantUpsertBulk) AddDeletedAt(v int64) *TenantUpsertBulk {
 	return u.Update(func(s *TenantUpsert) {
 		s.AddDeletedAt(v)
 	})
@@ -830,6 +826,27 @@ func (u *TenantUpsertBulk) ClearDeletedAt() *TenantUpsertBulk {
 	})
 }
 
+// SetTenantID sets the "tenant_id" field.
+func (u *TenantUpsertBulk) SetTenantID(v uint64) *TenantUpsertBulk {
+	return u.Update(func(s *TenantUpsert) {
+		s.SetTenantID(v)
+	})
+}
+
+// AddTenantID adds v to the "tenant_id" field.
+func (u *TenantUpsertBulk) AddTenantID(v uint64) *TenantUpsertBulk {
+	return u.Update(func(s *TenantUpsert) {
+		s.AddTenantID(v)
+	})
+}
+
+// UpdateTenantID sets the "tenant_id" field to the value that was provided on create.
+func (u *TenantUpsertBulk) UpdateTenantID() *TenantUpsertBulk {
+	return u.Update(func(s *TenantUpsert) {
+		s.UpdateTenantID()
+	})
+}
+
 // SetName sets the "name" field.
 func (u *TenantUpsertBulk) SetName(v string) *TenantUpsertBulk {
 	return u.Update(func(s *TenantUpsert) {
@@ -841,20 +858,6 @@ func (u *TenantUpsertBulk) SetName(v string) *TenantUpsertBulk {
 func (u *TenantUpsertBulk) UpdateName() *TenantUpsertBulk {
 	return u.Update(func(s *TenantUpsert) {
 		s.UpdateName()
-	})
-}
-
-// SetCode sets the "code" field.
-func (u *TenantUpsertBulk) SetCode(v string) *TenantUpsertBulk {
-	return u.Update(func(s *TenantUpsert) {
-		s.SetCode(v)
-	})
-}
-
-// UpdateCode sets the "code" field to the value that was provided on create.
-func (u *TenantUpsertBulk) UpdateCode() *TenantUpsertBulk {
-	return u.Update(func(s *TenantUpsert) {
-		s.UpdateCode()
 	})
 }
 

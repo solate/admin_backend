@@ -1,11 +1,10 @@
 package middleware
 
 import (
-	"context"
-	"errors"
 	"net/http"
 
 	"github.com/solate/admin_backend/app/admin/internal/config"
+	"github.com/solate/admin_backend/pkg/common/context_util"
 	"github.com/solate/admin_backend/pkg/common/xerr"
 	"github.com/solate/admin_backend/pkg/utils/jwt"
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -36,11 +35,11 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		// 3. 租户隔离验证
-		if err := m.validateTenant(r, claims); err != nil {
-			httpx.Error(w, xerr.NewErrCodeMsg(http.StatusForbidden, err.Error()))
-			return
-		}
+		// // 3. 租户隔离验证
+		// if err := m.validateTenant(r, claims); err != nil {
+		// 	httpx.Error(w, xerr.NewErrCodeMsg(http.StatusForbidden, err.Error()))
+		// 	return
+		// }
 
 		// // 4. 权限验证（可选）
 		// if len(m.requiredRoles) > 0 {
@@ -52,21 +51,21 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 
 		// 将租户ID和用户ID存入context
 		ctx := r.Context()
-		ctx = context.WithValue(ctx, jwt.TenantIDKey, claims.TenantID)
-		ctx = context.WithValue(ctx, jwt.UserIDKey, claims.UserID)
+		ctx = context_util.SetUserIDToCtx(ctx, claims.UserID)
+		ctx = context_util.SetTenantIDToCtx(ctx, claims.TenantID)
 
 		next(w, r.WithContext(ctx))
 	}
 }
 
-// 租户隔离验证
-func (m *AuthMiddleware) validateTenant(r *http.Request, claims *jwt.Claims) error {
-	reqTenant := r.Header.Get(jwt.TenantIDKey)
-	if reqTenant != "" && claims.TenantID != reqTenant {
-		return errors.New("租户身份不匹配")
-	}
-	return nil
-}
+// // 租户隔离验证
+// func (m *AuthMiddleware) validateTenant(r *http.Request, claims *jwt.Claims) error {
+// 	reqTenant := r.Header.Get("x")
+// 	if reqTenant != "" && claims.TenantID != reqTenant {
+// 		return errors.New("租户身份不匹配")
+// 	}
+// 	return nil
+// }
 
 // 角色权限验证（可选）
 func (m *AuthMiddleware) validateRoles(claims *jwt.Claims) error {

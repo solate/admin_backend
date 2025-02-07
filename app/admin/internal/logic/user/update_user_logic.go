@@ -13,33 +13,33 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type UpdateLogic struct {
+type UpdateUserLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
 // 更新用户
-func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogic {
-	return &UpdateLogic{
+func NewUpdateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateUserLogic {
+	return &UpdateUserLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *UpdateLogic) Update(req *types.UpdateUserReq) (resp *types.UpdateUserResp, err error) {
+func (l *UpdateUserLogic) UpdateUser(req *types.UpdateUserReq) (resp bool, err error) {
 	// 1. 检查用户是否存在
-	user, err := l.svcCtx.Orm.User.Query().Where(user.UserID(uint64(req.UserID))).Only(l.ctx)
+	user, err := l.svcCtx.DB.User.Query().Where(user.UserID(uint64(req.UserID))).Only(l.ctx)
 	if err != nil {
 		if generated.IsNotFound(err) {
-			return nil, xerr.NewErrMsg("用户不存在")
+			return false, xerr.NewErrMsg("用户不存在")
 		}
-		return nil, xerr.NewErrCode(xerr.DbError)
+		return false, xerr.NewErrCode(xerr.DbError)
 	}
 
 	// 2. 更新用户信息
-	updateBuilder := l.svcCtx.Orm.User.UpdateOne(user).
+	updateBuilder := l.svcCtx.DB.User.UpdateOne(user).
 		SetUpdatedAt(time.Now().UnixMilli())
 
 	if req.Name != "" {
@@ -50,10 +50,8 @@ func (l *UpdateLogic) Update(req *types.UpdateUserReq) (resp *types.UpdateUserRe
 	// 3. 执行更新
 	_, err = updateBuilder.Save(l.ctx)
 	if err != nil {
-		return nil, xerr.NewErrCode(xerr.DbError)
+		return false, xerr.NewErrCode(xerr.DbError)
 	}
 
-	return &types.UpdateUserResp{
-		Success: true,
-	}, nil
+	return true, nil
 }

@@ -63,9 +63,9 @@ func (uc *UserCreate) SetNillableDeletedAt(i *int64) *UserCreate {
 	return uc
 }
 
-// SetTenantCode sets the "tenant_code" field.
-func (uc *UserCreate) SetTenantCode(s string) *UserCreate {
-	uc.mutation.SetTenantCode(s)
+// SetTenantID sets the "tenant_id" field.
+func (uc *UserCreate) SetTenantID(u uint64) *UserCreate {
+	uc.mutation.SetTenantID(u)
 	return uc
 }
 
@@ -362,13 +362,8 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "User.updated_at"`)}
 	}
-	if _, ok := uc.mutation.TenantCode(); !ok {
-		return &ValidationError{Name: "tenant_code", err: errors.New(`generated: missing required field "User.tenant_code"`)}
-	}
-	if v, ok := uc.mutation.TenantCode(); ok {
-		if err := user.TenantCodeValidator(v); err != nil {
-			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "User.tenant_code": %w`, err)}
-		}
+	if _, ok := uc.mutation.TenantID(); !ok {
+		return &ValidationError{Name: "tenant_id", err: errors.New(`generated: missing required field "User.tenant_id"`)}
 	}
 	if _, ok := uc.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`generated: missing required field "User.user_id"`)}
@@ -471,9 +466,9 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldDeletedAt, field.TypeInt64, value)
 		_node.DeletedAt = &value
 	}
-	if value, ok := uc.mutation.TenantCode(); ok {
-		_spec.SetField(user.FieldTenantCode, field.TypeString, value)
-		_node.TenantCode = value
+	if value, ok := uc.mutation.TenantID(); ok {
+		_spec.SetField(user.FieldTenantID, field.TypeUint64, value)
+		_node.TenantID = value
 	}
 	if value, ok := uc.mutation.UserID(); ok {
 		_spec.SetField(user.FieldUserID, field.TypeUint64, value)
@@ -625,15 +620,39 @@ func (u *UserUpsert) ClearDeletedAt() *UserUpsert {
 	return u
 }
 
-// SetTenantCode sets the "tenant_code" field.
-func (u *UserUpsert) SetTenantCode(v string) *UserUpsert {
-	u.Set(user.FieldTenantCode, v)
+// SetTenantID sets the "tenant_id" field.
+func (u *UserUpsert) SetTenantID(v uint64) *UserUpsert {
+	u.Set(user.FieldTenantID, v)
 	return u
 }
 
-// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
-func (u *UserUpsert) UpdateTenantCode() *UserUpsert {
-	u.SetExcluded(user.FieldTenantCode)
+// UpdateTenantID sets the "tenant_id" field to the value that was provided on create.
+func (u *UserUpsert) UpdateTenantID() *UserUpsert {
+	u.SetExcluded(user.FieldTenantID)
+	return u
+}
+
+// AddTenantID adds v to the "tenant_id" field.
+func (u *UserUpsert) AddTenantID(v uint64) *UserUpsert {
+	u.Add(user.FieldTenantID, v)
+	return u
+}
+
+// SetUserID sets the "user_id" field.
+func (u *UserUpsert) SetUserID(v uint64) *UserUpsert {
+	u.Set(user.FieldUserID, v)
+	return u
+}
+
+// UpdateUserID sets the "user_id" field to the value that was provided on create.
+func (u *UserUpsert) UpdateUserID() *UserUpsert {
+	u.SetExcluded(user.FieldUserID)
+	return u
+}
+
+// AddUserID adds v to the "user_id" field.
+func (u *UserUpsert) AddUserID(v uint64) *UserUpsert {
+	u.Add(user.FieldUserID, v)
 	return u
 }
 
@@ -837,9 +856,6 @@ func (u *UserUpsertOne) UpdateNewValues() *UserUpsertOne {
 		if _, exists := u.create.mutation.CreatedAt(); exists {
 			s.SetIgnore(user.FieldCreatedAt)
 		}
-		if _, exists := u.create.mutation.UserID(); exists {
-			s.SetIgnore(user.FieldUserID)
-		}
 	}))
 	return u
 }
@@ -920,17 +936,45 @@ func (u *UserUpsertOne) ClearDeletedAt() *UserUpsertOne {
 	})
 }
 
-// SetTenantCode sets the "tenant_code" field.
-func (u *UserUpsertOne) SetTenantCode(v string) *UserUpsertOne {
+// SetTenantID sets the "tenant_id" field.
+func (u *UserUpsertOne) SetTenantID(v uint64) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.SetTenantCode(v)
+		s.SetTenantID(v)
 	})
 }
 
-// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateTenantCode() *UserUpsertOne {
+// AddTenantID adds v to the "tenant_id" field.
+func (u *UserUpsertOne) AddTenantID(v uint64) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdateTenantCode()
+		s.AddTenantID(v)
+	})
+}
+
+// UpdateTenantID sets the "tenant_id" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateTenantID() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateTenantID()
+	})
+}
+
+// SetUserID sets the "user_id" field.
+func (u *UserUpsertOne) SetUserID(v uint64) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetUserID(v)
+	})
+}
+
+// AddUserID adds v to the "user_id" field.
+func (u *UserUpsertOne) AddUserID(v uint64) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.AddUserID(v)
+	})
+}
+
+// UpdateUserID sets the "user_id" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateUserID() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateUserID()
 	})
 }
 
@@ -1330,9 +1374,6 @@ func (u *UserUpsertBulk) UpdateNewValues() *UserUpsertBulk {
 			if _, exists := b.mutation.CreatedAt(); exists {
 				s.SetIgnore(user.FieldCreatedAt)
 			}
-			if _, exists := b.mutation.UserID(); exists {
-				s.SetIgnore(user.FieldUserID)
-			}
 		}
 	}))
 	return u
@@ -1414,17 +1455,45 @@ func (u *UserUpsertBulk) ClearDeletedAt() *UserUpsertBulk {
 	})
 }
 
-// SetTenantCode sets the "tenant_code" field.
-func (u *UserUpsertBulk) SetTenantCode(v string) *UserUpsertBulk {
+// SetTenantID sets the "tenant_id" field.
+func (u *UserUpsertBulk) SetTenantID(v uint64) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.SetTenantCode(v)
+		s.SetTenantID(v)
 	})
 }
 
-// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateTenantCode() *UserUpsertBulk {
+// AddTenantID adds v to the "tenant_id" field.
+func (u *UserUpsertBulk) AddTenantID(v uint64) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdateTenantCode()
+		s.AddTenantID(v)
+	})
+}
+
+// UpdateTenantID sets the "tenant_id" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateTenantID() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateTenantID()
+	})
+}
+
+// SetUserID sets the "user_id" field.
+func (u *UserUpsertBulk) SetUserID(v uint64) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetUserID(v)
+	})
+}
+
+// AddUserID adds v to the "user_id" field.
+func (u *UserUpsertBulk) AddUserID(v uint64) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.AddUserID(v)
+	})
+}
+
+// UpdateUserID sets the "user_id" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateUserID() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateUserID()
 	})
 }
 

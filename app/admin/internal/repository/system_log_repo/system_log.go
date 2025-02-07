@@ -24,7 +24,7 @@ func NewSystemLogLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SystemL
 
 // 新增系统日志
 func (l *SystemLogLogic) Add(user *generated.User) {
-	_, err := l.svcCtx.Orm.SystemLog.Create().
+	_, err := l.svcCtx.DB.SystemLog.Create().
 		SetUserID(user.UserID).
 		Save(l.ctx)
 	if err != nil {

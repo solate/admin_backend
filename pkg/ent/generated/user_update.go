@@ -76,17 +76,45 @@ func (uu *UserUpdate) ClearDeletedAt() *UserUpdate {
 	return uu
 }
 
-// SetTenantCode sets the "tenant_code" field.
-func (uu *UserUpdate) SetTenantCode(s string) *UserUpdate {
-	uu.mutation.SetTenantCode(s)
+// SetTenantID sets the "tenant_id" field.
+func (uu *UserUpdate) SetTenantID(u uint64) *UserUpdate {
+	uu.mutation.ResetTenantID()
+	uu.mutation.SetTenantID(u)
 	return uu
 }
 
-// SetNillableTenantCode sets the "tenant_code" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableTenantCode(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetTenantCode(*s)
+// SetNillableTenantID sets the "tenant_id" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableTenantID(u *uint64) *UserUpdate {
+	if u != nil {
+		uu.SetTenantID(*u)
 	}
+	return uu
+}
+
+// AddTenantID adds u to the "tenant_id" field.
+func (uu *UserUpdate) AddTenantID(u int64) *UserUpdate {
+	uu.mutation.AddTenantID(u)
+	return uu
+}
+
+// SetUserID sets the "user_id" field.
+func (uu *UserUpdate) SetUserID(u uint64) *UserUpdate {
+	uu.mutation.ResetUserID()
+	uu.mutation.SetUserID(u)
+	return uu
+}
+
+// SetNillableUserID sets the "user_id" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableUserID(u *uint64) *UserUpdate {
+	if u != nil {
+		uu.SetUserID(*u)
+	}
+	return uu
+}
+
+// AddUserID adds u to the "user_id" field.
+func (uu *UserUpdate) AddUserID(u int64) *UserUpdate {
+	uu.mutation.AddUserID(u)
 	return uu
 }
 
@@ -341,11 +369,6 @@ func (uu *UserUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (uu *UserUpdate) check() error {
-	if v, ok := uu.mutation.TenantCode(); ok {
-		if err := user.TenantCodeValidator(v); err != nil {
-			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "User.tenant_code": %w`, err)}
-		}
-	}
 	if v, ok := uu.mutation.UserName(); ok {
 		if err := user.UserNameValidator(v); err != nil {
 			return &ValidationError{Name: "user_name", err: fmt.Errorf(`generated: validator failed for field "User.user_name": %w`, err)}
@@ -402,8 +425,17 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if uu.mutation.DeletedAtCleared() {
 		_spec.ClearField(user.FieldDeletedAt, field.TypeInt64)
 	}
-	if value, ok := uu.mutation.TenantCode(); ok {
-		_spec.SetField(user.FieldTenantCode, field.TypeString, value)
+	if value, ok := uu.mutation.TenantID(); ok {
+		_spec.SetField(user.FieldTenantID, field.TypeUint64, value)
+	}
+	if value, ok := uu.mutation.AddedTenantID(); ok {
+		_spec.AddField(user.FieldTenantID, field.TypeUint64, value)
+	}
+	if value, ok := uu.mutation.UserID(); ok {
+		_spec.SetField(user.FieldUserID, field.TypeUint64, value)
+	}
+	if value, ok := uu.mutation.AddedUserID(); ok {
+		_spec.AddField(user.FieldUserID, field.TypeUint64, value)
 	}
 	if value, ok := uu.mutation.UserName(); ok {
 		_spec.SetField(user.FieldUserName, field.TypeString, value)
@@ -529,17 +561,45 @@ func (uuo *UserUpdateOne) ClearDeletedAt() *UserUpdateOne {
 	return uuo
 }
 
-// SetTenantCode sets the "tenant_code" field.
-func (uuo *UserUpdateOne) SetTenantCode(s string) *UserUpdateOne {
-	uuo.mutation.SetTenantCode(s)
+// SetTenantID sets the "tenant_id" field.
+func (uuo *UserUpdateOne) SetTenantID(u uint64) *UserUpdateOne {
+	uuo.mutation.ResetTenantID()
+	uuo.mutation.SetTenantID(u)
 	return uuo
 }
 
-// SetNillableTenantCode sets the "tenant_code" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableTenantCode(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetTenantCode(*s)
+// SetNillableTenantID sets the "tenant_id" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableTenantID(u *uint64) *UserUpdateOne {
+	if u != nil {
+		uuo.SetTenantID(*u)
 	}
+	return uuo
+}
+
+// AddTenantID adds u to the "tenant_id" field.
+func (uuo *UserUpdateOne) AddTenantID(u int64) *UserUpdateOne {
+	uuo.mutation.AddTenantID(u)
+	return uuo
+}
+
+// SetUserID sets the "user_id" field.
+func (uuo *UserUpdateOne) SetUserID(u uint64) *UserUpdateOne {
+	uuo.mutation.ResetUserID()
+	uuo.mutation.SetUserID(u)
+	return uuo
+}
+
+// SetNillableUserID sets the "user_id" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableUserID(u *uint64) *UserUpdateOne {
+	if u != nil {
+		uuo.SetUserID(*u)
+	}
+	return uuo
+}
+
+// AddUserID adds u to the "user_id" field.
+func (uuo *UserUpdateOne) AddUserID(u int64) *UserUpdateOne {
+	uuo.mutation.AddUserID(u)
 	return uuo
 }
 
@@ -807,11 +867,6 @@ func (uuo *UserUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (uuo *UserUpdateOne) check() error {
-	if v, ok := uuo.mutation.TenantCode(); ok {
-		if err := user.TenantCodeValidator(v); err != nil {
-			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "User.tenant_code": %w`, err)}
-		}
-	}
 	if v, ok := uuo.mutation.UserName(); ok {
 		if err := user.UserNameValidator(v); err != nil {
 			return &ValidationError{Name: "user_name", err: fmt.Errorf(`generated: validator failed for field "User.user_name": %w`, err)}
@@ -885,8 +940,17 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if uuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(user.FieldDeletedAt, field.TypeInt64)
 	}
-	if value, ok := uuo.mutation.TenantCode(); ok {
-		_spec.SetField(user.FieldTenantCode, field.TypeString, value)
+	if value, ok := uuo.mutation.TenantID(); ok {
+		_spec.SetField(user.FieldTenantID, field.TypeUint64, value)
+	}
+	if value, ok := uuo.mutation.AddedTenantID(); ok {
+		_spec.AddField(user.FieldTenantID, field.TypeUint64, value)
+	}
+	if value, ok := uuo.mutation.UserID(); ok {
+		_spec.SetField(user.FieldUserID, field.TypeUint64, value)
+	}
+	if value, ok := uuo.mutation.AddedUserID(); ok {
+		_spec.AddField(user.FieldUserID, field.TypeUint64, value)
 	}
 	if value, ok := uuo.mutation.UserName(); ok {
 		_spec.SetField(user.FieldUserName, field.TypeString, value)

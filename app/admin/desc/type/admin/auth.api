@@ -1,8 +1,15 @@
 syntax = "v1"
 
+info (
+	title   : "Auth服务接口"
+	desc    : "用户登录注册相关接口定义"
+	author  : "solate"
+	version : "v1.0"
+)
+
+
 type (
-
-
+ 
     RegisterReq {
         UserName string `json:"user_name"`
         Password string `json:"password"`
@@ -18,13 +25,13 @@ type (
     }
 
     LoginReq {
-        UserName string `json:"user_name"`
-        Password string `json:"password"`
-    }
+		UserName string `json:"username" validate:"required"` // 用户名
+		Password string `json:"password" validate:"required"` // 密码
+	}
 
     LoginResp {
-        UserID   uint64  `json:"user_id"`
         Token    string `json:"token"`
+        UserID   uint64  `json:"user_id"`
         UserName string `json:"user_name"`
         Phone    string `json:"phone"`
         Email    string `json:"email"`
@@ -33,11 +40,6 @@ type (
     LogoutReq {
         UserID uint64  `json:"user_id"`
     }
-
-    LogoutResp {
-    }
-
-
 )
 
 

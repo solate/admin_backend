@@ -6,14 +6,9 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-const (
-	TenantIDKey = "tenantID"
-	UserIDKey   = "userID"
-)
-
 type Claims struct {
-	UserID   int64  `json:"user_id"`
-	TenantID string `json:"tenant_id"`
+	UserID   uint64 `json:"user_id"`
+	TenantID uint64 `json:"tenant_id"`
 	jwt.RegisteredClaims
 }
 
@@ -23,7 +18,7 @@ type JWTConfig struct {
 }
 
 // 生成JWT Token
-func GenerateToken(userID int64, tenantID string, config JWTConfig) (string, error) {
+func GenerateToken(userID, tenantID uint64, config JWTConfig) (string, error) {
 	now := time.Now()
 	claims := Claims{
 		UserID:   userID,

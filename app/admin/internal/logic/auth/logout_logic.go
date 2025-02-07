@@ -30,7 +30,7 @@ func NewLogoutLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LogoutLogi
 func (l *LogoutLogic) Logout(req *types.LogoutReq) (resp bool, err error) {
 
 	// 1. 查找用户
-	user, err := l.svcCtx.Orm.User.Query().
+	user, err := l.svcCtx.DB.User.Query().
 		Where(user.UserID(req.UserID)).
 		Where(user.DeletedAt(0)).
 		Only(l.ctx)
@@ -44,7 +44,7 @@ func (l *LogoutLogic) Logout(req *types.LogoutReq) (resp bool, err error) {
 	}
 
 	// 更新user
-	_, err = l.svcCtx.Orm.User.UpdateOne(user).
+	_, err = l.svcCtx.DB.User.UpdateOne(user).
 		SetToken("").
 		Save(l.ctx)
 	if err != nil {
@@ -54,7 +54,7 @@ func (l *LogoutLogic) Logout(req *types.LogoutReq) (resp bool, err error) {
 	}
 
 	// 记录登出日志
-	_, err = l.svcCtx.Orm.SystemLog.Create().
+	_, err = l.svcCtx.DB.SystemLog.Create().
 		SetUserID(user.UserID).
 		Save(l.ctx)
 

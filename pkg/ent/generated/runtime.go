@@ -137,23 +137,17 @@ func init() {
 	// tenantDescCreatedAt is the schema descriptor for created_at field.
 	tenantDescCreatedAt := tenantFields[0].Descriptor()
 	// tenant.DefaultCreatedAt holds the default value on creation for the created_at field.
-	tenant.DefaultCreatedAt = tenantDescCreatedAt.Default.(int)
+	tenant.DefaultCreatedAt = tenantDescCreatedAt.Default.(int64)
 	// tenantDescUpdatedAt is the schema descriptor for updated_at field.
 	tenantDescUpdatedAt := tenantFields[1].Descriptor()
 	// tenant.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	tenant.DefaultUpdatedAt = tenantDescUpdatedAt.Default.(int)
+	tenant.DefaultUpdatedAt = tenantDescUpdatedAt.Default.(int64)
 	// tenantDescName is the schema descriptor for name field.
-	tenantDescName := tenantFields[3].Descriptor()
+	tenantDescName := tenantFields[4].Descriptor()
 	// tenant.DefaultName holds the default value on creation for the name field.
 	tenant.DefaultName = tenantDescName.Default.(string)
 	// tenant.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	tenant.NameValidator = tenantDescName.Validators[0].(func(string) error)
-	// tenantDescCode is the schema descriptor for code field.
-	tenantDescCode := tenantFields[4].Descriptor()
-	// tenant.DefaultCode holds the default value on creation for the code field.
-	tenant.DefaultCode = tenantDescCode.Default.(string)
-	// tenant.CodeValidator is a validator for the "code" field. It is called by the builders before save.
-	tenant.CodeValidator = tenantDescCode.Validators[0].(func(string) error)
 	// tenantDescDescription is the schema descriptor for description field.
 	tenantDescDescription := tenantFields[5].Descriptor()
 	// tenant.DefaultDescription holds the default value on creation for the description field.
@@ -172,10 +166,6 @@ func init() {
 	userDescUpdatedAt := userFields[1].Descriptor()
 	// user.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(int64)
-	// userDescTenantCode is the schema descriptor for tenant_code field.
-	userDescTenantCode := userFields[3].Descriptor()
-	// user.TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
-	user.TenantCodeValidator = userDescTenantCode.Validators[0].(func(string) error)
 	// userDescUserName is the schema descriptor for user_name field.
 	userDescUserName := userFields[5].Descriptor()
 	// user.DefaultUserName holds the default value on creation for the user_name field.

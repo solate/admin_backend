@@ -125,11 +125,11 @@ var (
 	// TenantsColumns holds the columns for the "tenants" table.
 	TenantsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "created_at", Type: field.TypeInt, Comment: "创建时间", Default: 0},
-		{Name: "updated_at", Type: field.TypeInt, Comment: "修改时间", Default: 0},
-		{Name: "deleted_at", Type: field.TypeInt, Nullable: true, Comment: "删除时间"},
+		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
+		{Name: "tenant_id", Type: field.TypeUint64, Unique: true, Comment: "租户ID"},
 		{Name: "name", Type: field.TypeString, Comment: "租户名称", Default: ""},
-		{Name: "code", Type: field.TypeString, Comment: "租户编码", Default: ""},
 		{Name: "description", Type: field.TypeString, Comment: "租户描述", Default: ""},
 		{Name: "status", Type: field.TypeInt, Comment: "租户状态：1: 启用, 2: 禁用", Default: 1},
 	}
@@ -141,9 +141,9 @@ var (
 		PrimaryKey: []*schema.Column{TenantsColumns[0]},
 		Indexes: []*schema.Index{
 			{
-				Name:    "tenant_code",
-				Unique:  true,
-				Columns: []*schema.Column{TenantsColumns[5]},
+				Name:    "tenant_tenant_id",
+				Unique:  false,
+				Columns: []*schema.Column{TenantsColumns[4]},
 			},
 		},
 	}
@@ -153,7 +153,7 @@ var (
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
 		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
-		{Name: "tenant_code", Type: field.TypeString, Comment: "租户编码"},
+		{Name: "tenant_id", Type: field.TypeUint64, Comment: "租户ID"},
 		{Name: "user_id", Type: field.TypeUint64, Unique: true, Comment: "用户ID"},
 		{Name: "user_name", Type: field.TypeString, Comment: "用户名", Default: ""},
 		{Name: "password", Type: field.TypeString, Comment: "密码", Default: ""},

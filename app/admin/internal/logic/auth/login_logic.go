@@ -32,7 +32,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err error) {
 	// 1. 查找用户
-	user, err := l.svcCtx.Orm.User.Query().
+	user, err := l.svcCtx.DB.User.Query().
 		Where(user.UserName(req.UserName)).
 		Where(user.DeletedAt(0)).
 		Only(l.ctx)
@@ -45,12 +45,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	}
 
 	// 2. 验证密码
-	hashedPassword, err := passwordgen.Argon2Hash(req.Password, []byte(user.Salt))
-	if err != nil {
-		return nil, xerr.NewErrCode(xerr.ServerError)
-	}
-
-	if hashedPassword != user.Password {
+	if passwordgen.VerifyPassword(req.Password, user.Salt) {
 		return nil, xerr.NewErrMsg("密码错误")
 	}
 
@@ -60,7 +55,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	}
 
 	// 4. 生成JWT Token
-	token, err := jwt.GenerateToken(int64(user.UserID), user.TenantCode, jwt.JWTConfig{
+	token, err := jwt.GenerateToken(user.UserID, user.TenantID, jwt.JWTConfig{
 		AccessSecret: []byte(l.svcCtx.Config.JwtAuth.AccessSecret),
 		AccessExpire: l.svcCtx.Config.JwtAuth.AccessExpire,
 	})
@@ -69,7 +64,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	}
 
 	// 5. 更新用户Token
-	_, err = l.svcCtx.Orm.User.UpdateOne(user).
+	_, err = l.svcCtx.DB.User.UpdateOne(user).
 		SetToken(token).
 		SetUpdatedAt(time.Now().UnixMilli()).
 		Save(l.ctx)

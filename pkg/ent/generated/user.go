@@ -22,8 +22,8 @@ type User struct {
 	UpdatedAt int64 `json:"updated_at,omitempty"`
 	// 删除时间
 	DeletedAt *int64 `json:"deleted_at,omitempty"`
-	// 租户编码
-	TenantCode string `json:"tenant_code,omitempty"`
+	// 租户ID
+	TenantID uint64 `json:"tenant_id,omitempty"`
 	// 用户ID
 	UserID uint64 `json:"user_id,omitempty"`
 	// 用户名
@@ -60,9 +60,9 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldID, user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldUserID, user.FieldSex, user.FieldStatus, user.FieldRoleID, user.FieldDeptID, user.FieldPostID:
+		case user.FieldID, user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldTenantID, user.FieldUserID, user.FieldSex, user.FieldStatus, user.FieldRoleID, user.FieldDeptID, user.FieldPostID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldTenantCode, user.FieldUserName, user.FieldPassword, user.FieldSalt, user.FieldToken, user.FieldNickName, user.FieldAvatar, user.FieldPhone, user.FieldEmail:
+		case user.FieldUserName, user.FieldPassword, user.FieldSalt, user.FieldToken, user.FieldNickName, user.FieldAvatar, user.FieldPhone, user.FieldEmail:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -104,11 +104,11 @@ func (u *User) assignValues(columns []string, values []any) error {
 				u.DeletedAt = new(int64)
 				*u.DeletedAt = value.Int64
 			}
-		case user.FieldTenantCode:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field tenant_code", values[i])
+		case user.FieldTenantID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field tenant_id", values[i])
 			} else if value.Valid {
-				u.TenantCode = value.String
+				u.TenantID = uint64(value.Int64)
 			}
 		case user.FieldUserID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -241,8 +241,8 @@ func (u *User) String() string {
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("tenant_code=")
-	builder.WriteString(u.TenantCode)
+	builder.WriteString("tenant_id=")
+	builder.WriteString(fmt.Sprintf("%v", u.TenantID))
 	builder.WriteString(", ")
 	builder.WriteString("user_id=")
 	builder.WriteString(fmt.Sprintf("%v", u.UserID))

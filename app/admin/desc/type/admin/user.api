@@ -1,0 +1,103 @@
+syntax = "v1"
+
+import (
+    "../base.api"
+)
+
+
+
+info (
+	title   : "用户服务接口"
+	desc    : "用户管理相关接口定义"
+	author  : "solate"
+	version : "v1.0"
+)
+   
+type (
+
+	UserInfo {
+        UserID uint64 `json:"user_id"` // 用户ID
+		UserName  string `json:"username"`   // 用户名
+		Name      string `json:"name"`       // 姓名
+		Phone    string `json:"phone"`     // 手机号
+		Email     string `json:"email"`      // 邮箱
+		Avatar    string `json:"avatar"`     // 头像
+		Status    int `json:"status"`     // 状态
+		CreatedAt string `json:"created_at"` // 创建时间
+	}
+  
+
+    CreateUserReq {
+        Username string `json:"username" validate:"required"` // 用户名
+        Name                string `json:"name"`
+        Phone               string `json:"phone"`
+        PwdHashed           string `json:"pwd_hashed"`
+        PwdSalt             string `json:"pwd_salt"`
+        DisableStatus       int    `json:"disable_status"`
+        Email               string `json:"email"` 
+        Sex               int    `json:"sex"`
+        Icon                string `json:"icon"`
+        RoleIDs             []uint64  `json:"roleIDs"` // 角色ID列表
+    }
+
+    CreateUserResp {
+        UserID uint64 `json:"user_id"`
+    }
+   
+    UpdateUserReq {
+        UserID    uint64   `path:"user_id"`
+        Name string `json:"name"`
+    }
+
+    DeleteUserReq {
+        UserID    uint64    `path:"user_id"`
+    }
+
+  
+    UserListReq {
+        PageRequest
+        Name   string `form:"name,optional"`
+        Phone  string `form:"phone,optional"`
+        Status int    `form:"status,optional"`
+    }
+
+    UserListResp {
+        Page *PageResponse       `json:"page"` // 分页
+        List []*UserInfo `json:"list"` // 列表
+    }
+
+    GetUserReq {
+        UserID uint64 `path:"user_id"`
+    }
+
+    GetUserResp {
+        UserInfo
+    }
+)
+
+@server (
+    prefix: /admin/api/v1/user
+    group: user
+    middleware: AuthMiddleware
+)
+service admin {
+    @doc "创建用户"
+    @handler createUser
+    post / (CreateUserReq) returns (CreateUserResp)
+
+    @doc "更新用户"
+    @handler updateUser
+    put /:userID (UpdateUserReq) returns (bool)
+
+    @doc "删除用户"
+    @handler deleteUser
+    delete /:userID (DeleteUserReq) returns (bool)
+
+    @doc "获取用户列表"
+    @handler listUser
+    get / (UserListReq) returns (UserListResp)
+
+    @doc "获取用户详情"
+    @handler getUser
+    get /:userID (GetUserReq) returns (GetUserResp)
+}
