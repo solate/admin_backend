@@ -26,6 +26,8 @@ type Tenant struct {
 	TenantID uint64 `json:"tenant_id,omitempty"`
 	// 租户名称
 	Name string `json:"name,omitempty"`
+	// 租户编码
+	Code string `json:"code,omitempty"`
 	// 租户描述
 	Description string `json:"description,omitempty"`
 	// 租户状态：1: 启用, 2: 禁用
@@ -40,7 +42,7 @@ func (*Tenant) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case tenant.FieldID, tenant.FieldCreatedAt, tenant.FieldUpdatedAt, tenant.FieldDeletedAt, tenant.FieldTenantID, tenant.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case tenant.FieldName, tenant.FieldDescription:
+		case tenant.FieldName, tenant.FieldCode, tenant.FieldDescription:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -93,6 +95,12 @@ func (t *Tenant) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
 				t.Name = value.String
+			}
+		case tenant.FieldCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field code", values[i])
+			} else if value.Valid {
+				t.Code = value.String
 			}
 		case tenant.FieldDescription:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -158,6 +166,9 @@ func (t *Tenant) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(t.Name)
+	builder.WriteString(", ")
+	builder.WriteString("code=")
+	builder.WriteString(t.Code)
 	builder.WriteString(", ")
 	builder.WriteString("description=")
 	builder.WriteString(t.Description)

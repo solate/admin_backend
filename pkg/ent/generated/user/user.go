@@ -17,16 +17,16 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldTenantID holds the string denoting the tenant_id field in the database.
-	FieldTenantID = "tenant_id"
+	// FieldTenantCode holds the string denoting the tenant_code field in the database.
+	FieldTenantCode = "tenant_code"
 	// FieldUserID holds the string denoting the user_id field in the database.
 	FieldUserID = "user_id"
 	// FieldUserName holds the string denoting the user_name field in the database.
 	FieldUserName = "user_name"
-	// FieldPassword holds the string denoting the password field in the database.
-	FieldPassword = "password"
-	// FieldSalt holds the string denoting the salt field in the database.
-	FieldSalt = "salt"
+	// FieldPwdHashed holds the string denoting the pwd_hashed field in the database.
+	FieldPwdHashed = "pwd_hashed"
+	// FieldPwdSalt holds the string denoting the pwd_salt field in the database.
+	FieldPwdSalt = "pwd_salt"
 	// FieldToken holds the string denoting the token field in the database.
 	FieldToken = "token"
 	// FieldNickName holds the string denoting the nick_name field in the database.
@@ -57,11 +57,11 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
-	FieldTenantID,
+	FieldTenantCode,
 	FieldUserID,
 	FieldUserName,
-	FieldPassword,
-	FieldSalt,
+	FieldPwdHashed,
+	FieldPwdSalt,
 	FieldToken,
 	FieldNickName,
 	FieldAvatar,
@@ -93,14 +93,14 @@ var (
 	DefaultUserName string
 	// UserNameValidator is a validator for the "user_name" field. It is called by the builders before save.
 	UserNameValidator func(string) error
-	// DefaultPassword holds the default value on creation for the "password" field.
-	DefaultPassword string
-	// PasswordValidator is a validator for the "password" field. It is called by the builders before save.
-	PasswordValidator func(string) error
-	// DefaultSalt holds the default value on creation for the "salt" field.
-	DefaultSalt string
-	// SaltValidator is a validator for the "salt" field. It is called by the builders before save.
-	SaltValidator func(string) error
+	// DefaultPwdHashed holds the default value on creation for the "pwd_hashed" field.
+	DefaultPwdHashed string
+	// PwdHashedValidator is a validator for the "pwd_hashed" field. It is called by the builders before save.
+	PwdHashedValidator func(string) error
+	// DefaultPwdSalt holds the default value on creation for the "pwd_salt" field.
+	DefaultPwdSalt string
+	// PwdSaltValidator is a validator for the "pwd_salt" field. It is called by the builders before save.
+	PwdSaltValidator func(string) error
 	// DefaultToken holds the default value on creation for the "token" field.
 	DefaultToken string
 	// DefaultNickName holds the default value on creation for the "nick_name" field.
@@ -148,9 +148,9 @@ func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
-// ByTenantID orders the results by the tenant_id field.
-func ByTenantID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldTenantID, opts...).ToFunc()
+// ByTenantCode orders the results by the tenant_code field.
+func ByTenantCode(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenantCode, opts...).ToFunc()
 }
 
 // ByUserID orders the results by the user_id field.
@@ -163,14 +163,14 @@ func ByUserName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUserName, opts...).ToFunc()
 }
 
-// ByPassword orders the results by the password field.
-func ByPassword(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPassword, opts...).ToFunc()
+// ByPwdHashed orders the results by the pwd_hashed field.
+func ByPwdHashed(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPwdHashed, opts...).ToFunc()
 }
 
-// BySalt orders the results by the salt field.
-func BySalt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSalt, opts...).ToFunc()
+// ByPwdSalt orders the results by the pwd_salt field.
+func ByPwdSalt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPwdSalt, opts...).ToFunc()
 }
 
 // ByToken orders the results by the token field.

@@ -22,16 +22,16 @@ type User struct {
 	UpdatedAt int64 `json:"updated_at,omitempty"`
 	// 删除时间
 	DeletedAt *int64 `json:"deleted_at,omitempty"`
-	// 租户ID
-	TenantID uint64 `json:"tenant_id,omitempty"`
+	// 租户code
+	TenantCode string `json:"tenant_code,omitempty"`
 	// 用户ID
 	UserID uint64 `json:"user_id,omitempty"`
 	// 用户名
 	UserName string `json:"user_name,omitempty"`
-	// 密码
-	Password string `json:"password,omitempty"`
+	// hash后的密码
+	PwdHashed string `json:"pwd_hashed,omitempty"`
 	// 密码加盐
-	Salt string `json:"salt,omitempty"`
+	PwdSalt string `json:"pwd_salt,omitempty"`
 	// 登录后的token信息
 	Token string `json:"token,omitempty"`
 	// 昵称
@@ -60,9 +60,9 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldID, user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldTenantID, user.FieldUserID, user.FieldSex, user.FieldStatus, user.FieldRoleID, user.FieldDeptID, user.FieldPostID:
+		case user.FieldID, user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldUserID, user.FieldSex, user.FieldStatus, user.FieldRoleID, user.FieldDeptID, user.FieldPostID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldUserName, user.FieldPassword, user.FieldSalt, user.FieldToken, user.FieldNickName, user.FieldAvatar, user.FieldPhone, user.FieldEmail:
+		case user.FieldTenantCode, user.FieldUserName, user.FieldPwdHashed, user.FieldPwdSalt, user.FieldToken, user.FieldNickName, user.FieldAvatar, user.FieldPhone, user.FieldEmail:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -104,11 +104,11 @@ func (u *User) assignValues(columns []string, values []any) error {
 				u.DeletedAt = new(int64)
 				*u.DeletedAt = value.Int64
 			}
-		case user.FieldTenantID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field tenant_id", values[i])
+		case user.FieldTenantCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tenant_code", values[i])
 			} else if value.Valid {
-				u.TenantID = uint64(value.Int64)
+				u.TenantCode = value.String
 			}
 		case user.FieldUserID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -122,17 +122,17 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.UserName = value.String
 			}
-		case user.FieldPassword:
+		case user.FieldPwdHashed:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field password", values[i])
+				return fmt.Errorf("unexpected type %T for field pwd_hashed", values[i])
 			} else if value.Valid {
-				u.Password = value.String
+				u.PwdHashed = value.String
 			}
-		case user.FieldSalt:
+		case user.FieldPwdSalt:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field salt", values[i])
+				return fmt.Errorf("unexpected type %T for field pwd_salt", values[i])
 			} else if value.Valid {
-				u.Salt = value.String
+				u.PwdSalt = value.String
 			}
 		case user.FieldToken:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -241,8 +241,8 @@ func (u *User) String() string {
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("tenant_id=")
-	builder.WriteString(fmt.Sprintf("%v", u.TenantID))
+	builder.WriteString("tenant_code=")
+	builder.WriteString(u.TenantCode)
 	builder.WriteString(", ")
 	builder.WriteString("user_id=")
 	builder.WriteString(fmt.Sprintf("%v", u.UserID))
@@ -250,11 +250,11 @@ func (u *User) String() string {
 	builder.WriteString("user_name=")
 	builder.WriteString(u.UserName)
 	builder.WriteString(", ")
-	builder.WriteString("password=")
-	builder.WriteString(u.Password)
+	builder.WriteString("pwd_hashed=")
+	builder.WriteString(u.PwdHashed)
 	builder.WriteString(", ")
-	builder.WriteString("salt=")
-	builder.WriteString(u.Salt)
+	builder.WriteString("pwd_salt=")
+	builder.WriteString(u.PwdSalt)
 	builder.WriteString(", ")
 	builder.WriteString("token=")
 	builder.WriteString(u.Token)

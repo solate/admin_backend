@@ -67,15 +67,15 @@ func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.Crea
 
 	// 4. 创建用户
 	newUser := &generated.User{
-		UserID:   userID,
-		Phone:    req.Phone,
-		UserName: req.Name,
-		Password: hashedPassword,
-		Salt:     string(salt),
-		Status:   1, // 默认启用
-		NickName: req.Name,
-		Email:    req.Email,
-		Sex:      req.Sex,
+		UserID:    userID,
+		Phone:     req.Phone,
+		UserName:  req.Name,
+		PwdHashed: hashedPassword,
+		PwdSalt:   string(salt),
+		Status:    1, // 默认启用
+		NickName:  req.Name,
+		Email:     req.Email,
+		Sex:       req.Sex,
 	}
 	user, err = l.userRepo.Create(l.ctx, newUser)
 	if err != nil {

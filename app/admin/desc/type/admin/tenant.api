@@ -1,102 +1,94 @@
 syntax = "v1"
 
 import (
-    "../base.api"
+	"../base.api"
 )
-
 
 info (
-	title   : "租户管理接口"
-	desc    : "提供租户的CRUD操作和配置管理功能"
-	author  : "solate"
-	version : "v1.0"
+	title:   "租户管理接口"
+	desc:    "提供租户的CRUD操作和配置管理功能"
+	author:  "solate"
+	version: "v1.0"
 )
-   
+
 type (
 	// 租户基本信息
 	TenantInfo {
-		TenantID    uint64  `json:"tenantID"     validate:"required"        comment:"租户ID"`
+		TenantID    uint64 `json:"tenant_id"     validate:"required"        comment:"租户ID"`
 		Name        string `json:"name"         validate:"omitempty"        comment:"租户名称"`
 		Description string `json:"description"  validate:"omitempty"      comment:"租户描述"`
 		Status      int    `json:"status"       validate:"oneof=1 2"      comment:"租户状态：1: 启用, 2: 禁用"`
-		// Domain      string `json:"domain"       validate:"omitempty"      comment:"租户域名"`
-		// Logo        string `json:"logo"         validate:"omitempty"      comment:"租户logo"`
-		// Theme       string `json:"theme"        validate:"omitempty"      comment:"租户主题"`
-		// Config      string `json:"config"       validate:"omitempty"      comment:"租户配置"`
-		// UserLimit   int    `json:"userLimit"    validate:"omitempty,gt=0" comment:"用户数量限制"`
-		// StorageLimit int   `json:"storageLimit" validate:"omitempty,gt=0" comment:"存储空间限制(MB)"`
-		// ApiRateLimit int   `json:"apiRateLimit" validate:"omitempty,gt=0" comment:"API调用频率限制(次/分钟)"`
-		// PackageType string `json:"packageType"  validate:"omitempty"      comment:"套餐类型"`
-		// ExpireTime  string `json:"expireTime"   validate:"omitempty"      comment:"过期时间"`
+	// Domain      string `json:"domain"       validate:"omitempty"      comment:"租户域名"`
+	// Logo        string `json:"logo"         validate:"omitempty"      comment:"租户logo"`
+	// Theme       string `json:"theme"        validate:"omitempty"      comment:"租户主题"`
+	// Config      string `json:"config"       validate:"omitempty"      comment:"租户配置"`
+	// UserLimit   int    `json:"userLimit"    validate:"omitempty,gt=0" comment:"用户数量限制"`
+	// StorageLimit int   `json:"storageLimit" validate:"omitempty,gt=0" comment:"存储空间限制(MB)"`
+	// ApiRateLimit int   `json:"apiRateLimit" validate:"omitempty,gt=0" comment:"API调用频率限制(次/分钟)"`
+	// PackageType string `json:"packageType"  validate:"omitempty"      comment:"套餐类型"`
+	// ExpireTime  string `json:"expireTime"   validate:"omitempty"      comment:"过期时间"`
 	}
-
 	// 创建租户请求
 	CreateTenantReq {
 		TenantInfo
 	}
-
 	// 创建租户响应
 	CreateTenantResp {
-		TenantID    uint64  `json:"tenantID" validate:"required"`
+		TenantID uint64 `json:"tenant_id" validate:"required"`
 	}
- 
 	// 更新租户请求
 	UpdateTenantReq {
-		TenantID    uint64  `json:"tenantID" validate:"required"`
+		TenantID uint64 `json:"tenant_id" validate:"required"`
 		TenantInfo
 	}
-  
 	// 获取租户详情请求
 	GetTenantReq {
-		TenantID    uint64  `json:"tenantID" validate:"required"`
+		TenantID uint64 `path:"tenant_id" validate:"required"`
 	}
-
 	// 获取租户详情响应
 	GetTenantResp {
 		TenantInfo
 	}
-
 	// 删除租户请求
 	DeleteTenantReq {
-		TenantID    uint64  `json:"tenantID" validate:"required"`
+		TenantID uint64 `json:"tenant_id" validate:"required"`
 	}
-
 	// 租户列表请求
 	ListTenantReq {
 		PageRequest
-		Status   int    `json:"status"   validate:"omitempty,oneof=1 2"`
+		Status   int `json:"status"`           // 状态
 	}
-
 	// 租户列表响应
 	ListTenantResp {
 		Page *PageResponse `json:"page"` // 分页
-		List  []*TenantInfo `json:"list"` // 租户列表
+		List []*TenantInfo `json:"list"` // 租户列表
 	}
 )
 
-@server(
+@server (
 	middleware: AuthMiddleware
-	prefix: /admin/api/v1/tenant
-	group: tenant
+	prefix:     /admin/api/v1/tenant
+	group:      tenant
 )
 service admin {
 	@doc "创建租户"
-	@handler createTenant 
+	@handler createTenant
 	post / (CreateTenantReq) returns (CreateTenantResp)
-	
+
 	@doc "更新租户"
 	@handler updateTenant
-	put /:tenantID (UpdateTenantReq) returns (bool)
-	
+	put /:tenant_id (UpdateTenantReq) returns (bool)
+
 	@doc "获取租户详情"
 	@handler getTenant
-	get /:tenantID (GetTenantReq) returns (GetTenantResp)
-	
+	get /:tenant_id (GetTenantReq) returns (GetTenantResp)
+
 	@doc "删除租户"
 	@handler deleteTenant
-	delete /:tenantID (DeleteTenantReq) returns (bool)
-	
+	delete /:tenant_id (DeleteTenantReq) returns (bool)
+
 	@doc "获取租户列表"
 	@handler listTenant
 	get / (ListTenantReq) returns (ListTenantResp)
 }
+

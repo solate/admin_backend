@@ -3,8 +3,8 @@ syntax = "v1"
 type (
 	// 分页请求
 	PageRequest {
-		Current  int `json:"current"`   // 当前页
-		PageSize int `json:"page_size"` // 每页大小
+		Current  int `form:"current"`   // 当前页
+		PageSize int `form:"page_size"` // 每页大小
 	}
 	// 分页请求
 	PageJsonRequest {

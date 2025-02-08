@@ -83,6 +83,12 @@ func (tc *TenantCreate) SetNillableName(s *string) *TenantCreate {
 	return tc
 }
 
+// SetCode sets the "code" field.
+func (tc *TenantCreate) SetCode(s string) *TenantCreate {
+	tc.mutation.SetCode(s)
+	return tc
+}
+
 // SetDescription sets the "description" field.
 func (tc *TenantCreate) SetDescription(s string) *TenantCreate {
 	tc.mutation.SetDescription(s)
@@ -187,6 +193,14 @@ func (tc *TenantCreate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Tenant.name": %w`, err)}
 		}
 	}
+	if _, ok := tc.mutation.Code(); !ok {
+		return &ValidationError{Name: "code", err: errors.New(`generated: missing required field "Tenant.code"`)}
+	}
+	if v, ok := tc.mutation.Code(); ok {
+		if err := tenant.CodeValidator(v); err != nil {
+			return &ValidationError{Name: "code", err: fmt.Errorf(`generated: validator failed for field "Tenant.code": %w`, err)}
+		}
+	}
 	if _, ok := tc.mutation.Description(); !ok {
 		return &ValidationError{Name: "description", err: errors.New(`generated: missing required field "Tenant.description"`)}
 	}
@@ -239,6 +253,10 @@ func (tc *TenantCreate) createSpec() (*Tenant, *sqlgraph.CreateSpec) {
 	if value, ok := tc.mutation.Name(); ok {
 		_spec.SetField(tenant.FieldName, field.TypeString, value)
 		_node.Name = value
+	}
+	if value, ok := tc.mutation.Code(); ok {
+		_spec.SetField(tenant.FieldCode, field.TypeString, value)
+		_node.Code = value
 	}
 	if value, ok := tc.mutation.Description(); ok {
 		_spec.SetField(tenant.FieldDescription, field.TypeString, value)
@@ -369,6 +387,18 @@ func (u *TenantUpsert) SetName(v string) *TenantUpsert {
 // UpdateName sets the "name" field to the value that was provided on create.
 func (u *TenantUpsert) UpdateName() *TenantUpsert {
 	u.SetExcluded(tenant.FieldName)
+	return u
+}
+
+// SetCode sets the "code" field.
+func (u *TenantUpsert) SetCode(v string) *TenantUpsert {
+	u.Set(tenant.FieldCode, v)
+	return u
+}
+
+// UpdateCode sets the "code" field to the value that was provided on create.
+func (u *TenantUpsert) UpdateCode() *TenantUpsert {
+	u.SetExcluded(tenant.FieldCode)
 	return u
 }
 
@@ -528,6 +558,20 @@ func (u *TenantUpsertOne) SetName(v string) *TenantUpsertOne {
 func (u *TenantUpsertOne) UpdateName() *TenantUpsertOne {
 	return u.Update(func(s *TenantUpsert) {
 		s.UpdateName()
+	})
+}
+
+// SetCode sets the "code" field.
+func (u *TenantUpsertOne) SetCode(v string) *TenantUpsertOne {
+	return u.Update(func(s *TenantUpsert) {
+		s.SetCode(v)
+	})
+}
+
+// UpdateCode sets the "code" field to the value that was provided on create.
+func (u *TenantUpsertOne) UpdateCode() *TenantUpsertOne {
+	return u.Update(func(s *TenantUpsert) {
+		s.UpdateCode()
 	})
 }
 
@@ -858,6 +902,20 @@ func (u *TenantUpsertBulk) SetName(v string) *TenantUpsertBulk {
 func (u *TenantUpsertBulk) UpdateName() *TenantUpsertBulk {
 	return u.Update(func(s *TenantUpsert) {
 		s.UpdateName()
+	})
+}
+
+// SetCode sets the "code" field.
+func (u *TenantUpsertBulk) SetCode(v string) *TenantUpsertBulk {
+	return u.Update(func(s *TenantUpsert) {
+		s.SetCode(v)
+	})
+}
+
+// UpdateCode sets the "code" field to the value that was provided on create.
+func (u *TenantUpsertBulk) UpdateCode() *TenantUpsertBulk {
+	return u.Update(func(s *TenantUpsert) {
+		s.UpdateCode()
 	})
 }
 

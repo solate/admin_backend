@@ -96,10 +96,168 @@
         ]
       }
     },
+    "/admin/api/v1/tenant/": {
+      "get": {
+        "summary": "获取租户列表",
+        "operationId": "listTenant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListTenantResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "current",
+            "description": " 当前页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "page_size",
+            "description": " 每页大小",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "status",
+            "description": " 状态",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "tenant"
+        ]
+      },
+      "post": {
+        "summary": "创建租户",
+        "operationId": "createTenant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateTenantResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 创建租户请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateTenantReq"
+            }
+          }
+        ],
+        "tags": [
+          "tenant"
+        ]
+      }
+    },
+    "/admin/api/v1/tenant/{tenant_id}": {
+      "get": {
+        "summary": "获取租户详情",
+        "operationId": "getTenant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetTenantResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "tenant"
+        ]
+      },
+      "delete": {
+        "summary": "删除租户",
+        "operationId": "deleteTenant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 删除租户请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteTenantReq"
+            }
+          }
+        ],
+        "tags": [
+          "tenant"
+        ]
+      },
+      "put": {
+        "summary": "更新租户",
+        "operationId": "updateTenant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 更新租户请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateTenantReq"
+            }
+          }
+        ],
+        "tags": [
+          "tenant"
+        ]
+      }
+    },
     "/admin/api/v1/user/": {
       "get": {
         "summary": "获取用户列表",
-        "operationId": "List",
+        "operationId": "listUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -154,7 +312,7 @@
       },
       "post": {
         "summary": "创建用户",
-        "operationId": "Create",
+        "operationId": "createUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -178,10 +336,10 @@
         ]
       }
     },
-    "/admin/api/v1/user/{userID}": {
+    "/admin/api/v1/user/{user_id}": {
       "get": {
         "summary": "获取用户详情",
-        "operationId": "Get",
+        "operationId": "getUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -192,7 +350,7 @@
         },
         "parameters": [
           {
-            "name": "userID",
+            "name": "user_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -204,18 +362,18 @@
       },
       "delete": {
         "summary": "删除用户",
-        "operationId": "Delete",
+        "operationId": "deleteUser",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/DeleteUserResp"
+              "$ref": "#/definitions/bool"
             }
           }
         },
         "parameters": [
           {
-            "name": "userID",
+            "name": "user_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -235,18 +393,18 @@
       },
       "put": {
         "summary": "更新用户",
-        "operationId": "Update",
+        "operationId": "updateUser",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/UpdateUserResp"
+              "$ref": "#/definitions/bool"
             }
           }
         },
         "parameters": [
           {
-            "name": "userID",
+            "name": "user_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -267,21 +425,51 @@
     }
   },
   "definitions": {
+    "CreateTenantReq": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "CreateTenantReq"
+    },
+    "CreateTenantResp": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "CreateTenantResp",
+      "required": [
+        "tenant_id"
+      ]
+    },
     "CreateUserReq": {
       "type": "object",
       "properties": {
-        "no": {
-          "type": "string"
+        "username": {
+          "type": "string",
+          "description": " 用户名"
         },
         "name": {
           "type": "string"
         },
         "phone": {
           "type": "string"
-        },
-        "role": {
-          "type": "integer",
-          "format": "int32"
         },
         "pwd_hashed": {
           "type": "string"
@@ -293,17 +481,10 @@
           "type": "integer",
           "format": "int32"
         },
-        "parent_disable_status": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "company": {
-          "type": "string"
-        },
         "email": {
           "type": "string"
         },
-        "gender": {
+        "sex": {
           "type": "integer",
           "format": "int32"
         },
@@ -314,24 +495,21 @@
           "type": "array",
           "items": {
             "type": "integer",
-            "format": "int32"
+            "format": "int64"
           },
           "description": " 角色ID列表"
         }
       },
       "title": "CreateUserReq",
       "required": [
-        "no",
+        "username",
         "name",
         "phone",
-        "role",
         "pwd_hashed",
         "pwd_salt",
         "disable_status",
-        "parent_disable_status",
-        "company",
         "email",
-        "gender",
+        "sex",
         "icon",
         "roleIDs"
       ]
@@ -341,7 +519,7 @@
       "properties": {
         "user_id": {
           "type": "integer",
-          "format": "int32"
+          "format": "int64"
         }
       },
       "title": "CreateUserResp",
@@ -349,22 +527,46 @@
         "user_id"
       ]
     },
+    "DeleteTenantReq": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "DeleteTenantReq",
+      "required": [
+        "tenant_id"
+      ]
+    },
     "DeleteUserReq": {
       "type": "object",
       "title": "DeleteUserReq"
     },
-    "DeleteUserResp": {
+    "GetTenantReq": {
+      "type": "object",
+      "title": "GetTenantReq"
+    },
+    "GetTenantResp": {
       "type": "object",
       "properties": {
-        "success": {
-          "type": "boolean",
-          "format": "boolean"
+        "tenant_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
         }
       },
-      "title": "DeleteUserResp",
-      "required": [
-        "success"
-      ]
+      "title": "GetTenantResp"
     },
     "GetUserReq": {
       "type": "object",
@@ -375,61 +577,37 @@
       "properties": {
         "user_id": {
           "type": "integer",
-          "format": "int32",
-          "description": " 用户id"
+          "format": "int64",
+          "description": " 用户ID"
+        },
+        "username": {
+          "type": "string",
+          "description": " 用户名"
         },
         "name": {
           "type": "string",
-          "description": " 企业名称"
-        },
-        "no": {
-          "type": "string",
-          "description": " 企业编号"
+          "description": " 姓名"
         },
         "phone": {
           "type": "string",
-          "description": " 企业号码"
-        },
-        "start_at": {
-          "type": "string",
-          "description": " 合作开始时间"
-        },
-        "end_at": {
-          "type": "string",
-          "description": " 合作结束时间"
+          "description": " 手机号"
         },
         "email": {
           "type": "string",
           "description": " 邮箱"
         },
-        "province": {
+        "avatar": {
           "type": "string",
-          "description": " 所在省份"
-        },
-        "city": {
-          "type": "string",
-          "description": " 所在地区"
-        },
-        "address": {
-          "type": "string",
-          "description": " 具体地址"
-        },
-        "company_desc": {
-          "type": "string",
-          "description": " 企业介绍"
+          "description": " 头像"
         },
         "status": {
           "type": "integer",
           "format": "int32",
           "description": " 状态"
         },
-        "roleIDs": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "description": " 角色ID列表"
+        "created_at": {
+          "type": "string",
+          "description": " 创建时间"
         }
       },
       "title": "GetUserResp"
@@ -448,31 +626,78 @@
         "id"
       ]
     },
+    "ListTenantReq": {
+      "type": "object",
+      "properties": {
+        "current": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 当前页"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 每页大小"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        }
+      },
+      "title": "ListTenantReq",
+      "required": [
+        "status"
+      ]
+    },
+    "ListTenantResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageResponse",
+          "description": " 分页"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TenantInfo"
+          },
+          "description": " 租户列表"
+        }
+      },
+      "title": "ListTenantResp",
+      "required": [
+        "page",
+        "list"
+      ]
+    },
     "LoginReq": {
       "type": "object",
       "properties": {
-        "user_name": {
-          "type": "string"
+        "username": {
+          "type": "string",
+          "description": " 用户名"
         },
         "password": {
-          "type": "string"
+          "type": "string",
+          "description": " 密码"
         }
       },
       "title": "LoginReq",
       "required": [
-        "user_name",
+        "username",
         "password"
       ]
     },
     "LoginResp": {
       "type": "object",
       "properties": {
+        "token": {
+          "type": "string"
+        },
         "user_id": {
           "type": "integer",
           "format": "int64"
-        },
-        "token": {
-          "type": "string"
         },
         "user_name": {
           "type": "string"
@@ -486,8 +711,8 @@
       },
       "title": "LoginResp",
       "required": [
-        "user_id",
         "token",
+        "user_id",
         "user_name",
         "phone",
         "email"
@@ -505,10 +730,6 @@
       "required": [
         "user_id"
       ]
-    },
-    "LogoutResp": {
-      "type": "object",
-      "title": "LogoutResp"
     },
     "PageJsonRequest": {
       "type": "object",
@@ -649,6 +870,36 @@
         "status"
       ]
     },
+    "TenantInfo": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "TenantInfo",
+      "required": [
+        "tenant_id",
+        "租户ID",
+        "name",
+        "租户名称",
+        "description",
+        "租户描述",
+        "status",
+        "租户状态：1: 启用"
+      ]
+    },
     "TimeRange": {
       "type": "object",
       "properties": {
@@ -663,6 +914,33 @@
       },
       "title": "TimeRange"
     },
+    "UpdateTenantReq": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "tenant_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "UpdateTenantReq",
+      "required": [
+        "tenant_id"
+      ]
+    },
     "UpdateUserReq": {
       "type": "object",
       "properties": {
@@ -675,96 +953,54 @@
         "name"
       ]
     },
-    "UpdateUserResp": {
-      "type": "object",
-      "properties": {
-        "success": {
-          "type": "boolean",
-          "format": "boolean"
-        }
-      },
-      "title": "UpdateUserResp",
-      "required": [
-        "success"
-      ]
-    },
-    "UserInfoResponse": {
+    "UserInfo": {
       "type": "object",
       "properties": {
         "user_id": {
           "type": "integer",
-          "format": "int32",
-          "description": " 用户id"
+          "format": "int64",
+          "description": " 用户ID"
+        },
+        "username": {
+          "type": "string",
+          "description": " 用户名"
         },
         "name": {
           "type": "string",
-          "description": " 企业名称"
-        },
-        "no": {
-          "type": "string",
-          "description": " 企业编号"
+          "description": " 姓名"
         },
         "phone": {
           "type": "string",
-          "description": " 企业号码"
-        },
-        "start_at": {
-          "type": "string",
-          "description": " 合作开始时间"
-        },
-        "end_at": {
-          "type": "string",
-          "description": " 合作结束时间"
+          "description": " 手机号"
         },
         "email": {
           "type": "string",
           "description": " 邮箱"
         },
-        "province": {
+        "avatar": {
           "type": "string",
-          "description": " 所在省份"
-        },
-        "city": {
-          "type": "string",
-          "description": " 所在地区"
-        },
-        "address": {
-          "type": "string",
-          "description": " 具体地址"
-        },
-        "company_desc": {
-          "type": "string",
-          "description": " 企业介绍"
+          "description": " 头像"
         },
         "status": {
           "type": "integer",
           "format": "int32",
           "description": " 状态"
         },
-        "roleIDs": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "description": " 角色ID列表"
+        "created_at": {
+          "type": "string",
+          "description": " 创建时间"
         }
       },
-      "title": "UserInfoResponse",
+      "title": "UserInfo",
       "required": [
         "user_id",
+        "username",
         "name",
-        "no",
         "phone",
-        "start_at",
-        "end_at",
         "email",
-        "province",
-        "city",
-        "address",
-        "company_desc",
+        "avatar",
         "status",
-        "roleIDs"
+        "created_at"
       ]
     },
     "UserListReq": {
@@ -803,7 +1039,7 @@
         "list": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/UserInfoResponse"
+            "$ref": "#/definitions/UserInfo"
           },
           "description": " 列表"
         }

@@ -63,9 +63,9 @@ func (uc *UserCreate) SetNillableDeletedAt(i *int64) *UserCreate {
 	return uc
 }
 
-// SetTenantID sets the "tenant_id" field.
-func (uc *UserCreate) SetTenantID(u uint64) *UserCreate {
-	uc.mutation.SetTenantID(u)
+// SetTenantCode sets the "tenant_code" field.
+func (uc *UserCreate) SetTenantCode(s string) *UserCreate {
+	uc.mutation.SetTenantCode(s)
 	return uc
 }
 
@@ -89,30 +89,30 @@ func (uc *UserCreate) SetNillableUserName(s *string) *UserCreate {
 	return uc
 }
 
-// SetPassword sets the "password" field.
-func (uc *UserCreate) SetPassword(s string) *UserCreate {
-	uc.mutation.SetPassword(s)
+// SetPwdHashed sets the "pwd_hashed" field.
+func (uc *UserCreate) SetPwdHashed(s string) *UserCreate {
+	uc.mutation.SetPwdHashed(s)
 	return uc
 }
 
-// SetNillablePassword sets the "password" field if the given value is not nil.
-func (uc *UserCreate) SetNillablePassword(s *string) *UserCreate {
+// SetNillablePwdHashed sets the "pwd_hashed" field if the given value is not nil.
+func (uc *UserCreate) SetNillablePwdHashed(s *string) *UserCreate {
 	if s != nil {
-		uc.SetPassword(*s)
+		uc.SetPwdHashed(*s)
 	}
 	return uc
 }
 
-// SetSalt sets the "salt" field.
-func (uc *UserCreate) SetSalt(s string) *UserCreate {
-	uc.mutation.SetSalt(s)
+// SetPwdSalt sets the "pwd_salt" field.
+func (uc *UserCreate) SetPwdSalt(s string) *UserCreate {
+	uc.mutation.SetPwdSalt(s)
 	return uc
 }
 
-// SetNillableSalt sets the "salt" field if the given value is not nil.
-func (uc *UserCreate) SetNillableSalt(s *string) *UserCreate {
+// SetNillablePwdSalt sets the "pwd_salt" field if the given value is not nil.
+func (uc *UserCreate) SetNillablePwdSalt(s *string) *UserCreate {
 	if s != nil {
-		uc.SetSalt(*s)
+		uc.SetPwdSalt(*s)
 	}
 	return uc
 }
@@ -304,13 +304,13 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultUserName
 		uc.mutation.SetUserName(v)
 	}
-	if _, ok := uc.mutation.Password(); !ok {
-		v := user.DefaultPassword
-		uc.mutation.SetPassword(v)
+	if _, ok := uc.mutation.PwdHashed(); !ok {
+		v := user.DefaultPwdHashed
+		uc.mutation.SetPwdHashed(v)
 	}
-	if _, ok := uc.mutation.Salt(); !ok {
-		v := user.DefaultSalt
-		uc.mutation.SetSalt(v)
+	if _, ok := uc.mutation.PwdSalt(); !ok {
+		v := user.DefaultPwdSalt
+		uc.mutation.SetPwdSalt(v)
 	}
 	if _, ok := uc.mutation.Token(); !ok {
 		v := user.DefaultToken
@@ -362,8 +362,8 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "User.updated_at"`)}
 	}
-	if _, ok := uc.mutation.TenantID(); !ok {
-		return &ValidationError{Name: "tenant_id", err: errors.New(`generated: missing required field "User.tenant_id"`)}
+	if _, ok := uc.mutation.TenantCode(); !ok {
+		return &ValidationError{Name: "tenant_code", err: errors.New(`generated: missing required field "User.tenant_code"`)}
 	}
 	if _, ok := uc.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`generated: missing required field "User.user_id"`)}
@@ -376,20 +376,20 @@ func (uc *UserCreate) check() error {
 			return &ValidationError{Name: "user_name", err: fmt.Errorf(`generated: validator failed for field "User.user_name": %w`, err)}
 		}
 	}
-	if _, ok := uc.mutation.Password(); !ok {
-		return &ValidationError{Name: "password", err: errors.New(`generated: missing required field "User.password"`)}
+	if _, ok := uc.mutation.PwdHashed(); !ok {
+		return &ValidationError{Name: "pwd_hashed", err: errors.New(`generated: missing required field "User.pwd_hashed"`)}
 	}
-	if v, ok := uc.mutation.Password(); ok {
-		if err := user.PasswordValidator(v); err != nil {
-			return &ValidationError{Name: "password", err: fmt.Errorf(`generated: validator failed for field "User.password": %w`, err)}
+	if v, ok := uc.mutation.PwdHashed(); ok {
+		if err := user.PwdHashedValidator(v); err != nil {
+			return &ValidationError{Name: "pwd_hashed", err: fmt.Errorf(`generated: validator failed for field "User.pwd_hashed": %w`, err)}
 		}
 	}
-	if _, ok := uc.mutation.Salt(); !ok {
-		return &ValidationError{Name: "salt", err: errors.New(`generated: missing required field "User.salt"`)}
+	if _, ok := uc.mutation.PwdSalt(); !ok {
+		return &ValidationError{Name: "pwd_salt", err: errors.New(`generated: missing required field "User.pwd_salt"`)}
 	}
-	if v, ok := uc.mutation.Salt(); ok {
-		if err := user.SaltValidator(v); err != nil {
-			return &ValidationError{Name: "salt", err: fmt.Errorf(`generated: validator failed for field "User.salt": %w`, err)}
+	if v, ok := uc.mutation.PwdSalt(); ok {
+		if err := user.PwdSaltValidator(v); err != nil {
+			return &ValidationError{Name: "pwd_salt", err: fmt.Errorf(`generated: validator failed for field "User.pwd_salt": %w`, err)}
 		}
 	}
 	if _, ok := uc.mutation.Token(); !ok {
@@ -466,9 +466,9 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldDeletedAt, field.TypeInt64, value)
 		_node.DeletedAt = &value
 	}
-	if value, ok := uc.mutation.TenantID(); ok {
-		_spec.SetField(user.FieldTenantID, field.TypeUint64, value)
-		_node.TenantID = value
+	if value, ok := uc.mutation.TenantCode(); ok {
+		_spec.SetField(user.FieldTenantCode, field.TypeString, value)
+		_node.TenantCode = value
 	}
 	if value, ok := uc.mutation.UserID(); ok {
 		_spec.SetField(user.FieldUserID, field.TypeUint64, value)
@@ -478,13 +478,13 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldUserName, field.TypeString, value)
 		_node.UserName = value
 	}
-	if value, ok := uc.mutation.Password(); ok {
-		_spec.SetField(user.FieldPassword, field.TypeString, value)
-		_node.Password = value
+	if value, ok := uc.mutation.PwdHashed(); ok {
+		_spec.SetField(user.FieldPwdHashed, field.TypeString, value)
+		_node.PwdHashed = value
 	}
-	if value, ok := uc.mutation.Salt(); ok {
-		_spec.SetField(user.FieldSalt, field.TypeString, value)
-		_node.Salt = value
+	if value, ok := uc.mutation.PwdSalt(); ok {
+		_spec.SetField(user.FieldPwdSalt, field.TypeString, value)
+		_node.PwdSalt = value
 	}
 	if value, ok := uc.mutation.Token(); ok {
 		_spec.SetField(user.FieldToken, field.TypeString, value)
@@ -620,21 +620,15 @@ func (u *UserUpsert) ClearDeletedAt() *UserUpsert {
 	return u
 }
 
-// SetTenantID sets the "tenant_id" field.
-func (u *UserUpsert) SetTenantID(v uint64) *UserUpsert {
-	u.Set(user.FieldTenantID, v)
+// SetTenantCode sets the "tenant_code" field.
+func (u *UserUpsert) SetTenantCode(v string) *UserUpsert {
+	u.Set(user.FieldTenantCode, v)
 	return u
 }
 
-// UpdateTenantID sets the "tenant_id" field to the value that was provided on create.
-func (u *UserUpsert) UpdateTenantID() *UserUpsert {
-	u.SetExcluded(user.FieldTenantID)
-	return u
-}
-
-// AddTenantID adds v to the "tenant_id" field.
-func (u *UserUpsert) AddTenantID(v uint64) *UserUpsert {
-	u.Add(user.FieldTenantID, v)
+// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
+func (u *UserUpsert) UpdateTenantCode() *UserUpsert {
+	u.SetExcluded(user.FieldTenantCode)
 	return u
 }
 
@@ -668,27 +662,27 @@ func (u *UserUpsert) UpdateUserName() *UserUpsert {
 	return u
 }
 
-// SetPassword sets the "password" field.
-func (u *UserUpsert) SetPassword(v string) *UserUpsert {
-	u.Set(user.FieldPassword, v)
+// SetPwdHashed sets the "pwd_hashed" field.
+func (u *UserUpsert) SetPwdHashed(v string) *UserUpsert {
+	u.Set(user.FieldPwdHashed, v)
 	return u
 }
 
-// UpdatePassword sets the "password" field to the value that was provided on create.
-func (u *UserUpsert) UpdatePassword() *UserUpsert {
-	u.SetExcluded(user.FieldPassword)
+// UpdatePwdHashed sets the "pwd_hashed" field to the value that was provided on create.
+func (u *UserUpsert) UpdatePwdHashed() *UserUpsert {
+	u.SetExcluded(user.FieldPwdHashed)
 	return u
 }
 
-// SetSalt sets the "salt" field.
-func (u *UserUpsert) SetSalt(v string) *UserUpsert {
-	u.Set(user.FieldSalt, v)
+// SetPwdSalt sets the "pwd_salt" field.
+func (u *UserUpsert) SetPwdSalt(v string) *UserUpsert {
+	u.Set(user.FieldPwdSalt, v)
 	return u
 }
 
-// UpdateSalt sets the "salt" field to the value that was provided on create.
-func (u *UserUpsert) UpdateSalt() *UserUpsert {
-	u.SetExcluded(user.FieldSalt)
+// UpdatePwdSalt sets the "pwd_salt" field to the value that was provided on create.
+func (u *UserUpsert) UpdatePwdSalt() *UserUpsert {
+	u.SetExcluded(user.FieldPwdSalt)
 	return u
 }
 
@@ -936,24 +930,17 @@ func (u *UserUpsertOne) ClearDeletedAt() *UserUpsertOne {
 	})
 }
 
-// SetTenantID sets the "tenant_id" field.
-func (u *UserUpsertOne) SetTenantID(v uint64) *UserUpsertOne {
+// SetTenantCode sets the "tenant_code" field.
+func (u *UserUpsertOne) SetTenantCode(v string) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.SetTenantID(v)
+		s.SetTenantCode(v)
 	})
 }
 
-// AddTenantID adds v to the "tenant_id" field.
-func (u *UserUpsertOne) AddTenantID(v uint64) *UserUpsertOne {
+// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateTenantCode() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.AddTenantID(v)
-	})
-}
-
-// UpdateTenantID sets the "tenant_id" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateTenantID() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateTenantID()
+		s.UpdateTenantCode()
 	})
 }
 
@@ -992,31 +979,31 @@ func (u *UserUpsertOne) UpdateUserName() *UserUpsertOne {
 	})
 }
 
-// SetPassword sets the "password" field.
-func (u *UserUpsertOne) SetPassword(v string) *UserUpsertOne {
+// SetPwdHashed sets the "pwd_hashed" field.
+func (u *UserUpsertOne) SetPwdHashed(v string) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.SetPassword(v)
+		s.SetPwdHashed(v)
 	})
 }
 
-// UpdatePassword sets the "password" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdatePassword() *UserUpsertOne {
+// UpdatePwdHashed sets the "pwd_hashed" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdatePwdHashed() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdatePassword()
+		s.UpdatePwdHashed()
 	})
 }
 
-// SetSalt sets the "salt" field.
-func (u *UserUpsertOne) SetSalt(v string) *UserUpsertOne {
+// SetPwdSalt sets the "pwd_salt" field.
+func (u *UserUpsertOne) SetPwdSalt(v string) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.SetSalt(v)
+		s.SetPwdSalt(v)
 	})
 }
 
-// UpdateSalt sets the "salt" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateSalt() *UserUpsertOne {
+// UpdatePwdSalt sets the "pwd_salt" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdatePwdSalt() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdateSalt()
+		s.UpdatePwdSalt()
 	})
 }
 
@@ -1455,24 +1442,17 @@ func (u *UserUpsertBulk) ClearDeletedAt() *UserUpsertBulk {
 	})
 }
 
-// SetTenantID sets the "tenant_id" field.
-func (u *UserUpsertBulk) SetTenantID(v uint64) *UserUpsertBulk {
+// SetTenantCode sets the "tenant_code" field.
+func (u *UserUpsertBulk) SetTenantCode(v string) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.SetTenantID(v)
+		s.SetTenantCode(v)
 	})
 }
 
-// AddTenantID adds v to the "tenant_id" field.
-func (u *UserUpsertBulk) AddTenantID(v uint64) *UserUpsertBulk {
+// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateTenantCode() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.AddTenantID(v)
-	})
-}
-
-// UpdateTenantID sets the "tenant_id" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateTenantID() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateTenantID()
+		s.UpdateTenantCode()
 	})
 }
 
@@ -1511,31 +1491,31 @@ func (u *UserUpsertBulk) UpdateUserName() *UserUpsertBulk {
 	})
 }
 
-// SetPassword sets the "password" field.
-func (u *UserUpsertBulk) SetPassword(v string) *UserUpsertBulk {
+// SetPwdHashed sets the "pwd_hashed" field.
+func (u *UserUpsertBulk) SetPwdHashed(v string) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.SetPassword(v)
+		s.SetPwdHashed(v)
 	})
 }
 
-// UpdatePassword sets the "password" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdatePassword() *UserUpsertBulk {
+// UpdatePwdHashed sets the "pwd_hashed" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdatePwdHashed() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdatePassword()
+		s.UpdatePwdHashed()
 	})
 }
 
-// SetSalt sets the "salt" field.
-func (u *UserUpsertBulk) SetSalt(v string) *UserUpsertBulk {
+// SetPwdSalt sets the "pwd_salt" field.
+func (u *UserUpsertBulk) SetPwdSalt(v string) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.SetSalt(v)
+		s.SetPwdSalt(v)
 	})
 }
 
-// UpdateSalt sets the "salt" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateSalt() *UserUpsertBulk {
+// UpdatePwdSalt sets the "pwd_salt" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdatePwdSalt() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdateSalt()
+		s.UpdatePwdSalt()
 	})
 }
 

@@ -111,6 +111,20 @@ func (tu *TenantUpdate) SetNillableName(s *string) *TenantUpdate {
 	return tu
 }
 
+// SetCode sets the "code" field.
+func (tu *TenantUpdate) SetCode(s string) *TenantUpdate {
+	tu.mutation.SetCode(s)
+	return tu
+}
+
+// SetNillableCode sets the "code" field if the given value is not nil.
+func (tu *TenantUpdate) SetNillableCode(s *string) *TenantUpdate {
+	if s != nil {
+		tu.SetCode(*s)
+	}
+	return tu
+}
+
 // SetDescription sets the "description" field.
 func (tu *TenantUpdate) SetDescription(s string) *TenantUpdate {
 	tu.mutation.SetDescription(s)
@@ -185,6 +199,11 @@ func (tu *TenantUpdate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Tenant.name": %w`, err)}
 		}
 	}
+	if v, ok := tu.mutation.Code(); ok {
+		if err := tenant.CodeValidator(v); err != nil {
+			return &ValidationError{Name: "code", err: fmt.Errorf(`generated: validator failed for field "Tenant.code": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -229,6 +248,9 @@ func (tu *TenantUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := tu.mutation.Name(); ok {
 		_spec.SetField(tenant.FieldName, field.TypeString, value)
+	}
+	if value, ok := tu.mutation.Code(); ok {
+		_spec.SetField(tenant.FieldCode, field.TypeString, value)
 	}
 	if value, ok := tu.mutation.Description(); ok {
 		_spec.SetField(tenant.FieldDescription, field.TypeString, value)
@@ -344,6 +366,20 @@ func (tuo *TenantUpdateOne) SetNillableName(s *string) *TenantUpdateOne {
 	return tuo
 }
 
+// SetCode sets the "code" field.
+func (tuo *TenantUpdateOne) SetCode(s string) *TenantUpdateOne {
+	tuo.mutation.SetCode(s)
+	return tuo
+}
+
+// SetNillableCode sets the "code" field if the given value is not nil.
+func (tuo *TenantUpdateOne) SetNillableCode(s *string) *TenantUpdateOne {
+	if s != nil {
+		tuo.SetCode(*s)
+	}
+	return tuo
+}
+
 // SetDescription sets the "description" field.
 func (tuo *TenantUpdateOne) SetDescription(s string) *TenantUpdateOne {
 	tuo.mutation.SetDescription(s)
@@ -431,6 +467,11 @@ func (tuo *TenantUpdateOne) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Tenant.name": %w`, err)}
 		}
 	}
+	if v, ok := tuo.mutation.Code(); ok {
+		if err := tenant.CodeValidator(v); err != nil {
+			return &ValidationError{Name: "code", err: fmt.Errorf(`generated: validator failed for field "Tenant.code": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -492,6 +533,9 @@ func (tuo *TenantUpdateOne) sqlSave(ctx context.Context) (_node *Tenant, err err
 	}
 	if value, ok := tuo.mutation.Name(); ok {
 		_spec.SetField(tenant.FieldName, field.TypeString, value)
+	}
+	if value, ok := tuo.mutation.Code(); ok {
+		_spec.SetField(tenant.FieldCode, field.TypeString, value)
 	}
 	if value, ok := tuo.mutation.Description(); ok {
 		_spec.SetField(tenant.FieldDescription, field.TypeString, value)

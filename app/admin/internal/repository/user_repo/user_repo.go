@@ -23,10 +23,12 @@ func (r *UserRepo) Create(ctx context.Context, user *generated.User) (*generated
 	return r.db.User.Create().
 		SetCreatedAt(now).
 		SetUpdatedAt(now).
+		SetTenantCode(user.TenantCode).
+		SetUserID(user.UserID).
 		SetPhone(user.Phone).
 		SetUserName(user.UserName).
-		SetPassword(user.Password).
-		SetSalt(user.Salt).
+		SetPwdHashed(user.PwdHashed).
+		SetPwdSalt(user.PwdSalt).
 		SetStatus(user.Status).
 		SetNickName(user.NickName).
 		SetEmail(user.Email).
@@ -50,6 +52,10 @@ func (r *UserRepo) GetByUserID(ctx context.Context, userID uint64) (*generated.U
 
 func (r *UserRepo) GetByPhone(ctx context.Context, phone string) (*generated.User, error) {
 	return r.db.User.Query().Where(user.Phone(phone)).Only(ctx)
+}
+
+func (r *UserRepo) GetByUserName(ctx context.Context, userName string) (*generated.User, error) {
+	return r.db.User.Query().Where(user.UserName(userName)).Only(ctx)
 }
 
 func (r *UserRepo) PageList(ctx context.Context, offset, limit int, where []predicate.User) ([]*generated.User, int, error) {

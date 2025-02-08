@@ -27,12 +27,12 @@ func (User) Fields() []ent.Field {
 		field.Int64("created_at").Immutable().Default(0).Comment("创建时间"),
 		field.Int64("updated_at").Default(0).Comment("修改时间"),
 		field.Int64("deleted_at").Optional().Nillable().Comment("删除时间"),
-		field.Uint64("tenant_id").Comment("租户ID"),
+		field.String("tenant_code").Comment("租户code"),
 
 		field.Uint64("user_id").Unique().Comment("用户ID"),
 		field.String("user_name").NotEmpty().Default("").Comment("用户名"),
-		field.String("password").NotEmpty().Default("").Comment("密码"),
-		field.String("salt").NotEmpty().Default("").Comment("密码加盐"),
+		field.String("pwd_hashed").NotEmpty().Default("").Comment("hash后的密码"),
+		field.String("pwd_salt").NotEmpty().Default("").Comment("密码加盐"),
 		field.String("token").Default("").Comment("登录后的token信息"),
 
 		field.String("nick_name").Default("").Comment("昵称"),

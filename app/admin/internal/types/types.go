@@ -8,7 +8,7 @@ type CreateTenantReq struct {
 }
 
 type CreateTenantResp struct {
-	TenantID uint64 `json:"tenantID" validate:"required"`
+	TenantID uint64 `json:"tenant_id" validate:"required"`
 }
 
 type CreateUserReq struct {
@@ -29,7 +29,7 @@ type CreateUserResp struct {
 }
 
 type DeleteTenantReq struct {
-	TenantID uint64 `json:"tenantID" validate:"required"`
+	TenantID uint64 `json:"tenant_id" validate:"required"`
 }
 
 type DeleteUserReq struct {
@@ -37,7 +37,7 @@ type DeleteUserReq struct {
 }
 
 type GetTenantReq struct {
-	TenantID uint64 `json:"tenantID" validate:"required"`
+	TenantID uint64 `path:"tenant_id" validate:"required"`
 }
 
 type GetTenantResp struct {
@@ -58,7 +58,7 @@ type IDRequest struct {
 
 type ListTenantReq struct {
 	PageRequest
-	Status int `json:"status"   validate:"omitempty,oneof=1 2"`
+	Status int `json:"status"` // 状态
 }
 
 type ListTenantResp struct {
@@ -89,8 +89,8 @@ type PageJsonRequest struct {
 }
 
 type PageRequest struct {
-	Current  int `json:"current"`   // 当前页
-	PageSize int `json:"page_size"` // 每页大小
+	Current  int `form:"current"`   // 当前页
+	PageSize int `form:"page_size"` // 每页大小
 }
 
 type PageResponse struct {
@@ -120,7 +120,7 @@ type StatusRequest struct {
 }
 
 type TenantInfo struct {
-	TenantID    uint64 `json:"tenantID"     validate:"required"        comment:"租户ID"`
+	TenantID    uint64 `json:"tenant_id"     validate:"required"        comment:"租户ID"`
 	Name        string `json:"name"         validate:"omitempty"        comment:"租户名称"`
 	Description string `json:"description"  validate:"omitempty"      comment:"租户描述"`
 	Status      int    `json:"status"       validate:"oneof=1 2"      comment:"租户状态：1: 启用, 2: 禁用"`
@@ -132,7 +132,7 @@ type TimeRange struct {
 }
 
 type UpdateTenantReq struct {
-	TenantID uint64 `json:"tenantID" validate:"required"`
+	TenantID uint64 `json:"tenant_id" validate:"required"`
 	TenantInfo
 }
 

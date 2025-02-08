@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/solate/admin_backend/app/admin/internal/config"
@@ -31,9 +32,11 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 
 		claims, err := jwt.ParseToken(tokenString, []byte(m.Config.JwtAuth.AccessSecret))
 		if err != nil {
-			httpx.Error(w, xerr.NewErrCodeMsg(http.StatusInternalServerError, "token无效"))
+			httpx.Error(w, xerr.NewErrCodeMsg(http.StatusInternalServerError, err.Error()))
 			return
 		}
+
+		fmt.Println("tokenString ==============1111==============:", tokenString)
 
 		// // 3. 租户隔离验证
 		// if err := m.validateTenant(r, claims); err != nil {
@@ -52,7 +55,8 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 		// 将租户ID和用户ID存入context
 		ctx := r.Context()
 		ctx = context_util.SetUserIDToCtx(ctx, claims.UserID)
-		ctx = context_util.SetTenantIDToCtx(ctx, claims.TenantID)
+		ctx = context_util.SetTenantCodeToCtx(ctx, claims.TenantCode)
+		ctx = context_util.SetRoleCodeToCtx(ctx, claims.RoleCode)
 
 		next(w, r.WithContext(ctx))
 	}

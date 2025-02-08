@@ -67,9 +67,9 @@ func DeletedAt(v int64) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// TenantID applies equality check predicate on the "tenant_id" field. It's identical to TenantIDEQ.
-func TenantID(v uint64) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldTenantID, v))
+// TenantCode applies equality check predicate on the "tenant_code" field. It's identical to TenantCodeEQ.
+func TenantCode(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldTenantCode, v))
 }
 
 // UserID applies equality check predicate on the "user_id" field. It's identical to UserIDEQ.
@@ -82,14 +82,14 @@ func UserName(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldUserName, v))
 }
 
-// Password applies equality check predicate on the "password" field. It's identical to PasswordEQ.
-func Password(v string) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldPassword, v))
+// PwdHashed applies equality check predicate on the "pwd_hashed" field. It's identical to PwdHashedEQ.
+func PwdHashed(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldPwdHashed, v))
 }
 
-// Salt applies equality check predicate on the "salt" field. It's identical to SaltEQ.
-func Salt(v string) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldSalt, v))
+// PwdSalt applies equality check predicate on the "pwd_salt" field. It's identical to PwdSaltEQ.
+func PwdSalt(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldPwdSalt, v))
 }
 
 // Token applies equality check predicate on the "token" field. It's identical to TokenEQ.
@@ -272,44 +272,69 @@ func DeletedAtNotNil() predicate.User {
 	return predicate.User(sql.FieldNotNull(FieldDeletedAt))
 }
 
-// TenantIDEQ applies the EQ predicate on the "tenant_id" field.
-func TenantIDEQ(v uint64) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldTenantID, v))
+// TenantCodeEQ applies the EQ predicate on the "tenant_code" field.
+func TenantCodeEQ(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldTenantCode, v))
 }
 
-// TenantIDNEQ applies the NEQ predicate on the "tenant_id" field.
-func TenantIDNEQ(v uint64) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldTenantID, v))
+// TenantCodeNEQ applies the NEQ predicate on the "tenant_code" field.
+func TenantCodeNEQ(v string) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldTenantCode, v))
 }
 
-// TenantIDIn applies the In predicate on the "tenant_id" field.
-func TenantIDIn(vs ...uint64) predicate.User {
-	return predicate.User(sql.FieldIn(FieldTenantID, vs...))
+// TenantCodeIn applies the In predicate on the "tenant_code" field.
+func TenantCodeIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldIn(FieldTenantCode, vs...))
 }
 
-// TenantIDNotIn applies the NotIn predicate on the "tenant_id" field.
-func TenantIDNotIn(vs ...uint64) predicate.User {
-	return predicate.User(sql.FieldNotIn(FieldTenantID, vs...))
+// TenantCodeNotIn applies the NotIn predicate on the "tenant_code" field.
+func TenantCodeNotIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldTenantCode, vs...))
 }
 
-// TenantIDGT applies the GT predicate on the "tenant_id" field.
-func TenantIDGT(v uint64) predicate.User {
-	return predicate.User(sql.FieldGT(FieldTenantID, v))
+// TenantCodeGT applies the GT predicate on the "tenant_code" field.
+func TenantCodeGT(v string) predicate.User {
+	return predicate.User(sql.FieldGT(FieldTenantCode, v))
 }
 
-// TenantIDGTE applies the GTE predicate on the "tenant_id" field.
-func TenantIDGTE(v uint64) predicate.User {
-	return predicate.User(sql.FieldGTE(FieldTenantID, v))
+// TenantCodeGTE applies the GTE predicate on the "tenant_code" field.
+func TenantCodeGTE(v string) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldTenantCode, v))
 }
 
-// TenantIDLT applies the LT predicate on the "tenant_id" field.
-func TenantIDLT(v uint64) predicate.User {
-	return predicate.User(sql.FieldLT(FieldTenantID, v))
+// TenantCodeLT applies the LT predicate on the "tenant_code" field.
+func TenantCodeLT(v string) predicate.User {
+	return predicate.User(sql.FieldLT(FieldTenantCode, v))
 }
 
-// TenantIDLTE applies the LTE predicate on the "tenant_id" field.
-func TenantIDLTE(v uint64) predicate.User {
-	return predicate.User(sql.FieldLTE(FieldTenantID, v))
+// TenantCodeLTE applies the LTE predicate on the "tenant_code" field.
+func TenantCodeLTE(v string) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldTenantCode, v))
+}
+
+// TenantCodeContains applies the Contains predicate on the "tenant_code" field.
+func TenantCodeContains(v string) predicate.User {
+	return predicate.User(sql.FieldContains(FieldTenantCode, v))
+}
+
+// TenantCodeHasPrefix applies the HasPrefix predicate on the "tenant_code" field.
+func TenantCodeHasPrefix(v string) predicate.User {
+	return predicate.User(sql.FieldHasPrefix(FieldTenantCode, v))
+}
+
+// TenantCodeHasSuffix applies the HasSuffix predicate on the "tenant_code" field.
+func TenantCodeHasSuffix(v string) predicate.User {
+	return predicate.User(sql.FieldHasSuffix(FieldTenantCode, v))
+}
+
+// TenantCodeEqualFold applies the EqualFold predicate on the "tenant_code" field.
+func TenantCodeEqualFold(v string) predicate.User {
+	return predicate.User(sql.FieldEqualFold(FieldTenantCode, v))
+}
+
+// TenantCodeContainsFold applies the ContainsFold predicate on the "tenant_code" field.
+func TenantCodeContainsFold(v string) predicate.User {
+	return predicate.User(sql.FieldContainsFold(FieldTenantCode, v))
 }
 
 // UserIDEQ applies the EQ predicate on the "user_id" field.
@@ -417,134 +442,134 @@ func UserNameContainsFold(v string) predicate.User {
 	return predicate.User(sql.FieldContainsFold(FieldUserName, v))
 }
 
-// PasswordEQ applies the EQ predicate on the "password" field.
-func PasswordEQ(v string) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldPassword, v))
+// PwdHashedEQ applies the EQ predicate on the "pwd_hashed" field.
+func PwdHashedEQ(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldPwdHashed, v))
 }
 
-// PasswordNEQ applies the NEQ predicate on the "password" field.
-func PasswordNEQ(v string) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldPassword, v))
+// PwdHashedNEQ applies the NEQ predicate on the "pwd_hashed" field.
+func PwdHashedNEQ(v string) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldPwdHashed, v))
 }
 
-// PasswordIn applies the In predicate on the "password" field.
-func PasswordIn(vs ...string) predicate.User {
-	return predicate.User(sql.FieldIn(FieldPassword, vs...))
+// PwdHashedIn applies the In predicate on the "pwd_hashed" field.
+func PwdHashedIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldIn(FieldPwdHashed, vs...))
 }
 
-// PasswordNotIn applies the NotIn predicate on the "password" field.
-func PasswordNotIn(vs ...string) predicate.User {
-	return predicate.User(sql.FieldNotIn(FieldPassword, vs...))
+// PwdHashedNotIn applies the NotIn predicate on the "pwd_hashed" field.
+func PwdHashedNotIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldPwdHashed, vs...))
 }
 
-// PasswordGT applies the GT predicate on the "password" field.
-func PasswordGT(v string) predicate.User {
-	return predicate.User(sql.FieldGT(FieldPassword, v))
+// PwdHashedGT applies the GT predicate on the "pwd_hashed" field.
+func PwdHashedGT(v string) predicate.User {
+	return predicate.User(sql.FieldGT(FieldPwdHashed, v))
 }
 
-// PasswordGTE applies the GTE predicate on the "password" field.
-func PasswordGTE(v string) predicate.User {
-	return predicate.User(sql.FieldGTE(FieldPassword, v))
+// PwdHashedGTE applies the GTE predicate on the "pwd_hashed" field.
+func PwdHashedGTE(v string) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldPwdHashed, v))
 }
 
-// PasswordLT applies the LT predicate on the "password" field.
-func PasswordLT(v string) predicate.User {
-	return predicate.User(sql.FieldLT(FieldPassword, v))
+// PwdHashedLT applies the LT predicate on the "pwd_hashed" field.
+func PwdHashedLT(v string) predicate.User {
+	return predicate.User(sql.FieldLT(FieldPwdHashed, v))
 }
 
-// PasswordLTE applies the LTE predicate on the "password" field.
-func PasswordLTE(v string) predicate.User {
-	return predicate.User(sql.FieldLTE(FieldPassword, v))
+// PwdHashedLTE applies the LTE predicate on the "pwd_hashed" field.
+func PwdHashedLTE(v string) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldPwdHashed, v))
 }
 
-// PasswordContains applies the Contains predicate on the "password" field.
-func PasswordContains(v string) predicate.User {
-	return predicate.User(sql.FieldContains(FieldPassword, v))
+// PwdHashedContains applies the Contains predicate on the "pwd_hashed" field.
+func PwdHashedContains(v string) predicate.User {
+	return predicate.User(sql.FieldContains(FieldPwdHashed, v))
 }
 
-// PasswordHasPrefix applies the HasPrefix predicate on the "password" field.
-func PasswordHasPrefix(v string) predicate.User {
-	return predicate.User(sql.FieldHasPrefix(FieldPassword, v))
+// PwdHashedHasPrefix applies the HasPrefix predicate on the "pwd_hashed" field.
+func PwdHashedHasPrefix(v string) predicate.User {
+	return predicate.User(sql.FieldHasPrefix(FieldPwdHashed, v))
 }
 
-// PasswordHasSuffix applies the HasSuffix predicate on the "password" field.
-func PasswordHasSuffix(v string) predicate.User {
-	return predicate.User(sql.FieldHasSuffix(FieldPassword, v))
+// PwdHashedHasSuffix applies the HasSuffix predicate on the "pwd_hashed" field.
+func PwdHashedHasSuffix(v string) predicate.User {
+	return predicate.User(sql.FieldHasSuffix(FieldPwdHashed, v))
 }
 
-// PasswordEqualFold applies the EqualFold predicate on the "password" field.
-func PasswordEqualFold(v string) predicate.User {
-	return predicate.User(sql.FieldEqualFold(FieldPassword, v))
+// PwdHashedEqualFold applies the EqualFold predicate on the "pwd_hashed" field.
+func PwdHashedEqualFold(v string) predicate.User {
+	return predicate.User(sql.FieldEqualFold(FieldPwdHashed, v))
 }
 
-// PasswordContainsFold applies the ContainsFold predicate on the "password" field.
-func PasswordContainsFold(v string) predicate.User {
-	return predicate.User(sql.FieldContainsFold(FieldPassword, v))
+// PwdHashedContainsFold applies the ContainsFold predicate on the "pwd_hashed" field.
+func PwdHashedContainsFold(v string) predicate.User {
+	return predicate.User(sql.FieldContainsFold(FieldPwdHashed, v))
 }
 
-// SaltEQ applies the EQ predicate on the "salt" field.
-func SaltEQ(v string) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldSalt, v))
+// PwdSaltEQ applies the EQ predicate on the "pwd_salt" field.
+func PwdSaltEQ(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldPwdSalt, v))
 }
 
-// SaltNEQ applies the NEQ predicate on the "salt" field.
-func SaltNEQ(v string) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldSalt, v))
+// PwdSaltNEQ applies the NEQ predicate on the "pwd_salt" field.
+func PwdSaltNEQ(v string) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldPwdSalt, v))
 }
 
-// SaltIn applies the In predicate on the "salt" field.
-func SaltIn(vs ...string) predicate.User {
-	return predicate.User(sql.FieldIn(FieldSalt, vs...))
+// PwdSaltIn applies the In predicate on the "pwd_salt" field.
+func PwdSaltIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldIn(FieldPwdSalt, vs...))
 }
 
-// SaltNotIn applies the NotIn predicate on the "salt" field.
-func SaltNotIn(vs ...string) predicate.User {
-	return predicate.User(sql.FieldNotIn(FieldSalt, vs...))
+// PwdSaltNotIn applies the NotIn predicate on the "pwd_salt" field.
+func PwdSaltNotIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldPwdSalt, vs...))
 }
 
-// SaltGT applies the GT predicate on the "salt" field.
-func SaltGT(v string) predicate.User {
-	return predicate.User(sql.FieldGT(FieldSalt, v))
+// PwdSaltGT applies the GT predicate on the "pwd_salt" field.
+func PwdSaltGT(v string) predicate.User {
+	return predicate.User(sql.FieldGT(FieldPwdSalt, v))
 }
 
-// SaltGTE applies the GTE predicate on the "salt" field.
-func SaltGTE(v string) predicate.User {
-	return predicate.User(sql.FieldGTE(FieldSalt, v))
+// PwdSaltGTE applies the GTE predicate on the "pwd_salt" field.
+func PwdSaltGTE(v string) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldPwdSalt, v))
 }
 
-// SaltLT applies the LT predicate on the "salt" field.
-func SaltLT(v string) predicate.User {
-	return predicate.User(sql.FieldLT(FieldSalt, v))
+// PwdSaltLT applies the LT predicate on the "pwd_salt" field.
+func PwdSaltLT(v string) predicate.User {
+	return predicate.User(sql.FieldLT(FieldPwdSalt, v))
 }
 
-// SaltLTE applies the LTE predicate on the "salt" field.
-func SaltLTE(v string) predicate.User {
-	return predicate.User(sql.FieldLTE(FieldSalt, v))
+// PwdSaltLTE applies the LTE predicate on the "pwd_salt" field.
+func PwdSaltLTE(v string) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldPwdSalt, v))
 }
 
-// SaltContains applies the Contains predicate on the "salt" field.
-func SaltContains(v string) predicate.User {
-	return predicate.User(sql.FieldContains(FieldSalt, v))
+// PwdSaltContains applies the Contains predicate on the "pwd_salt" field.
+func PwdSaltContains(v string) predicate.User {
+	return predicate.User(sql.FieldContains(FieldPwdSalt, v))
 }
 
-// SaltHasPrefix applies the HasPrefix predicate on the "salt" field.
-func SaltHasPrefix(v string) predicate.User {
-	return predicate.User(sql.FieldHasPrefix(FieldSalt, v))
+// PwdSaltHasPrefix applies the HasPrefix predicate on the "pwd_salt" field.
+func PwdSaltHasPrefix(v string) predicate.User {
+	return predicate.User(sql.FieldHasPrefix(FieldPwdSalt, v))
 }
 
-// SaltHasSuffix applies the HasSuffix predicate on the "salt" field.
-func SaltHasSuffix(v string) predicate.User {
-	return predicate.User(sql.FieldHasSuffix(FieldSalt, v))
+// PwdSaltHasSuffix applies the HasSuffix predicate on the "pwd_salt" field.
+func PwdSaltHasSuffix(v string) predicate.User {
+	return predicate.User(sql.FieldHasSuffix(FieldPwdSalt, v))
 }
 
-// SaltEqualFold applies the EqualFold predicate on the "salt" field.
-func SaltEqualFold(v string) predicate.User {
-	return predicate.User(sql.FieldEqualFold(FieldSalt, v))
+// PwdSaltEqualFold applies the EqualFold predicate on the "pwd_salt" field.
+func PwdSaltEqualFold(v string) predicate.User {
+	return predicate.User(sql.FieldEqualFold(FieldPwdSalt, v))
 }
 
-// SaltContainsFold applies the ContainsFold predicate on the "salt" field.
-func SaltContainsFold(v string) predicate.User {
-	return predicate.User(sql.FieldContainsFold(FieldSalt, v))
+// PwdSaltContainsFold applies the ContainsFold predicate on the "pwd_salt" field.
+func PwdSaltContainsFold(v string) predicate.User {
+	return predicate.User(sql.FieldContainsFold(FieldPwdSalt, v))
 }
 
 // TokenEQ applies the EQ predicate on the "token" field.

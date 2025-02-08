@@ -34,23 +34,23 @@ func NewListUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListUser
 
 func (l *ListUserLogic) ListUser(req *types.UserListReq) (resp *types.UserListResp, err error) {
 
-	tenantID, err := context_util.GetTenantIDFromCtx(l.ctx)
+	tenantCode, err := context_util.GetTenantCodeFromCtx(l.ctx)
 	if err != nil {
 		l.Error("ListUser context_util.GetTenantIDFromCtx err: ", err.Error())
-		return nil, xerr.NewErrMsg("get tenant id from ctx err.")
+		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "get tenant id from ctx err.")
 	}
 
 	// 1. 构建查询条件
 	where := []predicate.User{
 		user.DeletedAtIsNil(), // 未删除的用户
-		user.TenantID(tenantID),
+		user.TenantCode(tenantCode),
 	}
 
 	offset := common.Offset(req.Current, req.PageSize)
 	list, total, err := l.userRepo.PageList(l.ctx, offset, req.PageSize, where)
 	if err != nil {
 		l.Error("ListUser Logic PageList err:", err.Error())
-		return nil, xerr.NewErrMsg("list agency page err.")
+		return nil, xerr.NewErrCodeMsg(xerr.DbError, "list user page err.")
 	}
 
 	// 4. 构建返回结果

@@ -58,19 +58,19 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					// 更新租户
 					Method:  http.MethodPut,
-					Path:    "/:tenantID",
+					Path:    "/:tenant_id",
 					Handler: tenant.UpdateTenantHandler(serverCtx),
 				},
 				{
 					// 获取租户详情
 					Method:  http.MethodGet,
-					Path:    "/:tenantID",
+					Path:    "/:tenant_id",
 					Handler: tenant.GetTenantHandler(serverCtx),
 				},
 				{
 					// 删除租户
 					Method:  http.MethodDelete,
-					Path:    "/:tenantID",
+					Path:    "/:tenant_id",
 					Handler: tenant.DeleteTenantHandler(serverCtx),
 				},
 			}...,
@@ -97,19 +97,19 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					// 更新用户
 					Method:  http.MethodPut,
-					Path:    "/:userID",
+					Path:    "/:user_id",
 					Handler: user.UpdateUserHandler(serverCtx),
 				},
 				{
 					// 删除用户
 					Method:  http.MethodDelete,
-					Path:    "/:userID",
+					Path:    "/:user_id",
 					Handler: user.DeleteUserHandler(serverCtx),
 				},
 				{
 					// 获取用户详情
 					Method:  http.MethodGet,
-					Path:    "/:userID",
+					Path:    "/:user_id",
 					Handler: user.GetUserHandler(serverCtx),
 				},
 			}...,

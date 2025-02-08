@@ -22,19 +22,36 @@ func GetUserIDFromCtx(ctx context.Context) (uint64, error) {
 	return userID, nil
 }
 
-// TenantIDKey 是一个上下文键，用于存储租户ID
-type TenantIDKey struct{}
+// TenantCodeKey 是一个上下文键，用于存储租户ID
+type TenantCodeKey struct{}
 
-// SetTenantIDToCtx 将租户ID设置到上下文中
-func SetTenantIDToCtx(ctx context.Context, tenantID uint64) context.Context {
-	return context.WithValue(ctx, TenantIDKey{}, tenantID)
+// SetTenantCodeToCtx 将租户ID设置到上下文中
+func SetTenantCodeToCtx(ctx context.Context, tenantCode string) context.Context {
+	return context.WithValue(ctx, TenantCodeKey{}, tenantCode)
 }
 
-// GetTenantIDFromCtx 从上下文中获取租户ID
-func GetTenantIDFromCtx(ctx context.Context) (uint64, error) {
-	tenantID, ok := ctx.Value(TenantIDKey{}).(uint64)
+// GetTenantCodeFromCtx 从上下文中获取租户ID
+func GetTenantCodeFromCtx(ctx context.Context) (string, error) { // 获取租户ID
+	tenantCode, ok := ctx.Value(TenantCodeKey{}).(string)
 	if !ok {
-		return 0, errors.New("tenant ID not found in context")
+		return "", errors.New("tenant code not found in context")
 	}
-	return tenantID, nil
+	return tenantCode, nil
+}
+
+// RoleCodeKey 是一个上下文键，用于存储角色ID
+type RoleCodeKey struct{}
+
+// SetRoleCodeToCtx 将角色ID设置到上下文中
+func SetRoleCodeToCtx(ctx context.Context, roleCode string) context.Context {
+	return context.WithValue(ctx, RoleCodeKey{}, roleCode)
+}
+
+// GetRoleCodeFromCtx 从上下文中获取角色ID
+func GetRoleCodeFromCtx(ctx context.Context) (string, error) {
+	roleCode, ok := ctx.Value(RoleCodeKey{}).(string)
+	if !ok {
+		return "", errors.New("role code not found in context")
+	}
+	return roleCode, nil
 }

@@ -4500,6 +4500,7 @@ type TenantMutation struct {
 	tenant_id     *uint64
 	addtenant_id  *int64
 	name          *string
+	code          *string
 	description   *string
 	status        *int
 	addstatus     *int
@@ -4881,6 +4882,42 @@ func (m *TenantMutation) ResetName() {
 	m.name = nil
 }
 
+// SetCode sets the "code" field.
+func (m *TenantMutation) SetCode(s string) {
+	m.code = &s
+}
+
+// Code returns the value of the "code" field in the mutation.
+func (m *TenantMutation) Code() (r string, exists bool) {
+	v := m.code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCode returns the old "code" field's value of the Tenant entity.
+// If the Tenant object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TenantMutation) OldCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCode: %w", err)
+	}
+	return oldValue.Code, nil
+}
+
+// ResetCode resets all changes to the "code" field.
+func (m *TenantMutation) ResetCode() {
+	m.code = nil
+}
+
 // SetDescription sets the "description" field.
 func (m *TenantMutation) SetDescription(s string) {
 	m.description = &s
@@ -5007,7 +5044,7 @@ func (m *TenantMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TenantMutation) Fields() []string {
-	fields := make([]string, 0, 7)
+	fields := make([]string, 0, 8)
 	if m.created_at != nil {
 		fields = append(fields, tenant.FieldCreatedAt)
 	}
@@ -5022,6 +5059,9 @@ func (m *TenantMutation) Fields() []string {
 	}
 	if m.name != nil {
 		fields = append(fields, tenant.FieldName)
+	}
+	if m.code != nil {
+		fields = append(fields, tenant.FieldCode)
 	}
 	if m.description != nil {
 		fields = append(fields, tenant.FieldDescription)
@@ -5047,6 +5087,8 @@ func (m *TenantMutation) Field(name string) (ent.Value, bool) {
 		return m.TenantID()
 	case tenant.FieldName:
 		return m.Name()
+	case tenant.FieldCode:
+		return m.Code()
 	case tenant.FieldDescription:
 		return m.Description()
 	case tenant.FieldStatus:
@@ -5070,6 +5112,8 @@ func (m *TenantMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldTenantID(ctx)
 	case tenant.FieldName:
 		return m.OldName(ctx)
+	case tenant.FieldCode:
+		return m.OldCode(ctx)
 	case tenant.FieldDescription:
 		return m.OldDescription(ctx)
 	case tenant.FieldStatus:
@@ -5117,6 +5161,13 @@ func (m *TenantMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetName(v)
+		return nil
+	case tenant.FieldCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCode(v)
 		return nil
 	case tenant.FieldDescription:
 		v, ok := value.(string)
@@ -5268,6 +5319,9 @@ func (m *TenantMutation) ResetField(name string) error {
 	case tenant.FieldName:
 		m.ResetName()
 		return nil
+	case tenant.FieldCode:
+		m.ResetCode()
+		return nil
 	case tenant.FieldDescription:
 		m.ResetDescription()
 		return nil
@@ -5338,13 +5392,12 @@ type UserMutation struct {
 	addupdated_at *int64
 	deleted_at    *int64
 	adddeleted_at *int64
-	tenant_id     *uint64
-	addtenant_id  *int64
+	tenant_code   *string
 	user_id       *uint64
 	adduser_id    *int64
 	user_name     *string
-	password      *string
-	salt          *string
+	pwd_hashed    *string
+	pwd_salt      *string
 	token         *string
 	nick_name     *string
 	avatar        *string
@@ -5646,60 +5699,40 @@ func (m *UserMutation) ResetDeletedAt() {
 	delete(m.clearedFields, user.FieldDeletedAt)
 }
 
-// SetTenantID sets the "tenant_id" field.
-func (m *UserMutation) SetTenantID(u uint64) {
-	m.tenant_id = &u
-	m.addtenant_id = nil
+// SetTenantCode sets the "tenant_code" field.
+func (m *UserMutation) SetTenantCode(s string) {
+	m.tenant_code = &s
 }
 
-// TenantID returns the value of the "tenant_id" field in the mutation.
-func (m *UserMutation) TenantID() (r uint64, exists bool) {
-	v := m.tenant_id
+// TenantCode returns the value of the "tenant_code" field in the mutation.
+func (m *UserMutation) TenantCode() (r string, exists bool) {
+	v := m.tenant_code
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldTenantID returns the old "tenant_id" field's value of the User entity.
+// OldTenantCode returns the old "tenant_code" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldTenantID(ctx context.Context) (v uint64, err error) {
+func (m *UserMutation) OldTenantCode(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTenantID is only allowed on UpdateOne operations")
+		return v, errors.New("OldTenantCode is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTenantID requires an ID field in the mutation")
+		return v, errors.New("OldTenantCode requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTenantID: %w", err)
+		return v, fmt.Errorf("querying old value for OldTenantCode: %w", err)
 	}
-	return oldValue.TenantID, nil
+	return oldValue.TenantCode, nil
 }
 
-// AddTenantID adds u to the "tenant_id" field.
-func (m *UserMutation) AddTenantID(u int64) {
-	if m.addtenant_id != nil {
-		*m.addtenant_id += u
-	} else {
-		m.addtenant_id = &u
-	}
-}
-
-// AddedTenantID returns the value that was added to the "tenant_id" field in this mutation.
-func (m *UserMutation) AddedTenantID() (r int64, exists bool) {
-	v := m.addtenant_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetTenantID resets all changes to the "tenant_id" field.
-func (m *UserMutation) ResetTenantID() {
-	m.tenant_id = nil
-	m.addtenant_id = nil
+// ResetTenantCode resets all changes to the "tenant_code" field.
+func (m *UserMutation) ResetTenantCode() {
+	m.tenant_code = nil
 }
 
 // SetUserID sets the "user_id" field.
@@ -5794,76 +5827,76 @@ func (m *UserMutation) ResetUserName() {
 	m.user_name = nil
 }
 
-// SetPassword sets the "password" field.
-func (m *UserMutation) SetPassword(s string) {
-	m.password = &s
+// SetPwdHashed sets the "pwd_hashed" field.
+func (m *UserMutation) SetPwdHashed(s string) {
+	m.pwd_hashed = &s
 }
 
-// Password returns the value of the "password" field in the mutation.
-func (m *UserMutation) Password() (r string, exists bool) {
-	v := m.password
+// PwdHashed returns the value of the "pwd_hashed" field in the mutation.
+func (m *UserMutation) PwdHashed() (r string, exists bool) {
+	v := m.pwd_hashed
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPassword returns the old "password" field's value of the User entity.
+// OldPwdHashed returns the old "pwd_hashed" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldPassword(ctx context.Context) (v string, err error) {
+func (m *UserMutation) OldPwdHashed(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPassword is only allowed on UpdateOne operations")
+		return v, errors.New("OldPwdHashed is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPassword requires an ID field in the mutation")
+		return v, errors.New("OldPwdHashed requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPassword: %w", err)
+		return v, fmt.Errorf("querying old value for OldPwdHashed: %w", err)
 	}
-	return oldValue.Password, nil
+	return oldValue.PwdHashed, nil
 }
 
-// ResetPassword resets all changes to the "password" field.
-func (m *UserMutation) ResetPassword() {
-	m.password = nil
+// ResetPwdHashed resets all changes to the "pwd_hashed" field.
+func (m *UserMutation) ResetPwdHashed() {
+	m.pwd_hashed = nil
 }
 
-// SetSalt sets the "salt" field.
-func (m *UserMutation) SetSalt(s string) {
-	m.salt = &s
+// SetPwdSalt sets the "pwd_salt" field.
+func (m *UserMutation) SetPwdSalt(s string) {
+	m.pwd_salt = &s
 }
 
-// Salt returns the value of the "salt" field in the mutation.
-func (m *UserMutation) Salt() (r string, exists bool) {
-	v := m.salt
+// PwdSalt returns the value of the "pwd_salt" field in the mutation.
+func (m *UserMutation) PwdSalt() (r string, exists bool) {
+	v := m.pwd_salt
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldSalt returns the old "salt" field's value of the User entity.
+// OldPwdSalt returns the old "pwd_salt" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldSalt(ctx context.Context) (v string, err error) {
+func (m *UserMutation) OldPwdSalt(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldSalt is only allowed on UpdateOne operations")
+		return v, errors.New("OldPwdSalt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldSalt requires an ID field in the mutation")
+		return v, errors.New("OldPwdSalt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldSalt: %w", err)
+		return v, fmt.Errorf("querying old value for OldPwdSalt: %w", err)
 	}
-	return oldValue.Salt, nil
+	return oldValue.PwdSalt, nil
 }
 
-// ResetSalt resets all changes to the "salt" field.
-func (m *UserMutation) ResetSalt() {
-	m.salt = nil
+// ResetPwdSalt resets all changes to the "pwd_salt" field.
+func (m *UserMutation) ResetPwdSalt() {
+	m.pwd_salt = nil
 }
 
 // SetToken sets the "token" field.
@@ -6370,8 +6403,8 @@ func (m *UserMutation) Fields() []string {
 	if m.deleted_at != nil {
 		fields = append(fields, user.FieldDeletedAt)
 	}
-	if m.tenant_id != nil {
-		fields = append(fields, user.FieldTenantID)
+	if m.tenant_code != nil {
+		fields = append(fields, user.FieldTenantCode)
 	}
 	if m.user_id != nil {
 		fields = append(fields, user.FieldUserID)
@@ -6379,11 +6412,11 @@ func (m *UserMutation) Fields() []string {
 	if m.user_name != nil {
 		fields = append(fields, user.FieldUserName)
 	}
-	if m.password != nil {
-		fields = append(fields, user.FieldPassword)
+	if m.pwd_hashed != nil {
+		fields = append(fields, user.FieldPwdHashed)
 	}
-	if m.salt != nil {
-		fields = append(fields, user.FieldSalt)
+	if m.pwd_salt != nil {
+		fields = append(fields, user.FieldPwdSalt)
 	}
 	if m.token != nil {
 		fields = append(fields, user.FieldToken)
@@ -6429,16 +6462,16 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case user.FieldDeletedAt:
 		return m.DeletedAt()
-	case user.FieldTenantID:
-		return m.TenantID()
+	case user.FieldTenantCode:
+		return m.TenantCode()
 	case user.FieldUserID:
 		return m.UserID()
 	case user.FieldUserName:
 		return m.UserName()
-	case user.FieldPassword:
-		return m.Password()
-	case user.FieldSalt:
-		return m.Salt()
+	case user.FieldPwdHashed:
+		return m.PwdHashed()
+	case user.FieldPwdSalt:
+		return m.PwdSalt()
 	case user.FieldToken:
 		return m.Token()
 	case user.FieldNickName:
@@ -6474,16 +6507,16 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldUpdatedAt(ctx)
 	case user.FieldDeletedAt:
 		return m.OldDeletedAt(ctx)
-	case user.FieldTenantID:
-		return m.OldTenantID(ctx)
+	case user.FieldTenantCode:
+		return m.OldTenantCode(ctx)
 	case user.FieldUserID:
 		return m.OldUserID(ctx)
 	case user.FieldUserName:
 		return m.OldUserName(ctx)
-	case user.FieldPassword:
-		return m.OldPassword(ctx)
-	case user.FieldSalt:
-		return m.OldSalt(ctx)
+	case user.FieldPwdHashed:
+		return m.OldPwdHashed(ctx)
+	case user.FieldPwdSalt:
+		return m.OldPwdSalt(ctx)
 	case user.FieldToken:
 		return m.OldToken(ctx)
 	case user.FieldNickName:
@@ -6534,12 +6567,12 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDeletedAt(v)
 		return nil
-	case user.FieldTenantID:
-		v, ok := value.(uint64)
+	case user.FieldTenantCode:
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetTenantID(v)
+		m.SetTenantCode(v)
 		return nil
 	case user.FieldUserID:
 		v, ok := value.(uint64)
@@ -6555,19 +6588,19 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetUserName(v)
 		return nil
-	case user.FieldPassword:
+	case user.FieldPwdHashed:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetPassword(v)
+		m.SetPwdHashed(v)
 		return nil
-	case user.FieldSalt:
+	case user.FieldPwdSalt:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetSalt(v)
+		m.SetPwdSalt(v)
 		return nil
 	case user.FieldToken:
 		v, ok := value.(string)
@@ -6656,9 +6689,6 @@ func (m *UserMutation) AddedFields() []string {
 	if m.adddeleted_at != nil {
 		fields = append(fields, user.FieldDeletedAt)
 	}
-	if m.addtenant_id != nil {
-		fields = append(fields, user.FieldTenantID)
-	}
 	if m.adduser_id != nil {
 		fields = append(fields, user.FieldUserID)
 	}
@@ -6691,8 +6721,6 @@ func (m *UserMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUpdatedAt()
 	case user.FieldDeletedAt:
 		return m.AddedDeletedAt()
-	case user.FieldTenantID:
-		return m.AddedTenantID()
 	case user.FieldUserID:
 		return m.AddedUserID()
 	case user.FieldSex:
@@ -6734,13 +6762,6 @@ func (m *UserMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddDeletedAt(v)
-		return nil
-	case user.FieldTenantID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddTenantID(v)
 		return nil
 	case user.FieldUserID:
 		v, ok := value.(int64)
@@ -6829,8 +6850,8 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldDeletedAt:
 		m.ResetDeletedAt()
 		return nil
-	case user.FieldTenantID:
-		m.ResetTenantID()
+	case user.FieldTenantCode:
+		m.ResetTenantCode()
 		return nil
 	case user.FieldUserID:
 		m.ResetUserID()
@@ -6838,11 +6859,11 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldUserName:
 		m.ResetUserName()
 		return nil
-	case user.FieldPassword:
-		m.ResetPassword()
+	case user.FieldPwdHashed:
+		m.ResetPwdHashed()
 		return nil
-	case user.FieldSalt:
-		m.ResetSalt()
+	case user.FieldPwdSalt:
+		m.ResetPwdSalt()
 		return nil
 	case user.FieldToken:
 		m.ResetToken()

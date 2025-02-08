@@ -76,24 +76,17 @@ func (uu *UserUpdate) ClearDeletedAt() *UserUpdate {
 	return uu
 }
 
-// SetTenantID sets the "tenant_id" field.
-func (uu *UserUpdate) SetTenantID(u uint64) *UserUpdate {
-	uu.mutation.ResetTenantID()
-	uu.mutation.SetTenantID(u)
+// SetTenantCode sets the "tenant_code" field.
+func (uu *UserUpdate) SetTenantCode(s string) *UserUpdate {
+	uu.mutation.SetTenantCode(s)
 	return uu
 }
 
-// SetNillableTenantID sets the "tenant_id" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableTenantID(u *uint64) *UserUpdate {
-	if u != nil {
-		uu.SetTenantID(*u)
+// SetNillableTenantCode sets the "tenant_code" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableTenantCode(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetTenantCode(*s)
 	}
-	return uu
-}
-
-// AddTenantID adds u to the "tenant_id" field.
-func (uu *UserUpdate) AddTenantID(u int64) *UserUpdate {
-	uu.mutation.AddTenantID(u)
 	return uu
 }
 
@@ -132,30 +125,30 @@ func (uu *UserUpdate) SetNillableUserName(s *string) *UserUpdate {
 	return uu
 }
 
-// SetPassword sets the "password" field.
-func (uu *UserUpdate) SetPassword(s string) *UserUpdate {
-	uu.mutation.SetPassword(s)
+// SetPwdHashed sets the "pwd_hashed" field.
+func (uu *UserUpdate) SetPwdHashed(s string) *UserUpdate {
+	uu.mutation.SetPwdHashed(s)
 	return uu
 }
 
-// SetNillablePassword sets the "password" field if the given value is not nil.
-func (uu *UserUpdate) SetNillablePassword(s *string) *UserUpdate {
+// SetNillablePwdHashed sets the "pwd_hashed" field if the given value is not nil.
+func (uu *UserUpdate) SetNillablePwdHashed(s *string) *UserUpdate {
 	if s != nil {
-		uu.SetPassword(*s)
+		uu.SetPwdHashed(*s)
 	}
 	return uu
 }
 
-// SetSalt sets the "salt" field.
-func (uu *UserUpdate) SetSalt(s string) *UserUpdate {
-	uu.mutation.SetSalt(s)
+// SetPwdSalt sets the "pwd_salt" field.
+func (uu *UserUpdate) SetPwdSalt(s string) *UserUpdate {
+	uu.mutation.SetPwdSalt(s)
 	return uu
 }
 
-// SetNillableSalt sets the "salt" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableSalt(s *string) *UserUpdate {
+// SetNillablePwdSalt sets the "pwd_salt" field if the given value is not nil.
+func (uu *UserUpdate) SetNillablePwdSalt(s *string) *UserUpdate {
 	if s != nil {
-		uu.SetSalt(*s)
+		uu.SetPwdSalt(*s)
 	}
 	return uu
 }
@@ -374,14 +367,14 @@ func (uu *UserUpdate) check() error {
 			return &ValidationError{Name: "user_name", err: fmt.Errorf(`generated: validator failed for field "User.user_name": %w`, err)}
 		}
 	}
-	if v, ok := uu.mutation.Password(); ok {
-		if err := user.PasswordValidator(v); err != nil {
-			return &ValidationError{Name: "password", err: fmt.Errorf(`generated: validator failed for field "User.password": %w`, err)}
+	if v, ok := uu.mutation.PwdHashed(); ok {
+		if err := user.PwdHashedValidator(v); err != nil {
+			return &ValidationError{Name: "pwd_hashed", err: fmt.Errorf(`generated: validator failed for field "User.pwd_hashed": %w`, err)}
 		}
 	}
-	if v, ok := uu.mutation.Salt(); ok {
-		if err := user.SaltValidator(v); err != nil {
-			return &ValidationError{Name: "salt", err: fmt.Errorf(`generated: validator failed for field "User.salt": %w`, err)}
+	if v, ok := uu.mutation.PwdSalt(); ok {
+		if err := user.PwdSaltValidator(v); err != nil {
+			return &ValidationError{Name: "pwd_salt", err: fmt.Errorf(`generated: validator failed for field "User.pwd_salt": %w`, err)}
 		}
 	}
 	if v, ok := uu.mutation.Phone(); ok {
@@ -425,11 +418,8 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if uu.mutation.DeletedAtCleared() {
 		_spec.ClearField(user.FieldDeletedAt, field.TypeInt64)
 	}
-	if value, ok := uu.mutation.TenantID(); ok {
-		_spec.SetField(user.FieldTenantID, field.TypeUint64, value)
-	}
-	if value, ok := uu.mutation.AddedTenantID(); ok {
-		_spec.AddField(user.FieldTenantID, field.TypeUint64, value)
+	if value, ok := uu.mutation.TenantCode(); ok {
+		_spec.SetField(user.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := uu.mutation.UserID(); ok {
 		_spec.SetField(user.FieldUserID, field.TypeUint64, value)
@@ -440,11 +430,11 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.UserName(); ok {
 		_spec.SetField(user.FieldUserName, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.Password(); ok {
-		_spec.SetField(user.FieldPassword, field.TypeString, value)
+	if value, ok := uu.mutation.PwdHashed(); ok {
+		_spec.SetField(user.FieldPwdHashed, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.Salt(); ok {
-		_spec.SetField(user.FieldSalt, field.TypeString, value)
+	if value, ok := uu.mutation.PwdSalt(); ok {
+		_spec.SetField(user.FieldPwdSalt, field.TypeString, value)
 	}
 	if value, ok := uu.mutation.Token(); ok {
 		_spec.SetField(user.FieldToken, field.TypeString, value)
@@ -561,24 +551,17 @@ func (uuo *UserUpdateOne) ClearDeletedAt() *UserUpdateOne {
 	return uuo
 }
 
-// SetTenantID sets the "tenant_id" field.
-func (uuo *UserUpdateOne) SetTenantID(u uint64) *UserUpdateOne {
-	uuo.mutation.ResetTenantID()
-	uuo.mutation.SetTenantID(u)
+// SetTenantCode sets the "tenant_code" field.
+func (uuo *UserUpdateOne) SetTenantCode(s string) *UserUpdateOne {
+	uuo.mutation.SetTenantCode(s)
 	return uuo
 }
 
-// SetNillableTenantID sets the "tenant_id" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableTenantID(u *uint64) *UserUpdateOne {
-	if u != nil {
-		uuo.SetTenantID(*u)
+// SetNillableTenantCode sets the "tenant_code" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableTenantCode(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetTenantCode(*s)
 	}
-	return uuo
-}
-
-// AddTenantID adds u to the "tenant_id" field.
-func (uuo *UserUpdateOne) AddTenantID(u int64) *UserUpdateOne {
-	uuo.mutation.AddTenantID(u)
 	return uuo
 }
 
@@ -617,30 +600,30 @@ func (uuo *UserUpdateOne) SetNillableUserName(s *string) *UserUpdateOne {
 	return uuo
 }
 
-// SetPassword sets the "password" field.
-func (uuo *UserUpdateOne) SetPassword(s string) *UserUpdateOne {
-	uuo.mutation.SetPassword(s)
+// SetPwdHashed sets the "pwd_hashed" field.
+func (uuo *UserUpdateOne) SetPwdHashed(s string) *UserUpdateOne {
+	uuo.mutation.SetPwdHashed(s)
 	return uuo
 }
 
-// SetNillablePassword sets the "password" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillablePassword(s *string) *UserUpdateOne {
+// SetNillablePwdHashed sets the "pwd_hashed" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillablePwdHashed(s *string) *UserUpdateOne {
 	if s != nil {
-		uuo.SetPassword(*s)
+		uuo.SetPwdHashed(*s)
 	}
 	return uuo
 }
 
-// SetSalt sets the "salt" field.
-func (uuo *UserUpdateOne) SetSalt(s string) *UserUpdateOne {
-	uuo.mutation.SetSalt(s)
+// SetPwdSalt sets the "pwd_salt" field.
+func (uuo *UserUpdateOne) SetPwdSalt(s string) *UserUpdateOne {
+	uuo.mutation.SetPwdSalt(s)
 	return uuo
 }
 
-// SetNillableSalt sets the "salt" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableSalt(s *string) *UserUpdateOne {
+// SetNillablePwdSalt sets the "pwd_salt" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillablePwdSalt(s *string) *UserUpdateOne {
 	if s != nil {
-		uuo.SetSalt(*s)
+		uuo.SetPwdSalt(*s)
 	}
 	return uuo
 }
@@ -872,14 +855,14 @@ func (uuo *UserUpdateOne) check() error {
 			return &ValidationError{Name: "user_name", err: fmt.Errorf(`generated: validator failed for field "User.user_name": %w`, err)}
 		}
 	}
-	if v, ok := uuo.mutation.Password(); ok {
-		if err := user.PasswordValidator(v); err != nil {
-			return &ValidationError{Name: "password", err: fmt.Errorf(`generated: validator failed for field "User.password": %w`, err)}
+	if v, ok := uuo.mutation.PwdHashed(); ok {
+		if err := user.PwdHashedValidator(v); err != nil {
+			return &ValidationError{Name: "pwd_hashed", err: fmt.Errorf(`generated: validator failed for field "User.pwd_hashed": %w`, err)}
 		}
 	}
-	if v, ok := uuo.mutation.Salt(); ok {
-		if err := user.SaltValidator(v); err != nil {
-			return &ValidationError{Name: "salt", err: fmt.Errorf(`generated: validator failed for field "User.salt": %w`, err)}
+	if v, ok := uuo.mutation.PwdSalt(); ok {
+		if err := user.PwdSaltValidator(v); err != nil {
+			return &ValidationError{Name: "pwd_salt", err: fmt.Errorf(`generated: validator failed for field "User.pwd_salt": %w`, err)}
 		}
 	}
 	if v, ok := uuo.mutation.Phone(); ok {
@@ -940,11 +923,8 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if uuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(user.FieldDeletedAt, field.TypeInt64)
 	}
-	if value, ok := uuo.mutation.TenantID(); ok {
-		_spec.SetField(user.FieldTenantID, field.TypeUint64, value)
-	}
-	if value, ok := uuo.mutation.AddedTenantID(); ok {
-		_spec.AddField(user.FieldTenantID, field.TypeUint64, value)
+	if value, ok := uuo.mutation.TenantCode(); ok {
+		_spec.SetField(user.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := uuo.mutation.UserID(); ok {
 		_spec.SetField(user.FieldUserID, field.TypeUint64, value)
@@ -955,11 +935,11 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if value, ok := uuo.mutation.UserName(); ok {
 		_spec.SetField(user.FieldUserName, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.Password(); ok {
-		_spec.SetField(user.FieldPassword, field.TypeString, value)
+	if value, ok := uuo.mutation.PwdHashed(); ok {
+		_spec.SetField(user.FieldPwdHashed, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.Salt(); ok {
-		_spec.SetField(user.FieldSalt, field.TypeString, value)
+	if value, ok := uuo.mutation.PwdSalt(); ok {
+		_spec.SetField(user.FieldPwdSalt, field.TypeString, value)
 	}
 	if value, ok := uuo.mutation.Token(); ok {
 		_spec.SetField(user.FieldToken, field.TypeString, value)

@@ -24,6 +24,7 @@ func (r *TenantRepo) Create(ctx context.Context, tenant *generated.Tenant) (*gen
 		SetCreatedAt(now).
 		SetUpdatedAt(now).
 		SetTenantID(tenant.TenantID).
+		SetCode(tenant.Code).
 		SetName(tenant.Name).
 		SetDescription(tenant.Description).
 		SetStatus(tenant.Status).

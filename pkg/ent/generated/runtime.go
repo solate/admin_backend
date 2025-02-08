@@ -148,12 +148,16 @@ func init() {
 	tenant.DefaultName = tenantDescName.Default.(string)
 	// tenant.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	tenant.NameValidator = tenantDescName.Validators[0].(func(string) error)
+	// tenantDescCode is the schema descriptor for code field.
+	tenantDescCode := tenantFields[5].Descriptor()
+	// tenant.CodeValidator is a validator for the "code" field. It is called by the builders before save.
+	tenant.CodeValidator = tenantDescCode.Validators[0].(func(string) error)
 	// tenantDescDescription is the schema descriptor for description field.
-	tenantDescDescription := tenantFields[5].Descriptor()
+	tenantDescDescription := tenantFields[6].Descriptor()
 	// tenant.DefaultDescription holds the default value on creation for the description field.
 	tenant.DefaultDescription = tenantDescDescription.Default.(string)
 	// tenantDescStatus is the schema descriptor for status field.
-	tenantDescStatus := tenantFields[6].Descriptor()
+	tenantDescStatus := tenantFields[7].Descriptor()
 	// tenant.DefaultStatus holds the default value on creation for the status field.
 	tenant.DefaultStatus = tenantDescStatus.Default.(int)
 	userFields := schema.User{}.Fields()
@@ -172,18 +176,18 @@ func init() {
 	user.DefaultUserName = userDescUserName.Default.(string)
 	// user.UserNameValidator is a validator for the "user_name" field. It is called by the builders before save.
 	user.UserNameValidator = userDescUserName.Validators[0].(func(string) error)
-	// userDescPassword is the schema descriptor for password field.
-	userDescPassword := userFields[6].Descriptor()
-	// user.DefaultPassword holds the default value on creation for the password field.
-	user.DefaultPassword = userDescPassword.Default.(string)
-	// user.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
-	user.PasswordValidator = userDescPassword.Validators[0].(func(string) error)
-	// userDescSalt is the schema descriptor for salt field.
-	userDescSalt := userFields[7].Descriptor()
-	// user.DefaultSalt holds the default value on creation for the salt field.
-	user.DefaultSalt = userDescSalt.Default.(string)
-	// user.SaltValidator is a validator for the "salt" field. It is called by the builders before save.
-	user.SaltValidator = userDescSalt.Validators[0].(func(string) error)
+	// userDescPwdHashed is the schema descriptor for pwd_hashed field.
+	userDescPwdHashed := userFields[6].Descriptor()
+	// user.DefaultPwdHashed holds the default value on creation for the pwd_hashed field.
+	user.DefaultPwdHashed = userDescPwdHashed.Default.(string)
+	// user.PwdHashedValidator is a validator for the "pwd_hashed" field. It is called by the builders before save.
+	user.PwdHashedValidator = userDescPwdHashed.Validators[0].(func(string) error)
+	// userDescPwdSalt is the schema descriptor for pwd_salt field.
+	userDescPwdSalt := userFields[7].Descriptor()
+	// user.DefaultPwdSalt holds the default value on creation for the pwd_salt field.
+	user.DefaultPwdSalt = userDescPwdSalt.Default.(string)
+	// user.PwdSaltValidator is a validator for the "pwd_salt" field. It is called by the builders before save.
+	user.PwdSaltValidator = userDescPwdSalt.Validators[0].(func(string) error)
 	// userDescToken is the schema descriptor for token field.
 	userDescToken := userFields[8].Descriptor()
 	// user.DefaultToken holds the default value on creation for the token field.

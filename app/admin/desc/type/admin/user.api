@@ -87,11 +87,11 @@ service admin {
 
     @doc "更新用户"
     @handler updateUser
-    put /:userID (UpdateUserReq) returns (bool)
+    put /:user_id (UpdateUserReq) returns (bool)
 
     @doc "删除用户"
     @handler deleteUser
-    delete /:userID (DeleteUserReq) returns (bool)
+    delete /:user_id (DeleteUserReq) returns (bool)
 
     @doc "获取用户列表"
     @handler listUser
@@ -99,5 +99,5 @@ service admin {
 
     @doc "获取用户详情"
     @handler getUser
-    get /:userID (GetUserReq) returns (GetUserResp)
+    get /:user_id (GetUserReq) returns (GetUserResp)
 }

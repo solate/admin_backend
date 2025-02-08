@@ -27,6 +27,7 @@ func TestGenerateUUIDs_Success(t *testing.T) {
 		if uuid == 0 {
 			t.Errorf("GenerateUUIDs returned a zero UUID")
 		}
+		t.Log(uuid)
 	}
 }
 

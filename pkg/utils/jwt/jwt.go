@@ -1,14 +1,17 @@
 package jwt
 
 import (
+	"errors"
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
 type Claims struct {
-	UserID   uint64 `json:"user_id"`
-	TenantID uint64 `json:"tenant_id"`
+	UserID     uint64 `json:"user_id"`
+	TenantCode string `json:"tenant_code"`
+	RoleCode   string `json:"role_code"`
 	jwt.RegisteredClaims
 }
 
@@ -18,11 +21,12 @@ type JWTConfig struct {
 }
 
 // 生成JWT Token
-func GenerateToken(userID, tenantID uint64, config JWTConfig) (string, error) {
+func GenerateToken(userID uint64, tenantCode string, config JWTConfig) (string, error) {
 	now := time.Now()
 	claims := Claims{
-		UserID:   userID,
-		TenantID: tenantID,
+		UserID:     userID,
+		TenantCode: tenantCode,
+		// RoleCode:   roleCode,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(now.Add(time.Duration(config.AccessExpire) * time.Second)),
 			IssuedAt:  jwt.NewNumericDate(now),
@@ -41,7 +45,16 @@ func ParseToken(tokenString string, accessSecret []byte) (*Claims, error) {
 	})
 
 	if err != nil {
-		return nil, err
+		switch {
+		case errors.Is(err, jwt.ErrTokenExpired):
+			return nil, fmt.Errorf("token已过期")
+		case errors.Is(err, jwt.ErrTokenMalformed):
+			return nil, fmt.Errorf("token格式错误")
+		case errors.Is(err, jwt.ErrTokenSignatureInvalid):
+			return nil, fmt.Errorf("token签名无效")
+		default:
+			return nil, fmt.Errorf("token解析失败: %v", err)
+		}
 	}
 
 	if claims, ok := token.Claims.(*Claims); ok && token.Valid {
