@@ -131,7 +131,7 @@
             "name": "status",
             "description": " 状态",
             "in": "query",
-            "required": false,
+            "required": true,
             "type": "integer",
             "format": "int32"
           }
@@ -259,10 +259,10 @@
         ]
       }
     },
-    "/admin/api/v1/user/": {
+    "/admin/api/v1/users": {
       "get": {
         "summary": "获取用户列表",
-        "operationId": "listUser",
+        "operationId": "ListUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -292,18 +292,21 @@
           },
           {
             "name": "name",
+            "description": " 姓名",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
             "name": "phone",
+            "description": " 手机号",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
             "name": "status",
+            "description": " 状态",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -319,7 +322,7 @@
       },
       "post": {
         "summary": "创建用户",
-        "operationId": "createUser",
+        "operationId": "CreateUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -331,6 +334,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": " 创建用户请求",
             "in": "body",
             "required": true,
             "schema": {
@@ -343,10 +347,10 @@
         ]
       }
     },
-    "/admin/api/v1/user/{user_id}": {
+    "/admin/api/v1/users/{user_id}": {
       "get": {
         "summary": "获取用户详情",
-        "operationId": "getUser",
+        "operationId": "GetUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -369,7 +373,7 @@
       },
       "delete": {
         "summary": "删除用户",
-        "operationId": "deleteUser",
+        "operationId": "DeleteUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -400,7 +404,7 @@
       },
       "put": {
         "summary": "更新用户",
-        "operationId": "updateUser",
+        "operationId": "UpdateUser",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -418,6 +422,7 @@
           },
           {
             "name": "body",
+            "description": " 更新用户请求",
             "in": "body",
             "required": true,
             "schema": {
@@ -452,13 +457,7 @@
       "title": "CreateTenantReq",
       "required": [
         "name",
-        "租户名称",
-        "code",
-        "租户编码",
-        "description",
-        "租户描述",
-        "status",
-        "租户状态：1: 启用"
+        "code"
       ]
     },
     "CreateTenantResp": {
@@ -477,37 +476,45 @@
     "CreateUserReq": {
       "type": "object",
       "properties": {
-        "username": {
+        "user_name": {
           "type": "string",
           "description": " 用户名"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": " 姓名"
         },
         "phone": {
-          "type": "string"
-        },
-        "pwd_hashed": {
-          "type": "string"
-        },
-        "pwd_salt": {
-          "type": "string"
-        },
-        "disable_status": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "description": " 手机号"
         },
         "email": {
-          "type": "string"
+          "type": "string",
+          "description": " 邮箱"
+        },
+        "pwd_hashed": {
+          "type": "string",
+          "description": " 密码哈希"
+        },
+        "pwd_salt": {
+          "type": "string",
+          "description": " 密码盐值"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
         },
         "sex": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "description": " 性别"
         },
-        "icon": {
-          "type": "string"
+        "avatar": {
+          "type": "string",
+          "description": " 头像"
         },
-        "roleIDs": {
+        "role_ids": {
           "type": "array",
           "items": {
             "type": "integer",
@@ -518,16 +525,16 @@
       },
       "title": "CreateUserReq",
       "required": [
-        "username",
+        "user_name",
         "name",
         "phone",
+        "email",
         "pwd_hashed",
         "pwd_salt",
-        "disable_status",
-        "email",
+        "status",
         "sex",
-        "icon",
-        "roleIDs"
+        "avatar",
+        "role_ids"
       ]
     },
     "CreateUserResp": {
@@ -535,7 +542,8 @@
       "properties": {
         "user_id": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "description": " 用户ID"
         }
       },
       "title": "CreateUserResp",
@@ -590,7 +598,7 @@
           "format": "int64",
           "description": " 用户ID"
         },
-        "username": {
+        "user_name": {
           "type": "string",
           "description": " 用户名"
         },
@@ -657,7 +665,10 @@
           "description": " 状态"
         }
       },
-      "title": "ListTenantReq"
+      "title": "ListTenantReq",
+      "required": [
+        "status"
+      ]
     },
     "ListTenantResp": {
       "type": "object",
@@ -905,15 +916,10 @@
       "title": "TenantInfo",
       "required": [
         "tenant_id",
-        "租户ID",
         "name",
-        "租户名称",
         "code",
-        "租户编码",
         "description",
-        "租户描述",
-        "status",
-        "租户状态：1: 启用"
+        "status"
       ]
     },
     "TimeRange": {
@@ -936,9 +942,6 @@
         "name": {
           "type": "string"
         },
-        "code": {
-          "type": "string"
-        },
         "description": {
           "type": "string"
         },
@@ -950,13 +953,8 @@
       "title": "UpdateTenantReq",
       "required": [
         "name",
-        "租户名称",
-        "code",
-        "租户编码",
         "description",
-        "租户描述",
-        "status",
-        "租户状态：1: 启用"
+        "status"
       ]
     },
     "UpdateUserReq": {
@@ -964,12 +962,33 @@
       "properties": {
         "name": {
           "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "role_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       },
-      "title": "UpdateUserReq",
-      "required": [
-        "name"
-      ]
+      "title": "UpdateUserReq"
     },
     "UserInfo": {
       "type": "object",
@@ -979,7 +998,7 @@
           "format": "int64",
           "description": " 用户ID"
         },
-        "username": {
+        "user_name": {
           "type": "string",
           "description": " 用户名"
         },
@@ -1012,7 +1031,7 @@
       "title": "UserInfo",
       "required": [
         "user_id",
-        "username",
+        "user_name",
         "name",
         "phone",
         "email",
@@ -1037,14 +1056,17 @@
           "description": " 每页大小"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": " 姓名"
         },
         "phone": {
-          "type": "string"
+          "type": "string",
+          "description": " 手机号"
         },
         "status": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "description": " 状态"
         }
       },
       "title": "UserListReq"
@@ -1061,7 +1083,7 @@
           "items": {
             "$ref": "#/definitions/UserInfo"
           },
-          "description": " 列表"
+          "description": " 用户列表"
         }
       },
       "title": "UserListResp",

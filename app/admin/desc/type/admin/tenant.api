@@ -14,10 +14,10 @@ info (
 type (
 	// 创建租户请求
 	CreateTenantReq {
-		Name        string `json:"name"`
-		Code        string `json:"code"`
-		Description string `json:"description,optional"`
-		Status      int    `json:"status,optional"`
+		Name        string `json:"name" validate:"required"`
+		Code        string `json:"code" validate:"required"`
+		Description string `json:"description,optional" validate:"omitempty"`
+		Status      int    `json:"status,optional" validate:"omitempty"`
 	}
 	// 创建租户响应
 	CreateTenantResp {
@@ -25,7 +25,7 @@ type (
 	}
 	// 更新租户请求
 	UpdateTenantReq {
-		TenantID uint64 `path:"tenant_id" `
+		TenantID    uint64 `path:"tenant_id"`
 		Name        string `json:"name"`
 		Description string `json:"description"`
 		Status      int    `json:"status"`
@@ -37,7 +37,7 @@ type (
 
 	// 获取租户详情请求
 	GetTenantReq {
-		TenantID uint64 `path:"tenant_id" `
+		TenantID uint64 `path:"tenant_id"`
 	}
 	// 获取租户详情响应
 	GetTenantResp {
@@ -47,7 +47,7 @@ type (
 	// 租户列表请求
 	ListTenantReq {
 		PageRequest
-		Status   int `form:"status,optional"` // 状态
+		Status   int `form:"status" validate:"omitempty"` // 状态
 	}
 	// 租户列表响应
 	ListTenantResp {

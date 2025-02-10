@@ -4,10 +4,10 @@
 package types
 
 type CreateTenantReq struct {
-	Name        string `json:"name"`
-	Code        string `json:"code"`
-	Description string `json:"description,optional"`
-	Status      int    `json:"status,optional"`
+	Name        string `json:"name" validate:"required"`
+	Code        string `json:"code" validate:"required"`
+	Description string `json:"description,optional" validate:"omitempty"`
+	Status      int    `json:"status,optional" validate:"omitempty"`
 }
 
 type CreateTenantResp struct {
@@ -40,7 +40,7 @@ type DeleteUserReq struct {
 }
 
 type GetTenantReq struct {
-	TenantID uint64 `path:"tenant_id" `
+	TenantID uint64 `path:"tenant_id"`
 }
 
 type GetTenantResp struct {
@@ -61,7 +61,7 @@ type IDRequest struct {
 
 type ListTenantReq struct {
 	PageRequest
-	Status int `form:"status,optional"` // 状态
+	Status int `form:"status" validate:"omitempty"` // 状态
 }
 
 type ListTenantResp struct {
@@ -136,7 +136,7 @@ type TimeRange struct {
 }
 
 type UpdateTenantReq struct {
-	TenantID    uint64 `path:"tenant_id" `
+	TenantID    uint64 `path:"tenant_id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Status      int    `json:"status"`

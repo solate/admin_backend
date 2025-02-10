@@ -9,6 +9,7 @@ import (
 	"admin_backend/app/admin/internal/middleware"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/pkg/common/response"
+	"admin_backend/pkg/common/validate"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -36,6 +37,9 @@ func main() {
 	// 注册路由
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
+
+	// 添加验证器
+	httpx.SetValidator(validate.DefaultValidator)
 
 	// 使用拦截器，处理返回值
 	httpx.SetOkHandler(response.OkHanandler)
