@@ -4,9 +4,9 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/solate/admin_backend/internal/config"
-	"github.com/solate/admin_backend/internal/handler"
-	"github.com/solate/admin_backend/internal/svc"
+	"admin_backend/internal/config"
+	"admin_backend/internal/handler"
+	"admin_backend/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"

@@ -4,7 +4,7 @@ package user
 
 import (
 	"entgo.io/ent/dialect/sql"
-	"github.com/solate/admin_backend/pkg/ent/generated/predicate"
+	"admin_backend/pkg/ent/generated/predicate"
 )
 
 // ID filters vertices based on their ID field.

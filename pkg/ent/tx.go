@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/solate/admin_backend/pkg/ent/generated"
+	"admin_backend/pkg/ent/generated"
 )
 
 // WithTx 在事务中执行fn

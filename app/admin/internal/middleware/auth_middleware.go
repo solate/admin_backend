@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/solate/admin_backend/app/admin/internal/config"
-	"github.com/solate/admin_backend/pkg/common/context_util"
-	"github.com/solate/admin_backend/pkg/common/xerr"
-	"github.com/solate/admin_backend/pkg/utils/jwt"
+	"admin_backend/app/admin/internal/config"
+	"admin_backend/pkg/common/context_util"
+	"admin_backend/pkg/common/xerr"
+	"admin_backend/pkg/utils/jwt"
+
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 

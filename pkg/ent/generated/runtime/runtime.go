@@ -2,7 +2,7 @@
 
 package runtime
 
-// The schema-stitching logic is generated in github.com/solate/admin_backend/pkg/ent/generated/runtime.go
+// The schema-stitching logic is generated in admin_backend/pkg/ent/generated/runtime.go
 
 const (
 	Version = "v0.14.1"                                         // Version of ent codegen.

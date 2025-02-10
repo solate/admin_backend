@@ -4,11 +4,11 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/solate/admin_backend/app/admin/internal/config"
-	"github.com/solate/admin_backend/app/admin/internal/handler"
-	"github.com/solate/admin_backend/app/admin/internal/middleware"
-	"github.com/solate/admin_backend/app/admin/internal/svc"
-	"github.com/solate/admin_backend/pkg/common/response"
+	"admin_backend/app/admin/internal/config"
+	"admin_backend/app/admin/internal/handler"
+	"admin_backend/app/admin/internal/middleware"
+	"admin_backend/app/admin/internal/svc"
+	"admin_backend/pkg/common/response"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -29,8 +29,11 @@ func main() {
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()
 
+	// 注册全局中间件
 	server.Use(middleware.LoggerMiddleware)
+	server.Use(middleware.CorsMiddleware)
 
+	// 注册路由
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
 

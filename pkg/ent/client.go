@@ -3,8 +3,9 @@ package ent
 import (
 	"context"
 
+	"admin_backend/pkg/ent/generated"
+
 	_ "github.com/lib/pq"
-	"github.com/solate/admin_backend/pkg/ent/generated"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

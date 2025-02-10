@@ -6,10 +6,10 @@ package handler
 import (
 	"net/http"
 
-	auth "github.com/solate/admin_backend/app/admin/internal/handler/auth"
-	tenant "github.com/solate/admin_backend/app/admin/internal/handler/tenant"
-	user "github.com/solate/admin_backend/app/admin/internal/handler/user"
-	"github.com/solate/admin_backend/app/admin/internal/svc"
+	auth "admin_backend/app/admin/internal/handler/auth"
+	tenant "admin_backend/app/admin/internal/handler/tenant"
+	user "admin_backend/app/admin/internal/handler/user"
+	"admin_backend/app/admin/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

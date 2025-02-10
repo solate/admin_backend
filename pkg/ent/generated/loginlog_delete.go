@@ -8,8 +8,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/solate/admin_backend/pkg/ent/generated/loginlog"
-	"github.com/solate/admin_backend/pkg/ent/generated/predicate"
+	"admin_backend/pkg/ent/generated/loginlog"
+	"admin_backend/pkg/ent/generated/predicate"
 )
 
 // LoginLogDelete is the builder for deleting a LoginLog entity.

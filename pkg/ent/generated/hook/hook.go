@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/solate/admin_backend/pkg/ent/generated"
+	"admin_backend/pkg/ent/generated"
 )
 
 // The LoginLogFunc type is an adapter to allow the use of ordinary

@@ -5,12 +5,12 @@ package enttest
 import (
 	"context"
 
-	"github.com/solate/admin_backend/pkg/ent/generated"
+	"admin_backend/pkg/ent/generated"
 	// required by schema hooks.
-	_ "github.com/solate/admin_backend/pkg/ent/generated/runtime"
+	_ "admin_backend/pkg/ent/generated/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
-	"github.com/solate/admin_backend/pkg/ent/generated/migrate"
+	"admin_backend/pkg/ent/generated/migrate"
 )
 
 type (

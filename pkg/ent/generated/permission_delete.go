@@ -8,8 +8,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/solate/admin_backend/pkg/ent/generated/permission"
-	"github.com/solate/admin_backend/pkg/ent/generated/predicate"
+	"admin_backend/pkg/ent/generated/permission"
+	"admin_backend/pkg/ent/generated/predicate"
 )
 
 // PermissionDelete is the builder for deleting a Permission entity.

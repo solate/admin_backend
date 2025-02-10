@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/solate/admin_backend/pkg/ent/generated"
-	"github.com/solate/admin_backend/pkg/ent/generated/predicate"
-	"github.com/solate/admin_backend/pkg/ent/generated/user"
+	"admin_backend/pkg/ent/generated"
+	"admin_backend/pkg/ent/generated/predicate"
+	"admin_backend/pkg/ent/generated/user"
 )
 
 type UserRepo struct {

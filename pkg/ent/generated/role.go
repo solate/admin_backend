@@ -8,7 +8,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/solate/admin_backend/pkg/ent/generated/role"
+	"admin_backend/pkg/ent/generated/role"
 )
 
 // 角色

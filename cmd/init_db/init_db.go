@@ -6,10 +6,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/solate/admin_backend/pkg/ent"
-	"github.com/solate/admin_backend/pkg/ent/generated"
-	"github.com/solate/admin_backend/pkg/utils/idgen"
-	"github.com/solate/admin_backend/pkg/utils/passwordgen"
+	"admin_backend/pkg/ent"
+	"admin_backend/pkg/ent/generated"
+	"admin_backend/pkg/utils/idgen"
+	"admin_backend/pkg/utils/passwordgen"
 )
 
 const (

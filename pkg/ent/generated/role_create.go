@@ -10,7 +10,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/solate/admin_backend/pkg/ent/generated/role"
+	"admin_backend/pkg/ent/generated/role"
 )
 
 // RoleCreate is the builder for creating a Role entity.

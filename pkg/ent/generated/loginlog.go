@@ -9,7 +9,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/solate/admin_backend/pkg/ent/generated/loginlog"
+	"admin_backend/pkg/ent/generated/loginlog"
 )
 
 // LoginLog is the model entity for the LoginLog schema.

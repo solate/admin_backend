@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/solate/admin_backend/pkg/ent/generated"
-	"github.com/solate/admin_backend/pkg/ent/generated/predicate"
-	"github.com/solate/admin_backend/pkg/ent/generated/tenant"
+	"admin_backend/pkg/ent/generated"
+	"admin_backend/pkg/ent/generated/predicate"
+	"admin_backend/pkg/ent/generated/tenant"
 )
 
 type TenantRepo struct {

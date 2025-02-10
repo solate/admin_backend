@@ -11,13 +11,13 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/solate/admin_backend/pkg/ent/generated/loginlog"
-	"github.com/solate/admin_backend/pkg/ent/generated/permission"
-	"github.com/solate/admin_backend/pkg/ent/generated/predicate"
-	"github.com/solate/admin_backend/pkg/ent/generated/role"
-	"github.com/solate/admin_backend/pkg/ent/generated/systemlog"
-	"github.com/solate/admin_backend/pkg/ent/generated/tenant"
-	"github.com/solate/admin_backend/pkg/ent/generated/user"
+	"admin_backend/pkg/ent/generated/loginlog"
+	"admin_backend/pkg/ent/generated/permission"
+	"admin_backend/pkg/ent/generated/predicate"
+	"admin_backend/pkg/ent/generated/role"
+	"admin_backend/pkg/ent/generated/systemlog"
+	"admin_backend/pkg/ent/generated/tenant"
+	"admin_backend/pkg/ent/generated/user"
 )
 
 const (

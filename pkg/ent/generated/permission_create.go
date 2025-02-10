@@ -10,7 +10,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/solate/admin_backend/pkg/ent/generated/permission"
+	"admin_backend/pkg/ent/generated/permission"
 )
 
 // PermissionCreate is the builder for creating a Permission entity.

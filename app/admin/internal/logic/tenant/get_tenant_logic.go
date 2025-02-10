@@ -3,10 +3,10 @@ package tenant
 import (
 	"context"
 
-	"github.com/solate/admin_backend/app/admin/internal/repository/tenant_repo"
-	"github.com/solate/admin_backend/app/admin/internal/svc"
-	"github.com/solate/admin_backend/app/admin/internal/types"
-	"github.com/solate/admin_backend/pkg/common/xerr"
+	"admin_backend/app/admin/internal/repository/tenant_repo"
+	"admin_backend/app/admin/internal/svc"
+	"admin_backend/app/admin/internal/types"
+	"admin_backend/pkg/common/xerr"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

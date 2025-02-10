@@ -3,9 +3,10 @@ package auth
 import (
 	"net/http"
 
-	"github.com/solate/admin_backend/app/admin/internal/logic/auth"
-	"github.com/solate/admin_backend/app/admin/internal/svc"
-	"github.com/solate/admin_backend/app/admin/internal/types"
+	"admin_backend/app/admin/internal/logic/auth"
+	"admin_backend/app/admin/internal/svc"
+	"admin_backend/app/admin/internal/types"
+
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 

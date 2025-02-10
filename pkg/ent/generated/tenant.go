@@ -8,7 +8,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/solate/admin_backend/pkg/ent/generated/tenant"
+	"admin_backend/pkg/ent/generated/tenant"
 )
 
 // 租户

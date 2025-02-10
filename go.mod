@@ -1,4 +1,4 @@
-module github.com/solate/admin_backend
+module admin_backend
 
 go 1.23.4
 

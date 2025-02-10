@@ -10,8 +10,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/solate/admin_backend/pkg/ent/generated/predicate"
-	"github.com/solate/admin_backend/pkg/ent/generated/user"
+	"admin_backend/pkg/ent/generated/predicate"
+	"admin_backend/pkg/ent/generated/user"
 )
 
 // UserUpdate is the builder for updating User entities.

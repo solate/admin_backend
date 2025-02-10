@@ -11,8 +11,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/solate/admin_backend/pkg/ent/generated/predicate"
-	"github.com/solate/admin_backend/pkg/ent/generated/systemlog"
+	"admin_backend/pkg/ent/generated/predicate"
+	"admin_backend/pkg/ent/generated/systemlog"
 )
 
 // SystemLogQuery is the builder for querying SystemLog entities.
