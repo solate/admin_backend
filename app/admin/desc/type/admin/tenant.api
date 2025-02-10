@@ -30,6 +30,11 @@ type (
 		Description string `json:"description"`
 		Status      int    `json:"status"`
 	}
+	// 删除租户请求
+	DeleteTenantReq {
+		TenantID uint64 `path:"tenant_id"`
+	}
+
 	// 获取租户详情请求
 	GetTenantReq {
 		TenantID uint64 `path:"tenant_id" `
@@ -38,10 +43,7 @@ type (
 	GetTenantResp {
 		TenantInfo
 	}
-	// 删除租户请求
-	DeleteTenantReq {
-		TenantID uint64 `path:"tenant_id"`
-	}
+	
 	// 租户列表请求
 	ListTenantReq {
 		PageRequest

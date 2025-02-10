@@ -85,35 +85,35 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					// 创建用户
 					Method:  http.MethodPost,
-					Path:    "/",
+					Path:    "/users",
 					Handler: user.CreateUserHandler(serverCtx),
 				},
 				{
 					// 获取用户列表
 					Method:  http.MethodGet,
-					Path:    "/",
+					Path:    "/users",
 					Handler: user.ListUserHandler(serverCtx),
 				},
 				{
 					// 更新用户
 					Method:  http.MethodPut,
-					Path:    "/:user_id",
+					Path:    "/users/:user_id",
 					Handler: user.UpdateUserHandler(serverCtx),
 				},
 				{
 					// 删除用户
 					Method:  http.MethodDelete,
-					Path:    "/:user_id",
+					Path:    "/users/:user_id",
 					Handler: user.DeleteUserHandler(serverCtx),
 				},
 				{
 					// 获取用户详情
 					Method:  http.MethodGet,
-					Path:    "/:user_id",
+					Path:    "/users/:user_id",
 					Handler: user.GetUserHandler(serverCtx),
 				},
 			}...,
 		),
-		rest.WithPrefix("/admin/api/v1/user"),
+		rest.WithPrefix("/admin/api/v1"),
 	)
 }

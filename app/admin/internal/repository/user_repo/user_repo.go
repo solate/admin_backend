@@ -36,10 +36,18 @@ func (r *UserRepo) Create(ctx context.Context, user *generated.User) (*generated
 		Save(ctx)
 }
 
-func (r *UserRepo) Update(ctx context.Context, user *generated.User) (*generated.User, error) {
+func (r *UserRepo) Update(ctx context.Context, update *generated.User) (int, error) {
 	now := time.Now().UnixMilli()
-	user.UpdatedAt = now
-	return r.db.User.UpdateOne(user).Save(ctx)
+	update.UpdatedAt = now
+	return r.db.User.Update().
+		SetUpdatedAt(now).
+		SetPhone(update.Phone).
+		SetUserName(update.UserName).
+		SetNickName(update.NickName).
+		SetEmail(update.Email).
+		SetSex(update.Sex).
+		SetStatus(update.Status).
+		Where(user.UserID(update.UserID)).Save(ctx)
 }
 
 // func (r *UserRepo) GetByID(ctx context.Context, id int) (*generated.User, error) {
@@ -73,9 +81,10 @@ func (r *UserRepo) PageList(ctx context.Context, offset, limit int, where []pred
 }
 
 // DeleteByUserID 根据用户ID删除用户，软删除
-func (r *UserRepo) DeleteByUserID(ctx context.Context, user *generated.User) error {
+func (r *UserRepo) DeleteByUserID(ctx context.Context, delete *generated.User) (int, error) {
 	now := time.Now().UnixMilli()
-	user.DeletedAt = &now
-	_, err := r.Update(ctx, user)
-	return err
+	delete.DeletedAt = &now
+	return r.db.User.Update().
+		SetDeletedAt(now).
+		Where(user.UserID(delete.UserID)).Save(ctx)
 }

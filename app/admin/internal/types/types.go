@@ -15,20 +15,20 @@ type CreateTenantResp struct {
 }
 
 type CreateUserReq struct {
-	Username      string   `json:"username" validate:"required"` // 用户名
-	Name          string   `json:"name"`
-	Phone         string   `json:"phone"`
-	PwdHashed     string   `json:"pwd_hashed"`
-	PwdSalt       string   `json:"pwd_salt"`
-	DisableStatus int      `json:"disable_status"`
-	Email         string   `json:"email"`
-	Sex           int      `json:"sex"`
-	Icon          string   `json:"icon"`
-	RoleIDs       []uint64 `json:"roleIDs"` // 角色ID列表
+	UserName  string   `json:"user_name"`  // 用户名
+	Name      string   `json:"name"`       // 姓名
+	Phone     string   `json:"phone"`      // 手机号
+	Email     string   `json:"email"`      // 邮箱
+	PwdHashed string   `json:"pwd_hashed"` // 密码哈希
+	PwdSalt   string   `json:"pwd_salt"`   // 密码盐值
+	Status    int      `json:"status"`     // 状态
+	Sex       int      `json:"sex"`        // 性别
+	Avatar    string   `json:"avatar"`     // 头像
+	RoleIDs   []uint64 `json:"role_ids"`   // 角色ID列表
 }
 
 type CreateUserResp struct {
-	UserID uint64 `json:"user_id"`
+	UserID uint64 `json:"user_id"` // 用户ID
 }
 
 type DeleteTenantReq struct {
@@ -143,13 +143,19 @@ type UpdateTenantReq struct {
 }
 
 type UpdateUserReq struct {
-	UserID uint64 `path:"user_id"`
-	Name   string `json:"name"`
+	UserID  uint64   `path:"user_id"`
+	Name    string   `json:"name,optional"`
+	Phone   string   `json:"phone,optional"`
+	Email   string   `json:"email,optional"`
+	Status  int      `json:"status,optional"`
+	Sex     int      `json:"sex,optional"`
+	Avatar  string   `json:"avatar,optional"`
+	RoleIDs []uint64 `json:"role_ids,optional"`
 }
 
 type UserInfo struct {
 	UserID    uint64 `json:"user_id"`    // 用户ID
-	UserName  string `json:"username"`   // 用户名
+	UserName  string `json:"user_name"`  // 用户名
 	Name      string `json:"name"`       // 姓名
 	Phone     string `json:"phone"`      // 手机号
 	Email     string `json:"email"`      // 邮箱
@@ -160,12 +166,12 @@ type UserInfo struct {
 
 type UserListReq struct {
 	PageRequest
-	Name   string `form:"name,optional"`
-	Phone  string `form:"phone,optional"`
-	Status int    `form:"status,optional"`
+	Name   string `form:"name,optional"`   // 姓名
+	Phone  string `form:"phone,optional"`  // 手机号
+	Status int    `form:"status,optional"` // 状态
 }
 
 type UserListResp struct {
 	Page *PageResponse `json:"page"` // 分页
-	List []*UserInfo   `json:"list"` // 列表
+	List []*UserInfo   `json:"list"` // 用户列表
 }

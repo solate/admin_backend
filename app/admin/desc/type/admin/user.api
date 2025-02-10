@@ -15,89 +15,97 @@ info (
    
 type (
 
-	UserInfo {
-        UserID uint64 `json:"user_id"` // 用户ID
-		UserName  string `json:"username"`   // 用户名
-		Name      string `json:"name"`       // 姓名
-		Phone    string `json:"phone"`     // 手机号
-		Email     string `json:"email"`      // 邮箱
-		Avatar    string `json:"avatar"`     // 头像
-		Status    int `json:"status"`     // 状态
-		CreatedAt string `json:"created_at"` // 创建时间
-	}
-  
-
+    // 创建用户请求
     CreateUserReq {
-        Username string `json:"username" validate:"required"` // 用户名
-        Name                string `json:"name"`
-        Phone               string `json:"phone"`
-        PwdHashed           string `json:"pwd_hashed"`
-        PwdSalt             string `json:"pwd_salt"`
-        DisableStatus       int    `json:"disable_status"`
-        Email               string `json:"email"` 
-        Sex               int    `json:"sex"`
-        Icon                string `json:"icon"`
-        RoleIDs             []uint64  `json:"roleIDs"` // 角色ID列表
+        UserName      string   `json:"user_name"` // 用户名
+        Name         string   `json:"name"`                         // 姓名
+        Phone        string   `json:"phone"`                        // 手机号
+        Email        string   `json:"email"`                        // 邮箱
+        PwdHashed    string   `json:"pwd_hashed"`                  // 密码哈希
+        PwdSalt      string   `json:"pwd_salt"`                    // 密码盐值
+        Status       int      `json:"status"`                      // 状态
+        Sex          int      `json:"sex"`                         // 性别
+        Avatar       string   `json:"avatar"`                      // 头像
+        RoleIDs      []uint64 `json:"role_ids"`                    // 角色ID列表
     }
 
+    // 创建用户响应
     CreateUserResp {
-        UserID uint64 `json:"user_id"`
+        UserID uint64 `json:"user_id"` // 用户ID
     }
-   
+
+    // 更新用户请求
     UpdateUserReq {
-        UserID    uint64   `path:"user_id"`
-        Name string `json:"name"`
+        UserID   uint64   `path:"user_id"`
+        Name     string   `json:"name,optional"`
+        Phone    string   `json:"phone,optional"`
+        Email    string   `json:"email,optional"`
+        Status   int      `json:"status,optional"`
+        Sex      int      `json:"sex,optional"`
+        Avatar   string   `json:"avatar,optional"`
+        RoleIDs  []uint64 `json:"role_ids,optional"`
     }
 
     DeleteUserReq {
         UserID    uint64    `path:"user_id"`
     }
 
-  
-    UserListReq {
-        PageRequest
-        Name   string `form:"name,optional"`
-        Phone  string `form:"phone,optional"`
-        Status int    `form:"status,optional"`
-    }
-
-    UserListResp {
-        Page *PageResponse       `json:"page"` // 分页
-        List []*UserInfo `json:"list"` // 列表
-    }
-
     GetUserReq {
         UserID uint64 `path:"user_id"`
     }
-
     GetUserResp {
         UserInfo
+    }
+  
+    UserListReq {
+        PageRequest
+        Name   string `form:"name,optional"`   // 姓名
+        Phone  string `form:"phone,optional"`  // 手机号
+        Status int    `form:"status,optional"` // 状态
+    }
+
+    // 用户列表响应
+    UserListResp {
+        Page *PageResponse `json:"page"` // 分页
+        List []*UserInfo   `json:"list"` // 用户列表
+    }
+
+    // 用户基本信息
+    UserInfo {
+        UserID    uint64 `json:"user_id"`      // 用户ID
+        UserName  string `json:"user_name"`      // 用户名
+        Name      string `json:"name"`          // 姓名
+        Phone     string `json:"phone"`         // 手机号
+        Email     string `json:"email"`         // 邮箱
+        Avatar    string `json:"avatar"`        // 头像
+        Status    int    `json:"status"`        // 状态
+        CreatedAt string `json:"created_at"`    // 创建时间
     }
 )
 
 @server (
-    prefix: /admin/api/v1/user
+    prefix: /admin/api/v1
     group: user
     middleware: AuthMiddleware
 )
 service admin {
     @doc "创建用户"
-    @handler createUser
-    post / (CreateUserReq) returns (CreateUserResp)
+    @handler CreateUser
+    post /users (CreateUserReq) returns (CreateUserResp)
 
     @doc "更新用户"
-    @handler updateUser
-    put /:user_id (UpdateUserReq) returns (bool)
+    @handler UpdateUser
+    put /users/:user_id (UpdateUserReq) returns (bool)
 
     @doc "删除用户"
-    @handler deleteUser
-    delete /:user_id (DeleteUserReq) returns (bool)
+    @handler DeleteUser
+    delete /users/:user_id (DeleteUserReq) returns (bool)
 
     @doc "获取用户列表"
-    @handler listUser
-    get / (UserListReq) returns (UserListResp)
+    @handler ListUser
+    get /users (UserListReq) returns (UserListResp)
 
     @doc "获取用户详情"
-    @handler getUser
-    get /:user_id (GetUserReq) returns (GetUserResp)
+    @handler GetUser
+    get /users/:user_id (GetUserReq) returns (GetUserResp)
 }
