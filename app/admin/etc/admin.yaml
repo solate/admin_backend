@@ -25,4 +25,4 @@ Redis:
 JwtAuth:
   AccessSecret: "admin123456" # 从环境变量读取
   # AccessExpire: 2592000         # 30天
-  AccessExpire: 300         # 5分钟
+  AccessExpire: 3600         # 5分钟

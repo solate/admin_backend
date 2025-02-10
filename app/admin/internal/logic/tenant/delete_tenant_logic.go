@@ -37,7 +37,7 @@ func (l *DeleteTenantLogic) DeleteTenant(req *types.DeleteTenantReq) (resp bool,
 	}
 
 	// 3. 软删除租户
-	err = l.tenantRepo.DeleteByTenantID(l.ctx, tenant)
+	_, err = l.tenantRepo.DeleteByTenantID(l.ctx, tenant)
 	if err != nil {
 		l.Error("DeleteTenantLogic DeleteByTenantID err:", err.Error())
 		return false, err

@@ -4,11 +4,14 @@
 package types
 
 type CreateTenantReq struct {
-	TenantInfo
+	Name        string `json:"name"`
+	Code        string `json:"code"`
+	Description string `json:"description,optional"`
+	Status      int    `json:"status,optional"`
 }
 
 type CreateTenantResp struct {
-	TenantID uint64 `json:"tenant_id" validate:"required"`
+	TenantID uint64 `json:"tenant_id"`
 }
 
 type CreateUserReq struct {
@@ -29,7 +32,7 @@ type CreateUserResp struct {
 }
 
 type DeleteTenantReq struct {
-	TenantID uint64 `json:"tenant_id" validate:"required"`
+	TenantID uint64 `path:"tenant_id"`
 }
 
 type DeleteUserReq struct {
@@ -37,7 +40,7 @@ type DeleteUserReq struct {
 }
 
 type GetTenantReq struct {
-	TenantID uint64 `path:"tenant_id" validate:"required"`
+	TenantID uint64 `path:"tenant_id" `
 }
 
 type GetTenantResp struct {
@@ -58,7 +61,7 @@ type IDRequest struct {
 
 type ListTenantReq struct {
 	PageRequest
-	Status int `json:"status"` // 状态
+	Status int `form:"status,optional"` // 状态
 }
 
 type ListTenantResp struct {
@@ -89,8 +92,8 @@ type PageJsonRequest struct {
 }
 
 type PageRequest struct {
-	Current  int `form:"current"`   // 当前页
-	PageSize int `form:"page_size"` // 每页大小
+	Current  int `form:"page,default=1" validate:"required,gte=1"`               // 当前页
+	PageSize int `form:"page_size,default=10" validate:"required,gte=1,lte=100"` // 每页大小
 }
 
 type PageResponse struct {
@@ -120,10 +123,11 @@ type StatusRequest struct {
 }
 
 type TenantInfo struct {
-	TenantID    uint64 `json:"tenant_id"     validate:"required"        comment:"租户ID"`
-	Name        string `json:"name"         validate:"omitempty"        comment:"租户名称"`
-	Description string `json:"description"  validate:"omitempty"      comment:"租户描述"`
-	Status      int    `json:"status"       validate:"oneof=1 2"      comment:"租户状态：1: 启用, 2: 禁用"`
+	TenantID    uint64 `json:"tenant_id"`
+	Name        string `json:"name"`
+	Code        string `json:"code"`
+	Description string `json:"description"`
+	Status      int    `json:"status"`
 }
 
 type TimeRange struct {
@@ -132,8 +136,10 @@ type TimeRange struct {
 }
 
 type UpdateTenantReq struct {
-	TenantID uint64 `json:"tenant_id" validate:"required"`
-	TenantInfo
+	TenantID    uint64 `path:"tenant_id" `
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Status      int    `json:"status"`
 }
 
 type UpdateUserReq struct {

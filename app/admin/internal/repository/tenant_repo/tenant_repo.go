@@ -31,10 +31,14 @@ func (r *TenantRepo) Create(ctx context.Context, tenant *generated.Tenant) (*gen
 		Save(ctx)
 }
 
-func (r *TenantRepo) Update(ctx context.Context, tenant *generated.Tenant) (*generated.Tenant, error) {
+func (r *TenantRepo) Update(ctx context.Context, update *generated.Tenant) (int, error) {
 	now := time.Now().UnixMilli()
-	tenant.UpdatedAt = now
-	return r.db.Tenant.UpdateOne(tenant).Save(ctx)
+	update.UpdatedAt = now
+	return r.db.Tenant.Update().
+		SetStatus(update.Status).
+		SetDescription(update.Description).
+		SetName(update.Name).
+		Where(tenant.TenantID(update.TenantID)).Save(ctx)
 }
 
 // func (r *TenantRepo) GetByID(ctx context.Context, id uint64) (*generated.Tenant, error) {
@@ -59,9 +63,10 @@ func (r *TenantRepo) PageList(ctx context.Context, offset, limit int, where []pr
 	return list, total, err
 }
 
-func (r *TenantRepo) DeleteByTenantID(ctx context.Context, tenant *generated.Tenant) error {
+func (r *TenantRepo) DeleteByTenantID(ctx context.Context, delete *generated.Tenant) (int, error) {
 	now := time.Now().UnixMilli()
-	tenant.DeletedAt = &now
-	_, err := r.Update(ctx, tenant)
-	return err
+	delete.DeletedAt = &now
+	return r.db.Tenant.Update().
+		SetDeletedAt(now).
+		Where(tenant.TenantID(delete.TenantID)).Save(ctx)
 }

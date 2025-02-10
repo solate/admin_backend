@@ -6,7 +6,6 @@ import (
 	"admin_backend/app/admin/internal/logic/tenant"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
-
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 

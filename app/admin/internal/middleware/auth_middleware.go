@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"net/http"
 
 	"admin_backend/app/admin/internal/config"
@@ -36,8 +35,6 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 			httpx.Error(w, xerr.NewErrCodeMsg(http.StatusInternalServerError, err.Error()))
 			return
 		}
-
-		fmt.Println("tokenString ==============1111==============:", tokenString)
 
 		// // 3. 租户隔离验证
 		// if err := m.validateTenant(r, claims); err != nil {

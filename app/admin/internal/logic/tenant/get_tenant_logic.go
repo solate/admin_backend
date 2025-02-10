@@ -40,6 +40,7 @@ func (l *GetTenantLogic) GetTenant(req *types.GetTenantReq) (*types.GetTenantRes
 	return &types.GetTenantResp{
 		TenantInfo: types.TenantInfo{
 			TenantID:    tenant.TenantID,
+			Code:        tenant.Code,
 			Name:        tenant.Name,
 			Description: tenant.Description,
 			Status:      tenant.Status,

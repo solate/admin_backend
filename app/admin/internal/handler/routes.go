@@ -46,36 +46,36 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					// 创建租户
 					Method:  http.MethodPost,
-					Path:    "/",
+					Path:    "/tenants",
 					Handler: tenant.CreateTenantHandler(serverCtx),
 				},
 				{
 					// 获取租户列表
 					Method:  http.MethodGet,
-					Path:    "/",
+					Path:    "/tenants",
 					Handler: tenant.ListTenantHandler(serverCtx),
 				},
 				{
 					// 更新租户
 					Method:  http.MethodPut,
-					Path:    "/:tenant_id",
+					Path:    "/tenants/:tenant_id",
 					Handler: tenant.UpdateTenantHandler(serverCtx),
 				},
 				{
 					// 获取租户详情
 					Method:  http.MethodGet,
-					Path:    "/:tenant_id",
+					Path:    "/tenants/:tenant_id",
 					Handler: tenant.GetTenantHandler(serverCtx),
 				},
 				{
 					// 删除租户
 					Method:  http.MethodDelete,
-					Path:    "/:tenant_id",
+					Path:    "/tenants/:tenant_id",
 					Handler: tenant.DeleteTenantHandler(serverCtx),
 				},
 			}...,
 		),
-		rest.WithPrefix("/admin/api/v1/tenant"),
+		rest.WithPrefix("/admin/api/v1"),
 	)
 
 	server.AddRoutes(

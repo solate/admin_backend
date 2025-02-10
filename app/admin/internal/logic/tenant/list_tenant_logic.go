@@ -54,6 +54,7 @@ func (l *ListTenantLogic) ListTenant(req *types.ListTenantReq) (*types.ListTenan
 	for _, t := range list {
 		tenantList = append(tenantList, &types.TenantInfo{
 			TenantID:    t.TenantID,
+			Code:        t.Code,
 			Name:        t.Name,
 			Description: t.Description,
 			Status:      t.Status,
