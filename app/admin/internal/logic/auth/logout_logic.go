@@ -3,38 +3,39 @@ package auth
 import (
 	"context"
 
+	"admin_backend/app/admin/internal/repository/login_log_repo"
+	"admin_backend/app/admin/internal/repository/user_repo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated"
-	"admin_backend/pkg/ent/generated/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type LogoutLogic struct {
 	logx.Logger
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
+	ctx          context.Context
+	svcCtx       *svc.ServiceContext
+	userRepo     *user_repo.UserRepo
+	loginLogRepo *login_log_repo.LoginLogRepo
 }
 
 // 用户登出
 func NewLogoutLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LogoutLogic {
 	return &LogoutLogic{
-		Logger: logx.WithContext(ctx),
-		ctx:    ctx,
-		svcCtx: svcCtx,
+		Logger:       logx.WithContext(ctx),
+		ctx:          ctx,
+		svcCtx:       svcCtx,
+		userRepo:     user_repo.NewUserRepo(svcCtx.DB),
+		loginLogRepo: login_log_repo.NewLoginLogRepo(svcCtx.DB),
 	}
 }
 
 func (l *LogoutLogic) Logout(req *types.LogoutReq) (resp bool, err error) {
 
 	// 1. 查找用户
-	user, err := l.svcCtx.DB.User.Query().
-		Where(user.UserID(req.UserID)).
-		Where(user.DeletedAt(0)).
-		Only(l.ctx)
-
+	user, err := l.userRepo.GetByUserID(l.ctx, req.UserID)
 	if err != nil {
 		l.Error("Logout User.Query Error:", err.Error())
 		if generated.IsNotFound(err) {
@@ -44,29 +45,17 @@ func (l *LogoutLogic) Logout(req *types.LogoutReq) (resp bool, err error) {
 	}
 
 	// 更新user
-	_, err = l.svcCtx.DB.User.UpdateOne(user).
-		SetToken("").
-		Save(l.ctx)
+	_, err = l.userRepo.Logout(l.ctx, req.UserID)
 	if err != nil {
-
-		l.Error("Logout User.UpdateOne Error:", err.Error())
+		l.Error("Logout User.Logout Error:", err.Error())
 		return false, xerr.NewErrCodeMsg(xerr.DbError, err.Error())
 	}
 
-	// 记录登出日志
-	_, err = l.svcCtx.DB.SystemLog.Create().
-		SetUserID(user.UserID).
-		Save(l.ctx)
+	// 添加登出日志
+	err = l.loginLogRepo.AddLoginLog(l.ctx, user, "登出成功")
+	if err != nil {
+		l.Error("Logout addLoginLog err:", err.Error())
+	}
 
 	return true, nil
 }
-
-// func (l *LogoutLogic) addLog(uid int) error {
-// 	logDao := userRepo.NewSystemLogDao(l.ctx, l.svcCtx)
-// 	_, err := logDao.Create(userStatus.SystemLogin, "登录了系统", userStatus.Login, uid)
-// 	if err != nil {
-// 		l.Info(fmt.Sprintf("%s - %s: %d", userStatus.SystemLogin, userStatus.Login, uid), err)
-// 		return err
-// 	}
-// 	return nil
-// }

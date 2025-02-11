@@ -2,20 +2,16 @@ package auth
 
 import (
 	"context"
-	"net/http"
 	"time"
 
 	"admin_backend/app/admin/internal/repository/login_log_repo"
 	"admin_backend/app/admin/internal/repository/user_repo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
-	"admin_backend/pkg/common/context_util"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated"
-	"admin_backend/pkg/utils/idgen"
 	"admin_backend/pkg/utils/jwt"
 	"admin_backend/pkg/utils/passwordgen"
-	"admin_backend/pkg/utils/userAgent"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -88,7 +84,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	}
 
 	// 添加登录日志
-	err = l.addLoginLog(user)
+	err = l.loginLogRepo.AddLoginLog(l.ctx, user, "登录成功")
 	if err != nil {
 		l.Error("Login addLoginLog err:", err.Error())
 	}
@@ -101,40 +97,4 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 		Phone:    user.Phone,
 		Email:    user.Email,
 	}, nil
-}
-
-// 添加登录日志
-func (l *LoginLogic) addLoginLog(user *generated.User) error {
-	tenantCode, err := context_util.GetTenantCodeFromCtx(l.ctx)
-	if err != nil {
-		l.Error("addLoginLog context_util.GetTenantIDFromCtx err: ", err.Error())
-		return xerr.NewErrCodeMsg(xerr.ServerError, "获取租户码失败")
-	}
-
-	id, err := idgen.GenerateUUID()
-	if err != nil {
-		l.Error("addLoginLog GenerateUUID err:", err.Error())
-		return xerr.NewErrCodeMsg(xerr.ServerError, "生成ID失败")
-	}
-
-	r := l.ctx.Value("request").(*http.Request)
-	// 获取客户端信息
-	clientInfo := userAgent.GetClientInfo(r)
-	log := &generated.LoginLog{
-		TenantCode: tenantCode,
-		LogID:      id,
-		UserID:     user.UserID,
-		UserName:   user.UserName,
-		IP:         clientInfo.IP,
-		Message:    "登录成功",
-		UserAgent:  clientInfo.UserAgent,
-		Browser:    clientInfo.Browser + " " + clientInfo.BrowserVer,
-		Os:         clientInfo.OS,
-		Device:     clientInfo.Device,
-		LoginTime:  time.Now().UnixMilli(),
-	}
-
-	// 创建登录日志记录
-	_, err = l.loginLogRepo.Create(l.ctx, log)
-	return err
 }

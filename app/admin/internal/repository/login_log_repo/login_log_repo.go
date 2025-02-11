@@ -2,25 +2,25 @@ package login_log_repo
 
 import (
 	"context"
+	"net/http"
 	"time"
 
 	"admin_backend/pkg/common"
+	"admin_backend/pkg/common/context_util"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/predicate"
-
-	"github.com/zeromicro/go-zero/core/logx"
+	"admin_backend/pkg/utils/idgen"
+	"admin_backend/pkg/utils/userAgent"
 )
 
 type LoginLogRepo struct {
-	logx.Logger
 	db *generated.Client
 }
 
 func NewLoginLogRepo(db *generated.Client) *LoginLogRepo {
 	return &LoginLogRepo{
-		Logger: logx.WithContext(context.Background()),
-		db:     db,
+		db: db,
 	}
 }
 
@@ -60,4 +60,38 @@ func (r *LoginLogRepo) PageList(ctx context.Context, current, limit int, where [
 	// 分页查询
 	list, err := query.Offset(offset).Limit(limit).All(ctx)
 	return list, total, nil
+}
+
+// addLoginLog
+func (l *LoginLogRepo) AddLoginLog(ctx context.Context, user *generated.User, message string) error {
+	tenantCode, err := context_util.GetTenantCodeFromCtx(ctx)
+	if err != nil {
+		return err
+	}
+
+	id, err := idgen.GenerateUUID()
+	if err != nil {
+		return err
+	}
+
+	r := ctx.Value("request").(*http.Request)
+	// 获取客户端信息
+	clientInfo := userAgent.GetClientInfo(r)
+	log := &generated.LoginLog{
+		TenantCode: tenantCode,
+		LogID:      id,
+		UserID:     user.UserID,
+		UserName:   user.UserName,
+		IP:         clientInfo.IP,
+		Message:    message,
+		UserAgent:  clientInfo.UserAgent,
+		Browser:    clientInfo.Browser + " " + clientInfo.BrowserVer,
+		Os:         clientInfo.OS,
+		Device:     clientInfo.Device,
+		LoginTime:  time.Now().UnixMilli(),
+	}
+
+	// 创建登录日志记录
+	_, err = l.Create(ctx, log)
+	return err
 }

@@ -90,3 +90,10 @@ func (r *UserRepo) DeleteByUserID(ctx context.Context, delete *generated.User) (
 		SetDeletedAt(now).
 		Where(user.UserID(delete.UserID)).Save(ctx)
 }
+
+// 用户登出
+func (r *UserRepo) Logout(ctx context.Context, userID uint64) (int, error) {
+	return r.db.User.Update().
+		SetToken("").
+		Where(user.UserID(userID)).Save(ctx)
+}
