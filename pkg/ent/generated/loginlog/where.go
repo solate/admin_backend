@@ -3,10 +3,9 @@
 package loginlog
 
 import (
-	"time"
+	"admin_backend/pkg/ent/generated/predicate"
 
 	"entgo.io/ent/dialect/sql"
-	"admin_backend/pkg/ent/generated/predicate"
 )
 
 // ID filters vertices based on their ID field.
@@ -55,13 +54,13 @@ func IDLTE(id int) predicate.LoginLog {
 }
 
 // CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
-func CreatedAt(v int) predicate.LoginLog {
+func CreatedAt(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
-func UpdatedAt(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldEQ(FieldUpdatedAt, v))
+// TenantCode applies equality check predicate on the "tenant_code" field. It's identical to TenantCodeEQ.
+func TenantCode(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldEQ(FieldTenantCode, v))
 }
 
 // LogID applies equality check predicate on the "log_id" field. It's identical to LogIDEQ.
@@ -84,14 +83,14 @@ func IP(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldIP, v))
 }
 
-// Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
-func Status(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldEQ(FieldStatus, v))
-}
-
 // Message applies equality check predicate on the "message" field. It's identical to MessageEQ.
 func Message(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldMessage, v))
+}
+
+// UserAgent applies equality check predicate on the "user_agent" field. It's identical to UserAgentEQ.
+func UserAgent(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldEQ(FieldUserAgent, v))
 }
 
 // Browser applies equality check predicate on the "browser" field. It's identical to BrowserEQ.
@@ -104,104 +103,119 @@ func Os(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldOs, v))
 }
 
-// UserAgent applies equality check predicate on the "user_agent" field. It's identical to UserAgentEQ.
-func UserAgent(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldEQ(FieldUserAgent, v))
-}
-
 // Device applies equality check predicate on the "device" field. It's identical to DeviceEQ.
 func Device(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldDevice, v))
 }
 
-// Location applies equality check predicate on the "location" field. It's identical to LocationEQ.
-func Location(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldEQ(FieldLocation, v))
-}
-
 // LoginTime applies equality check predicate on the "login_time" field. It's identical to LoginTimeEQ.
-func LoginTime(v time.Time) predicate.LoginLog {
+func LoginTime(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldLoginTime, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
-func CreatedAtEQ(v int) predicate.LoginLog {
+func CreatedAtEQ(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldCreatedAt, v))
 }
 
 // CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
-func CreatedAtNEQ(v int) predicate.LoginLog {
+func CreatedAtNEQ(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
 // CreatedAtIn applies the In predicate on the "created_at" field.
-func CreatedAtIn(vs ...int) predicate.LoginLog {
+func CreatedAtIn(vs ...int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
 // CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
-func CreatedAtNotIn(vs ...int) predicate.LoginLog {
+func CreatedAtNotIn(vs ...int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
 // CreatedAtGT applies the GT predicate on the "created_at" field.
-func CreatedAtGT(v int) predicate.LoginLog {
+func CreatedAtGT(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldGT(FieldCreatedAt, v))
 }
 
 // CreatedAtGTE applies the GTE predicate on the "created_at" field.
-func CreatedAtGTE(v int) predicate.LoginLog {
+func CreatedAtGTE(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldGTE(FieldCreatedAt, v))
 }
 
 // CreatedAtLT applies the LT predicate on the "created_at" field.
-func CreatedAtLT(v int) predicate.LoginLog {
+func CreatedAtLT(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldLT(FieldCreatedAt, v))
 }
 
 // CreatedAtLTE applies the LTE predicate on the "created_at" field.
-func CreatedAtLTE(v int) predicate.LoginLog {
+func CreatedAtLTE(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
-func UpdatedAtEQ(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldEQ(FieldUpdatedAt, v))
+// TenantCodeEQ applies the EQ predicate on the "tenant_code" field.
+func TenantCodeEQ(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldEQ(FieldTenantCode, v))
 }
 
-// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
-func UpdatedAtNEQ(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldNEQ(FieldUpdatedAt, v))
+// TenantCodeNEQ applies the NEQ predicate on the "tenant_code" field.
+func TenantCodeNEQ(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldNEQ(FieldTenantCode, v))
 }
 
-// UpdatedAtIn applies the In predicate on the "updated_at" field.
-func UpdatedAtIn(vs ...int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldIn(FieldUpdatedAt, vs...))
+// TenantCodeIn applies the In predicate on the "tenant_code" field.
+func TenantCodeIn(vs ...string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldIn(FieldTenantCode, vs...))
 }
 
-// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
-func UpdatedAtNotIn(vs ...int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldNotIn(FieldUpdatedAt, vs...))
+// TenantCodeNotIn applies the NotIn predicate on the "tenant_code" field.
+func TenantCodeNotIn(vs ...string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldNotIn(FieldTenantCode, vs...))
 }
 
-// UpdatedAtGT applies the GT predicate on the "updated_at" field.
-func UpdatedAtGT(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldGT(FieldUpdatedAt, v))
+// TenantCodeGT applies the GT predicate on the "tenant_code" field.
+func TenantCodeGT(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldGT(FieldTenantCode, v))
 }
 
-// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
-func UpdatedAtGTE(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldGTE(FieldUpdatedAt, v))
+// TenantCodeGTE applies the GTE predicate on the "tenant_code" field.
+func TenantCodeGTE(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldGTE(FieldTenantCode, v))
 }
 
-// UpdatedAtLT applies the LT predicate on the "updated_at" field.
-func UpdatedAtLT(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldLT(FieldUpdatedAt, v))
+// TenantCodeLT applies the LT predicate on the "tenant_code" field.
+func TenantCodeLT(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldLT(FieldTenantCode, v))
 }
 
-// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
-func UpdatedAtLTE(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldLTE(FieldUpdatedAt, v))
+// TenantCodeLTE applies the LTE predicate on the "tenant_code" field.
+func TenantCodeLTE(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldLTE(FieldTenantCode, v))
+}
+
+// TenantCodeContains applies the Contains predicate on the "tenant_code" field.
+func TenantCodeContains(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldContains(FieldTenantCode, v))
+}
+
+// TenantCodeHasPrefix applies the HasPrefix predicate on the "tenant_code" field.
+func TenantCodeHasPrefix(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldHasPrefix(FieldTenantCode, v))
+}
+
+// TenantCodeHasSuffix applies the HasSuffix predicate on the "tenant_code" field.
+func TenantCodeHasSuffix(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldHasSuffix(FieldTenantCode, v))
+}
+
+// TenantCodeEqualFold applies the EqualFold predicate on the "tenant_code" field.
+func TenantCodeEqualFold(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldEqualFold(FieldTenantCode, v))
+}
+
+// TenantCodeContainsFold applies the ContainsFold predicate on the "tenant_code" field.
+func TenantCodeContainsFold(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldContainsFold(FieldTenantCode, v))
 }
 
 // LogIDEQ applies the EQ predicate on the "log_id" field.
@@ -414,46 +428,6 @@ func IPContainsFold(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldContainsFold(FieldIP, v))
 }
 
-// StatusEQ applies the EQ predicate on the "status" field.
-func StatusEQ(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldEQ(FieldStatus, v))
-}
-
-// StatusNEQ applies the NEQ predicate on the "status" field.
-func StatusNEQ(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldNEQ(FieldStatus, v))
-}
-
-// StatusIn applies the In predicate on the "status" field.
-func StatusIn(vs ...int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldIn(FieldStatus, vs...))
-}
-
-// StatusNotIn applies the NotIn predicate on the "status" field.
-func StatusNotIn(vs ...int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldNotIn(FieldStatus, vs...))
-}
-
-// StatusGT applies the GT predicate on the "status" field.
-func StatusGT(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldGT(FieldStatus, v))
-}
-
-// StatusGTE applies the GTE predicate on the "status" field.
-func StatusGTE(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldGTE(FieldStatus, v))
-}
-
-// StatusLT applies the LT predicate on the "status" field.
-func StatusLT(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldLT(FieldStatus, v))
-}
-
-// StatusLTE applies the LTE predicate on the "status" field.
-func StatusLTE(v int) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldLTE(FieldStatus, v))
-}
-
 // MessageEQ applies the EQ predicate on the "message" field.
 func MessageEQ(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldMessage, v))
@@ -527,6 +501,81 @@ func MessageEqualFold(v string) predicate.LoginLog {
 // MessageContainsFold applies the ContainsFold predicate on the "message" field.
 func MessageContainsFold(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldContainsFold(FieldMessage, v))
+}
+
+// UserAgentEQ applies the EQ predicate on the "user_agent" field.
+func UserAgentEQ(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldEQ(FieldUserAgent, v))
+}
+
+// UserAgentNEQ applies the NEQ predicate on the "user_agent" field.
+func UserAgentNEQ(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldNEQ(FieldUserAgent, v))
+}
+
+// UserAgentIn applies the In predicate on the "user_agent" field.
+func UserAgentIn(vs ...string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldIn(FieldUserAgent, vs...))
+}
+
+// UserAgentNotIn applies the NotIn predicate on the "user_agent" field.
+func UserAgentNotIn(vs ...string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldNotIn(FieldUserAgent, vs...))
+}
+
+// UserAgentGT applies the GT predicate on the "user_agent" field.
+func UserAgentGT(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldGT(FieldUserAgent, v))
+}
+
+// UserAgentGTE applies the GTE predicate on the "user_agent" field.
+func UserAgentGTE(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldGTE(FieldUserAgent, v))
+}
+
+// UserAgentLT applies the LT predicate on the "user_agent" field.
+func UserAgentLT(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldLT(FieldUserAgent, v))
+}
+
+// UserAgentLTE applies the LTE predicate on the "user_agent" field.
+func UserAgentLTE(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldLTE(FieldUserAgent, v))
+}
+
+// UserAgentContains applies the Contains predicate on the "user_agent" field.
+func UserAgentContains(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldContains(FieldUserAgent, v))
+}
+
+// UserAgentHasPrefix applies the HasPrefix predicate on the "user_agent" field.
+func UserAgentHasPrefix(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldHasPrefix(FieldUserAgent, v))
+}
+
+// UserAgentHasSuffix applies the HasSuffix predicate on the "user_agent" field.
+func UserAgentHasSuffix(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldHasSuffix(FieldUserAgent, v))
+}
+
+// UserAgentIsNil applies the IsNil predicate on the "user_agent" field.
+func UserAgentIsNil() predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldIsNull(FieldUserAgent))
+}
+
+// UserAgentNotNil applies the NotNil predicate on the "user_agent" field.
+func UserAgentNotNil() predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldNotNull(FieldUserAgent))
+}
+
+// UserAgentEqualFold applies the EqualFold predicate on the "user_agent" field.
+func UserAgentEqualFold(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldEqualFold(FieldUserAgent, v))
+}
+
+// UserAgentContainsFold applies the ContainsFold predicate on the "user_agent" field.
+func UserAgentContainsFold(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldContainsFold(FieldUserAgent, v))
 }
 
 // BrowserEQ applies the EQ predicate on the "browser" field.
@@ -679,81 +728,6 @@ func OsContainsFold(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldContainsFold(FieldOs, v))
 }
 
-// UserAgentEQ applies the EQ predicate on the "user_agent" field.
-func UserAgentEQ(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldEQ(FieldUserAgent, v))
-}
-
-// UserAgentNEQ applies the NEQ predicate on the "user_agent" field.
-func UserAgentNEQ(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldNEQ(FieldUserAgent, v))
-}
-
-// UserAgentIn applies the In predicate on the "user_agent" field.
-func UserAgentIn(vs ...string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldIn(FieldUserAgent, vs...))
-}
-
-// UserAgentNotIn applies the NotIn predicate on the "user_agent" field.
-func UserAgentNotIn(vs ...string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldNotIn(FieldUserAgent, vs...))
-}
-
-// UserAgentGT applies the GT predicate on the "user_agent" field.
-func UserAgentGT(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldGT(FieldUserAgent, v))
-}
-
-// UserAgentGTE applies the GTE predicate on the "user_agent" field.
-func UserAgentGTE(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldGTE(FieldUserAgent, v))
-}
-
-// UserAgentLT applies the LT predicate on the "user_agent" field.
-func UserAgentLT(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldLT(FieldUserAgent, v))
-}
-
-// UserAgentLTE applies the LTE predicate on the "user_agent" field.
-func UserAgentLTE(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldLTE(FieldUserAgent, v))
-}
-
-// UserAgentContains applies the Contains predicate on the "user_agent" field.
-func UserAgentContains(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldContains(FieldUserAgent, v))
-}
-
-// UserAgentHasPrefix applies the HasPrefix predicate on the "user_agent" field.
-func UserAgentHasPrefix(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldHasPrefix(FieldUserAgent, v))
-}
-
-// UserAgentHasSuffix applies the HasSuffix predicate on the "user_agent" field.
-func UserAgentHasSuffix(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldHasSuffix(FieldUserAgent, v))
-}
-
-// UserAgentIsNil applies the IsNil predicate on the "user_agent" field.
-func UserAgentIsNil() predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldIsNull(FieldUserAgent))
-}
-
-// UserAgentNotNil applies the NotNil predicate on the "user_agent" field.
-func UserAgentNotNil() predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldNotNull(FieldUserAgent))
-}
-
-// UserAgentEqualFold applies the EqualFold predicate on the "user_agent" field.
-func UserAgentEqualFold(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldEqualFold(FieldUserAgent, v))
-}
-
-// UserAgentContainsFold applies the ContainsFold predicate on the "user_agent" field.
-func UserAgentContainsFold(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldContainsFold(FieldUserAgent, v))
-}
-
 // DeviceEQ applies the EQ predicate on the "device" field.
 func DeviceEQ(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldDevice, v))
@@ -829,118 +803,43 @@ func DeviceContainsFold(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldContainsFold(FieldDevice, v))
 }
 
-// LocationEQ applies the EQ predicate on the "location" field.
-func LocationEQ(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldEQ(FieldLocation, v))
-}
-
-// LocationNEQ applies the NEQ predicate on the "location" field.
-func LocationNEQ(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldNEQ(FieldLocation, v))
-}
-
-// LocationIn applies the In predicate on the "location" field.
-func LocationIn(vs ...string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldIn(FieldLocation, vs...))
-}
-
-// LocationNotIn applies the NotIn predicate on the "location" field.
-func LocationNotIn(vs ...string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldNotIn(FieldLocation, vs...))
-}
-
-// LocationGT applies the GT predicate on the "location" field.
-func LocationGT(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldGT(FieldLocation, v))
-}
-
-// LocationGTE applies the GTE predicate on the "location" field.
-func LocationGTE(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldGTE(FieldLocation, v))
-}
-
-// LocationLT applies the LT predicate on the "location" field.
-func LocationLT(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldLT(FieldLocation, v))
-}
-
-// LocationLTE applies the LTE predicate on the "location" field.
-func LocationLTE(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldLTE(FieldLocation, v))
-}
-
-// LocationContains applies the Contains predicate on the "location" field.
-func LocationContains(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldContains(FieldLocation, v))
-}
-
-// LocationHasPrefix applies the HasPrefix predicate on the "location" field.
-func LocationHasPrefix(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldHasPrefix(FieldLocation, v))
-}
-
-// LocationHasSuffix applies the HasSuffix predicate on the "location" field.
-func LocationHasSuffix(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldHasSuffix(FieldLocation, v))
-}
-
-// LocationIsNil applies the IsNil predicate on the "location" field.
-func LocationIsNil() predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldIsNull(FieldLocation))
-}
-
-// LocationNotNil applies the NotNil predicate on the "location" field.
-func LocationNotNil() predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldNotNull(FieldLocation))
-}
-
-// LocationEqualFold applies the EqualFold predicate on the "location" field.
-func LocationEqualFold(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldEqualFold(FieldLocation, v))
-}
-
-// LocationContainsFold applies the ContainsFold predicate on the "location" field.
-func LocationContainsFold(v string) predicate.LoginLog {
-	return predicate.LoginLog(sql.FieldContainsFold(FieldLocation, v))
-}
-
 // LoginTimeEQ applies the EQ predicate on the "login_time" field.
-func LoginTimeEQ(v time.Time) predicate.LoginLog {
+func LoginTimeEQ(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldLoginTime, v))
 }
 
 // LoginTimeNEQ applies the NEQ predicate on the "login_time" field.
-func LoginTimeNEQ(v time.Time) predicate.LoginLog {
+func LoginTimeNEQ(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldNEQ(FieldLoginTime, v))
 }
 
 // LoginTimeIn applies the In predicate on the "login_time" field.
-func LoginTimeIn(vs ...time.Time) predicate.LoginLog {
+func LoginTimeIn(vs ...int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldIn(FieldLoginTime, vs...))
 }
 
 // LoginTimeNotIn applies the NotIn predicate on the "login_time" field.
-func LoginTimeNotIn(vs ...time.Time) predicate.LoginLog {
+func LoginTimeNotIn(vs ...int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldNotIn(FieldLoginTime, vs...))
 }
 
 // LoginTimeGT applies the GT predicate on the "login_time" field.
-func LoginTimeGT(v time.Time) predicate.LoginLog {
+func LoginTimeGT(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldGT(FieldLoginTime, v))
 }
 
 // LoginTimeGTE applies the GTE predicate on the "login_time" field.
-func LoginTimeGTE(v time.Time) predicate.LoginLog {
+func LoginTimeGTE(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldGTE(FieldLoginTime, v))
 }
 
 // LoginTimeLT applies the LT predicate on the "login_time" field.
-func LoginTimeLT(v time.Time) predicate.LoginLog {
+func LoginTimeLT(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldLT(FieldLoginTime, v))
 }
 
 // LoginTimeLTE applies the LTE predicate on the "login_time" field.
-func LoginTimeLTE(v time.Time) predicate.LoginLog {
+func LoginTimeLTE(v int64) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldLTE(FieldLoginTime, v))
 }
 

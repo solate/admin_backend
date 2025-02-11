@@ -3,12 +3,12 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/user"
 	"fmt"
 	"strings"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"admin_backend/pkg/ent/generated/user"
 )
 
 // 用户

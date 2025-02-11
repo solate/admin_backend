@@ -3,6 +3,8 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/predicate"
+	"admin_backend/pkg/ent/generated/user"
 	"context"
 	"errors"
 	"fmt"
@@ -10,8 +12,6 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"admin_backend/pkg/ent/generated/predicate"
-	"admin_backend/pkg/ent/generated/user"
 )
 
 // UserUpdate is the builder for updating User entities.

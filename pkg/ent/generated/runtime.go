@@ -21,11 +21,11 @@ func init() {
 	// loginlogDescCreatedAt is the schema descriptor for created_at field.
 	loginlogDescCreatedAt := loginlogFields[0].Descriptor()
 	// loginlog.DefaultCreatedAt holds the default value on creation for the created_at field.
-	loginlog.DefaultCreatedAt = loginlogDescCreatedAt.Default.(int)
-	// loginlogDescUpdatedAt is the schema descriptor for updated_at field.
-	loginlogDescUpdatedAt := loginlogFields[1].Descriptor()
-	// loginlog.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	loginlog.DefaultUpdatedAt = loginlogDescUpdatedAt.Default.(int)
+	loginlog.DefaultCreatedAt = loginlogDescCreatedAt.Default.(int64)
+	// loginlogDescTenantCode is the schema descriptor for tenant_code field.
+	loginlogDescTenantCode := loginlogFields[1].Descriptor()
+	// loginlog.TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
+	loginlog.TenantCodeValidator = loginlogDescTenantCode.Validators[0].(func(string) error)
 	// loginlogDescUserName is the schema descriptor for user_name field.
 	loginlogDescUserName := loginlogFields[4].Descriptor()
 	// loginlog.UserNameValidator is a validator for the "user_name" field. It is called by the builders before save.
@@ -34,10 +34,6 @@ func init() {
 	loginlogDescIP := loginlogFields[5].Descriptor()
 	// loginlog.IPValidator is a validator for the "ip" field. It is called by the builders before save.
 	loginlog.IPValidator = loginlogDescIP.Validators[0].(func(string) error)
-	// loginlogDescStatus is the schema descriptor for status field.
-	loginlogDescStatus := loginlogFields[6].Descriptor()
-	// loginlog.DefaultStatus holds the default value on creation for the status field.
-	loginlog.DefaultStatus = loginlogDescStatus.Default.(int)
 	permissionFields := schema.Permission{}.Fields()
 	_ = permissionFields
 	// permissionDescCreatedAt is the schema descriptor for created_at field.
@@ -104,32 +100,28 @@ func init() {
 	systemlogDescCreatedAt := systemlogFields[0].Descriptor()
 	// systemlog.DefaultCreatedAt holds the default value on creation for the created_at field.
 	systemlog.DefaultCreatedAt = systemlogDescCreatedAt.Default.(int64)
-	// systemlogDescUpdatedAt is the schema descriptor for updated_at field.
-	systemlogDescUpdatedAt := systemlogFields[1].Descriptor()
-	// systemlog.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	systemlog.DefaultUpdatedAt = systemlogDescUpdatedAt.Default.(int64)
 	// systemlogDescTenantCode is the schema descriptor for tenant_code field.
-	systemlogDescTenantCode := systemlogFields[2].Descriptor()
+	systemlogDescTenantCode := systemlogFields[1].Descriptor()
 	// systemlog.TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
 	systemlog.TenantCodeValidator = systemlogDescTenantCode.Validators[0].(func(string) error)
 	// systemlogDescModule is the schema descriptor for module field.
-	systemlogDescModule := systemlogFields[3].Descriptor()
+	systemlogDescModule := systemlogFields[2].Descriptor()
 	// systemlog.DefaultModule holds the default value on creation for the module field.
 	systemlog.DefaultModule = systemlogDescModule.Default.(string)
 	// systemlogDescAction is the schema descriptor for action field.
-	systemlogDescAction := systemlogFields[4].Descriptor()
+	systemlogDescAction := systemlogFields[3].Descriptor()
 	// systemlog.DefaultAction holds the default value on creation for the action field.
 	systemlog.DefaultAction = systemlogDescAction.Default.(string)
 	// systemlogDescContent is the schema descriptor for content field.
-	systemlogDescContent := systemlogFields[5].Descriptor()
+	systemlogDescContent := systemlogFields[4].Descriptor()
 	// systemlog.DefaultContent holds the default value on creation for the content field.
 	systemlog.DefaultContent = systemlogDescContent.Default.(string)
 	// systemlogDescOperator is the schema descriptor for operator field.
-	systemlogDescOperator := systemlogFields[6].Descriptor()
+	systemlogDescOperator := systemlogFields[5].Descriptor()
 	// systemlog.DefaultOperator holds the default value on creation for the operator field.
 	systemlog.DefaultOperator = systemlogDescOperator.Default.(string)
 	// systemlogDescUserID is the schema descriptor for user_id field.
-	systemlogDescUserID := systemlogFields[7].Descriptor()
+	systemlogDescUserID := systemlogFields[6].Descriptor()
 	// systemlog.DefaultUserID holds the default value on creation for the user_id field.
 	systemlog.DefaultUserID = systemlogDescUserID.Default.(uint64)
 	tenantFields := schema.Tenant{}.Fields()

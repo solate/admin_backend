@@ -3,6 +3,8 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/loginlog"
+	"admin_backend/pkg/ent/generated/predicate"
 	"context"
 	"fmt"
 	"math"
@@ -11,8 +13,6 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"admin_backend/pkg/ent/generated/loginlog"
-	"admin_backend/pkg/ent/generated/predicate"
 )
 
 // LoginLogQuery is the builder for querying LoginLog entities.
@@ -264,7 +264,7 @@ func (llq *LoginLogQuery) Clone() *LoginLogQuery {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt int `json:"created_at,omitempty"`
+//		CreatedAt int64 `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -287,7 +287,7 @@ func (llq *LoginLogQuery) GroupBy(field string, fields ...string) *LoginLogGroup
 // Example:
 //
 //	var v []struct {
-//		CreatedAt int `json:"created_at,omitempty"`
+//		CreatedAt int64 `json:"created_at,omitempty"`
 //	}
 //
 //	client.LoginLog.Query().

@@ -3,14 +3,6 @@
 package generated
 
 import (
-	"context"
-	"errors"
-	"fmt"
-	"sync"
-	"time"
-
-	"entgo.io/ent"
-	"entgo.io/ent/dialect/sql"
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/permission"
 	"admin_backend/pkg/ent/generated/predicate"
@@ -18,6 +10,13 @@ import (
 	"admin_backend/pkg/ent/generated/systemlog"
 	"admin_backend/pkg/ent/generated/tenant"
 	"admin_backend/pkg/ent/generated/user"
+	"context"
+	"errors"
+	"fmt"
+	"sync"
+
+	"entgo.io/ent"
+	"entgo.io/ent/dialect/sql"
 )
 
 const (
@@ -43,25 +42,22 @@ type LoginLogMutation struct {
 	op            Op
 	typ           string
 	id            *int
-	created_at    *int
-	addcreated_at *int
-	updated_at    *int
-	addupdated_at *int
+	created_at    *int64
+	addcreated_at *int64
+	tenant_code   *string
 	log_id        *uint64
 	addlog_id     *int64
 	user_id       *uint64
 	adduser_id    *int64
 	user_name     *string
 	ip            *string
-	status        *int
-	addstatus     *int
 	message       *string
+	user_agent    *string
 	browser       *string
 	os            *string
-	user_agent    *string
 	device        *string
-	location      *string
-	login_time    *time.Time
+	login_time    *int64
+	addlogin_time *int64
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*LoginLog, error)
@@ -167,13 +163,13 @@ func (m *LoginLogMutation) IDs(ctx context.Context) ([]int, error) {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (m *LoginLogMutation) SetCreatedAt(i int) {
+func (m *LoginLogMutation) SetCreatedAt(i int64) {
 	m.created_at = &i
 	m.addcreated_at = nil
 }
 
 // CreatedAt returns the value of the "created_at" field in the mutation.
-func (m *LoginLogMutation) CreatedAt() (r int, exists bool) {
+func (m *LoginLogMutation) CreatedAt() (r int64, exists bool) {
 	v := m.created_at
 	if v == nil {
 		return
@@ -184,7 +180,7 @@ func (m *LoginLogMutation) CreatedAt() (r int, exists bool) {
 // OldCreatedAt returns the old "created_at" field's value of the LoginLog entity.
 // If the LoginLog object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoginLogMutation) OldCreatedAt(ctx context.Context) (v int, err error) {
+func (m *LoginLogMutation) OldCreatedAt(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
 	}
@@ -199,7 +195,7 @@ func (m *LoginLogMutation) OldCreatedAt(ctx context.Context) (v int, err error) 
 }
 
 // AddCreatedAt adds i to the "created_at" field.
-func (m *LoginLogMutation) AddCreatedAt(i int) {
+func (m *LoginLogMutation) AddCreatedAt(i int64) {
 	if m.addcreated_at != nil {
 		*m.addcreated_at += i
 	} else {
@@ -208,7 +204,7 @@ func (m *LoginLogMutation) AddCreatedAt(i int) {
 }
 
 // AddedCreatedAt returns the value that was added to the "created_at" field in this mutation.
-func (m *LoginLogMutation) AddedCreatedAt() (r int, exists bool) {
+func (m *LoginLogMutation) AddedCreatedAt() (r int64, exists bool) {
 	v := m.addcreated_at
 	if v == nil {
 		return
@@ -222,60 +218,40 @@ func (m *LoginLogMutation) ResetCreatedAt() {
 	m.addcreated_at = nil
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (m *LoginLogMutation) SetUpdatedAt(i int) {
-	m.updated_at = &i
-	m.addupdated_at = nil
+// SetTenantCode sets the "tenant_code" field.
+func (m *LoginLogMutation) SetTenantCode(s string) {
+	m.tenant_code = &s
 }
 
-// UpdatedAt returns the value of the "updated_at" field in the mutation.
-func (m *LoginLogMutation) UpdatedAt() (r int, exists bool) {
-	v := m.updated_at
+// TenantCode returns the value of the "tenant_code" field in the mutation.
+func (m *LoginLogMutation) TenantCode() (r string, exists bool) {
+	v := m.tenant_code
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updated_at" field's value of the LoginLog entity.
+// OldTenantCode returns the old "tenant_code" field's value of the LoginLog entity.
 // If the LoginLog object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoginLogMutation) OldUpdatedAt(ctx context.Context) (v int, err error) {
+func (m *LoginLogMutation) OldTenantCode(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+		return v, errors.New("OldTenantCode is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+		return v, errors.New("OldTenantCode requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+		return v, fmt.Errorf("querying old value for OldTenantCode: %w", err)
 	}
-	return oldValue.UpdatedAt, nil
+	return oldValue.TenantCode, nil
 }
 
-// AddUpdatedAt adds i to the "updated_at" field.
-func (m *LoginLogMutation) AddUpdatedAt(i int) {
-	if m.addupdated_at != nil {
-		*m.addupdated_at += i
-	} else {
-		m.addupdated_at = &i
-	}
-}
-
-// AddedUpdatedAt returns the value that was added to the "updated_at" field in this mutation.
-func (m *LoginLogMutation) AddedUpdatedAt() (r int, exists bool) {
-	v := m.addupdated_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetUpdatedAt resets all changes to the "updated_at" field.
-func (m *LoginLogMutation) ResetUpdatedAt() {
-	m.updated_at = nil
-	m.addupdated_at = nil
+// ResetTenantCode resets all changes to the "tenant_code" field.
+func (m *LoginLogMutation) ResetTenantCode() {
+	m.tenant_code = nil
 }
 
 // SetLogID sets the "log_id" field.
@@ -462,62 +438,6 @@ func (m *LoginLogMutation) ResetIP() {
 	m.ip = nil
 }
 
-// SetStatus sets the "status" field.
-func (m *LoginLogMutation) SetStatus(i int) {
-	m.status = &i
-	m.addstatus = nil
-}
-
-// Status returns the value of the "status" field in the mutation.
-func (m *LoginLogMutation) Status() (r int, exists bool) {
-	v := m.status
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldStatus returns the old "status" field's value of the LoginLog entity.
-// If the LoginLog object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoginLogMutation) OldStatus(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStatus requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
-	}
-	return oldValue.Status, nil
-}
-
-// AddStatus adds i to the "status" field.
-func (m *LoginLogMutation) AddStatus(i int) {
-	if m.addstatus != nil {
-		*m.addstatus += i
-	} else {
-		m.addstatus = &i
-	}
-}
-
-// AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *LoginLogMutation) AddedStatus() (r int, exists bool) {
-	v := m.addstatus
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetStatus resets all changes to the "status" field.
-func (m *LoginLogMutation) ResetStatus() {
-	m.status = nil
-	m.addstatus = nil
-}
-
 // SetMessage sets the "message" field.
 func (m *LoginLogMutation) SetMessage(s string) {
 	m.message = &s
@@ -565,6 +485,55 @@ func (m *LoginLogMutation) MessageCleared() bool {
 func (m *LoginLogMutation) ResetMessage() {
 	m.message = nil
 	delete(m.clearedFields, loginlog.FieldMessage)
+}
+
+// SetUserAgent sets the "user_agent" field.
+func (m *LoginLogMutation) SetUserAgent(s string) {
+	m.user_agent = &s
+}
+
+// UserAgent returns the value of the "user_agent" field in the mutation.
+func (m *LoginLogMutation) UserAgent() (r string, exists bool) {
+	v := m.user_agent
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserAgent returns the old "user_agent" field's value of the LoginLog entity.
+// If the LoginLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoginLogMutation) OldUserAgent(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUserAgent is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUserAgent requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserAgent: %w", err)
+	}
+	return oldValue.UserAgent, nil
+}
+
+// ClearUserAgent clears the value of the "user_agent" field.
+func (m *LoginLogMutation) ClearUserAgent() {
+	m.user_agent = nil
+	m.clearedFields[loginlog.FieldUserAgent] = struct{}{}
+}
+
+// UserAgentCleared returns if the "user_agent" field was cleared in this mutation.
+func (m *LoginLogMutation) UserAgentCleared() bool {
+	_, ok := m.clearedFields[loginlog.FieldUserAgent]
+	return ok
+}
+
+// ResetUserAgent resets all changes to the "user_agent" field.
+func (m *LoginLogMutation) ResetUserAgent() {
+	m.user_agent = nil
+	delete(m.clearedFields, loginlog.FieldUserAgent)
 }
 
 // SetBrowser sets the "browser" field.
@@ -665,55 +634,6 @@ func (m *LoginLogMutation) ResetOs() {
 	delete(m.clearedFields, loginlog.FieldOs)
 }
 
-// SetUserAgent sets the "user_agent" field.
-func (m *LoginLogMutation) SetUserAgent(s string) {
-	m.user_agent = &s
-}
-
-// UserAgent returns the value of the "user_agent" field in the mutation.
-func (m *LoginLogMutation) UserAgent() (r string, exists bool) {
-	v := m.user_agent
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUserAgent returns the old "user_agent" field's value of the LoginLog entity.
-// If the LoginLog object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoginLogMutation) OldUserAgent(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUserAgent is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUserAgent requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUserAgent: %w", err)
-	}
-	return oldValue.UserAgent, nil
-}
-
-// ClearUserAgent clears the value of the "user_agent" field.
-func (m *LoginLogMutation) ClearUserAgent() {
-	m.user_agent = nil
-	m.clearedFields[loginlog.FieldUserAgent] = struct{}{}
-}
-
-// UserAgentCleared returns if the "user_agent" field was cleared in this mutation.
-func (m *LoginLogMutation) UserAgentCleared() bool {
-	_, ok := m.clearedFields[loginlog.FieldUserAgent]
-	return ok
-}
-
-// ResetUserAgent resets all changes to the "user_agent" field.
-func (m *LoginLogMutation) ResetUserAgent() {
-	m.user_agent = nil
-	delete(m.clearedFields, loginlog.FieldUserAgent)
-}
-
 // SetDevice sets the "device" field.
 func (m *LoginLogMutation) SetDevice(s string) {
 	m.device = &s
@@ -763,62 +683,14 @@ func (m *LoginLogMutation) ResetDevice() {
 	delete(m.clearedFields, loginlog.FieldDevice)
 }
 
-// SetLocation sets the "location" field.
-func (m *LoginLogMutation) SetLocation(s string) {
-	m.location = &s
-}
-
-// Location returns the value of the "location" field in the mutation.
-func (m *LoginLogMutation) Location() (r string, exists bool) {
-	v := m.location
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldLocation returns the old "location" field's value of the LoginLog entity.
-// If the LoginLog object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoginLogMutation) OldLocation(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldLocation is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldLocation requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldLocation: %w", err)
-	}
-	return oldValue.Location, nil
-}
-
-// ClearLocation clears the value of the "location" field.
-func (m *LoginLogMutation) ClearLocation() {
-	m.location = nil
-	m.clearedFields[loginlog.FieldLocation] = struct{}{}
-}
-
-// LocationCleared returns if the "location" field was cleared in this mutation.
-func (m *LoginLogMutation) LocationCleared() bool {
-	_, ok := m.clearedFields[loginlog.FieldLocation]
-	return ok
-}
-
-// ResetLocation resets all changes to the "location" field.
-func (m *LoginLogMutation) ResetLocation() {
-	m.location = nil
-	delete(m.clearedFields, loginlog.FieldLocation)
-}
-
 // SetLoginTime sets the "login_time" field.
-func (m *LoginLogMutation) SetLoginTime(t time.Time) {
-	m.login_time = &t
+func (m *LoginLogMutation) SetLoginTime(i int64) {
+	m.login_time = &i
+	m.addlogin_time = nil
 }
 
 // LoginTime returns the value of the "login_time" field in the mutation.
-func (m *LoginLogMutation) LoginTime() (r time.Time, exists bool) {
+func (m *LoginLogMutation) LoginTime() (r int64, exists bool) {
 	v := m.login_time
 	if v == nil {
 		return
@@ -829,7 +701,7 @@ func (m *LoginLogMutation) LoginTime() (r time.Time, exists bool) {
 // OldLoginTime returns the old "login_time" field's value of the LoginLog entity.
 // If the LoginLog object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoginLogMutation) OldLoginTime(ctx context.Context) (v time.Time, err error) {
+func (m *LoginLogMutation) OldLoginTime(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldLoginTime is only allowed on UpdateOne operations")
 	}
@@ -843,9 +715,28 @@ func (m *LoginLogMutation) OldLoginTime(ctx context.Context) (v time.Time, err e
 	return oldValue.LoginTime, nil
 }
 
+// AddLoginTime adds i to the "login_time" field.
+func (m *LoginLogMutation) AddLoginTime(i int64) {
+	if m.addlogin_time != nil {
+		*m.addlogin_time += i
+	} else {
+		m.addlogin_time = &i
+	}
+}
+
+// AddedLoginTime returns the value that was added to the "login_time" field in this mutation.
+func (m *LoginLogMutation) AddedLoginTime() (r int64, exists bool) {
+	v := m.addlogin_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
 // ClearLoginTime clears the value of the "login_time" field.
 func (m *LoginLogMutation) ClearLoginTime() {
 	m.login_time = nil
+	m.addlogin_time = nil
 	m.clearedFields[loginlog.FieldLoginTime] = struct{}{}
 }
 
@@ -858,6 +749,7 @@ func (m *LoginLogMutation) LoginTimeCleared() bool {
 // ResetLoginTime resets all changes to the "login_time" field.
 func (m *LoginLogMutation) ResetLoginTime() {
 	m.login_time = nil
+	m.addlogin_time = nil
 	delete(m.clearedFields, loginlog.FieldLoginTime)
 }
 
@@ -895,12 +787,12 @@ func (m *LoginLogMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *LoginLogMutation) Fields() []string {
-	fields := make([]string, 0, 14)
+	fields := make([]string, 0, 12)
 	if m.created_at != nil {
 		fields = append(fields, loginlog.FieldCreatedAt)
 	}
-	if m.updated_at != nil {
-		fields = append(fields, loginlog.FieldUpdatedAt)
+	if m.tenant_code != nil {
+		fields = append(fields, loginlog.FieldTenantCode)
 	}
 	if m.log_id != nil {
 		fields = append(fields, loginlog.FieldLogID)
@@ -914,11 +806,11 @@ func (m *LoginLogMutation) Fields() []string {
 	if m.ip != nil {
 		fields = append(fields, loginlog.FieldIP)
 	}
-	if m.status != nil {
-		fields = append(fields, loginlog.FieldStatus)
-	}
 	if m.message != nil {
 		fields = append(fields, loginlog.FieldMessage)
+	}
+	if m.user_agent != nil {
+		fields = append(fields, loginlog.FieldUserAgent)
 	}
 	if m.browser != nil {
 		fields = append(fields, loginlog.FieldBrowser)
@@ -926,14 +818,8 @@ func (m *LoginLogMutation) Fields() []string {
 	if m.os != nil {
 		fields = append(fields, loginlog.FieldOs)
 	}
-	if m.user_agent != nil {
-		fields = append(fields, loginlog.FieldUserAgent)
-	}
 	if m.device != nil {
 		fields = append(fields, loginlog.FieldDevice)
-	}
-	if m.location != nil {
-		fields = append(fields, loginlog.FieldLocation)
 	}
 	if m.login_time != nil {
 		fields = append(fields, loginlog.FieldLoginTime)
@@ -948,8 +834,8 @@ func (m *LoginLogMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case loginlog.FieldCreatedAt:
 		return m.CreatedAt()
-	case loginlog.FieldUpdatedAt:
-		return m.UpdatedAt()
+	case loginlog.FieldTenantCode:
+		return m.TenantCode()
 	case loginlog.FieldLogID:
 		return m.LogID()
 	case loginlog.FieldUserID:
@@ -958,20 +844,16 @@ func (m *LoginLogMutation) Field(name string) (ent.Value, bool) {
 		return m.UserName()
 	case loginlog.FieldIP:
 		return m.IP()
-	case loginlog.FieldStatus:
-		return m.Status()
 	case loginlog.FieldMessage:
 		return m.Message()
+	case loginlog.FieldUserAgent:
+		return m.UserAgent()
 	case loginlog.FieldBrowser:
 		return m.Browser()
 	case loginlog.FieldOs:
 		return m.Os()
-	case loginlog.FieldUserAgent:
-		return m.UserAgent()
 	case loginlog.FieldDevice:
 		return m.Device()
-	case loginlog.FieldLocation:
-		return m.Location()
 	case loginlog.FieldLoginTime:
 		return m.LoginTime()
 	}
@@ -985,8 +867,8 @@ func (m *LoginLogMutation) OldField(ctx context.Context, name string) (ent.Value
 	switch name {
 	case loginlog.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
-	case loginlog.FieldUpdatedAt:
-		return m.OldUpdatedAt(ctx)
+	case loginlog.FieldTenantCode:
+		return m.OldTenantCode(ctx)
 	case loginlog.FieldLogID:
 		return m.OldLogID(ctx)
 	case loginlog.FieldUserID:
@@ -995,20 +877,16 @@ func (m *LoginLogMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldUserName(ctx)
 	case loginlog.FieldIP:
 		return m.OldIP(ctx)
-	case loginlog.FieldStatus:
-		return m.OldStatus(ctx)
 	case loginlog.FieldMessage:
 		return m.OldMessage(ctx)
+	case loginlog.FieldUserAgent:
+		return m.OldUserAgent(ctx)
 	case loginlog.FieldBrowser:
 		return m.OldBrowser(ctx)
 	case loginlog.FieldOs:
 		return m.OldOs(ctx)
-	case loginlog.FieldUserAgent:
-		return m.OldUserAgent(ctx)
 	case loginlog.FieldDevice:
 		return m.OldDevice(ctx)
-	case loginlog.FieldLocation:
-		return m.OldLocation(ctx)
 	case loginlog.FieldLoginTime:
 		return m.OldLoginTime(ctx)
 	}
@@ -1021,18 +899,18 @@ func (m *LoginLogMutation) OldField(ctx context.Context, name string) (ent.Value
 func (m *LoginLogMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case loginlog.FieldCreatedAt:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCreatedAt(v)
 		return nil
-	case loginlog.FieldUpdatedAt:
-		v, ok := value.(int)
+	case loginlog.FieldTenantCode:
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdatedAt(v)
+		m.SetTenantCode(v)
 		return nil
 	case loginlog.FieldLogID:
 		v, ok := value.(uint64)
@@ -1062,19 +940,19 @@ func (m *LoginLogMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetIP(v)
 		return nil
-	case loginlog.FieldStatus:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetStatus(v)
-		return nil
 	case loginlog.FieldMessage:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetMessage(v)
+		return nil
+	case loginlog.FieldUserAgent:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserAgent(v)
 		return nil
 	case loginlog.FieldBrowser:
 		v, ok := value.(string)
@@ -1090,13 +968,6 @@ func (m *LoginLogMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetOs(v)
 		return nil
-	case loginlog.FieldUserAgent:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUserAgent(v)
-		return nil
 	case loginlog.FieldDevice:
 		v, ok := value.(string)
 		if !ok {
@@ -1104,15 +975,8 @@ func (m *LoginLogMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDevice(v)
 		return nil
-	case loginlog.FieldLocation:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetLocation(v)
-		return nil
 	case loginlog.FieldLoginTime:
-		v, ok := value.(time.Time)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1129,17 +993,14 @@ func (m *LoginLogMutation) AddedFields() []string {
 	if m.addcreated_at != nil {
 		fields = append(fields, loginlog.FieldCreatedAt)
 	}
-	if m.addupdated_at != nil {
-		fields = append(fields, loginlog.FieldUpdatedAt)
-	}
 	if m.addlog_id != nil {
 		fields = append(fields, loginlog.FieldLogID)
 	}
 	if m.adduser_id != nil {
 		fields = append(fields, loginlog.FieldUserID)
 	}
-	if m.addstatus != nil {
-		fields = append(fields, loginlog.FieldStatus)
+	if m.addlogin_time != nil {
+		fields = append(fields, loginlog.FieldLoginTime)
 	}
 	return fields
 }
@@ -1151,14 +1012,12 @@ func (m *LoginLogMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case loginlog.FieldCreatedAt:
 		return m.AddedCreatedAt()
-	case loginlog.FieldUpdatedAt:
-		return m.AddedUpdatedAt()
 	case loginlog.FieldLogID:
 		return m.AddedLogID()
 	case loginlog.FieldUserID:
 		return m.AddedUserID()
-	case loginlog.FieldStatus:
-		return m.AddedStatus()
+	case loginlog.FieldLoginTime:
+		return m.AddedLoginTime()
 	}
 	return nil, false
 }
@@ -1169,18 +1028,11 @@ func (m *LoginLogMutation) AddedField(name string) (ent.Value, bool) {
 func (m *LoginLogMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case loginlog.FieldCreatedAt:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddCreatedAt(v)
-		return nil
-	case loginlog.FieldUpdatedAt:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddUpdatedAt(v)
 		return nil
 	case loginlog.FieldLogID:
 		v, ok := value.(int64)
@@ -1196,12 +1048,12 @@ func (m *LoginLogMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddUserID(v)
 		return nil
-	case loginlog.FieldStatus:
-		v, ok := value.(int)
+	case loginlog.FieldLoginTime:
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddStatus(v)
+		m.AddLoginTime(v)
 		return nil
 	}
 	return fmt.Errorf("unknown LoginLog numeric field %s", name)
@@ -1214,20 +1066,17 @@ func (m *LoginLogMutation) ClearedFields() []string {
 	if m.FieldCleared(loginlog.FieldMessage) {
 		fields = append(fields, loginlog.FieldMessage)
 	}
+	if m.FieldCleared(loginlog.FieldUserAgent) {
+		fields = append(fields, loginlog.FieldUserAgent)
+	}
 	if m.FieldCleared(loginlog.FieldBrowser) {
 		fields = append(fields, loginlog.FieldBrowser)
 	}
 	if m.FieldCleared(loginlog.FieldOs) {
 		fields = append(fields, loginlog.FieldOs)
 	}
-	if m.FieldCleared(loginlog.FieldUserAgent) {
-		fields = append(fields, loginlog.FieldUserAgent)
-	}
 	if m.FieldCleared(loginlog.FieldDevice) {
 		fields = append(fields, loginlog.FieldDevice)
-	}
-	if m.FieldCleared(loginlog.FieldLocation) {
-		fields = append(fields, loginlog.FieldLocation)
 	}
 	if m.FieldCleared(loginlog.FieldLoginTime) {
 		fields = append(fields, loginlog.FieldLoginTime)
@@ -1249,20 +1098,17 @@ func (m *LoginLogMutation) ClearField(name string) error {
 	case loginlog.FieldMessage:
 		m.ClearMessage()
 		return nil
+	case loginlog.FieldUserAgent:
+		m.ClearUserAgent()
+		return nil
 	case loginlog.FieldBrowser:
 		m.ClearBrowser()
 		return nil
 	case loginlog.FieldOs:
 		m.ClearOs()
 		return nil
-	case loginlog.FieldUserAgent:
-		m.ClearUserAgent()
-		return nil
 	case loginlog.FieldDevice:
 		m.ClearDevice()
-		return nil
-	case loginlog.FieldLocation:
-		m.ClearLocation()
 		return nil
 	case loginlog.FieldLoginTime:
 		m.ClearLoginTime()
@@ -1278,8 +1124,8 @@ func (m *LoginLogMutation) ResetField(name string) error {
 	case loginlog.FieldCreatedAt:
 		m.ResetCreatedAt()
 		return nil
-	case loginlog.FieldUpdatedAt:
-		m.ResetUpdatedAt()
+	case loginlog.FieldTenantCode:
+		m.ResetTenantCode()
 		return nil
 	case loginlog.FieldLogID:
 		m.ResetLogID()
@@ -1293,11 +1139,11 @@ func (m *LoginLogMutation) ResetField(name string) error {
 	case loginlog.FieldIP:
 		m.ResetIP()
 		return nil
-	case loginlog.FieldStatus:
-		m.ResetStatus()
-		return nil
 	case loginlog.FieldMessage:
 		m.ResetMessage()
+		return nil
+	case loginlog.FieldUserAgent:
+		m.ResetUserAgent()
 		return nil
 	case loginlog.FieldBrowser:
 		m.ResetBrowser()
@@ -1305,14 +1151,8 @@ func (m *LoginLogMutation) ResetField(name string) error {
 	case loginlog.FieldOs:
 		m.ResetOs()
 		return nil
-	case loginlog.FieldUserAgent:
-		m.ResetUserAgent()
-		return nil
 	case loginlog.FieldDevice:
 		m.ResetDevice()
-		return nil
-	case loginlog.FieldLocation:
-		m.ResetLocation()
 		return nil
 	case loginlog.FieldLoginTime:
 		m.ResetLoginTime()
@@ -3687,8 +3527,6 @@ type SystemLogMutation struct {
 	id            *int
 	created_at    *int64
 	addcreated_at *int64
-	updated_at    *int64
-	addupdated_at *int64
 	tenant_code   *string
 	module        *string
 	action        *string
@@ -3854,62 +3692,6 @@ func (m *SystemLogMutation) AddedCreatedAt() (r int64, exists bool) {
 func (m *SystemLogMutation) ResetCreatedAt() {
 	m.created_at = nil
 	m.addcreated_at = nil
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (m *SystemLogMutation) SetUpdatedAt(i int64) {
-	m.updated_at = &i
-	m.addupdated_at = nil
-}
-
-// UpdatedAt returns the value of the "updated_at" field in the mutation.
-func (m *SystemLogMutation) UpdatedAt() (r int64, exists bool) {
-	v := m.updated_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUpdatedAt returns the old "updated_at" field's value of the SystemLog entity.
-// If the SystemLog object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SystemLogMutation) OldUpdatedAt(ctx context.Context) (v int64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
-	}
-	return oldValue.UpdatedAt, nil
-}
-
-// AddUpdatedAt adds i to the "updated_at" field.
-func (m *SystemLogMutation) AddUpdatedAt(i int64) {
-	if m.addupdated_at != nil {
-		*m.addupdated_at += i
-	} else {
-		m.addupdated_at = &i
-	}
-}
-
-// AddedUpdatedAt returns the value that was added to the "updated_at" field in this mutation.
-func (m *SystemLogMutation) AddedUpdatedAt() (r int64, exists bool) {
-	v := m.addupdated_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetUpdatedAt resets all changes to the "updated_at" field.
-func (m *SystemLogMutation) ResetUpdatedAt() {
-	m.updated_at = nil
-	m.addupdated_at = nil
 }
 
 // SetTenantCode sets the "tenant_code" field.
@@ -4182,12 +3964,9 @@ func (m *SystemLogMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SystemLogMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 7)
 	if m.created_at != nil {
 		fields = append(fields, systemlog.FieldCreatedAt)
-	}
-	if m.updated_at != nil {
-		fields = append(fields, systemlog.FieldUpdatedAt)
 	}
 	if m.tenant_code != nil {
 		fields = append(fields, systemlog.FieldTenantCode)
@@ -4217,8 +3996,6 @@ func (m *SystemLogMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case systemlog.FieldCreatedAt:
 		return m.CreatedAt()
-	case systemlog.FieldUpdatedAt:
-		return m.UpdatedAt()
 	case systemlog.FieldTenantCode:
 		return m.TenantCode()
 	case systemlog.FieldModule:
@@ -4242,8 +4019,6 @@ func (m *SystemLogMutation) OldField(ctx context.Context, name string) (ent.Valu
 	switch name {
 	case systemlog.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
-	case systemlog.FieldUpdatedAt:
-		return m.OldUpdatedAt(ctx)
 	case systemlog.FieldTenantCode:
 		return m.OldTenantCode(ctx)
 	case systemlog.FieldModule:
@@ -4271,13 +4046,6 @@ func (m *SystemLogMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCreatedAt(v)
-		return nil
-	case systemlog.FieldUpdatedAt:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUpdatedAt(v)
 		return nil
 	case systemlog.FieldTenantCode:
 		v, ok := value.(string)
@@ -4332,9 +4100,6 @@ func (m *SystemLogMutation) AddedFields() []string {
 	if m.addcreated_at != nil {
 		fields = append(fields, systemlog.FieldCreatedAt)
 	}
-	if m.addupdated_at != nil {
-		fields = append(fields, systemlog.FieldUpdatedAt)
-	}
 	if m.adduser_id != nil {
 		fields = append(fields, systemlog.FieldUserID)
 	}
@@ -4348,8 +4113,6 @@ func (m *SystemLogMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case systemlog.FieldCreatedAt:
 		return m.AddedCreatedAt()
-	case systemlog.FieldUpdatedAt:
-		return m.AddedUpdatedAt()
 	case systemlog.FieldUserID:
 		return m.AddedUserID()
 	}
@@ -4367,13 +4130,6 @@ func (m *SystemLogMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddCreatedAt(v)
-		return nil
-	case systemlog.FieldUpdatedAt:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddUpdatedAt(v)
 		return nil
 	case systemlog.FieldUserID:
 		v, ok := value.(int64)
@@ -4411,9 +4167,6 @@ func (m *SystemLogMutation) ResetField(name string) error {
 	switch name {
 	case systemlog.FieldCreatedAt:
 		m.ResetCreatedAt()
-		return nil
-	case systemlog.FieldUpdatedAt:
-		m.ResetUpdatedAt()
 		return nil
 	case systemlog.FieldTenantCode:
 		m.ResetTenantCode()

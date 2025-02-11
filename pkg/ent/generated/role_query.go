@@ -3,6 +3,8 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/predicate"
+	"admin_backend/pkg/ent/generated/role"
 	"context"
 	"fmt"
 	"math"
@@ -11,8 +13,6 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"admin_backend/pkg/ent/generated/predicate"
-	"admin_backend/pkg/ent/generated/role"
 )
 
 // RoleQuery is the builder for querying Role entities.

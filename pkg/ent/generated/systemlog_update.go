@@ -3,6 +3,8 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/predicate"
+	"admin_backend/pkg/ent/generated/systemlog"
 	"context"
 	"errors"
 	"fmt"
@@ -10,8 +12,6 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"admin_backend/pkg/ent/generated/predicate"
-	"admin_backend/pkg/ent/generated/systemlog"
 )
 
 // SystemLogUpdate is the builder for updating SystemLog entities.
@@ -25,27 +25,6 @@ type SystemLogUpdate struct {
 // Where appends a list predicates to the SystemLogUpdate builder.
 func (slu *SystemLogUpdate) Where(ps ...predicate.SystemLog) *SystemLogUpdate {
 	slu.mutation.Where(ps...)
-	return slu
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (slu *SystemLogUpdate) SetUpdatedAt(i int64) *SystemLogUpdate {
-	slu.mutation.ResetUpdatedAt()
-	slu.mutation.SetUpdatedAt(i)
-	return slu
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (slu *SystemLogUpdate) SetNillableUpdatedAt(i *int64) *SystemLogUpdate {
-	if i != nil {
-		slu.SetUpdatedAt(*i)
-	}
-	return slu
-}
-
-// AddUpdatedAt adds i to the "updated_at" field.
-func (slu *SystemLogUpdate) AddUpdatedAt(i int64) *SystemLogUpdate {
-	slu.mutation.AddUpdatedAt(i)
 	return slu
 }
 
@@ -200,12 +179,6 @@ func (slu *SystemLogUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := slu.mutation.UpdatedAt(); ok {
-		_spec.SetField(systemlog.FieldUpdatedAt, field.TypeInt64, value)
-	}
-	if value, ok := slu.mutation.AddedUpdatedAt(); ok {
-		_spec.AddField(systemlog.FieldUpdatedAt, field.TypeInt64, value)
-	}
 	if value, ok := slu.mutation.TenantCode(); ok {
 		_spec.SetField(systemlog.FieldTenantCode, field.TypeString, value)
 	}
@@ -247,27 +220,6 @@ type SystemLogUpdateOne struct {
 	hooks     []Hook
 	mutation  *SystemLogMutation
 	modifiers []func(*sql.UpdateBuilder)
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (sluo *SystemLogUpdateOne) SetUpdatedAt(i int64) *SystemLogUpdateOne {
-	sluo.mutation.ResetUpdatedAt()
-	sluo.mutation.SetUpdatedAt(i)
-	return sluo
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (sluo *SystemLogUpdateOne) SetNillableUpdatedAt(i *int64) *SystemLogUpdateOne {
-	if i != nil {
-		sluo.SetUpdatedAt(*i)
-	}
-	return sluo
-}
-
-// AddUpdatedAt adds i to the "updated_at" field.
-func (sluo *SystemLogUpdateOne) AddUpdatedAt(i int64) *SystemLogUpdateOne {
-	sluo.mutation.AddUpdatedAt(i)
-	return sluo
 }
 
 // SetTenantCode sets the "tenant_code" field.
@@ -450,12 +402,6 @@ func (sluo *SystemLogUpdateOne) sqlSave(ctx context.Context) (_node *SystemLog, 
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := sluo.mutation.UpdatedAt(); ok {
-		_spec.SetField(systemlog.FieldUpdatedAt, field.TypeInt64, value)
-	}
-	if value, ok := sluo.mutation.AddedUpdatedAt(); ok {
-		_spec.AddField(systemlog.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := sluo.mutation.TenantCode(); ok {
 		_spec.SetField(systemlog.FieldTenantCode, field.TypeString, value)

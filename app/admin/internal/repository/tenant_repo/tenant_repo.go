@@ -1,9 +1,10 @@
-package tenant_repo
+package tenantRepo
 
 import (
 	"context"
 	"time"
 
+	"admin_backend/pkg/common"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/ent/generated/tenant"
@@ -49,7 +50,8 @@ func (r *TenantRepo) GetByTenantID(ctx context.Context, tenantID uint64) (*gener
 	return r.db.Tenant.Query().Where(tenant.TenantID(tenantID)).Only(ctx)
 }
 
-func (r *TenantRepo) PageList(ctx context.Context, offset, limit int, where []predicate.Tenant) ([]*generated.Tenant, int, error) {
+func (r *TenantRepo) PageList(ctx context.Context, current, limit int, where []predicate.Tenant) ([]*generated.Tenant, int, error) {
+	offset := common.Offset(current, limit)
 	query := r.db.Tenant.Query().Where(where...).Order(generated.Desc(tenant.FieldCreatedAt))
 
 	// 查询总数

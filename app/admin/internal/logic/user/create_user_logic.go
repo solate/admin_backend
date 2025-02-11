@@ -3,9 +3,10 @@ package user
 import (
 	"context"
 
-	"admin_backend/app/admin/internal/repository/user_repo"
+	"admin_backend/app/admin/internal/repository/userRepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
+	"admin_backend/pkg/common/context_util"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/utils/idgen"
@@ -18,7 +19,7 @@ type CreateUserLogic struct {
 	logx.Logger
 	ctx      context.Context
 	svcCtx   *svc.ServiceContext
-	userRepo *user_repo.UserRepo
+	userRepo *userRepo.UserRepo
 }
 
 // 创建用户
@@ -27,7 +28,7 @@ func NewCreateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Create
 		Logger:   logx.WithContext(ctx),
 		ctx:      ctx,
 		svcCtx:   svcCtx,
-		userRepo: user_repo.NewUserRepo(svcCtx.DB),
+		userRepo: userRepo.NewUserRepo(svcCtx.DB),
 	}
 }
 
@@ -45,6 +46,12 @@ func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.Crea
 	}
 	if user.Phone == req.Phone {
 		return nil, xerr.NewErrMsg("手机号已存在")
+	}
+
+	tenantCode, err := context_util.GetTenantCodeFromCtx(l.ctx)
+	if err != nil {
+		l.Error("ListUser context_util.GetTenantIDFromCtx err: ", err.Error())
+		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "get tenant id from ctx err.")
 	}
 
 	// 3. 生成密码盐和加密密码
@@ -67,15 +74,16 @@ func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.Crea
 
 	// 4. 创建用户
 	newUser := &generated.User{
-		UserID:    userID,
-		Phone:     req.Phone,
-		UserName:  req.Name,
-		PwdHashed: hashedPassword,
-		PwdSalt:   string(salt),
-		Status:    1, // 默认启用
-		NickName:  req.Name,
-		Email:     req.Email,
-		Sex:       req.Sex,
+		TenantCode: tenantCode,
+		UserID:     userID,
+		Phone:      req.Phone,
+		UserName:   req.Name,
+		PwdHashed:  hashedPassword,
+		PwdSalt:    string(salt),
+		Status:     1, // 默认启用
+		NickName:   req.Name,
+		Email:      req.Email,
+		Sex:        req.Sex,
 	}
 	user, err = l.userRepo.Create(l.ctx, newUser)
 	if err != nil {

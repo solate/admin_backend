@@ -69,6 +69,31 @@ type ListTenantResp struct {
 	List []*TenantInfo `json:"list"` // 租户列表
 }
 
+type LoginLogInfo struct {
+	ID        uint64 `json:"id"`         // 记录ID
+	UserID    uint64 `json:"user_id"`    // 用户ID
+	UserName  string `json:"user_name"`  // 用户名
+	IP        string `json:"ip"`         // 登录IP
+	UserAgent string `json:"user_agent"` // 用户代理
+	Status    int    `json:"status"`     // 登录状态
+	Message   string `json:"message"`    // 状态信息
+	CreatedAt string `json:"created_at"` // 登录时间
+}
+
+type LoginLogListReq struct {
+	PageRequest
+	UserName  string `form:"user_name,optional"`  // 用户名
+	IP        string `form:"ip,optional"`         // 登录IP
+	Status    int    `form:"status,optional"`     // 登录状态
+	StartTime string `form:"start_time,optional"` // 开始时间
+	EndTime   string `form:"end_time,optional"`   // 结束时间
+}
+
+type LoginLogListResp struct {
+	Page *PageResponse   `json:"page"` // 分页信息
+	List []*LoginLogInfo `json:"list"` // 登录记录列表
+}
+
 type LoginReq struct {
 	UserName string `json:"username" validate:"required"` // 用户名
 	Password string `json:"password" validate:"required"` // 密码
@@ -145,7 +170,6 @@ type UpdateTenantReq struct {
 type UpdateUserReq struct {
 	UserID  uint64   `path:"user_id"`
 	Name    string   `json:"name,optional"`
-	Phone   string   `json:"phone,optional"`
 	Email   string   `json:"email,optional"`
 	Status  int      `json:"status,optional"`
 	Sex     int      `json:"sex,optional"`

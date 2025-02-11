@@ -3,7 +3,7 @@ package tenant
 import (
 	"context"
 
-	"admin_backend/app/admin/internal/repository/tenant_repo"
+	"admin_backend/app/admin/internal/repository/tenantRepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
 
@@ -14,7 +14,7 @@ type DeleteTenantLogic struct {
 	logx.Logger
 	ctx        context.Context
 	svcCtx     *svc.ServiceContext
-	tenantRepo *tenant_repo.TenantRepo
+	tenantRepo *tenantRepo.TenantRepo
 }
 
 // 删除租户
@@ -23,7 +23,7 @@ func NewDeleteTenantLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Dele
 		Logger:     logx.WithContext(ctx),
 		ctx:        ctx,
 		svcCtx:     svcCtx,
-		tenantRepo: tenant_repo.NewTenantRepo(svcCtx.DB),
+		tenantRepo: tenantRepo.NewTenantRepo(svcCtx.DB),
 	}
 }
 

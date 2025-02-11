@@ -3,10 +3,9 @@ package tenant
 import (
 	"context"
 
-	"admin_backend/app/admin/internal/repository/tenant_repo"
+	"admin_backend/app/admin/internal/repository/tenantRepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
-	"admin_backend/pkg/common"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/ent/generated/tenant"
@@ -18,7 +17,7 @@ type ListTenantLogic struct {
 	logx.Logger
 	ctx        context.Context
 	svcCtx     *svc.ServiceContext
-	tenantRepo *tenant_repo.TenantRepo
+	tenantRepo *tenantRepo.TenantRepo
 }
 
 // 获取租户列表
@@ -27,7 +26,7 @@ func NewListTenantLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListTe
 		Logger:     logx.WithContext(ctx),
 		ctx:        ctx,
 		svcCtx:     svcCtx,
-		tenantRepo: tenant_repo.NewTenantRepo(svcCtx.DB),
+		tenantRepo: tenantRepo.NewTenantRepo(svcCtx.DB),
 	}
 }
 
@@ -42,8 +41,7 @@ func (l *ListTenantLogic) ListTenant(req *types.ListTenantReq) (*types.ListTenan
 	}
 
 	// 4. 分页查询
-	offset := common.Offset(req.Current, req.PageSize)
-	list, total, err := l.tenantRepo.PageList(l.ctx, offset, req.PageSize, where)
+	list, total, err := l.tenantRepo.PageList(l.ctx, req.Current, req.PageSize, where)
 	if err != nil {
 		l.Error("ListTenant PageList err:", err.Error())
 		return nil, xerr.NewErrCode(xerr.DbError)

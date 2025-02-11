@@ -13,8 +13,6 @@ const (
 	FieldID = "id"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
-	FieldUpdatedAt = "updated_at"
 	// FieldTenantCode holds the string denoting the tenant_code field in the database.
 	FieldTenantCode = "tenant_code"
 	// FieldModule holds the string denoting the module field in the database.
@@ -35,7 +33,6 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
-	FieldUpdatedAt,
 	FieldTenantCode,
 	FieldModule,
 	FieldAction,
@@ -57,8 +54,6 @@ func ValidColumn(column string) bool {
 var (
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt int64
-	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
-	DefaultUpdatedAt int64
 	// TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
 	TenantCodeValidator func(string) error
 	// DefaultModule holds the default value on creation for the "module" field.
@@ -84,11 +79,6 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 // ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
-}
-
-// ByUpdatedAt orders the results by the updated_at field.
-func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
 // ByTenantCode orders the results by the tenant_code field.

@@ -3,12 +3,12 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/systemlog"
 	"fmt"
 	"strings"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"admin_backend/pkg/ent/generated/systemlog"
 )
 
 // 系统日志
@@ -18,8 +18,6 @@ type SystemLog struct {
 	ID int `json:"id,omitempty"`
 	// 创建时间
 	CreatedAt int64 `json:"created_at,omitempty"`
-	// 修改时间
-	UpdatedAt int64 `json:"updated_at,omitempty"`
 	// 租户编码
 	TenantCode string `json:"tenant_code,omitempty"`
 	// 所属模块
@@ -40,7 +38,7 @@ func (*SystemLog) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case systemlog.FieldID, systemlog.FieldCreatedAt, systemlog.FieldUpdatedAt, systemlog.FieldUserID:
+		case systemlog.FieldID, systemlog.FieldCreatedAt, systemlog.FieldUserID:
 			values[i] = new(sql.NullInt64)
 		case systemlog.FieldTenantCode, systemlog.FieldModule, systemlog.FieldAction, systemlog.FieldContent, systemlog.FieldOperator:
 			values[i] = new(sql.NullString)
@@ -70,12 +68,6 @@ func (sl *SystemLog) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				sl.CreatedAt = value.Int64
-			}
-		case systemlog.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				sl.UpdatedAt = value.Int64
 			}
 		case systemlog.FieldTenantCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -151,9 +143,6 @@ func (sl *SystemLog) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v, ", sl.ID))
 	builder.WriteString("created_at=")
 	builder.WriteString(fmt.Sprintf("%v", sl.CreatedAt))
-	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(fmt.Sprintf("%v", sl.UpdatedAt))
 	builder.WriteString(", ")
 	builder.WriteString("tenant_code=")
 	builder.WriteString(sl.TenantCode)

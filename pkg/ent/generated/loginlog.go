@@ -3,13 +3,12 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/loginlog"
 	"fmt"
 	"strings"
-	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"admin_backend/pkg/ent/generated/loginlog"
 )
 
 // LoginLog is the model entity for the LoginLog schema.
@@ -18,9 +17,9 @@ type LoginLog struct {
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// 创建时间
-	CreatedAt int `json:"created_at,omitempty"`
-	// 修改时间
-	UpdatedAt int `json:"updated_at,omitempty"`
+	CreatedAt int64 `json:"created_at,omitempty"`
+	// 租户编码
+	TenantCode string `json:"tenant_code,omitempty"`
 	// 日志ID
 	LogID uint64 `json:"log_id,omitempty"`
 	// 用户ID
@@ -29,22 +28,18 @@ type LoginLog struct {
 	UserName string `json:"user_name,omitempty"`
 	// IP地址
 	IP string `json:"ip,omitempty"`
-	// 状态: 1:成功, 2:失败
-	Status int `json:"status,omitempty"`
 	// 消息
 	Message string `json:"message,omitempty"`
+	// 用户代理
+	UserAgent string `json:"user_agent,omitempty"`
 	// 浏览器
 	Browser string `json:"browser,omitempty"`
 	// 操作系统
 	Os string `json:"os,omitempty"`
-	// 用户代理
-	UserAgent string `json:"user_agent,omitempty"`
 	// 设备
 	Device string `json:"device,omitempty"`
-	// 位置, 归属地
-	Location string `json:"location,omitempty"`
 	// 登录时间
-	LoginTime    time.Time `json:"login_time,omitempty"`
+	LoginTime    int64 `json:"login_time,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -53,12 +48,10 @@ func (*LoginLog) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case loginlog.FieldID, loginlog.FieldCreatedAt, loginlog.FieldUpdatedAt, loginlog.FieldLogID, loginlog.FieldUserID, loginlog.FieldStatus:
+		case loginlog.FieldID, loginlog.FieldCreatedAt, loginlog.FieldLogID, loginlog.FieldUserID, loginlog.FieldLoginTime:
 			values[i] = new(sql.NullInt64)
-		case loginlog.FieldUserName, loginlog.FieldIP, loginlog.FieldMessage, loginlog.FieldBrowser, loginlog.FieldOs, loginlog.FieldUserAgent, loginlog.FieldDevice, loginlog.FieldLocation:
+		case loginlog.FieldTenantCode, loginlog.FieldUserName, loginlog.FieldIP, loginlog.FieldMessage, loginlog.FieldUserAgent, loginlog.FieldBrowser, loginlog.FieldOs, loginlog.FieldDevice:
 			values[i] = new(sql.NullString)
-		case loginlog.FieldLoginTime:
-			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -84,13 +77,13 @@ func (ll *LoginLog) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				ll.CreatedAt = int(value.Int64)
+				ll.CreatedAt = value.Int64
 			}
-		case loginlog.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
+		case loginlog.FieldTenantCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tenant_code", values[i])
 			} else if value.Valid {
-				ll.UpdatedAt = int(value.Int64)
+				ll.TenantCode = value.String
 			}
 		case loginlog.FieldLogID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -116,17 +109,17 @@ func (ll *LoginLog) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				ll.IP = value.String
 			}
-		case loginlog.FieldStatus:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field status", values[i])
-			} else if value.Valid {
-				ll.Status = int(value.Int64)
-			}
 		case loginlog.FieldMessage:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field message", values[i])
 			} else if value.Valid {
 				ll.Message = value.String
+			}
+		case loginlog.FieldUserAgent:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field user_agent", values[i])
+			} else if value.Valid {
+				ll.UserAgent = value.String
 			}
 		case loginlog.FieldBrowser:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -140,29 +133,17 @@ func (ll *LoginLog) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				ll.Os = value.String
 			}
-		case loginlog.FieldUserAgent:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field user_agent", values[i])
-			} else if value.Valid {
-				ll.UserAgent = value.String
-			}
 		case loginlog.FieldDevice:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field device", values[i])
 			} else if value.Valid {
 				ll.Device = value.String
 			}
-		case loginlog.FieldLocation:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field location", values[i])
-			} else if value.Valid {
-				ll.Location = value.String
-			}
 		case loginlog.FieldLoginTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
+			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field login_time", values[i])
 			} else if value.Valid {
-				ll.LoginTime = value.Time
+				ll.LoginTime = value.Int64
 			}
 		default:
 			ll.selectValues.Set(columns[i], values[i])
@@ -203,8 +184,8 @@ func (ll *LoginLog) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(fmt.Sprintf("%v", ll.CreatedAt))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(fmt.Sprintf("%v", ll.UpdatedAt))
+	builder.WriteString("tenant_code=")
+	builder.WriteString(ll.TenantCode)
 	builder.WriteString(", ")
 	builder.WriteString("log_id=")
 	builder.WriteString(fmt.Sprintf("%v", ll.LogID))
@@ -218,11 +199,11 @@ func (ll *LoginLog) String() string {
 	builder.WriteString("ip=")
 	builder.WriteString(ll.IP)
 	builder.WriteString(", ")
-	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", ll.Status))
-	builder.WriteString(", ")
 	builder.WriteString("message=")
 	builder.WriteString(ll.Message)
+	builder.WriteString(", ")
+	builder.WriteString("user_agent=")
+	builder.WriteString(ll.UserAgent)
 	builder.WriteString(", ")
 	builder.WriteString("browser=")
 	builder.WriteString(ll.Browser)
@@ -230,17 +211,11 @@ func (ll *LoginLog) String() string {
 	builder.WriteString("os=")
 	builder.WriteString(ll.Os)
 	builder.WriteString(", ")
-	builder.WriteString("user_agent=")
-	builder.WriteString(ll.UserAgent)
-	builder.WriteString(", ")
 	builder.WriteString("device=")
 	builder.WriteString(ll.Device)
 	builder.WriteString(", ")
-	builder.WriteString("location=")
-	builder.WriteString(ll.Location)
-	builder.WriteString(", ")
 	builder.WriteString("login_time=")
-	builder.WriteString(ll.LoginTime.Format(time.ANSIC))
+	builder.WriteString(fmt.Sprintf("%v", ll.LoginTime))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -27,12 +27,11 @@ func main() {
 	// 配置log
 	c.LoadLogConf()
 
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf, rest.WithCors("*")) // TODO 部署的时候注意跨域问题解决
 	defer server.Stop()
 
 	// 注册全局中间件
 	server.Use(middleware.LoggerMiddleware)
-	server.Use(middleware.CorsMiddleware)
 
 	// 注册路由
 	ctx := svc.NewServiceContext(c)

@@ -3,10 +3,9 @@ package user
 import (
 	"context"
 
-	"admin_backend/app/admin/internal/repository/user_repo"
+	"admin_backend/app/admin/internal/repository/userRepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
-	"admin_backend/pkg/common"
 	"admin_backend/pkg/common/context_util"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated/predicate"
@@ -19,7 +18,7 @@ type ListUserLogic struct {
 	logx.Logger
 	ctx      context.Context
 	svcCtx   *svc.ServiceContext
-	userRepo *user_repo.UserRepo
+	userRepo *userRepo.UserRepo
 }
 
 // 获取用户列表
@@ -28,7 +27,7 @@ func NewListUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListUser
 		Logger:   logx.WithContext(ctx),
 		ctx:      ctx,
 		svcCtx:   svcCtx,
-		userRepo: user_repo.NewUserRepo(svcCtx.DB),
+		userRepo: userRepo.NewUserRepo(svcCtx.DB),
 	}
 }
 
@@ -46,8 +45,7 @@ func (l *ListUserLogic) ListUser(req *types.UserListReq) (resp *types.UserListRe
 		user.TenantCode(tenantCode),
 	}
 
-	offset := common.Offset(req.Current, req.PageSize)
-	list, total, err := l.userRepo.PageList(l.ctx, offset, req.PageSize, where)
+	list, total, err := l.userRepo.PageList(l.ctx, req.Current, req.PageSize, where)
 	if err != nil {
 		l.Error("ListUser Logic PageList err:", err.Error())
 		return nil, xerr.NewErrCodeMsg(xerr.DbError, "list user page err.")

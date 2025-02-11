@@ -3,8 +3,9 @@
 package role
 
 import (
-	"entgo.io/ent/dialect/sql"
 	"admin_backend/pkg/ent/generated/predicate"
+
+	"entgo.io/ent/dialect/sql"
 )
 
 // ID filters vertices based on their ID field.

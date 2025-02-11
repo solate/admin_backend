@@ -3,6 +3,7 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/tenant"
 	"context"
 	"errors"
 	"fmt"
@@ -10,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"admin_backend/pkg/ent/generated/tenant"
 )
 
 // TenantCreate is the builder for creating a Tenant entity.

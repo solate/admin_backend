@@ -1,9 +1,10 @@
-package user_repo
+package userRepo
 
 import (
 	"context"
 	"time"
 
+	"admin_backend/pkg/common"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/ent/generated/user"
@@ -66,7 +67,8 @@ func (r *UserRepo) GetByUserName(ctx context.Context, userName string) (*generat
 	return r.db.User.Query().Where(user.UserName(userName)).Only(ctx)
 }
 
-func (r *UserRepo) PageList(ctx context.Context, offset, limit int, where []predicate.User) ([]*generated.User, int, error) {
+func (r *UserRepo) PageList(ctx context.Context, current, limit int, where []predicate.User) ([]*generated.User, int, error) {
+	offset := common.Offset(current, limit)
 	query := r.db.User.Query().Where(where...).Order(generated.Desc(user.FieldCreatedAt))
 
 	// 查询总数

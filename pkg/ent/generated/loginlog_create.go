@@ -3,15 +3,14 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/loginlog"
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"admin_backend/pkg/ent/generated/loginlog"
 )
 
 // LoginLogCreate is the builder for creating a LoginLog entity.
@@ -23,30 +22,22 @@ type LoginLogCreate struct {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (llc *LoginLogCreate) SetCreatedAt(i int) *LoginLogCreate {
+func (llc *LoginLogCreate) SetCreatedAt(i int64) *LoginLogCreate {
 	llc.mutation.SetCreatedAt(i)
 	return llc
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (llc *LoginLogCreate) SetNillableCreatedAt(i *int) *LoginLogCreate {
+func (llc *LoginLogCreate) SetNillableCreatedAt(i *int64) *LoginLogCreate {
 	if i != nil {
 		llc.SetCreatedAt(*i)
 	}
 	return llc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (llc *LoginLogCreate) SetUpdatedAt(i int) *LoginLogCreate {
-	llc.mutation.SetUpdatedAt(i)
-	return llc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (llc *LoginLogCreate) SetNillableUpdatedAt(i *int) *LoginLogCreate {
-	if i != nil {
-		llc.SetUpdatedAt(*i)
-	}
+// SetTenantCode sets the "tenant_code" field.
+func (llc *LoginLogCreate) SetTenantCode(s string) *LoginLogCreate {
+	llc.mutation.SetTenantCode(s)
 	return llc
 }
 
@@ -74,20 +65,6 @@ func (llc *LoginLogCreate) SetIP(s string) *LoginLogCreate {
 	return llc
 }
 
-// SetStatus sets the "status" field.
-func (llc *LoginLogCreate) SetStatus(i int) *LoginLogCreate {
-	llc.mutation.SetStatus(i)
-	return llc
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (llc *LoginLogCreate) SetNillableStatus(i *int) *LoginLogCreate {
-	if i != nil {
-		llc.SetStatus(*i)
-	}
-	return llc
-}
-
 // SetMessage sets the "message" field.
 func (llc *LoginLogCreate) SetMessage(s string) *LoginLogCreate {
 	llc.mutation.SetMessage(s)
@@ -98,6 +75,20 @@ func (llc *LoginLogCreate) SetMessage(s string) *LoginLogCreate {
 func (llc *LoginLogCreate) SetNillableMessage(s *string) *LoginLogCreate {
 	if s != nil {
 		llc.SetMessage(*s)
+	}
+	return llc
+}
+
+// SetUserAgent sets the "user_agent" field.
+func (llc *LoginLogCreate) SetUserAgent(s string) *LoginLogCreate {
+	llc.mutation.SetUserAgent(s)
+	return llc
+}
+
+// SetNillableUserAgent sets the "user_agent" field if the given value is not nil.
+func (llc *LoginLogCreate) SetNillableUserAgent(s *string) *LoginLogCreate {
+	if s != nil {
+		llc.SetUserAgent(*s)
 	}
 	return llc
 }
@@ -130,20 +121,6 @@ func (llc *LoginLogCreate) SetNillableOs(s *string) *LoginLogCreate {
 	return llc
 }
 
-// SetUserAgent sets the "user_agent" field.
-func (llc *LoginLogCreate) SetUserAgent(s string) *LoginLogCreate {
-	llc.mutation.SetUserAgent(s)
-	return llc
-}
-
-// SetNillableUserAgent sets the "user_agent" field if the given value is not nil.
-func (llc *LoginLogCreate) SetNillableUserAgent(s *string) *LoginLogCreate {
-	if s != nil {
-		llc.SetUserAgent(*s)
-	}
-	return llc
-}
-
 // SetDevice sets the "device" field.
 func (llc *LoginLogCreate) SetDevice(s string) *LoginLogCreate {
 	llc.mutation.SetDevice(s)
@@ -158,30 +135,16 @@ func (llc *LoginLogCreate) SetNillableDevice(s *string) *LoginLogCreate {
 	return llc
 }
 
-// SetLocation sets the "location" field.
-func (llc *LoginLogCreate) SetLocation(s string) *LoginLogCreate {
-	llc.mutation.SetLocation(s)
-	return llc
-}
-
-// SetNillableLocation sets the "location" field if the given value is not nil.
-func (llc *LoginLogCreate) SetNillableLocation(s *string) *LoginLogCreate {
-	if s != nil {
-		llc.SetLocation(*s)
-	}
-	return llc
-}
-
 // SetLoginTime sets the "login_time" field.
-func (llc *LoginLogCreate) SetLoginTime(t time.Time) *LoginLogCreate {
-	llc.mutation.SetLoginTime(t)
+func (llc *LoginLogCreate) SetLoginTime(i int64) *LoginLogCreate {
+	llc.mutation.SetLoginTime(i)
 	return llc
 }
 
 // SetNillableLoginTime sets the "login_time" field if the given value is not nil.
-func (llc *LoginLogCreate) SetNillableLoginTime(t *time.Time) *LoginLogCreate {
-	if t != nil {
-		llc.SetLoginTime(*t)
+func (llc *LoginLogCreate) SetNillableLoginTime(i *int64) *LoginLogCreate {
+	if i != nil {
+		llc.SetLoginTime(*i)
 	}
 	return llc
 }
@@ -225,14 +188,6 @@ func (llc *LoginLogCreate) defaults() {
 		v := loginlog.DefaultCreatedAt
 		llc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := llc.mutation.UpdatedAt(); !ok {
-		v := loginlog.DefaultUpdatedAt
-		llc.mutation.SetUpdatedAt(v)
-	}
-	if _, ok := llc.mutation.Status(); !ok {
-		v := loginlog.DefaultStatus
-		llc.mutation.SetStatus(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -240,8 +195,13 @@ func (llc *LoginLogCreate) check() error {
 	if _, ok := llc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "LoginLog.created_at"`)}
 	}
-	if _, ok := llc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "LoginLog.updated_at"`)}
+	if _, ok := llc.mutation.TenantCode(); !ok {
+		return &ValidationError{Name: "tenant_code", err: errors.New(`generated: missing required field "LoginLog.tenant_code"`)}
+	}
+	if v, ok := llc.mutation.TenantCode(); ok {
+		if err := loginlog.TenantCodeValidator(v); err != nil {
+			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "LoginLog.tenant_code": %w`, err)}
+		}
 	}
 	if _, ok := llc.mutation.LogID(); !ok {
 		return &ValidationError{Name: "log_id", err: errors.New(`generated: missing required field "LoginLog.log_id"`)}
@@ -264,9 +224,6 @@ func (llc *LoginLogCreate) check() error {
 		if err := loginlog.IPValidator(v); err != nil {
 			return &ValidationError{Name: "ip", err: fmt.Errorf(`generated: validator failed for field "LoginLog.ip": %w`, err)}
 		}
-	}
-	if _, ok := llc.mutation.Status(); !ok {
-		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "LoginLog.status"`)}
 	}
 	return nil
 }
@@ -296,12 +253,12 @@ func (llc *LoginLogCreate) createSpec() (*LoginLog, *sqlgraph.CreateSpec) {
 	)
 	_spec.OnConflict = llc.conflict
 	if value, ok := llc.mutation.CreatedAt(); ok {
-		_spec.SetField(loginlog.FieldCreatedAt, field.TypeInt, value)
+		_spec.SetField(loginlog.FieldCreatedAt, field.TypeInt64, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := llc.mutation.UpdatedAt(); ok {
-		_spec.SetField(loginlog.FieldUpdatedAt, field.TypeInt, value)
-		_node.UpdatedAt = value
+	if value, ok := llc.mutation.TenantCode(); ok {
+		_spec.SetField(loginlog.FieldTenantCode, field.TypeString, value)
+		_node.TenantCode = value
 	}
 	if value, ok := llc.mutation.LogID(); ok {
 		_spec.SetField(loginlog.FieldLogID, field.TypeUint64, value)
@@ -319,13 +276,13 @@ func (llc *LoginLogCreate) createSpec() (*LoginLog, *sqlgraph.CreateSpec) {
 		_spec.SetField(loginlog.FieldIP, field.TypeString, value)
 		_node.IP = value
 	}
-	if value, ok := llc.mutation.Status(); ok {
-		_spec.SetField(loginlog.FieldStatus, field.TypeInt, value)
-		_node.Status = value
-	}
 	if value, ok := llc.mutation.Message(); ok {
 		_spec.SetField(loginlog.FieldMessage, field.TypeString, value)
 		_node.Message = value
+	}
+	if value, ok := llc.mutation.UserAgent(); ok {
+		_spec.SetField(loginlog.FieldUserAgent, field.TypeString, value)
+		_node.UserAgent = value
 	}
 	if value, ok := llc.mutation.Browser(); ok {
 		_spec.SetField(loginlog.FieldBrowser, field.TypeString, value)
@@ -335,20 +292,12 @@ func (llc *LoginLogCreate) createSpec() (*LoginLog, *sqlgraph.CreateSpec) {
 		_spec.SetField(loginlog.FieldOs, field.TypeString, value)
 		_node.Os = value
 	}
-	if value, ok := llc.mutation.UserAgent(); ok {
-		_spec.SetField(loginlog.FieldUserAgent, field.TypeString, value)
-		_node.UserAgent = value
-	}
 	if value, ok := llc.mutation.Device(); ok {
 		_spec.SetField(loginlog.FieldDevice, field.TypeString, value)
 		_node.Device = value
 	}
-	if value, ok := llc.mutation.Location(); ok {
-		_spec.SetField(loginlog.FieldLocation, field.TypeString, value)
-		_node.Location = value
-	}
 	if value, ok := llc.mutation.LoginTime(); ok {
-		_spec.SetField(loginlog.FieldLoginTime, field.TypeTime, value)
+		_spec.SetField(loginlog.FieldLoginTime, field.TypeInt64, value)
 		_node.LoginTime = value
 	}
 	return _node, _spec
@@ -403,21 +352,15 @@ type (
 	}
 )
 
-// SetUpdatedAt sets the "updated_at" field.
-func (u *LoginLogUpsert) SetUpdatedAt(v int) *LoginLogUpsert {
-	u.Set(loginlog.FieldUpdatedAt, v)
+// SetTenantCode sets the "tenant_code" field.
+func (u *LoginLogUpsert) SetTenantCode(v string) *LoginLogUpsert {
+	u.Set(loginlog.FieldTenantCode, v)
 	return u
 }
 
-// UpdateUpdatedAt sets the "updated_at" field to the value that was provided on create.
-func (u *LoginLogUpsert) UpdateUpdatedAt() *LoginLogUpsert {
-	u.SetExcluded(loginlog.FieldUpdatedAt)
-	return u
-}
-
-// AddUpdatedAt adds v to the "updated_at" field.
-func (u *LoginLogUpsert) AddUpdatedAt(v int) *LoginLogUpsert {
-	u.Add(loginlog.FieldUpdatedAt, v)
+// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
+func (u *LoginLogUpsert) UpdateTenantCode() *LoginLogUpsert {
+	u.SetExcluded(loginlog.FieldTenantCode)
 	return u
 }
 
@@ -463,24 +406,6 @@ func (u *LoginLogUpsert) UpdateIP() *LoginLogUpsert {
 	return u
 }
 
-// SetStatus sets the "status" field.
-func (u *LoginLogUpsert) SetStatus(v int) *LoginLogUpsert {
-	u.Set(loginlog.FieldStatus, v)
-	return u
-}
-
-// UpdateStatus sets the "status" field to the value that was provided on create.
-func (u *LoginLogUpsert) UpdateStatus() *LoginLogUpsert {
-	u.SetExcluded(loginlog.FieldStatus)
-	return u
-}
-
-// AddStatus adds v to the "status" field.
-func (u *LoginLogUpsert) AddStatus(v int) *LoginLogUpsert {
-	u.Add(loginlog.FieldStatus, v)
-	return u
-}
-
 // SetMessage sets the "message" field.
 func (u *LoginLogUpsert) SetMessage(v string) *LoginLogUpsert {
 	u.Set(loginlog.FieldMessage, v)
@@ -496,6 +421,24 @@ func (u *LoginLogUpsert) UpdateMessage() *LoginLogUpsert {
 // ClearMessage clears the value of the "message" field.
 func (u *LoginLogUpsert) ClearMessage() *LoginLogUpsert {
 	u.SetNull(loginlog.FieldMessage)
+	return u
+}
+
+// SetUserAgent sets the "user_agent" field.
+func (u *LoginLogUpsert) SetUserAgent(v string) *LoginLogUpsert {
+	u.Set(loginlog.FieldUserAgent, v)
+	return u
+}
+
+// UpdateUserAgent sets the "user_agent" field to the value that was provided on create.
+func (u *LoginLogUpsert) UpdateUserAgent() *LoginLogUpsert {
+	u.SetExcluded(loginlog.FieldUserAgent)
+	return u
+}
+
+// ClearUserAgent clears the value of the "user_agent" field.
+func (u *LoginLogUpsert) ClearUserAgent() *LoginLogUpsert {
+	u.SetNull(loginlog.FieldUserAgent)
 	return u
 }
 
@@ -535,24 +478,6 @@ func (u *LoginLogUpsert) ClearOs() *LoginLogUpsert {
 	return u
 }
 
-// SetUserAgent sets the "user_agent" field.
-func (u *LoginLogUpsert) SetUserAgent(v string) *LoginLogUpsert {
-	u.Set(loginlog.FieldUserAgent, v)
-	return u
-}
-
-// UpdateUserAgent sets the "user_agent" field to the value that was provided on create.
-func (u *LoginLogUpsert) UpdateUserAgent() *LoginLogUpsert {
-	u.SetExcluded(loginlog.FieldUserAgent)
-	return u
-}
-
-// ClearUserAgent clears the value of the "user_agent" field.
-func (u *LoginLogUpsert) ClearUserAgent() *LoginLogUpsert {
-	u.SetNull(loginlog.FieldUserAgent)
-	return u
-}
-
 // SetDevice sets the "device" field.
 func (u *LoginLogUpsert) SetDevice(v string) *LoginLogUpsert {
 	u.Set(loginlog.FieldDevice, v)
@@ -571,26 +496,8 @@ func (u *LoginLogUpsert) ClearDevice() *LoginLogUpsert {
 	return u
 }
 
-// SetLocation sets the "location" field.
-func (u *LoginLogUpsert) SetLocation(v string) *LoginLogUpsert {
-	u.Set(loginlog.FieldLocation, v)
-	return u
-}
-
-// UpdateLocation sets the "location" field to the value that was provided on create.
-func (u *LoginLogUpsert) UpdateLocation() *LoginLogUpsert {
-	u.SetExcluded(loginlog.FieldLocation)
-	return u
-}
-
-// ClearLocation clears the value of the "location" field.
-func (u *LoginLogUpsert) ClearLocation() *LoginLogUpsert {
-	u.SetNull(loginlog.FieldLocation)
-	return u
-}
-
 // SetLoginTime sets the "login_time" field.
-func (u *LoginLogUpsert) SetLoginTime(v time.Time) *LoginLogUpsert {
+func (u *LoginLogUpsert) SetLoginTime(v int64) *LoginLogUpsert {
 	u.Set(loginlog.FieldLoginTime, v)
 	return u
 }
@@ -598,6 +505,12 @@ func (u *LoginLogUpsert) SetLoginTime(v time.Time) *LoginLogUpsert {
 // UpdateLoginTime sets the "login_time" field to the value that was provided on create.
 func (u *LoginLogUpsert) UpdateLoginTime() *LoginLogUpsert {
 	u.SetExcluded(loginlog.FieldLoginTime)
+	return u
+}
+
+// AddLoginTime adds v to the "login_time" field.
+func (u *LoginLogUpsert) AddLoginTime(v int64) *LoginLogUpsert {
+	u.Add(loginlog.FieldLoginTime, v)
 	return u
 }
 
@@ -655,24 +568,17 @@ func (u *LoginLogUpsertOne) Update(set func(*LoginLogUpsert)) *LoginLogUpsertOne
 	return u
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (u *LoginLogUpsertOne) SetUpdatedAt(v int) *LoginLogUpsertOne {
+// SetTenantCode sets the "tenant_code" field.
+func (u *LoginLogUpsertOne) SetTenantCode(v string) *LoginLogUpsertOne {
 	return u.Update(func(s *LoginLogUpsert) {
-		s.SetUpdatedAt(v)
+		s.SetTenantCode(v)
 	})
 }
 
-// AddUpdatedAt adds v to the "updated_at" field.
-func (u *LoginLogUpsertOne) AddUpdatedAt(v int) *LoginLogUpsertOne {
+// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
+func (u *LoginLogUpsertOne) UpdateTenantCode() *LoginLogUpsertOne {
 	return u.Update(func(s *LoginLogUpsert) {
-		s.AddUpdatedAt(v)
-	})
-}
-
-// UpdateUpdatedAt sets the "updated_at" field to the value that was provided on create.
-func (u *LoginLogUpsertOne) UpdateUpdatedAt() *LoginLogUpsertOne {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.UpdateUpdatedAt()
+		s.UpdateTenantCode()
 	})
 }
 
@@ -725,27 +631,6 @@ func (u *LoginLogUpsertOne) UpdateIP() *LoginLogUpsertOne {
 	})
 }
 
-// SetStatus sets the "status" field.
-func (u *LoginLogUpsertOne) SetStatus(v int) *LoginLogUpsertOne {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.SetStatus(v)
-	})
-}
-
-// AddStatus adds v to the "status" field.
-func (u *LoginLogUpsertOne) AddStatus(v int) *LoginLogUpsertOne {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.AddStatus(v)
-	})
-}
-
-// UpdateStatus sets the "status" field to the value that was provided on create.
-func (u *LoginLogUpsertOne) UpdateStatus() *LoginLogUpsertOne {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.UpdateStatus()
-	})
-}
-
 // SetMessage sets the "message" field.
 func (u *LoginLogUpsertOne) SetMessage(v string) *LoginLogUpsertOne {
 	return u.Update(func(s *LoginLogUpsert) {
@@ -764,6 +649,27 @@ func (u *LoginLogUpsertOne) UpdateMessage() *LoginLogUpsertOne {
 func (u *LoginLogUpsertOne) ClearMessage() *LoginLogUpsertOne {
 	return u.Update(func(s *LoginLogUpsert) {
 		s.ClearMessage()
+	})
+}
+
+// SetUserAgent sets the "user_agent" field.
+func (u *LoginLogUpsertOne) SetUserAgent(v string) *LoginLogUpsertOne {
+	return u.Update(func(s *LoginLogUpsert) {
+		s.SetUserAgent(v)
+	})
+}
+
+// UpdateUserAgent sets the "user_agent" field to the value that was provided on create.
+func (u *LoginLogUpsertOne) UpdateUserAgent() *LoginLogUpsertOne {
+	return u.Update(func(s *LoginLogUpsert) {
+		s.UpdateUserAgent()
+	})
+}
+
+// ClearUserAgent clears the value of the "user_agent" field.
+func (u *LoginLogUpsertOne) ClearUserAgent() *LoginLogUpsertOne {
+	return u.Update(func(s *LoginLogUpsert) {
+		s.ClearUserAgent()
 	})
 }
 
@@ -809,27 +715,6 @@ func (u *LoginLogUpsertOne) ClearOs() *LoginLogUpsertOne {
 	})
 }
 
-// SetUserAgent sets the "user_agent" field.
-func (u *LoginLogUpsertOne) SetUserAgent(v string) *LoginLogUpsertOne {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.SetUserAgent(v)
-	})
-}
-
-// UpdateUserAgent sets the "user_agent" field to the value that was provided on create.
-func (u *LoginLogUpsertOne) UpdateUserAgent() *LoginLogUpsertOne {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.UpdateUserAgent()
-	})
-}
-
-// ClearUserAgent clears the value of the "user_agent" field.
-func (u *LoginLogUpsertOne) ClearUserAgent() *LoginLogUpsertOne {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.ClearUserAgent()
-	})
-}
-
 // SetDevice sets the "device" field.
 func (u *LoginLogUpsertOne) SetDevice(v string) *LoginLogUpsertOne {
 	return u.Update(func(s *LoginLogUpsert) {
@@ -851,31 +736,17 @@ func (u *LoginLogUpsertOne) ClearDevice() *LoginLogUpsertOne {
 	})
 }
 
-// SetLocation sets the "location" field.
-func (u *LoginLogUpsertOne) SetLocation(v string) *LoginLogUpsertOne {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.SetLocation(v)
-	})
-}
-
-// UpdateLocation sets the "location" field to the value that was provided on create.
-func (u *LoginLogUpsertOne) UpdateLocation() *LoginLogUpsertOne {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.UpdateLocation()
-	})
-}
-
-// ClearLocation clears the value of the "location" field.
-func (u *LoginLogUpsertOne) ClearLocation() *LoginLogUpsertOne {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.ClearLocation()
-	})
-}
-
 // SetLoginTime sets the "login_time" field.
-func (u *LoginLogUpsertOne) SetLoginTime(v time.Time) *LoginLogUpsertOne {
+func (u *LoginLogUpsertOne) SetLoginTime(v int64) *LoginLogUpsertOne {
 	return u.Update(func(s *LoginLogUpsert) {
 		s.SetLoginTime(v)
+	})
+}
+
+// AddLoginTime adds v to the "login_time" field.
+func (u *LoginLogUpsertOne) AddLoginTime(v int64) *LoginLogUpsertOne {
+	return u.Update(func(s *LoginLogUpsert) {
+		s.AddLoginTime(v)
 	})
 }
 
@@ -1107,24 +978,17 @@ func (u *LoginLogUpsertBulk) Update(set func(*LoginLogUpsert)) *LoginLogUpsertBu
 	return u
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (u *LoginLogUpsertBulk) SetUpdatedAt(v int) *LoginLogUpsertBulk {
+// SetTenantCode sets the "tenant_code" field.
+func (u *LoginLogUpsertBulk) SetTenantCode(v string) *LoginLogUpsertBulk {
 	return u.Update(func(s *LoginLogUpsert) {
-		s.SetUpdatedAt(v)
+		s.SetTenantCode(v)
 	})
 }
 
-// AddUpdatedAt adds v to the "updated_at" field.
-func (u *LoginLogUpsertBulk) AddUpdatedAt(v int) *LoginLogUpsertBulk {
+// UpdateTenantCode sets the "tenant_code" field to the value that was provided on create.
+func (u *LoginLogUpsertBulk) UpdateTenantCode() *LoginLogUpsertBulk {
 	return u.Update(func(s *LoginLogUpsert) {
-		s.AddUpdatedAt(v)
-	})
-}
-
-// UpdateUpdatedAt sets the "updated_at" field to the value that was provided on create.
-func (u *LoginLogUpsertBulk) UpdateUpdatedAt() *LoginLogUpsertBulk {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.UpdateUpdatedAt()
+		s.UpdateTenantCode()
 	})
 }
 
@@ -1177,27 +1041,6 @@ func (u *LoginLogUpsertBulk) UpdateIP() *LoginLogUpsertBulk {
 	})
 }
 
-// SetStatus sets the "status" field.
-func (u *LoginLogUpsertBulk) SetStatus(v int) *LoginLogUpsertBulk {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.SetStatus(v)
-	})
-}
-
-// AddStatus adds v to the "status" field.
-func (u *LoginLogUpsertBulk) AddStatus(v int) *LoginLogUpsertBulk {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.AddStatus(v)
-	})
-}
-
-// UpdateStatus sets the "status" field to the value that was provided on create.
-func (u *LoginLogUpsertBulk) UpdateStatus() *LoginLogUpsertBulk {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.UpdateStatus()
-	})
-}
-
 // SetMessage sets the "message" field.
 func (u *LoginLogUpsertBulk) SetMessage(v string) *LoginLogUpsertBulk {
 	return u.Update(func(s *LoginLogUpsert) {
@@ -1216,6 +1059,27 @@ func (u *LoginLogUpsertBulk) UpdateMessage() *LoginLogUpsertBulk {
 func (u *LoginLogUpsertBulk) ClearMessage() *LoginLogUpsertBulk {
 	return u.Update(func(s *LoginLogUpsert) {
 		s.ClearMessage()
+	})
+}
+
+// SetUserAgent sets the "user_agent" field.
+func (u *LoginLogUpsertBulk) SetUserAgent(v string) *LoginLogUpsertBulk {
+	return u.Update(func(s *LoginLogUpsert) {
+		s.SetUserAgent(v)
+	})
+}
+
+// UpdateUserAgent sets the "user_agent" field to the value that was provided on create.
+func (u *LoginLogUpsertBulk) UpdateUserAgent() *LoginLogUpsertBulk {
+	return u.Update(func(s *LoginLogUpsert) {
+		s.UpdateUserAgent()
+	})
+}
+
+// ClearUserAgent clears the value of the "user_agent" field.
+func (u *LoginLogUpsertBulk) ClearUserAgent() *LoginLogUpsertBulk {
+	return u.Update(func(s *LoginLogUpsert) {
+		s.ClearUserAgent()
 	})
 }
 
@@ -1261,27 +1125,6 @@ func (u *LoginLogUpsertBulk) ClearOs() *LoginLogUpsertBulk {
 	})
 }
 
-// SetUserAgent sets the "user_agent" field.
-func (u *LoginLogUpsertBulk) SetUserAgent(v string) *LoginLogUpsertBulk {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.SetUserAgent(v)
-	})
-}
-
-// UpdateUserAgent sets the "user_agent" field to the value that was provided on create.
-func (u *LoginLogUpsertBulk) UpdateUserAgent() *LoginLogUpsertBulk {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.UpdateUserAgent()
-	})
-}
-
-// ClearUserAgent clears the value of the "user_agent" field.
-func (u *LoginLogUpsertBulk) ClearUserAgent() *LoginLogUpsertBulk {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.ClearUserAgent()
-	})
-}
-
 // SetDevice sets the "device" field.
 func (u *LoginLogUpsertBulk) SetDevice(v string) *LoginLogUpsertBulk {
 	return u.Update(func(s *LoginLogUpsert) {
@@ -1303,31 +1146,17 @@ func (u *LoginLogUpsertBulk) ClearDevice() *LoginLogUpsertBulk {
 	})
 }
 
-// SetLocation sets the "location" field.
-func (u *LoginLogUpsertBulk) SetLocation(v string) *LoginLogUpsertBulk {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.SetLocation(v)
-	})
-}
-
-// UpdateLocation sets the "location" field to the value that was provided on create.
-func (u *LoginLogUpsertBulk) UpdateLocation() *LoginLogUpsertBulk {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.UpdateLocation()
-	})
-}
-
-// ClearLocation clears the value of the "location" field.
-func (u *LoginLogUpsertBulk) ClearLocation() *LoginLogUpsertBulk {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.ClearLocation()
-	})
-}
-
 // SetLoginTime sets the "login_time" field.
-func (u *LoginLogUpsertBulk) SetLoginTime(v time.Time) *LoginLogUpsertBulk {
+func (u *LoginLogUpsertBulk) SetLoginTime(v int64) *LoginLogUpsertBulk {
 	return u.Update(func(s *LoginLogUpsert) {
 		s.SetLoginTime(v)
+	})
+}
+
+// AddLoginTime adds v to the "login_time" field.
+func (u *LoginLogUpsertBulk) AddLoginTime(v int64) *LoginLogUpsertBulk {
+	return u.Update(func(s *LoginLogUpsert) {
+		s.AddLoginTime(v)
 	})
 }
 

@@ -83,6 +83,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.AuthMiddleware},
 			[]rest.Route{
 				{
+					// 查询登录记录
+					Method:  http.MethodGet,
+					Path:    "/login-logs",
+					Handler: user.ListLoginLogHandler(serverCtx),
+				},
+				{
 					// 创建用户
 					Method:  http.MethodPost,
 					Path:    "/users",

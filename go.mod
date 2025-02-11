@@ -9,11 +9,12 @@ require (
 	github.com/go-playground/validator/v10 v10.24.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/lib/pq v1.10.9
+	github.com/mssola/user_agent v0.6.0
+	github.com/mssola/useragent v1.0.0
 	github.com/pkg/errors v0.9.1
 	github.com/sony/sonyflake v1.2.0
 	github.com/zeromicro/go-zero v1.8.0
 	golang.org/x/crypto v0.32.0
-	golang.org/x/exp v0.0.0-20250207012021-f9890c6ad9f3
 	google.golang.org/grpc v1.70.0
 )
 

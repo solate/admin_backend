@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"admin_backend/app/admin/internal/repository/userRepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
 	"admin_backend/pkg/common/xerr"
@@ -15,16 +16,18 @@ import (
 
 type UpdateUserLogic struct {
 	logx.Logger
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
+	ctx      context.Context
+	svcCtx   *svc.ServiceContext
+	userRepo *userRepo.UserRepo
 }
 
 // 更新用户
 func NewUpdateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateUserLogic {
 	return &UpdateUserLogic{
-		Logger: logx.WithContext(ctx),
-		ctx:    ctx,
-		svcCtx: svcCtx,
+		Logger:   logx.WithContext(ctx),
+		ctx:      ctx,
+		svcCtx:   svcCtx,
+		userRepo: userRepo.NewUserRepo(svcCtx.DB),
 	}
 }
 

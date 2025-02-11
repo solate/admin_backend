@@ -12,20 +12,18 @@ var (
 	// LoginLogColumns holds the columns for the "login_log" table.
 	LoginLogColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "created_at", Type: field.TypeInt, Default: 0},
-		{Name: "updated_at", Type: field.TypeInt, Default: 0},
+		{Name: "created_at", Type: field.TypeInt64, Default: 0},
+		{Name: "tenant_code", Type: field.TypeString},
 		{Name: "log_id", Type: field.TypeUint64, Unique: true},
 		{Name: "user_id", Type: field.TypeUint64},
 		{Name: "user_name", Type: field.TypeString},
 		{Name: "ip", Type: field.TypeString},
-		{Name: "status", Type: field.TypeInt, Default: 1},
 		{Name: "message", Type: field.TypeString, Nullable: true},
+		{Name: "user_agent", Type: field.TypeString, Nullable: true},
 		{Name: "browser", Type: field.TypeString, Nullable: true},
 		{Name: "os", Type: field.TypeString, Nullable: true},
-		{Name: "user_agent", Type: field.TypeString, Nullable: true},
 		{Name: "device", Type: field.TypeString, Nullable: true},
-		{Name: "location", Type: field.TypeString, Nullable: true},
-		{Name: "login_time", Type: field.TypeTime, Nullable: true},
+		{Name: "login_time", Type: field.TypeInt64, Nullable: true},
 	}
 	// LoginLogTable holds the schema information for the "login_log" table.
 	LoginLogTable = &schema.Table{
@@ -95,7 +93,6 @@ var (
 	SystemLogsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
-		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
 		{Name: "tenant_code", Type: field.TypeString, Comment: "租户编码"},
 		{Name: "module", Type: field.TypeString, Comment: "所属模块", Default: ""},
 		{Name: "action", Type: field.TypeString, Comment: "操作类型", Default: ""},
@@ -113,12 +110,12 @@ var (
 			{
 				Name:    "systemlog_user_id",
 				Unique:  false,
-				Columns: []*schema.Column{SystemLogsColumns[8]},
+				Columns: []*schema.Column{SystemLogsColumns[7]},
 			},
 			{
 				Name:    "systemlog_module",
 				Unique:  false,
-				Columns: []*schema.Column{SystemLogsColumns[4]},
+				Columns: []*schema.Column{SystemLogsColumns[3]},
 			},
 		},
 	}

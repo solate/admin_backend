@@ -3,10 +3,9 @@
 package hook
 
 import (
+	"admin_backend/pkg/ent/generated"
 	"context"
 	"fmt"
-
-	"admin_backend/pkg/ent/generated"
 )
 
 // The LoginLogFunc type is an adapter to allow the use of ordinary

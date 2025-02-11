@@ -3,16 +3,15 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/loginlog"
+	"admin_backend/pkg/ent/generated/predicate"
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"admin_backend/pkg/ent/generated/loginlog"
-	"admin_backend/pkg/ent/generated/predicate"
 )
 
 // LoginLogUpdate is the builder for updating LoginLog entities.
@@ -29,24 +28,17 @@ func (llu *LoginLogUpdate) Where(ps ...predicate.LoginLog) *LoginLogUpdate {
 	return llu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (llu *LoginLogUpdate) SetUpdatedAt(i int) *LoginLogUpdate {
-	llu.mutation.ResetUpdatedAt()
-	llu.mutation.SetUpdatedAt(i)
+// SetTenantCode sets the "tenant_code" field.
+func (llu *LoginLogUpdate) SetTenantCode(s string) *LoginLogUpdate {
+	llu.mutation.SetTenantCode(s)
 	return llu
 }
 
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (llu *LoginLogUpdate) SetNillableUpdatedAt(i *int) *LoginLogUpdate {
-	if i != nil {
-		llu.SetUpdatedAt(*i)
+// SetNillableTenantCode sets the "tenant_code" field if the given value is not nil.
+func (llu *LoginLogUpdate) SetNillableTenantCode(s *string) *LoginLogUpdate {
+	if s != nil {
+		llu.SetTenantCode(*s)
 	}
-	return llu
-}
-
-// AddUpdatedAt adds i to the "updated_at" field.
-func (llu *LoginLogUpdate) AddUpdatedAt(i int) *LoginLogUpdate {
-	llu.mutation.AddUpdatedAt(i)
 	return llu
 }
 
@@ -99,27 +91,6 @@ func (llu *LoginLogUpdate) SetNillableIP(s *string) *LoginLogUpdate {
 	return llu
 }
 
-// SetStatus sets the "status" field.
-func (llu *LoginLogUpdate) SetStatus(i int) *LoginLogUpdate {
-	llu.mutation.ResetStatus()
-	llu.mutation.SetStatus(i)
-	return llu
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (llu *LoginLogUpdate) SetNillableStatus(i *int) *LoginLogUpdate {
-	if i != nil {
-		llu.SetStatus(*i)
-	}
-	return llu
-}
-
-// AddStatus adds i to the "status" field.
-func (llu *LoginLogUpdate) AddStatus(i int) *LoginLogUpdate {
-	llu.mutation.AddStatus(i)
-	return llu
-}
-
 // SetMessage sets the "message" field.
 func (llu *LoginLogUpdate) SetMessage(s string) *LoginLogUpdate {
 	llu.mutation.SetMessage(s)
@@ -137,6 +108,26 @@ func (llu *LoginLogUpdate) SetNillableMessage(s *string) *LoginLogUpdate {
 // ClearMessage clears the value of the "message" field.
 func (llu *LoginLogUpdate) ClearMessage() *LoginLogUpdate {
 	llu.mutation.ClearMessage()
+	return llu
+}
+
+// SetUserAgent sets the "user_agent" field.
+func (llu *LoginLogUpdate) SetUserAgent(s string) *LoginLogUpdate {
+	llu.mutation.SetUserAgent(s)
+	return llu
+}
+
+// SetNillableUserAgent sets the "user_agent" field if the given value is not nil.
+func (llu *LoginLogUpdate) SetNillableUserAgent(s *string) *LoginLogUpdate {
+	if s != nil {
+		llu.SetUserAgent(*s)
+	}
+	return llu
+}
+
+// ClearUserAgent clears the value of the "user_agent" field.
+func (llu *LoginLogUpdate) ClearUserAgent() *LoginLogUpdate {
+	llu.mutation.ClearUserAgent()
 	return llu
 }
 
@@ -180,26 +171,6 @@ func (llu *LoginLogUpdate) ClearOs() *LoginLogUpdate {
 	return llu
 }
 
-// SetUserAgent sets the "user_agent" field.
-func (llu *LoginLogUpdate) SetUserAgent(s string) *LoginLogUpdate {
-	llu.mutation.SetUserAgent(s)
-	return llu
-}
-
-// SetNillableUserAgent sets the "user_agent" field if the given value is not nil.
-func (llu *LoginLogUpdate) SetNillableUserAgent(s *string) *LoginLogUpdate {
-	if s != nil {
-		llu.SetUserAgent(*s)
-	}
-	return llu
-}
-
-// ClearUserAgent clears the value of the "user_agent" field.
-func (llu *LoginLogUpdate) ClearUserAgent() *LoginLogUpdate {
-	llu.mutation.ClearUserAgent()
-	return llu
-}
-
 // SetDevice sets the "device" field.
 func (llu *LoginLogUpdate) SetDevice(s string) *LoginLogUpdate {
 	llu.mutation.SetDevice(s)
@@ -220,37 +191,24 @@ func (llu *LoginLogUpdate) ClearDevice() *LoginLogUpdate {
 	return llu
 }
 
-// SetLocation sets the "location" field.
-func (llu *LoginLogUpdate) SetLocation(s string) *LoginLogUpdate {
-	llu.mutation.SetLocation(s)
-	return llu
-}
-
-// SetNillableLocation sets the "location" field if the given value is not nil.
-func (llu *LoginLogUpdate) SetNillableLocation(s *string) *LoginLogUpdate {
-	if s != nil {
-		llu.SetLocation(*s)
-	}
-	return llu
-}
-
-// ClearLocation clears the value of the "location" field.
-func (llu *LoginLogUpdate) ClearLocation() *LoginLogUpdate {
-	llu.mutation.ClearLocation()
-	return llu
-}
-
 // SetLoginTime sets the "login_time" field.
-func (llu *LoginLogUpdate) SetLoginTime(t time.Time) *LoginLogUpdate {
-	llu.mutation.SetLoginTime(t)
+func (llu *LoginLogUpdate) SetLoginTime(i int64) *LoginLogUpdate {
+	llu.mutation.ResetLoginTime()
+	llu.mutation.SetLoginTime(i)
 	return llu
 }
 
 // SetNillableLoginTime sets the "login_time" field if the given value is not nil.
-func (llu *LoginLogUpdate) SetNillableLoginTime(t *time.Time) *LoginLogUpdate {
-	if t != nil {
-		llu.SetLoginTime(*t)
+func (llu *LoginLogUpdate) SetNillableLoginTime(i *int64) *LoginLogUpdate {
+	if i != nil {
+		llu.SetLoginTime(*i)
 	}
+	return llu
+}
+
+// AddLoginTime adds i to the "login_time" field.
+func (llu *LoginLogUpdate) AddLoginTime(i int64) *LoginLogUpdate {
+	llu.mutation.AddLoginTime(i)
 	return llu
 }
 
@@ -294,6 +252,11 @@ func (llu *LoginLogUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (llu *LoginLogUpdate) check() error {
+	if v, ok := llu.mutation.TenantCode(); ok {
+		if err := loginlog.TenantCodeValidator(v); err != nil {
+			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "LoginLog.tenant_code": %w`, err)}
+		}
+	}
 	if v, ok := llu.mutation.UserName(); ok {
 		if err := loginlog.UserNameValidator(v); err != nil {
 			return &ValidationError{Name: "user_name", err: fmt.Errorf(`generated: validator failed for field "LoginLog.user_name": %w`, err)}
@@ -325,11 +288,8 @@ func (llu *LoginLogUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := llu.mutation.UpdatedAt(); ok {
-		_spec.SetField(loginlog.FieldUpdatedAt, field.TypeInt, value)
-	}
-	if value, ok := llu.mutation.AddedUpdatedAt(); ok {
-		_spec.AddField(loginlog.FieldUpdatedAt, field.TypeInt, value)
+	if value, ok := llu.mutation.TenantCode(); ok {
+		_spec.SetField(loginlog.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := llu.mutation.UserID(); ok {
 		_spec.SetField(loginlog.FieldUserID, field.TypeUint64, value)
@@ -343,17 +303,17 @@ func (llu *LoginLogUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := llu.mutation.IP(); ok {
 		_spec.SetField(loginlog.FieldIP, field.TypeString, value)
 	}
-	if value, ok := llu.mutation.Status(); ok {
-		_spec.SetField(loginlog.FieldStatus, field.TypeInt, value)
-	}
-	if value, ok := llu.mutation.AddedStatus(); ok {
-		_spec.AddField(loginlog.FieldStatus, field.TypeInt, value)
-	}
 	if value, ok := llu.mutation.Message(); ok {
 		_spec.SetField(loginlog.FieldMessage, field.TypeString, value)
 	}
 	if llu.mutation.MessageCleared() {
 		_spec.ClearField(loginlog.FieldMessage, field.TypeString)
+	}
+	if value, ok := llu.mutation.UserAgent(); ok {
+		_spec.SetField(loginlog.FieldUserAgent, field.TypeString, value)
+	}
+	if llu.mutation.UserAgentCleared() {
+		_spec.ClearField(loginlog.FieldUserAgent, field.TypeString)
 	}
 	if value, ok := llu.mutation.Browser(); ok {
 		_spec.SetField(loginlog.FieldBrowser, field.TypeString, value)
@@ -367,29 +327,20 @@ func (llu *LoginLogUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if llu.mutation.OsCleared() {
 		_spec.ClearField(loginlog.FieldOs, field.TypeString)
 	}
-	if value, ok := llu.mutation.UserAgent(); ok {
-		_spec.SetField(loginlog.FieldUserAgent, field.TypeString, value)
-	}
-	if llu.mutation.UserAgentCleared() {
-		_spec.ClearField(loginlog.FieldUserAgent, field.TypeString)
-	}
 	if value, ok := llu.mutation.Device(); ok {
 		_spec.SetField(loginlog.FieldDevice, field.TypeString, value)
 	}
 	if llu.mutation.DeviceCleared() {
 		_spec.ClearField(loginlog.FieldDevice, field.TypeString)
 	}
-	if value, ok := llu.mutation.Location(); ok {
-		_spec.SetField(loginlog.FieldLocation, field.TypeString, value)
-	}
-	if llu.mutation.LocationCleared() {
-		_spec.ClearField(loginlog.FieldLocation, field.TypeString)
-	}
 	if value, ok := llu.mutation.LoginTime(); ok {
-		_spec.SetField(loginlog.FieldLoginTime, field.TypeTime, value)
+		_spec.SetField(loginlog.FieldLoginTime, field.TypeInt64, value)
+	}
+	if value, ok := llu.mutation.AddedLoginTime(); ok {
+		_spec.AddField(loginlog.FieldLoginTime, field.TypeInt64, value)
 	}
 	if llu.mutation.LoginTimeCleared() {
-		_spec.ClearField(loginlog.FieldLoginTime, field.TypeTime)
+		_spec.ClearField(loginlog.FieldLoginTime, field.TypeInt64)
 	}
 	_spec.AddModifiers(llu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, llu.driver, _spec); err != nil {
@@ -413,24 +364,17 @@ type LoginLogUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (lluo *LoginLogUpdateOne) SetUpdatedAt(i int) *LoginLogUpdateOne {
-	lluo.mutation.ResetUpdatedAt()
-	lluo.mutation.SetUpdatedAt(i)
+// SetTenantCode sets the "tenant_code" field.
+func (lluo *LoginLogUpdateOne) SetTenantCode(s string) *LoginLogUpdateOne {
+	lluo.mutation.SetTenantCode(s)
 	return lluo
 }
 
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (lluo *LoginLogUpdateOne) SetNillableUpdatedAt(i *int) *LoginLogUpdateOne {
-	if i != nil {
-		lluo.SetUpdatedAt(*i)
+// SetNillableTenantCode sets the "tenant_code" field if the given value is not nil.
+func (lluo *LoginLogUpdateOne) SetNillableTenantCode(s *string) *LoginLogUpdateOne {
+	if s != nil {
+		lluo.SetTenantCode(*s)
 	}
-	return lluo
-}
-
-// AddUpdatedAt adds i to the "updated_at" field.
-func (lluo *LoginLogUpdateOne) AddUpdatedAt(i int) *LoginLogUpdateOne {
-	lluo.mutation.AddUpdatedAt(i)
 	return lluo
 }
 
@@ -483,27 +427,6 @@ func (lluo *LoginLogUpdateOne) SetNillableIP(s *string) *LoginLogUpdateOne {
 	return lluo
 }
 
-// SetStatus sets the "status" field.
-func (lluo *LoginLogUpdateOne) SetStatus(i int) *LoginLogUpdateOne {
-	lluo.mutation.ResetStatus()
-	lluo.mutation.SetStatus(i)
-	return lluo
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (lluo *LoginLogUpdateOne) SetNillableStatus(i *int) *LoginLogUpdateOne {
-	if i != nil {
-		lluo.SetStatus(*i)
-	}
-	return lluo
-}
-
-// AddStatus adds i to the "status" field.
-func (lluo *LoginLogUpdateOne) AddStatus(i int) *LoginLogUpdateOne {
-	lluo.mutation.AddStatus(i)
-	return lluo
-}
-
 // SetMessage sets the "message" field.
 func (lluo *LoginLogUpdateOne) SetMessage(s string) *LoginLogUpdateOne {
 	lluo.mutation.SetMessage(s)
@@ -521,6 +444,26 @@ func (lluo *LoginLogUpdateOne) SetNillableMessage(s *string) *LoginLogUpdateOne 
 // ClearMessage clears the value of the "message" field.
 func (lluo *LoginLogUpdateOne) ClearMessage() *LoginLogUpdateOne {
 	lluo.mutation.ClearMessage()
+	return lluo
+}
+
+// SetUserAgent sets the "user_agent" field.
+func (lluo *LoginLogUpdateOne) SetUserAgent(s string) *LoginLogUpdateOne {
+	lluo.mutation.SetUserAgent(s)
+	return lluo
+}
+
+// SetNillableUserAgent sets the "user_agent" field if the given value is not nil.
+func (lluo *LoginLogUpdateOne) SetNillableUserAgent(s *string) *LoginLogUpdateOne {
+	if s != nil {
+		lluo.SetUserAgent(*s)
+	}
+	return lluo
+}
+
+// ClearUserAgent clears the value of the "user_agent" field.
+func (lluo *LoginLogUpdateOne) ClearUserAgent() *LoginLogUpdateOne {
+	lluo.mutation.ClearUserAgent()
 	return lluo
 }
 
@@ -564,26 +507,6 @@ func (lluo *LoginLogUpdateOne) ClearOs() *LoginLogUpdateOne {
 	return lluo
 }
 
-// SetUserAgent sets the "user_agent" field.
-func (lluo *LoginLogUpdateOne) SetUserAgent(s string) *LoginLogUpdateOne {
-	lluo.mutation.SetUserAgent(s)
-	return lluo
-}
-
-// SetNillableUserAgent sets the "user_agent" field if the given value is not nil.
-func (lluo *LoginLogUpdateOne) SetNillableUserAgent(s *string) *LoginLogUpdateOne {
-	if s != nil {
-		lluo.SetUserAgent(*s)
-	}
-	return lluo
-}
-
-// ClearUserAgent clears the value of the "user_agent" field.
-func (lluo *LoginLogUpdateOne) ClearUserAgent() *LoginLogUpdateOne {
-	lluo.mutation.ClearUserAgent()
-	return lluo
-}
-
 // SetDevice sets the "device" field.
 func (lluo *LoginLogUpdateOne) SetDevice(s string) *LoginLogUpdateOne {
 	lluo.mutation.SetDevice(s)
@@ -604,37 +527,24 @@ func (lluo *LoginLogUpdateOne) ClearDevice() *LoginLogUpdateOne {
 	return lluo
 }
 
-// SetLocation sets the "location" field.
-func (lluo *LoginLogUpdateOne) SetLocation(s string) *LoginLogUpdateOne {
-	lluo.mutation.SetLocation(s)
-	return lluo
-}
-
-// SetNillableLocation sets the "location" field if the given value is not nil.
-func (lluo *LoginLogUpdateOne) SetNillableLocation(s *string) *LoginLogUpdateOne {
-	if s != nil {
-		lluo.SetLocation(*s)
-	}
-	return lluo
-}
-
-// ClearLocation clears the value of the "location" field.
-func (lluo *LoginLogUpdateOne) ClearLocation() *LoginLogUpdateOne {
-	lluo.mutation.ClearLocation()
-	return lluo
-}
-
 // SetLoginTime sets the "login_time" field.
-func (lluo *LoginLogUpdateOne) SetLoginTime(t time.Time) *LoginLogUpdateOne {
-	lluo.mutation.SetLoginTime(t)
+func (lluo *LoginLogUpdateOne) SetLoginTime(i int64) *LoginLogUpdateOne {
+	lluo.mutation.ResetLoginTime()
+	lluo.mutation.SetLoginTime(i)
 	return lluo
 }
 
 // SetNillableLoginTime sets the "login_time" field if the given value is not nil.
-func (lluo *LoginLogUpdateOne) SetNillableLoginTime(t *time.Time) *LoginLogUpdateOne {
-	if t != nil {
-		lluo.SetLoginTime(*t)
+func (lluo *LoginLogUpdateOne) SetNillableLoginTime(i *int64) *LoginLogUpdateOne {
+	if i != nil {
+		lluo.SetLoginTime(*i)
 	}
+	return lluo
+}
+
+// AddLoginTime adds i to the "login_time" field.
+func (lluo *LoginLogUpdateOne) AddLoginTime(i int64) *LoginLogUpdateOne {
+	lluo.mutation.AddLoginTime(i)
 	return lluo
 }
 
@@ -691,6 +601,11 @@ func (lluo *LoginLogUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (lluo *LoginLogUpdateOne) check() error {
+	if v, ok := lluo.mutation.TenantCode(); ok {
+		if err := loginlog.TenantCodeValidator(v); err != nil {
+			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "LoginLog.tenant_code": %w`, err)}
+		}
+	}
 	if v, ok := lluo.mutation.UserName(); ok {
 		if err := loginlog.UserNameValidator(v); err != nil {
 			return &ValidationError{Name: "user_name", err: fmt.Errorf(`generated: validator failed for field "LoginLog.user_name": %w`, err)}
@@ -739,11 +654,8 @@ func (lluo *LoginLogUpdateOne) sqlSave(ctx context.Context) (_node *LoginLog, er
 			}
 		}
 	}
-	if value, ok := lluo.mutation.UpdatedAt(); ok {
-		_spec.SetField(loginlog.FieldUpdatedAt, field.TypeInt, value)
-	}
-	if value, ok := lluo.mutation.AddedUpdatedAt(); ok {
-		_spec.AddField(loginlog.FieldUpdatedAt, field.TypeInt, value)
+	if value, ok := lluo.mutation.TenantCode(); ok {
+		_spec.SetField(loginlog.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := lluo.mutation.UserID(); ok {
 		_spec.SetField(loginlog.FieldUserID, field.TypeUint64, value)
@@ -757,17 +669,17 @@ func (lluo *LoginLogUpdateOne) sqlSave(ctx context.Context) (_node *LoginLog, er
 	if value, ok := lluo.mutation.IP(); ok {
 		_spec.SetField(loginlog.FieldIP, field.TypeString, value)
 	}
-	if value, ok := lluo.mutation.Status(); ok {
-		_spec.SetField(loginlog.FieldStatus, field.TypeInt, value)
-	}
-	if value, ok := lluo.mutation.AddedStatus(); ok {
-		_spec.AddField(loginlog.FieldStatus, field.TypeInt, value)
-	}
 	if value, ok := lluo.mutation.Message(); ok {
 		_spec.SetField(loginlog.FieldMessage, field.TypeString, value)
 	}
 	if lluo.mutation.MessageCleared() {
 		_spec.ClearField(loginlog.FieldMessage, field.TypeString)
+	}
+	if value, ok := lluo.mutation.UserAgent(); ok {
+		_spec.SetField(loginlog.FieldUserAgent, field.TypeString, value)
+	}
+	if lluo.mutation.UserAgentCleared() {
+		_spec.ClearField(loginlog.FieldUserAgent, field.TypeString)
 	}
 	if value, ok := lluo.mutation.Browser(); ok {
 		_spec.SetField(loginlog.FieldBrowser, field.TypeString, value)
@@ -781,29 +693,20 @@ func (lluo *LoginLogUpdateOne) sqlSave(ctx context.Context) (_node *LoginLog, er
 	if lluo.mutation.OsCleared() {
 		_spec.ClearField(loginlog.FieldOs, field.TypeString)
 	}
-	if value, ok := lluo.mutation.UserAgent(); ok {
-		_spec.SetField(loginlog.FieldUserAgent, field.TypeString, value)
-	}
-	if lluo.mutation.UserAgentCleared() {
-		_spec.ClearField(loginlog.FieldUserAgent, field.TypeString)
-	}
 	if value, ok := lluo.mutation.Device(); ok {
 		_spec.SetField(loginlog.FieldDevice, field.TypeString, value)
 	}
 	if lluo.mutation.DeviceCleared() {
 		_spec.ClearField(loginlog.FieldDevice, field.TypeString)
 	}
-	if value, ok := lluo.mutation.Location(); ok {
-		_spec.SetField(loginlog.FieldLocation, field.TypeString, value)
-	}
-	if lluo.mutation.LocationCleared() {
-		_spec.ClearField(loginlog.FieldLocation, field.TypeString)
-	}
 	if value, ok := lluo.mutation.LoginTime(); ok {
-		_spec.SetField(loginlog.FieldLoginTime, field.TypeTime, value)
+		_spec.SetField(loginlog.FieldLoginTime, field.TypeInt64, value)
+	}
+	if value, ok := lluo.mutation.AddedLoginTime(); ok {
+		_spec.AddField(loginlog.FieldLoginTime, field.TypeInt64, value)
 	}
 	if lluo.mutation.LoginTimeCleared() {
-		_spec.ClearField(loginlog.FieldLoginTime, field.TypeTime)
+		_spec.ClearField(loginlog.FieldLoginTime, field.TypeInt64)
 	}
 	_spec.AddModifiers(lluo.modifiers...)
 	_node = &LoginLog{config: lluo.config}

@@ -3,6 +3,8 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/permission"
+	"admin_backend/pkg/ent/generated/predicate"
 	"context"
 	"errors"
 	"fmt"
@@ -10,8 +12,6 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"admin_backend/pkg/ent/generated/permission"
-	"admin_backend/pkg/ent/generated/predicate"
 )
 
 // PermissionUpdate is the builder for updating Permission entities.

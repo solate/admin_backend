@@ -23,22 +23,23 @@ func (LoginLog) Annotations() []schema.Annotation {
 
 func (LoginLog) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("created_at").Immutable().Default(0).Comment("创建时间"),
-		field.Int("updated_at").Default(0).Comment("修改时间"),
+		field.Int64("created_at").Immutable().Default(0).Comment("创建时间"),
+		// field.Int("updated_at").Default(0).Comment("修改时间"),
+		field.String("tenant_code").NotEmpty().Comment("租户编码"),
 
 		field.Uint64("log_id").Unique().Immutable().Comment("日志ID"),
 		field.Uint64("user_id").Comment("用户ID"),
 		field.String("user_name").NotEmpty().Comment("用户名"),
 		field.String("ip").NotEmpty().Comment("IP地址"),
-		field.Int("status").Default(1).Comment("状态: 1:成功, 2:失败"),
+		// field.Int("status").Default(1).Comment("状态: 1:成功, 2:失败"),
 		field.String("message").Optional().Comment("消息"),
 
+		field.String("user_agent").Optional().Comment("用户代理"),
 		field.String("browser").Optional().Comment("浏览器"),
 		field.String("os").Optional().Comment("操作系统"),
-		field.String("user_agent").Optional().Comment("用户代理"),
 		field.String("device").Optional().Comment("设备"),
-		field.String("location").Optional().Comment("位置, 归属地"),
-		field.Time("login_time").Optional().Comment("登录时间"),
+		// field.String("location").Optional().Comment("位置, 归属地"),
+		field.Int64("login_time").Optional().Comment("登录时间"),
 	}
 }
 

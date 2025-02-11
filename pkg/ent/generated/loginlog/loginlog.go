@@ -13,8 +13,8 @@ const (
 	FieldID = "id"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
-	FieldUpdatedAt = "updated_at"
+	// FieldTenantCode holds the string denoting the tenant_code field in the database.
+	FieldTenantCode = "tenant_code"
 	// FieldLogID holds the string denoting the log_id field in the database.
 	FieldLogID = "log_id"
 	// FieldUserID holds the string denoting the user_id field in the database.
@@ -23,20 +23,16 @@ const (
 	FieldUserName = "user_name"
 	// FieldIP holds the string denoting the ip field in the database.
 	FieldIP = "ip"
-	// FieldStatus holds the string denoting the status field in the database.
-	FieldStatus = "status"
 	// FieldMessage holds the string denoting the message field in the database.
 	FieldMessage = "message"
+	// FieldUserAgent holds the string denoting the user_agent field in the database.
+	FieldUserAgent = "user_agent"
 	// FieldBrowser holds the string denoting the browser field in the database.
 	FieldBrowser = "browser"
 	// FieldOs holds the string denoting the os field in the database.
 	FieldOs = "os"
-	// FieldUserAgent holds the string denoting the user_agent field in the database.
-	FieldUserAgent = "user_agent"
 	// FieldDevice holds the string denoting the device field in the database.
 	FieldDevice = "device"
-	// FieldLocation holds the string denoting the location field in the database.
-	FieldLocation = "location"
 	// FieldLoginTime holds the string denoting the login_time field in the database.
 	FieldLoginTime = "login_time"
 	// Table holds the table name of the loginlog in the database.
@@ -47,18 +43,16 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
-	FieldUpdatedAt,
+	FieldTenantCode,
 	FieldLogID,
 	FieldUserID,
 	FieldUserName,
 	FieldIP,
-	FieldStatus,
 	FieldMessage,
+	FieldUserAgent,
 	FieldBrowser,
 	FieldOs,
-	FieldUserAgent,
 	FieldDevice,
-	FieldLocation,
 	FieldLoginTime,
 }
 
@@ -74,15 +68,13 @@ func ValidColumn(column string) bool {
 
 var (
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
-	DefaultCreatedAt int
-	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
-	DefaultUpdatedAt int
+	DefaultCreatedAt int64
+	// TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
+	TenantCodeValidator func(string) error
 	// UserNameValidator is a validator for the "user_name" field. It is called by the builders before save.
 	UserNameValidator func(string) error
 	// IPValidator is a validator for the "ip" field. It is called by the builders before save.
 	IPValidator func(string) error
-	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int
 )
 
 // OrderOption defines the ordering options for the LoginLog queries.
@@ -98,9 +90,9 @@ func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updated_at field.
-func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
+// ByTenantCode orders the results by the tenant_code field.
+func ByTenantCode(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTenantCode, opts...).ToFunc()
 }
 
 // ByLogID orders the results by the log_id field.
@@ -123,14 +115,14 @@ func ByIP(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIP, opts...).ToFunc()
 }
 
-// ByStatus orders the results by the status field.
-func ByStatus(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldStatus, opts...).ToFunc()
-}
-
 // ByMessage orders the results by the message field.
 func ByMessage(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMessage, opts...).ToFunc()
+}
+
+// ByUserAgent orders the results by the user_agent field.
+func ByUserAgent(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUserAgent, opts...).ToFunc()
 }
 
 // ByBrowser orders the results by the browser field.
@@ -143,19 +135,9 @@ func ByOs(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldOs, opts...).ToFunc()
 }
 
-// ByUserAgent orders the results by the user_agent field.
-func ByUserAgent(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUserAgent, opts...).ToFunc()
-}
-
 // ByDevice orders the results by the device field.
 func ByDevice(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDevice, opts...).ToFunc()
-}
-
-// ByLocation orders the results by the location field.
-func ByLocation(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldLocation, opts...).ToFunc()
 }
 
 // ByLoginTime orders the results by the login_time field.

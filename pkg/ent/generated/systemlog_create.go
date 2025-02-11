@@ -3,6 +3,7 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/systemlog"
 	"context"
 	"errors"
 	"fmt"
@@ -10,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"admin_backend/pkg/ent/generated/systemlog"
 )
 
 // SystemLogCreate is the builder for creating a SystemLog entity.
@@ -31,20 +31,6 @@ func (slc *SystemLogCreate) SetCreatedAt(i int64) *SystemLogCreate {
 func (slc *SystemLogCreate) SetNillableCreatedAt(i *int64) *SystemLogCreate {
 	if i != nil {
 		slc.SetCreatedAt(*i)
-	}
-	return slc
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (slc *SystemLogCreate) SetUpdatedAt(i int64) *SystemLogCreate {
-	slc.mutation.SetUpdatedAt(i)
-	return slc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (slc *SystemLogCreate) SetNillableUpdatedAt(i *int64) *SystemLogCreate {
-	if i != nil {
-		slc.SetUpdatedAt(*i)
 	}
 	return slc
 }
@@ -164,10 +150,6 @@ func (slc *SystemLogCreate) defaults() {
 		v := systemlog.DefaultCreatedAt
 		slc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := slc.mutation.UpdatedAt(); !ok {
-		v := systemlog.DefaultUpdatedAt
-		slc.mutation.SetUpdatedAt(v)
-	}
 	if _, ok := slc.mutation.Module(); !ok {
 		v := systemlog.DefaultModule
 		slc.mutation.SetModule(v)
@@ -194,9 +176,6 @@ func (slc *SystemLogCreate) defaults() {
 func (slc *SystemLogCreate) check() error {
 	if _, ok := slc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "SystemLog.created_at"`)}
-	}
-	if _, ok := slc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "SystemLog.updated_at"`)}
 	}
 	if _, ok := slc.mutation.TenantCode(); !ok {
 		return &ValidationError{Name: "tenant_code", err: errors.New(`generated: missing required field "SystemLog.tenant_code"`)}
@@ -251,10 +230,6 @@ func (slc *SystemLogCreate) createSpec() (*SystemLog, *sqlgraph.CreateSpec) {
 	if value, ok := slc.mutation.CreatedAt(); ok {
 		_spec.SetField(systemlog.FieldCreatedAt, field.TypeInt64, value)
 		_node.CreatedAt = value
-	}
-	if value, ok := slc.mutation.UpdatedAt(); ok {
-		_spec.SetField(systemlog.FieldUpdatedAt, field.TypeInt64, value)
-		_node.UpdatedAt = value
 	}
 	if value, ok := slc.mutation.TenantCode(); ok {
 		_spec.SetField(systemlog.FieldTenantCode, field.TypeString, value)
@@ -331,24 +306,6 @@ type (
 		*sql.UpdateSet
 	}
 )
-
-// SetUpdatedAt sets the "updated_at" field.
-func (u *SystemLogUpsert) SetUpdatedAt(v int64) *SystemLogUpsert {
-	u.Set(systemlog.FieldUpdatedAt, v)
-	return u
-}
-
-// UpdateUpdatedAt sets the "updated_at" field to the value that was provided on create.
-func (u *SystemLogUpsert) UpdateUpdatedAt() *SystemLogUpsert {
-	u.SetExcluded(systemlog.FieldUpdatedAt)
-	return u
-}
-
-// AddUpdatedAt adds v to the "updated_at" field.
-func (u *SystemLogUpsert) AddUpdatedAt(v int64) *SystemLogUpsert {
-	u.Add(systemlog.FieldUpdatedAt, v)
-	return u
-}
 
 // SetTenantCode sets the "tenant_code" field.
 func (u *SystemLogUpsert) SetTenantCode(v string) *SystemLogUpsert {
@@ -471,27 +428,6 @@ func (u *SystemLogUpsertOne) Update(set func(*SystemLogUpsert)) *SystemLogUpsert
 		set(&SystemLogUpsert{UpdateSet: update})
 	}))
 	return u
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (u *SystemLogUpsertOne) SetUpdatedAt(v int64) *SystemLogUpsertOne {
-	return u.Update(func(s *SystemLogUpsert) {
-		s.SetUpdatedAt(v)
-	})
-}
-
-// AddUpdatedAt adds v to the "updated_at" field.
-func (u *SystemLogUpsertOne) AddUpdatedAt(v int64) *SystemLogUpsertOne {
-	return u.Update(func(s *SystemLogUpsert) {
-		s.AddUpdatedAt(v)
-	})
-}
-
-// UpdateUpdatedAt sets the "updated_at" field to the value that was provided on create.
-func (u *SystemLogUpsertOne) UpdateUpdatedAt() *SystemLogUpsertOne {
-	return u.Update(func(s *SystemLogUpsert) {
-		s.UpdateUpdatedAt()
-	})
 }
 
 // SetTenantCode sets the "tenant_code" field.
@@ -794,27 +730,6 @@ func (u *SystemLogUpsertBulk) Update(set func(*SystemLogUpsert)) *SystemLogUpser
 		set(&SystemLogUpsert{UpdateSet: update})
 	}))
 	return u
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (u *SystemLogUpsertBulk) SetUpdatedAt(v int64) *SystemLogUpsertBulk {
-	return u.Update(func(s *SystemLogUpsert) {
-		s.SetUpdatedAt(v)
-	})
-}
-
-// AddUpdatedAt adds v to the "updated_at" field.
-func (u *SystemLogUpsertBulk) AddUpdatedAt(v int64) *SystemLogUpsertBulk {
-	return u.Update(func(s *SystemLogUpsert) {
-		s.AddUpdatedAt(v)
-	})
-}
-
-// UpdateUpdatedAt sets the "updated_at" field to the value that was provided on create.
-func (u *SystemLogUpsertBulk) UpdateUpdatedAt() *SystemLogUpsertBulk {
-	return u.Update(func(s *SystemLogUpsert) {
-		s.UpdateUpdatedAt()
-	})
 }
 
 // SetTenantCode sets the "tenant_code" field.

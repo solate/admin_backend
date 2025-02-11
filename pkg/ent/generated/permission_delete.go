@@ -3,13 +3,13 @@
 package generated
 
 import (
+	"admin_backend/pkg/ent/generated/permission"
+	"admin_backend/pkg/ent/generated/predicate"
 	"context"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"admin_backend/pkg/ent/generated/permission"
-	"admin_backend/pkg/ent/generated/predicate"
 )
 
 // PermissionDelete is the builder for deleting a Permission entity.

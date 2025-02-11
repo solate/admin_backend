@@ -25,7 +25,7 @@ func (SystemLog) Annotations() []schema.Annotation {
 func (SystemLog) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int64("created_at").Immutable().Default(0).Comment("创建时间"),
-		field.Int64("updated_at").Default(0).Comment("修改时间"),
+		// field.Int64("updated_at").Default(0).Comment("修改时间"),
 		field.String("tenant_code").NotEmpty().Comment("租户编码"),
 
 		field.String("module").Default("").Comment("所属模块"),

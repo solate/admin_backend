@@ -3,8 +3,9 @@
 package systemlog
 
 import (
-	"entgo.io/ent/dialect/sql"
 	"admin_backend/pkg/ent/generated/predicate"
+
+	"entgo.io/ent/dialect/sql"
 )
 
 // ID filters vertices based on their ID field.
@@ -55,11 +56,6 @@ func IDLTE(id int) predicate.SystemLog {
 // CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v int64) predicate.SystemLog {
 	return predicate.SystemLog(sql.FieldEQ(FieldCreatedAt, v))
-}
-
-// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
-func UpdatedAt(v int64) predicate.SystemLog {
-	return predicate.SystemLog(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
 // TenantCode applies equality check predicate on the "tenant_code" field. It's identical to TenantCodeEQ.
@@ -130,46 +126,6 @@ func CreatedAtLT(v int64) predicate.SystemLog {
 // CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v int64) predicate.SystemLog {
 	return predicate.SystemLog(sql.FieldLTE(FieldCreatedAt, v))
-}
-
-// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
-func UpdatedAtEQ(v int64) predicate.SystemLog {
-	return predicate.SystemLog(sql.FieldEQ(FieldUpdatedAt, v))
-}
-
-// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
-func UpdatedAtNEQ(v int64) predicate.SystemLog {
-	return predicate.SystemLog(sql.FieldNEQ(FieldUpdatedAt, v))
-}
-
-// UpdatedAtIn applies the In predicate on the "updated_at" field.
-func UpdatedAtIn(vs ...int64) predicate.SystemLog {
-	return predicate.SystemLog(sql.FieldIn(FieldUpdatedAt, vs...))
-}
-
-// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
-func UpdatedAtNotIn(vs ...int64) predicate.SystemLog {
-	return predicate.SystemLog(sql.FieldNotIn(FieldUpdatedAt, vs...))
-}
-
-// UpdatedAtGT applies the GT predicate on the "updated_at" field.
-func UpdatedAtGT(v int64) predicate.SystemLog {
-	return predicate.SystemLog(sql.FieldGT(FieldUpdatedAt, v))
-}
-
-// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
-func UpdatedAtGTE(v int64) predicate.SystemLog {
-	return predicate.SystemLog(sql.FieldGTE(FieldUpdatedAt, v))
-}
-
-// UpdatedAtLT applies the LT predicate on the "updated_at" field.
-func UpdatedAtLT(v int64) predicate.SystemLog {
-	return predicate.SystemLog(sql.FieldLT(FieldUpdatedAt, v))
-}
-
-// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
-func UpdatedAtLTE(v int64) predicate.SystemLog {
-	return predicate.SystemLog(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
 // TenantCodeEQ applies the EQ predicate on the "tenant_code" field.

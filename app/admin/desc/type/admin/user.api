@@ -14,6 +14,7 @@ info (
 )
    
 type (
+    
 
     // 创建用户请求
     CreateUserReq {
@@ -38,7 +39,7 @@ type (
     UpdateUserReq {
         UserID   uint64   `path:"user_id"`
         Name     string   `json:"name,optional"`
-        Phone    string   `json:"phone,optional"`
+        // Phone    string   `json:"phone,optional"`
         Email    string   `json:"email,optional"`
         Status   int      `json:"status,optional"`
         Sex      int      `json:"sex,optional"`
@@ -81,6 +82,35 @@ type (
         Status    int    `json:"status"`        // 状态
         CreatedAt string `json:"created_at"`    // 创建时间
     }
+
+
+    // 登录记录查询请求
+    LoginLogListReq {
+        PageRequest
+        UserName    string `form:"user_name,optional"`    // 用户名
+        IP         string `form:"ip,optional"`           // 登录IP
+        Status     int    `form:"status,optional"`       // 登录状态
+        StartTime  string `form:"start_time,optional"`   // 开始时间
+        EndTime    string `form:"end_time,optional"`     // 结束时间
+    }
+
+    // 登录记录查询响应
+    LoginLogListResp {
+        Page *PageResponse  `json:"page"`              // 分页信息
+        List []*LoginLogInfo `json:"list"`            // 登录记录列表
+    }
+
+    // 登录记录信息
+    LoginLogInfo {
+        ID         uint64 `json:"id"`                 // 记录ID
+        UserID     uint64 `json:"user_id"`            // 用户ID
+        UserName   string `json:"user_name"`          // 用户名
+        IP         string `json:"ip"`                 // 登录IP
+        UserAgent  string `json:"user_agent"`         // 用户代理
+        Status     int    `json:"status"`             // 登录状态
+        Message    string `json:"message"`            // 状态信息
+        CreatedAt  string `json:"created_at"`         // 登录时间
+    }
 )
 
 @server (
@@ -108,4 +138,8 @@ service admin {
     @doc "获取用户详情"
     @handler GetUser
     get /users/:user_id (GetUserReq) returns (GetUserResp)
+
+    @doc "查询登录记录"
+    @handler ListLoginLog
+    get /login-logs (LoginLogListReq) returns (LoginLogListResp)
 }

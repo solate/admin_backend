@@ -9,8 +9,9 @@ import (
 	// required by schema hooks.
 	_ "admin_backend/pkg/ent/generated/runtime"
 
-	"entgo.io/ent/dialect/sql/schema"
 	"admin_backend/pkg/ent/generated/migrate"
+
+	"entgo.io/ent/dialect/sql/schema"
 )
 
 type (
