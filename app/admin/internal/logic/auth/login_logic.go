@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"admin_backend/app/admin/internal/repository/loginLogRepo"
-	"admin_backend/app/admin/internal/repository/userRepo"
+	"admin_backend/app/admin/internal/repository/login_log_repo"
+	"admin_backend/app/admin/internal/repository/user_repo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
 	"admin_backend/pkg/common/context_util"
@@ -24,8 +24,8 @@ type LoginLogic struct {
 	logx.Logger
 	ctx          context.Context
 	svcCtx       *svc.ServiceContext
-	userRepo     *userRepo.UserRepo
-	loginLogRepo *loginLogRepo.LoginLogRepo
+	userRepo     *user_repo.UserRepo
+	loginLogRepo *login_log_repo.LoginLogRepo
 }
 
 // 用户登录
@@ -34,8 +34,8 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 		Logger:       logx.WithContext(ctx),
 		ctx:          ctx,
 		svcCtx:       svcCtx,
-		userRepo:     userRepo.NewUserRepo(svcCtx.DB),
-		loginLogRepo: loginLogRepo.NewLoginLogRepo(svcCtx.DB),
+		userRepo:     user_repo.NewUserRepo(svcCtx.DB),
+		loginLogRepo: login_log_repo.NewLoginLogRepo(svcCtx.DB),
 	}
 }
 

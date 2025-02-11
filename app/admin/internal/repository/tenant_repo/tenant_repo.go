@@ -1,4 +1,4 @@
-package tenantRepo
+package tenant_repo
 
 import (
 	"context"

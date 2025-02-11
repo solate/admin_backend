@@ -3,7 +3,7 @@ package tenant
 import (
 	"context"
 
-	"admin_backend/app/admin/internal/repository/tenantRepo"
+	"admin_backend/app/admin/internal/repository/tenant_repo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
 	"admin_backend/pkg/common/xerr"
@@ -17,7 +17,7 @@ type CreateTenantLogic struct {
 	logx.Logger
 	ctx        context.Context
 	svcCtx     *svc.ServiceContext
-	tenantRepo *tenantRepo.TenantRepo
+	tenantRepo *tenant_repo.TenantRepo
 }
 
 // 创建租户
@@ -26,7 +26,7 @@ func NewCreateTenantLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Crea
 		Logger:     logx.WithContext(ctx),
 		ctx:        ctx,
 		svcCtx:     svcCtx,
-		tenantRepo: tenantRepo.NewTenantRepo(svcCtx.DB),
+		tenantRepo: tenant_repo.NewTenantRepo(svcCtx.DB),
 	}
 }
 

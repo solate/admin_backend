@@ -3,7 +3,7 @@ package tenant
 import (
 	"context"
 
-	"admin_backend/app/admin/internal/repository/tenantRepo"
+	"admin_backend/app/admin/internal/repository/tenant_repo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
 	"admin_backend/pkg/common/xerr"
@@ -15,7 +15,7 @@ type UpdateTenantLogic struct {
 	logx.Logger
 	ctx        context.Context
 	svcCtx     *svc.ServiceContext
-	tenantRepo *tenantRepo.TenantRepo
+	tenantRepo *tenant_repo.TenantRepo
 }
 
 // 更新租户
@@ -24,7 +24,7 @@ func NewUpdateTenantLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upda
 		Logger:     logx.WithContext(ctx),
 		ctx:        ctx,
 		svcCtx:     svcCtx,
-		tenantRepo: tenantRepo.NewTenantRepo(svcCtx.DB),
+		tenantRepo: tenant_repo.NewTenantRepo(svcCtx.DB),
 	}
 }
 

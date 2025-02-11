@@ -1,4 +1,4 @@
-package loginLogRepo
+package login_log_repo
 
 import (
 	"context"
