@@ -41,7 +41,12 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err error) {
 
-	// 1. 查找用户
+	// 1. 验证验证码
+	if !l.svcCtx.CaptchaManager.Verify(req.CaptchaId, req.Captcha) {
+		return nil, xerr.NewErrMsg("验证码错误或已过期")
+	}
+
+	// 2. 查找用户
 	user, err := l.userRepo.GetByUserName(l.ctx, req.UserName)
 	if err != nil {
 		l.Error("Login userRepo.GetByUserName err:", err.Error())
@@ -115,7 +120,6 @@ func (l *LoginLogic) addLoginLog(user *generated.User) error {
 	r := l.ctx.Value("request").(*http.Request)
 	// 获取客户端信息
 	clientInfo := userAgent.GetClientInfo(r)
-
 	log := &generated.LoginLog{
 		TenantCode: tenantCode,
 		LogID:      id,

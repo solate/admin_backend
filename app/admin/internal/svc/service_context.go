@@ -9,6 +9,7 @@ import (
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/migrate"
 	"admin_backend/pkg/utils/cache"
+	"admin_backend/pkg/utils/captcha"
 
 	"entgo.io/ent/dialect"
 	_ "github.com/lib/pq"
@@ -23,6 +24,7 @@ type ServiceContext struct {
 	Redis           *redis.Redis
 	AuthMiddleware  rest.Middleware
 	PermissionCache *cache.PermissionCache
+	CaptchaManager  *captcha.CaptchaManager
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -36,6 +38,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Redis:           initRedis(c),
 		AuthMiddleware:  middleware.NewAuthMiddleware(c).Handle,
 		PermissionCache: cache.NewPermissionCache(rdb),
+		CaptchaManager:  captcha.NewCaptchaManager(rdb),
 	}
 }
 

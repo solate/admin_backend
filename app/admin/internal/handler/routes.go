@@ -18,6 +18,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
+				// 获取验证码
+				Method:  http.MethodGet,
+				Path:    "/captcha",
+				Handler: auth.GetCaptchaHandler(serverCtx),
+			},
+			{
 				// 用户登录
 				Method:  http.MethodPost,
 				Path:    "/login",

@@ -3,6 +3,11 @@
 
 package types
 
+type CaptchaResp struct {
+	CaptchaId  string `json:"captcha_id"`  // 验证码ID
+	CaptchaUrl string `json:"captcha_url"` // 验证码图片（base64）
+}
+
 type CreateTenantReq struct {
 	Name        string `json:"name" validate:"required"`
 	Code        string `json:"code" validate:"required"`
@@ -95,8 +100,10 @@ type LoginLogListResp struct {
 }
 
 type LoginReq struct {
-	UserName string `json:"username" validate:"required"` // 用户名
-	Password string `json:"password" validate:"required"` // 密码
+	UserName  string `json:"username" validate:"required"`   // 用户名
+	Password  string `json:"password" validate:"required"`   // 密码
+	CaptchaId string `json:"captcha_id" validate:"required"` // 验证码ID
+	Captcha   string `json:"captcha" validate:"required"`    // 验证码
 }
 
 type LoginResp struct {
