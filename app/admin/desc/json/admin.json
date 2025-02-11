@@ -15,6 +15,23 @@
     "application/json"
   ],
   "paths": {
+    "/admin/api/v1/auth/captcha": {
+      "get": {
+        "summary": "获取验证码",
+        "operationId": "GetCaptcha",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CaptchaResp"
+            }
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
     "/admin/api/v1/auth/login": {
       "post": {
         "summary": "用户登录",
@@ -93,6 +110,82 @@
         ],
         "tags": [
           "auth"
+        ]
+      }
+    },
+    "/admin/api/v1/login-logs": {
+      "get": {
+        "summary": "查询登录记录",
+        "operationId": "ListLoginLog",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LoginLogListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": " 当前页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          },
+          {
+            "name": "page_size",
+            "description": " 每页大小",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "10"
+          },
+          {
+            "name": "user_name",
+            "description": " 用户名",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ip",
+            "description": " 登录IP",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": " 登录状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "start_time",
+            "description": " 开始时间",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "end_time",
+            "description": " 结束时间",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "user"
+        ],
+        "consumes": [
+          "multipart/form-data"
         ]
       }
     },
@@ -437,6 +530,24 @@
     }
   },
   "definitions": {
+    "CaptchaResp": {
+      "type": "object",
+      "properties": {
+        "captcha_id": {
+          "type": "string",
+          "description": " 验证码ID"
+        },
+        "captcha_url": {
+          "type": "string",
+          "description": " 验证码图片（base64）"
+        }
+      },
+      "title": "CaptchaResp",
+      "required": [
+        "captcha_id",
+        "captcha_url"
+      ]
+    },
     "CreateTenantReq": {
       "type": "object",
       "properties": {
@@ -691,6 +802,117 @@
         "list"
       ]
     },
+    "LoginLogInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 记录ID"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 用户ID"
+        },
+        "user_name": {
+          "type": "string",
+          "description": " 用户名"
+        },
+        "ip": {
+          "type": "string",
+          "description": " 登录IP"
+        },
+        "user_agent": {
+          "type": "string",
+          "description": " 用户代理"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 登录状态"
+        },
+        "message": {
+          "type": "string",
+          "description": " 状态信息"
+        },
+        "created_at": {
+          "type": "string",
+          "description": " 登录时间"
+        }
+      },
+      "title": "LoginLogInfo",
+      "required": [
+        "id",
+        "user_id",
+        "user_name",
+        "ip",
+        "user_agent",
+        "status",
+        "message",
+        "created_at"
+      ]
+    },
+    "LoginLogListReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 当前页"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32",
+          "default": "10",
+          "description": " 每页大小"
+        },
+        "user_name": {
+          "type": "string",
+          "description": " 用户名"
+        },
+        "ip": {
+          "type": "string",
+          "description": " 登录IP"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 登录状态"
+        },
+        "start_time": {
+          "type": "string",
+          "description": " 开始时间"
+        },
+        "end_time": {
+          "type": "string",
+          "description": " 结束时间"
+        }
+      },
+      "title": "LoginLogListReq"
+    },
+    "LoginLogListResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageResponse",
+          "description": " 分页信息"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LoginLogInfo"
+          },
+          "description": " 登录记录列表"
+        }
+      },
+      "title": "LoginLogListResp",
+      "required": [
+        "page",
+        "list"
+      ]
+    },
     "LoginReq": {
       "type": "object",
       "properties": {
@@ -701,12 +923,22 @@
         "password": {
           "type": "string",
           "description": " 密码"
+        },
+        "captcha_id": {
+          "type": "string",
+          "description": " 验证码ID"
+        },
+        "captcha": {
+          "type": "string",
+          "description": " 验证码"
         }
       },
       "title": "LoginReq",
       "required": [
         "username",
-        "password"
+        "password",
+        "captcha_id",
+        "captcha"
       ]
     },
     "LoginResp": {
@@ -961,9 +1193,6 @@
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
-        },
-        "phone": {
           "type": "string"
         },
         "email": {
