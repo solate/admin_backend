@@ -4,10 +4,10 @@ import (
 	"context"
 	"time"
 
-	"admin_backend/app/admin/internal/repository/login_log_repo"
+	"admin_backend/app/admin/internal/repository/loginlogrepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
-	"admin_backend/pkg/common/context_util"
+	"admin_backend/pkg/common/contextutil"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/predicate"
@@ -19,7 +19,7 @@ type ListLoginLogLogic struct {
 	logx.Logger
 	ctx          context.Context
 	svcCtx       *svc.ServiceContext
-	loginLogRepo *login_log_repo.LoginLogRepo
+	loginLogRepo *loginlogrepo.LoginLogRepo
 }
 
 // 查询登录记录
@@ -28,13 +28,13 @@ func NewListLoginLogLogic(ctx context.Context, svcCtx *svc.ServiceContext) *List
 		Logger:       logx.WithContext(ctx),
 		ctx:          ctx,
 		svcCtx:       svcCtx,
-		loginLogRepo: login_log_repo.NewLoginLogRepo(svcCtx.DB),
+		loginLogRepo: loginlogrepo.NewLoginLogRepo(svcCtx.DB),
 	}
 }
 
 func (l *ListLoginLogLogic) ListLoginLog(req *types.LoginLogListReq) (resp *types.LoginLogListResp, err error) {
 	// 获取租户编码
-	tenantCode, err := context_util.GetTenantCodeFromCtx(l.ctx)
+	tenantCode, err := contextutil.GetTenantCodeFromCtx(l.ctx)
 	if err != nil {
 		l.Error("ListLoginLog context_util.GetTenantCodeFromCtx err:", err.Error())
 		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "获取租户编码失败")

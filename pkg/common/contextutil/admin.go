@@ -1,4 +1,4 @@
-package context_util
+package contextutil
 
 import (
 	"context"

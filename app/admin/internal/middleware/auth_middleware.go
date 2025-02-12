@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"admin_backend/app/admin/internal/config"
-	"admin_backend/pkg/common/context_util"
+	"admin_backend/pkg/common/contextutil"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/utils/jwt"
 
@@ -52,9 +52,9 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 
 		// 将租户ID和用户ID存入context
 		ctx := r.Context()
-		ctx = context_util.SetUserIDToCtx(ctx, claims.UserID)
-		ctx = context_util.SetTenantCodeToCtx(ctx, claims.TenantCode)
-		ctx = context_util.SetRoleCodeToCtx(ctx, claims.RoleCode)
+		ctx = contextutil.SetUserIDToCtx(ctx, claims.UserID)
+		ctx = contextutil.SetTenantCodeToCtx(ctx, claims.TenantCode)
+		ctx = contextutil.SetRoleCodeToCtx(ctx, claims.RoleCode)
 
 		next(w, r.WithContext(ctx))
 	}

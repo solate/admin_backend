@@ -1,4 +1,4 @@
-package login_log_repo
+package loginlogrepo
 
 import (
 	"context"
@@ -6,12 +6,12 @@ import (
 	"time"
 
 	"admin_backend/pkg/common"
-	"admin_backend/pkg/common/context_util"
+	"admin_backend/pkg/common/contextutil"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/utils/idgen"
-	"admin_backend/pkg/utils/userAgent"
+	"admin_backend/pkg/utils/useragent"
 )
 
 type LoginLogRepo struct {
@@ -64,7 +64,7 @@ func (r *LoginLogRepo) PageList(ctx context.Context, current, limit int, where [
 
 // addLoginLog
 func (l *LoginLogRepo) AddLoginLog(ctx context.Context, user *generated.User, message string) error {
-	tenantCode, err := context_util.GetTenantCodeFromCtx(ctx)
+	tenantCode, err := contextutil.GetTenantCodeFromCtx(ctx)
 	if err != nil {
 		return err
 	}
@@ -76,7 +76,7 @@ func (l *LoginLogRepo) AddLoginLog(ctx context.Context, user *generated.User, me
 
 	r := ctx.Value("request").(*http.Request)
 	// 获取客户端信息
-	clientInfo := userAgent.GetClientInfo(r)
+	clientInfo := useragent.GetClientInfo(r)
 	log := &generated.LoginLog{
 		TenantCode: tenantCode,
 		LogID:      id,

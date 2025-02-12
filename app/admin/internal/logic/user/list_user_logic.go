@@ -3,10 +3,10 @@ package user
 import (
 	"context"
 
-	"admin_backend/app/admin/internal/repository/user_repo"
+	"admin_backend/app/admin/internal/repository/userrepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
-	"admin_backend/pkg/common/context_util"
+	"admin_backend/pkg/common/contextutil"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/ent/generated/user"
@@ -18,7 +18,7 @@ type ListUserLogic struct {
 	logx.Logger
 	ctx      context.Context
 	svcCtx   *svc.ServiceContext
-	userRepo *user_repo.UserRepo
+	userRepo *userrepo.UserRepo
 }
 
 // 获取用户列表
@@ -27,15 +27,15 @@ func NewListUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListUser
 		Logger:   logx.WithContext(ctx),
 		ctx:      ctx,
 		svcCtx:   svcCtx,
-		userRepo: user_repo.NewUserRepo(svcCtx.DB),
+		userRepo: userrepo.NewUserRepo(svcCtx.DB),
 	}
 }
 
 func (l *ListUserLogic) ListUser(req *types.UserListReq) (resp *types.UserListResp, err error) {
 
-	tenantCode, err := context_util.GetTenantCodeFromCtx(l.ctx)
+	tenantCode, err := contextutil.GetTenantCodeFromCtx(l.ctx)
 	if err != nil {
-		l.Error("ListUser context_util.GetTenantIDFromCtx err: ", err.Error())
+		l.Error("ListUser contextutil.GetTenantIDFromCtx err: ", err.Error())
 		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "get tenant id from ctx err.")
 	}
 

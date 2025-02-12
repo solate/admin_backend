@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 
-	"admin_backend/app/admin/internal/repository/user_repo"
+	"admin_backend/app/admin/internal/repository/userrepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
 	"admin_backend/pkg/common/xerr"
@@ -15,7 +15,7 @@ type GetUserLogic struct {
 	logx.Logger
 	ctx      context.Context
 	svcCtx   *svc.ServiceContext
-	userRepo *user_repo.UserRepo
+	userRepo *userrepo.UserRepo
 }
 
 // 获取用户详情
@@ -24,7 +24,7 @@ func NewGetUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUserLo
 		Logger:   logx.WithContext(ctx),
 		ctx:      ctx,
 		svcCtx:   svcCtx,
-		userRepo: user_repo.NewUserRepo(svcCtx.DB),
+		userRepo: userrepo.NewUserRepo(svcCtx.DB),
 	}
 }
 

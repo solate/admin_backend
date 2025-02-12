@@ -3,8 +3,8 @@ package auth
 import (
 	"context"
 
-	"admin_backend/app/admin/internal/repository/login_log_repo"
-	"admin_backend/app/admin/internal/repository/user_repo"
+	"admin_backend/app/admin/internal/repository/loginlogrepo"
+	"admin_backend/app/admin/internal/repository/userrepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
 	"admin_backend/pkg/common/xerr"
@@ -17,8 +17,8 @@ type LogoutLogic struct {
 	logx.Logger
 	ctx          context.Context
 	svcCtx       *svc.ServiceContext
-	userRepo     *user_repo.UserRepo
-	loginLogRepo *login_log_repo.LoginLogRepo
+	userRepo     *userrepo.UserRepo
+	loginLogRepo *loginlogrepo.LoginLogRepo
 }
 
 // 用户登出
@@ -27,8 +27,8 @@ func NewLogoutLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LogoutLogi
 		Logger:       logx.WithContext(ctx),
 		ctx:          ctx,
 		svcCtx:       svcCtx,
-		userRepo:     user_repo.NewUserRepo(svcCtx.DB),
-		loginLogRepo: login_log_repo.NewLoginLogRepo(svcCtx.DB),
+		userRepo:     userrepo.NewUserRepo(svcCtx.DB),
+		loginLogRepo: loginlogrepo.NewLoginLogRepo(svcCtx.DB),
 	}
 }
 

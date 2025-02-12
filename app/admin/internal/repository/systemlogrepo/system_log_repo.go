@@ -1,4 +1,4 @@
-package systemLog
+package systemlogrepo
 
 import (
 	"context"

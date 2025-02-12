@@ -3,10 +3,10 @@ package user
 import (
 	"context"
 
-	"admin_backend/app/admin/internal/repository/user_repo"
+	"admin_backend/app/admin/internal/repository/userrepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
-	"admin_backend/pkg/common/context_util"
+	"admin_backend/pkg/common/contextutil"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/utils/idgen"
@@ -19,7 +19,7 @@ type CreateUserLogic struct {
 	logx.Logger
 	ctx      context.Context
 	svcCtx   *svc.ServiceContext
-	userRepo *user_repo.UserRepo
+	userRepo *userrepo.UserRepo
 }
 
 // 创建用户
@@ -28,7 +28,7 @@ func NewCreateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Create
 		Logger:   logx.WithContext(ctx),
 		ctx:      ctx,
 		svcCtx:   svcCtx,
-		userRepo: user_repo.NewUserRepo(svcCtx.DB),
+		userRepo: userrepo.NewUserRepo(svcCtx.DB),
 	}
 }
 
@@ -48,7 +48,7 @@ func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.Crea
 		return nil, xerr.NewErrMsg("手机号已存在")
 	}
 
-	tenantCode, err := context_util.GetTenantCodeFromCtx(l.ctx)
+	tenantCode, err := contextutil.GetTenantCodeFromCtx(l.ctx)
 	if err != nil {
 		l.Error("ListUser context_util.GetTenantIDFromCtx err: ", err.Error())
 		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "get tenant id from ctx err.")
