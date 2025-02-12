@@ -565,8 +565,7 @@
       "type": "object",
       "properties": {
         "tenant_id": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         }
       },
       "title": "CreateTenantResp",
@@ -618,8 +617,7 @@
         "role_ids": {
           "type": "array",
           "items": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           },
           "description": " 角色ID列表"
         }
@@ -642,8 +640,7 @@
       "type": "object",
       "properties": {
         "user_id": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户ID"
         }
       },
@@ -668,8 +665,7 @@
       "type": "object",
       "properties": {
         "tenant_id": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "name": {
           "type": "string"
@@ -695,8 +691,7 @@
       "type": "object",
       "properties": {
         "user_id": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户ID"
         },
         "user_name": {
@@ -795,14 +790,12 @@
     "LoginLogInfo": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64",
+        "log_id": {
+          "type": "string",
           "description": " 记录ID"
         },
         "user_id": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户ID"
         },
         "user_name": {
@@ -833,7 +826,7 @@
       },
       "title": "LoginLogInfo",
       "required": [
-        "id",
+        "log_id",
         "user_id",
         "user_name",
         "ip",
@@ -938,8 +931,7 @@
           "type": "string"
         },
         "user_id": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "user_name": {
           "type": "string"
@@ -1072,8 +1064,7 @@
       "type": "object",
       "properties": {
         "user_id": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         }
       },
       "title": "RegisterResp",
@@ -1105,8 +1096,7 @@
       "type": "object",
       "properties": {
         "tenant_id": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "name": {
           "type": "string"
@@ -1189,8 +1179,7 @@
         "role_ids": {
           "type": "array",
           "items": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           }
         }
       },
@@ -1200,8 +1189,7 @@
       "type": "object",
       "properties": {
         "user_id": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户ID"
         },
         "user_name": {

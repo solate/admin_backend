@@ -28,7 +28,7 @@ func (Tenant) Fields() []ent.Field {
 		field.Int64("updated_at").Default(0).Comment("修改时间"),
 		field.Int64("deleted_at").Optional().Nillable().Comment("删除时间"),
 
-		field.Uint64("tenant_id").Unique().Comment("租户ID"),
+		field.String("tenant_id").Unique().Comment("租户ID"),
 		field.String("name").NotEmpty().Default("").Comment("租户名称"),
 		field.String("code").Unique().NotEmpty().Comment("租户编码"),
 		field.String("description").Default("").Comment("租户描述"),

@@ -32,7 +32,7 @@ func (SystemLog) Fields() []ent.Field {
 		field.String("action").Default("").Comment("操作类型"),
 		field.String("content").Default("").Comment("操作内容"),
 		field.String("operator").Default("").Comment("操作人"),
-		field.Uint64("user_id").Default(0).Comment("用户ID"),
+		field.String("user_id").Default("").Comment("用户ID"),
 	}
 }
 

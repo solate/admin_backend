@@ -56,7 +56,7 @@ func (r *UserRepo) Update(ctx context.Context, update *generated.User) (int, err
 // 	return r.db.User.Query().Where(user.ID(id)).Only(ctx)
 // }
 
-func (r *UserRepo) GetByUserID(ctx context.Context, userID uint64) (*generated.User, error) {
+func (r *UserRepo) GetByUserID(ctx context.Context, userID string) (*generated.User, error) {
 	return r.Get(ctx, []predicate.User{user.UserID(userID)})
 }
 
@@ -108,14 +108,14 @@ func (r *UserRepo) DeleteByUserID(ctx context.Context, delete *generated.User) (
 }
 
 // 用户登出
-func (r *UserRepo) Logout(ctx context.Context, userID uint64) (int, error) {
+func (r *UserRepo) Logout(ctx context.Context, userID string) (int, error) {
 	return r.db.User.Update().
 		SetToken("").
 		Where(user.UserID(userID)).Save(ctx)
 }
 
 // 用户登录
-func (r *UserRepo) UpdateToken(ctx context.Context, userID uint64, token string) (int, error) {
+func (r *UserRepo) UpdateToken(ctx context.Context, userID string, token string) (int, error) {
 	return r.db.User.Update().
 		SetToken(token).
 		SetUpdatedAt(time.Now().UnixMilli()).

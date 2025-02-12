@@ -43,23 +43,16 @@ func (llu *LoginLogUpdate) SetNillableTenantCode(s *string) *LoginLogUpdate {
 }
 
 // SetUserID sets the "user_id" field.
-func (llu *LoginLogUpdate) SetUserID(u uint64) *LoginLogUpdate {
-	llu.mutation.ResetUserID()
-	llu.mutation.SetUserID(u)
+func (llu *LoginLogUpdate) SetUserID(s string) *LoginLogUpdate {
+	llu.mutation.SetUserID(s)
 	return llu
 }
 
 // SetNillableUserID sets the "user_id" field if the given value is not nil.
-func (llu *LoginLogUpdate) SetNillableUserID(u *uint64) *LoginLogUpdate {
-	if u != nil {
-		llu.SetUserID(*u)
+func (llu *LoginLogUpdate) SetNillableUserID(s *string) *LoginLogUpdate {
+	if s != nil {
+		llu.SetUserID(*s)
 	}
-	return llu
-}
-
-// AddUserID adds u to the "user_id" field.
-func (llu *LoginLogUpdate) AddUserID(u int64) *LoginLogUpdate {
-	llu.mutation.AddUserID(u)
 	return llu
 }
 
@@ -292,10 +285,7 @@ func (llu *LoginLogUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(loginlog.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := llu.mutation.UserID(); ok {
-		_spec.SetField(loginlog.FieldUserID, field.TypeUint64, value)
-	}
-	if value, ok := llu.mutation.AddedUserID(); ok {
-		_spec.AddField(loginlog.FieldUserID, field.TypeUint64, value)
+		_spec.SetField(loginlog.FieldUserID, field.TypeString, value)
 	}
 	if value, ok := llu.mutation.UserName(); ok {
 		_spec.SetField(loginlog.FieldUserName, field.TypeString, value)
@@ -379,23 +369,16 @@ func (lluo *LoginLogUpdateOne) SetNillableTenantCode(s *string) *LoginLogUpdateO
 }
 
 // SetUserID sets the "user_id" field.
-func (lluo *LoginLogUpdateOne) SetUserID(u uint64) *LoginLogUpdateOne {
-	lluo.mutation.ResetUserID()
-	lluo.mutation.SetUserID(u)
+func (lluo *LoginLogUpdateOne) SetUserID(s string) *LoginLogUpdateOne {
+	lluo.mutation.SetUserID(s)
 	return lluo
 }
 
 // SetNillableUserID sets the "user_id" field if the given value is not nil.
-func (lluo *LoginLogUpdateOne) SetNillableUserID(u *uint64) *LoginLogUpdateOne {
-	if u != nil {
-		lluo.SetUserID(*u)
+func (lluo *LoginLogUpdateOne) SetNillableUserID(s *string) *LoginLogUpdateOne {
+	if s != nil {
+		lluo.SetUserID(*s)
 	}
-	return lluo
-}
-
-// AddUserID adds u to the "user_id" field.
-func (lluo *LoginLogUpdateOne) AddUserID(u int64) *LoginLogUpdateOne {
-	lluo.mutation.AddUserID(u)
 	return lluo
 }
 
@@ -658,10 +641,7 @@ func (lluo *LoginLogUpdateOne) sqlSave(ctx context.Context) (_node *LoginLog, er
 		_spec.SetField(loginlog.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := lluo.mutation.UserID(); ok {
-		_spec.SetField(loginlog.FieldUserID, field.TypeUint64, value)
-	}
-	if value, ok := lluo.mutation.AddedUserID(); ok {
-		_spec.AddField(loginlog.FieldUserID, field.TypeUint64, value)
+		_spec.SetField(loginlog.FieldUserID, field.TypeString, value)
 	}
 	if value, ok := lluo.mutation.UserName(); ok {
 		_spec.SetField(loginlog.FieldUserName, field.TypeString, value)

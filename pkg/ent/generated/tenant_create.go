@@ -64,8 +64,8 @@ func (tc *TenantCreate) SetNillableDeletedAt(i *int64) *TenantCreate {
 }
 
 // SetTenantID sets the "tenant_id" field.
-func (tc *TenantCreate) SetTenantID(u uint64) *TenantCreate {
-	tc.mutation.SetTenantID(u)
+func (tc *TenantCreate) SetTenantID(s string) *TenantCreate {
+	tc.mutation.SetTenantID(s)
 	return tc
 }
 
@@ -247,7 +247,7 @@ func (tc *TenantCreate) createSpec() (*Tenant, *sqlgraph.CreateSpec) {
 		_node.DeletedAt = &value
 	}
 	if value, ok := tc.mutation.TenantID(); ok {
-		_spec.SetField(tenant.FieldTenantID, field.TypeUint64, value)
+		_spec.SetField(tenant.FieldTenantID, field.TypeString, value)
 		_node.TenantID = value
 	}
 	if value, ok := tc.mutation.Name(); ok {
@@ -361,7 +361,7 @@ func (u *TenantUpsert) ClearDeletedAt() *TenantUpsert {
 }
 
 // SetTenantID sets the "tenant_id" field.
-func (u *TenantUpsert) SetTenantID(v uint64) *TenantUpsert {
+func (u *TenantUpsert) SetTenantID(v string) *TenantUpsert {
 	u.Set(tenant.FieldTenantID, v)
 	return u
 }
@@ -369,12 +369,6 @@ func (u *TenantUpsert) SetTenantID(v uint64) *TenantUpsert {
 // UpdateTenantID sets the "tenant_id" field to the value that was provided on create.
 func (u *TenantUpsert) UpdateTenantID() *TenantUpsert {
 	u.SetExcluded(tenant.FieldTenantID)
-	return u
-}
-
-// AddTenantID adds v to the "tenant_id" field.
-func (u *TenantUpsert) AddTenantID(v uint64) *TenantUpsert {
-	u.Add(tenant.FieldTenantID, v)
 	return u
 }
 
@@ -527,16 +521,9 @@ func (u *TenantUpsertOne) ClearDeletedAt() *TenantUpsertOne {
 }
 
 // SetTenantID sets the "tenant_id" field.
-func (u *TenantUpsertOne) SetTenantID(v uint64) *TenantUpsertOne {
+func (u *TenantUpsertOne) SetTenantID(v string) *TenantUpsertOne {
 	return u.Update(func(s *TenantUpsert) {
 		s.SetTenantID(v)
-	})
-}
-
-// AddTenantID adds v to the "tenant_id" field.
-func (u *TenantUpsertOne) AddTenantID(v uint64) *TenantUpsertOne {
-	return u.Update(func(s *TenantUpsert) {
-		s.AddTenantID(v)
 	})
 }
 
@@ -871,16 +858,9 @@ func (u *TenantUpsertBulk) ClearDeletedAt() *TenantUpsertBulk {
 }
 
 // SetTenantID sets the "tenant_id" field.
-func (u *TenantUpsertBulk) SetTenantID(v uint64) *TenantUpsertBulk {
+func (u *TenantUpsertBulk) SetTenantID(v string) *TenantUpsertBulk {
 	return u.Update(func(s *TenantUpsert) {
 		s.SetTenantID(v)
-	})
-}
-
-// AddTenantID adds v to the "tenant_id" field.
-func (u *TenantUpsertBulk) AddTenantID(v uint64) *TenantUpsertBulk {
-	return u.Update(func(s *TenantUpsert) {
-		s.AddTenantID(v)
 	})
 }
 

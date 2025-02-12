@@ -99,23 +99,16 @@ func (slu *SystemLogUpdate) SetNillableOperator(s *string) *SystemLogUpdate {
 }
 
 // SetUserID sets the "user_id" field.
-func (slu *SystemLogUpdate) SetUserID(u uint64) *SystemLogUpdate {
-	slu.mutation.ResetUserID()
-	slu.mutation.SetUserID(u)
+func (slu *SystemLogUpdate) SetUserID(s string) *SystemLogUpdate {
+	slu.mutation.SetUserID(s)
 	return slu
 }
 
 // SetNillableUserID sets the "user_id" field if the given value is not nil.
-func (slu *SystemLogUpdate) SetNillableUserID(u *uint64) *SystemLogUpdate {
-	if u != nil {
-		slu.SetUserID(*u)
+func (slu *SystemLogUpdate) SetNillableUserID(s *string) *SystemLogUpdate {
+	if s != nil {
+		slu.SetUserID(*s)
 	}
-	return slu
-}
-
-// AddUserID adds u to the "user_id" field.
-func (slu *SystemLogUpdate) AddUserID(u int64) *SystemLogUpdate {
-	slu.mutation.AddUserID(u)
 	return slu
 }
 
@@ -195,10 +188,7 @@ func (slu *SystemLogUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(systemlog.FieldOperator, field.TypeString, value)
 	}
 	if value, ok := slu.mutation.UserID(); ok {
-		_spec.SetField(systemlog.FieldUserID, field.TypeUint64, value)
-	}
-	if value, ok := slu.mutation.AddedUserID(); ok {
-		_spec.AddField(systemlog.FieldUserID, field.TypeUint64, value)
+		_spec.SetField(systemlog.FieldUserID, field.TypeString, value)
 	}
 	_spec.AddModifiers(slu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, slu.driver, _spec); err != nil {
@@ -293,23 +283,16 @@ func (sluo *SystemLogUpdateOne) SetNillableOperator(s *string) *SystemLogUpdateO
 }
 
 // SetUserID sets the "user_id" field.
-func (sluo *SystemLogUpdateOne) SetUserID(u uint64) *SystemLogUpdateOne {
-	sluo.mutation.ResetUserID()
-	sluo.mutation.SetUserID(u)
+func (sluo *SystemLogUpdateOne) SetUserID(s string) *SystemLogUpdateOne {
+	sluo.mutation.SetUserID(s)
 	return sluo
 }
 
 // SetNillableUserID sets the "user_id" field if the given value is not nil.
-func (sluo *SystemLogUpdateOne) SetNillableUserID(u *uint64) *SystemLogUpdateOne {
-	if u != nil {
-		sluo.SetUserID(*u)
+func (sluo *SystemLogUpdateOne) SetNillableUserID(s *string) *SystemLogUpdateOne {
+	if s != nil {
+		sluo.SetUserID(*s)
 	}
-	return sluo
-}
-
-// AddUserID adds u to the "user_id" field.
-func (sluo *SystemLogUpdateOne) AddUserID(u int64) *SystemLogUpdateOne {
-	sluo.mutation.AddUserID(u)
 	return sluo
 }
 
@@ -419,10 +402,7 @@ func (sluo *SystemLogUpdateOne) sqlSave(ctx context.Context) (_node *SystemLog, 
 		_spec.SetField(systemlog.FieldOperator, field.TypeString, value)
 	}
 	if value, ok := sluo.mutation.UserID(); ok {
-		_spec.SetField(systemlog.FieldUserID, field.TypeUint64, value)
-	}
-	if value, ok := sluo.mutation.AddedUserID(); ok {
-		_spec.AddField(systemlog.FieldUserID, field.TypeUint64, value)
+		_spec.SetField(systemlog.FieldUserID, field.TypeString, value)
 	}
 	_spec.AddModifiers(sluo.modifiers...)
 	_node = &SystemLog{config: sluo.config}

@@ -27,8 +27,8 @@ func (LoginLog) Fields() []ent.Field {
 		// field.Int("updated_at").Default(0).Comment("修改时间"),
 		field.String("tenant_code").NotEmpty().Comment("租户编码"),
 
-		field.Uint64("log_id").Unique().Immutable().Comment("日志ID"),
-		field.Uint64("user_id").Comment("用户ID"),
+		field.String("log_id").Unique().Immutable().Comment("日志ID"),
+		field.String("user_id").Comment("用户ID"),
 		field.String("user_name").NotEmpty().Comment("用户名"),
 		field.String("ip").NotEmpty().Comment("IP地址"),
 		// field.Int("status").Default(1).Comment("状态: 1:成功, 2:失败"),

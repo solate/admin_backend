@@ -8,15 +8,15 @@ import (
 type UserIDKey struct{}
 
 // SetUserIDToCtx 将用户ID设置到上下文中
-func SetUserIDToCtx(ctx context.Context, userID uint64) context.Context {
+func SetUserIDToCtx(ctx context.Context, userID string) context.Context {
 	return context.WithValue(ctx, UserIDKey{}, userID)
 }
 
 // GetUserIDFromCtx 从上下文中获取用户ID
-func GetUserIDFromCtx(ctx context.Context) uint64 {
-	userID, ok := ctx.Value(UserIDKey{}).(uint64)
+func GetUserIDFromCtx(ctx context.Context) string {
+	userID, ok := ctx.Value(UserIDKey{}).(string)
 	if !ok {
-		return 0
+		return ""
 	}
 	return userID
 }

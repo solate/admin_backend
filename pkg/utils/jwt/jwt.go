@@ -10,7 +10,7 @@ import (
 )
 
 type Claims struct {
-	UserID     uint64 `json:"user_id"`
+	UserID     string `json:"user_id"`
 	TenantCode string `json:"tenant_code"`
 	RoleCode   string `json:"role_code"`
 	jwt.RegisteredClaims
@@ -22,7 +22,7 @@ type JWTConfig struct {
 }
 
 // 生成JWT Token
-func GenerateToken(userID uint64, tenantCode string, config JWTConfig) (string, error) {
+func GenerateToken(userID, tenantCode string, config JWTConfig) (string, error) {
 	now := time.Now()
 	claims := Claims{
 		UserID:     userID,

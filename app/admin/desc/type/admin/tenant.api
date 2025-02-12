@@ -21,23 +21,23 @@ type (
 	}
 	// 创建租户响应
 	CreateTenantResp {
-		TenantID uint64 `json:"tenant_id"`
+		TenantID string `json:"tenant_id"`
 	}
 	// 更新租户请求
 	UpdateTenantReq {
-		TenantID    uint64 `path:"tenant_id"`
+		TenantID    string `path:"tenant_id"`
 		Name        string `json:"name"`
 		Description string `json:"description"`
 		Status      int    `json:"status"`
 	}
 	// 删除租户请求
 	DeleteTenantReq {
-		TenantID uint64 `path:"tenant_id"`
+		TenantID string `path:"tenant_id"`
 	}
 
 	// 获取租户详情请求
 	GetTenantReq {
-		TenantID uint64 `path:"tenant_id"`
+		TenantID string `path:"tenant_id"`
 	}
 	// 获取租户详情响应
 	GetTenantResp {
@@ -56,7 +56,7 @@ type (
 	}
 		// 租户基本信息
 	TenantInfo {
-		TenantID    uint64 `json:"tenant_id"`
+		TenantID    string `json:"tenant_id"`
 		Name        string `json:"name"`
 		Code        string `json:"code"`
 		Description string `json:"description"`

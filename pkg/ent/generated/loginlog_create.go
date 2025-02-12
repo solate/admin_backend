@@ -42,14 +42,14 @@ func (llc *LoginLogCreate) SetTenantCode(s string) *LoginLogCreate {
 }
 
 // SetLogID sets the "log_id" field.
-func (llc *LoginLogCreate) SetLogID(u uint64) *LoginLogCreate {
-	llc.mutation.SetLogID(u)
+func (llc *LoginLogCreate) SetLogID(s string) *LoginLogCreate {
+	llc.mutation.SetLogID(s)
 	return llc
 }
 
 // SetUserID sets the "user_id" field.
-func (llc *LoginLogCreate) SetUserID(u uint64) *LoginLogCreate {
-	llc.mutation.SetUserID(u)
+func (llc *LoginLogCreate) SetUserID(s string) *LoginLogCreate {
+	llc.mutation.SetUserID(s)
 	return llc
 }
 
@@ -261,11 +261,11 @@ func (llc *LoginLogCreate) createSpec() (*LoginLog, *sqlgraph.CreateSpec) {
 		_node.TenantCode = value
 	}
 	if value, ok := llc.mutation.LogID(); ok {
-		_spec.SetField(loginlog.FieldLogID, field.TypeUint64, value)
+		_spec.SetField(loginlog.FieldLogID, field.TypeString, value)
 		_node.LogID = value
 	}
 	if value, ok := llc.mutation.UserID(); ok {
-		_spec.SetField(loginlog.FieldUserID, field.TypeUint64, value)
+		_spec.SetField(loginlog.FieldUserID, field.TypeString, value)
 		_node.UserID = value
 	}
 	if value, ok := llc.mutation.UserName(); ok {
@@ -365,7 +365,7 @@ func (u *LoginLogUpsert) UpdateTenantCode() *LoginLogUpsert {
 }
 
 // SetUserID sets the "user_id" field.
-func (u *LoginLogUpsert) SetUserID(v uint64) *LoginLogUpsert {
+func (u *LoginLogUpsert) SetUserID(v string) *LoginLogUpsert {
 	u.Set(loginlog.FieldUserID, v)
 	return u
 }
@@ -373,12 +373,6 @@ func (u *LoginLogUpsert) SetUserID(v uint64) *LoginLogUpsert {
 // UpdateUserID sets the "user_id" field to the value that was provided on create.
 func (u *LoginLogUpsert) UpdateUserID() *LoginLogUpsert {
 	u.SetExcluded(loginlog.FieldUserID)
-	return u
-}
-
-// AddUserID adds v to the "user_id" field.
-func (u *LoginLogUpsert) AddUserID(v uint64) *LoginLogUpsert {
-	u.Add(loginlog.FieldUserID, v)
 	return u
 }
 
@@ -583,16 +577,9 @@ func (u *LoginLogUpsertOne) UpdateTenantCode() *LoginLogUpsertOne {
 }
 
 // SetUserID sets the "user_id" field.
-func (u *LoginLogUpsertOne) SetUserID(v uint64) *LoginLogUpsertOne {
+func (u *LoginLogUpsertOne) SetUserID(v string) *LoginLogUpsertOne {
 	return u.Update(func(s *LoginLogUpsert) {
 		s.SetUserID(v)
-	})
-}
-
-// AddUserID adds v to the "user_id" field.
-func (u *LoginLogUpsertOne) AddUserID(v uint64) *LoginLogUpsertOne {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.AddUserID(v)
 	})
 }
 
@@ -993,16 +980,9 @@ func (u *LoginLogUpsertBulk) UpdateTenantCode() *LoginLogUpsertBulk {
 }
 
 // SetUserID sets the "user_id" field.
-func (u *LoginLogUpsertBulk) SetUserID(v uint64) *LoginLogUpsertBulk {
+func (u *LoginLogUpsertBulk) SetUserID(v string) *LoginLogUpsertBulk {
 	return u.Update(func(s *LoginLogUpsert) {
 		s.SetUserID(v)
-	})
-}
-
-// AddUserID adds v to the "user_id" field.
-func (u *LoginLogUpsertBulk) AddUserID(v uint64) *LoginLogUpsertBulk {
-	return u.Update(func(s *LoginLogUpsert) {
-		s.AddUserID(v)
 	})
 }
 

@@ -123,7 +123,7 @@ func init() {
 	// systemlogDescUserID is the schema descriptor for user_id field.
 	systemlogDescUserID := systemlogFields[6].Descriptor()
 	// systemlog.DefaultUserID holds the default value on creation for the user_id field.
-	systemlog.DefaultUserID = systemlogDescUserID.Default.(uint64)
+	systemlog.DefaultUserID = systemlogDescUserID.Default.(string)
 	tenantFields := schema.Tenant{}.Fields()
 	_ = tenantFields
 	// tenantDescCreatedAt is the schema descriptor for created_at field.

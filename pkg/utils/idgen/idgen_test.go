@@ -9,7 +9,7 @@ func TestGenerateUUID_Success(t *testing.T) {
 	if err != nil {
 		t.Errorf("GenerateUUID returned an error: %v", err)
 	}
-	if uuid == 0 {
+	if uuid == "" {
 		t.Errorf("GenerateUUID returned a zero UUID")
 	}
 }
@@ -24,7 +24,7 @@ func TestGenerateUUIDs_Success(t *testing.T) {
 		t.Errorf("GenerateUUIDs returned %d UUIDs, expected %d", len(uuids), n)
 	}
 	for _, uuid := range uuids {
-		if uuid == 0 {
+		if uuid == "" {
 			t.Errorf("GenerateUUIDs returned a zero UUID")
 		}
 		t.Log(uuid)

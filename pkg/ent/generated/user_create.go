@@ -70,8 +70,8 @@ func (uc *UserCreate) SetTenantCode(s string) *UserCreate {
 }
 
 // SetUserID sets the "user_id" field.
-func (uc *UserCreate) SetUserID(u uint64) *UserCreate {
-	uc.mutation.SetUserID(u)
+func (uc *UserCreate) SetUserID(s string) *UserCreate {
+	uc.mutation.SetUserID(s)
 	return uc
 }
 
@@ -471,7 +471,7 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_node.TenantCode = value
 	}
 	if value, ok := uc.mutation.UserID(); ok {
-		_spec.SetField(user.FieldUserID, field.TypeUint64, value)
+		_spec.SetField(user.FieldUserID, field.TypeString, value)
 		_node.UserID = value
 	}
 	if value, ok := uc.mutation.UserName(); ok {
@@ -633,7 +633,7 @@ func (u *UserUpsert) UpdateTenantCode() *UserUpsert {
 }
 
 // SetUserID sets the "user_id" field.
-func (u *UserUpsert) SetUserID(v uint64) *UserUpsert {
+func (u *UserUpsert) SetUserID(v string) *UserUpsert {
 	u.Set(user.FieldUserID, v)
 	return u
 }
@@ -641,12 +641,6 @@ func (u *UserUpsert) SetUserID(v uint64) *UserUpsert {
 // UpdateUserID sets the "user_id" field to the value that was provided on create.
 func (u *UserUpsert) UpdateUserID() *UserUpsert {
 	u.SetExcluded(user.FieldUserID)
-	return u
-}
-
-// AddUserID adds v to the "user_id" field.
-func (u *UserUpsert) AddUserID(v uint64) *UserUpsert {
-	u.Add(user.FieldUserID, v)
 	return u
 }
 
@@ -945,16 +939,9 @@ func (u *UserUpsertOne) UpdateTenantCode() *UserUpsertOne {
 }
 
 // SetUserID sets the "user_id" field.
-func (u *UserUpsertOne) SetUserID(v uint64) *UserUpsertOne {
+func (u *UserUpsertOne) SetUserID(v string) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
 		s.SetUserID(v)
-	})
-}
-
-// AddUserID adds v to the "user_id" field.
-func (u *UserUpsertOne) AddUserID(v uint64) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.AddUserID(v)
 	})
 }
 
@@ -1457,16 +1444,9 @@ func (u *UserUpsertBulk) UpdateTenantCode() *UserUpsertBulk {
 }
 
 // SetUserID sets the "user_id" field.
-func (u *UserUpsertBulk) SetUserID(v uint64) *UserUpsertBulk {
+func (u *UserUpsertBulk) SetUserID(v string) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
 		s.SetUserID(v)
-	})
-}
-
-// AddUserID adds v to the "user_id" field.
-func (u *UserUpsertBulk) AddUserID(v uint64) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.AddUserID(v)
 	})
 }
 

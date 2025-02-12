@@ -33,7 +33,7 @@ func NewUpdateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Update
 
 func (l *UpdateUserLogic) UpdateUser(req *types.UpdateUserReq) (resp bool, err error) {
 	// 1. 检查用户是否存在
-	user, err := l.svcCtx.DB.User.Query().Where(user.UserID(uint64(req.UserID))).Only(l.ctx)
+	user, err := l.svcCtx.DB.User.Query().Where(user.UserID(req.UserID)).Only(l.ctx)
 	if err != nil {
 		if generated.IsNotFound(err) {
 			return false, xerr.NewErrMsg("用户不存在")

@@ -29,7 +29,7 @@ func (Role) Fields() []ent.Field {
 		field.Int("deleted_at").Optional().Nillable().Comment("删除时间"),
 		field.String("tenant_code").NotEmpty().Comment("租户编码"),
 
-		field.Uint64("role_id").Unique().Immutable().Comment("角色ID"),
+		field.String("role_id").Unique().Immutable().Comment("角色ID"),
 		field.String("name").NotEmpty().Comment("角色名"),
 		field.String("code").NotEmpty().Unique().Comment("角色编码"),
 		field.String("description").Optional().Comment("角色描述"),

@@ -84,7 +84,7 @@ func Operator(v string) predicate.SystemLog {
 }
 
 // UserID applies equality check predicate on the "user_id" field. It's identical to UserIDEQ.
-func UserID(v uint64) predicate.SystemLog {
+func UserID(v string) predicate.SystemLog {
 	return predicate.SystemLog(sql.FieldEQ(FieldUserID, v))
 }
 
@@ -454,43 +454,68 @@ func OperatorContainsFold(v string) predicate.SystemLog {
 }
 
 // UserIDEQ applies the EQ predicate on the "user_id" field.
-func UserIDEQ(v uint64) predicate.SystemLog {
+func UserIDEQ(v string) predicate.SystemLog {
 	return predicate.SystemLog(sql.FieldEQ(FieldUserID, v))
 }
 
 // UserIDNEQ applies the NEQ predicate on the "user_id" field.
-func UserIDNEQ(v uint64) predicate.SystemLog {
+func UserIDNEQ(v string) predicate.SystemLog {
 	return predicate.SystemLog(sql.FieldNEQ(FieldUserID, v))
 }
 
 // UserIDIn applies the In predicate on the "user_id" field.
-func UserIDIn(vs ...uint64) predicate.SystemLog {
+func UserIDIn(vs ...string) predicate.SystemLog {
 	return predicate.SystemLog(sql.FieldIn(FieldUserID, vs...))
 }
 
 // UserIDNotIn applies the NotIn predicate on the "user_id" field.
-func UserIDNotIn(vs ...uint64) predicate.SystemLog {
+func UserIDNotIn(vs ...string) predicate.SystemLog {
 	return predicate.SystemLog(sql.FieldNotIn(FieldUserID, vs...))
 }
 
 // UserIDGT applies the GT predicate on the "user_id" field.
-func UserIDGT(v uint64) predicate.SystemLog {
+func UserIDGT(v string) predicate.SystemLog {
 	return predicate.SystemLog(sql.FieldGT(FieldUserID, v))
 }
 
 // UserIDGTE applies the GTE predicate on the "user_id" field.
-func UserIDGTE(v uint64) predicate.SystemLog {
+func UserIDGTE(v string) predicate.SystemLog {
 	return predicate.SystemLog(sql.FieldGTE(FieldUserID, v))
 }
 
 // UserIDLT applies the LT predicate on the "user_id" field.
-func UserIDLT(v uint64) predicate.SystemLog {
+func UserIDLT(v string) predicate.SystemLog {
 	return predicate.SystemLog(sql.FieldLT(FieldUserID, v))
 }
 
 // UserIDLTE applies the LTE predicate on the "user_id" field.
-func UserIDLTE(v uint64) predicate.SystemLog {
+func UserIDLTE(v string) predicate.SystemLog {
 	return predicate.SystemLog(sql.FieldLTE(FieldUserID, v))
+}
+
+// UserIDContains applies the Contains predicate on the "user_id" field.
+func UserIDContains(v string) predicate.SystemLog {
+	return predicate.SystemLog(sql.FieldContains(FieldUserID, v))
+}
+
+// UserIDHasPrefix applies the HasPrefix predicate on the "user_id" field.
+func UserIDHasPrefix(v string) predicate.SystemLog {
+	return predicate.SystemLog(sql.FieldHasPrefix(FieldUserID, v))
+}
+
+// UserIDHasSuffix applies the HasSuffix predicate on the "user_id" field.
+func UserIDHasSuffix(v string) predicate.SystemLog {
+	return predicate.SystemLog(sql.FieldHasSuffix(FieldUserID, v))
+}
+
+// UserIDEqualFold applies the EqualFold predicate on the "user_id" field.
+func UserIDEqualFold(v string) predicate.SystemLog {
+	return predicate.SystemLog(sql.FieldEqualFold(FieldUserID, v))
+}
+
+// UserIDContainsFold applies the ContainsFold predicate on the "user_id" field.
+func UserIDContainsFold(v string) predicate.SystemLog {
+	return predicate.SystemLog(sql.FieldContainsFold(FieldUserID, v))
 }
 
 // And groups predicates with the AND operator between them.

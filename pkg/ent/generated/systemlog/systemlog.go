@@ -65,7 +65,7 @@ var (
 	// DefaultOperator holds the default value on creation for the "operator" field.
 	DefaultOperator string
 	// DefaultUserID holds the default value on creation for the "user_id" field.
-	DefaultUserID uint64
+	DefaultUserID string
 )
 
 // OrderOption defines the ordering options for the SystemLog queries.

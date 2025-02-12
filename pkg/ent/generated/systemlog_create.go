@@ -98,15 +98,15 @@ func (slc *SystemLogCreate) SetNillableOperator(s *string) *SystemLogCreate {
 }
 
 // SetUserID sets the "user_id" field.
-func (slc *SystemLogCreate) SetUserID(u uint64) *SystemLogCreate {
-	slc.mutation.SetUserID(u)
+func (slc *SystemLogCreate) SetUserID(s string) *SystemLogCreate {
+	slc.mutation.SetUserID(s)
 	return slc
 }
 
 // SetNillableUserID sets the "user_id" field if the given value is not nil.
-func (slc *SystemLogCreate) SetNillableUserID(u *uint64) *SystemLogCreate {
-	if u != nil {
-		slc.SetUserID(*u)
+func (slc *SystemLogCreate) SetNillableUserID(s *string) *SystemLogCreate {
+	if s != nil {
+		slc.SetUserID(*s)
 	}
 	return slc
 }
@@ -252,7 +252,7 @@ func (slc *SystemLogCreate) createSpec() (*SystemLog, *sqlgraph.CreateSpec) {
 		_node.Operator = value
 	}
 	if value, ok := slc.mutation.UserID(); ok {
-		_spec.SetField(systemlog.FieldUserID, field.TypeUint64, value)
+		_spec.SetField(systemlog.FieldUserID, field.TypeString, value)
 		_node.UserID = value
 	}
 	return _node, _spec
@@ -368,7 +368,7 @@ func (u *SystemLogUpsert) UpdateOperator() *SystemLogUpsert {
 }
 
 // SetUserID sets the "user_id" field.
-func (u *SystemLogUpsert) SetUserID(v uint64) *SystemLogUpsert {
+func (u *SystemLogUpsert) SetUserID(v string) *SystemLogUpsert {
 	u.Set(systemlog.FieldUserID, v)
 	return u
 }
@@ -376,12 +376,6 @@ func (u *SystemLogUpsert) SetUserID(v uint64) *SystemLogUpsert {
 // UpdateUserID sets the "user_id" field to the value that was provided on create.
 func (u *SystemLogUpsert) UpdateUserID() *SystemLogUpsert {
 	u.SetExcluded(systemlog.FieldUserID)
-	return u
-}
-
-// AddUserID adds v to the "user_id" field.
-func (u *SystemLogUpsert) AddUserID(v uint64) *SystemLogUpsert {
-	u.Add(systemlog.FieldUserID, v)
 	return u
 }
 
@@ -501,16 +495,9 @@ func (u *SystemLogUpsertOne) UpdateOperator() *SystemLogUpsertOne {
 }
 
 // SetUserID sets the "user_id" field.
-func (u *SystemLogUpsertOne) SetUserID(v uint64) *SystemLogUpsertOne {
+func (u *SystemLogUpsertOne) SetUserID(v string) *SystemLogUpsertOne {
 	return u.Update(func(s *SystemLogUpsert) {
 		s.SetUserID(v)
-	})
-}
-
-// AddUserID adds v to the "user_id" field.
-func (u *SystemLogUpsertOne) AddUserID(v uint64) *SystemLogUpsertOne {
-	return u.Update(func(s *SystemLogUpsert) {
-		s.AddUserID(v)
 	})
 }
 
@@ -803,16 +790,9 @@ func (u *SystemLogUpsertBulk) UpdateOperator() *SystemLogUpsertBulk {
 }
 
 // SetUserID sets the "user_id" field.
-func (u *SystemLogUpsertBulk) SetUserID(v uint64) *SystemLogUpsertBulk {
+func (u *SystemLogUpsertBulk) SetUserID(v string) *SystemLogUpsertBulk {
 	return u.Update(func(s *SystemLogUpsert) {
 		s.SetUserID(v)
-	})
-}
-
-// AddUserID adds v to the "user_id" field.
-func (u *SystemLogUpsertBulk) AddUserID(v uint64) *SystemLogUpsertBulk {
-	return u.Update(func(s *SystemLogUpsert) {
-		s.AddUserID(v)
 	})
 }
 

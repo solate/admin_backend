@@ -29,7 +29,7 @@ type SystemLog struct {
 	// 操作人
 	Operator string `json:"operator,omitempty"`
 	// 用户ID
-	UserID       uint64 `json:"user_id,omitempty"`
+	UserID       string `json:"user_id,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -38,9 +38,9 @@ func (*SystemLog) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case systemlog.FieldID, systemlog.FieldCreatedAt, systemlog.FieldUserID:
+		case systemlog.FieldID, systemlog.FieldCreatedAt:
 			values[i] = new(sql.NullInt64)
-		case systemlog.FieldTenantCode, systemlog.FieldModule, systemlog.FieldAction, systemlog.FieldContent, systemlog.FieldOperator:
+		case systemlog.FieldTenantCode, systemlog.FieldModule, systemlog.FieldAction, systemlog.FieldContent, systemlog.FieldOperator, systemlog.FieldUserID:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -100,10 +100,10 @@ func (sl *SystemLog) assignValues(columns []string, values []any) error {
 				sl.Operator = value.String
 			}
 		case systemlog.FieldUserID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value.Valid {
-				sl.UserID = uint64(value.Int64)
+				sl.UserID = value.String
 			}
 		default:
 			sl.selectValues.Set(columns[i], values[i])
@@ -160,7 +160,7 @@ func (sl *SystemLog) String() string {
 	builder.WriteString(sl.Operator)
 	builder.WriteString(", ")
 	builder.WriteString("user_id=")
-	builder.WriteString(fmt.Sprintf("%v", sl.UserID))
+	builder.WriteString(sl.UserID)
 	builder.WriteByte(')')
 	return builder.String()
 }

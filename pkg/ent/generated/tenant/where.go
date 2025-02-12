@@ -69,7 +69,7 @@ func DeletedAt(v int64) predicate.Tenant {
 }
 
 // TenantID applies equality check predicate on the "tenant_id" field. It's identical to TenantIDEQ.
-func TenantID(v uint64) predicate.Tenant {
+func TenantID(v string) predicate.Tenant {
 	return predicate.Tenant(sql.FieldEQ(FieldTenantID, v))
 }
 
@@ -224,43 +224,68 @@ func DeletedAtNotNil() predicate.Tenant {
 }
 
 // TenantIDEQ applies the EQ predicate on the "tenant_id" field.
-func TenantIDEQ(v uint64) predicate.Tenant {
+func TenantIDEQ(v string) predicate.Tenant {
 	return predicate.Tenant(sql.FieldEQ(FieldTenantID, v))
 }
 
 // TenantIDNEQ applies the NEQ predicate on the "tenant_id" field.
-func TenantIDNEQ(v uint64) predicate.Tenant {
+func TenantIDNEQ(v string) predicate.Tenant {
 	return predicate.Tenant(sql.FieldNEQ(FieldTenantID, v))
 }
 
 // TenantIDIn applies the In predicate on the "tenant_id" field.
-func TenantIDIn(vs ...uint64) predicate.Tenant {
+func TenantIDIn(vs ...string) predicate.Tenant {
 	return predicate.Tenant(sql.FieldIn(FieldTenantID, vs...))
 }
 
 // TenantIDNotIn applies the NotIn predicate on the "tenant_id" field.
-func TenantIDNotIn(vs ...uint64) predicate.Tenant {
+func TenantIDNotIn(vs ...string) predicate.Tenant {
 	return predicate.Tenant(sql.FieldNotIn(FieldTenantID, vs...))
 }
 
 // TenantIDGT applies the GT predicate on the "tenant_id" field.
-func TenantIDGT(v uint64) predicate.Tenant {
+func TenantIDGT(v string) predicate.Tenant {
 	return predicate.Tenant(sql.FieldGT(FieldTenantID, v))
 }
 
 // TenantIDGTE applies the GTE predicate on the "tenant_id" field.
-func TenantIDGTE(v uint64) predicate.Tenant {
+func TenantIDGTE(v string) predicate.Tenant {
 	return predicate.Tenant(sql.FieldGTE(FieldTenantID, v))
 }
 
 // TenantIDLT applies the LT predicate on the "tenant_id" field.
-func TenantIDLT(v uint64) predicate.Tenant {
+func TenantIDLT(v string) predicate.Tenant {
 	return predicate.Tenant(sql.FieldLT(FieldTenantID, v))
 }
 
 // TenantIDLTE applies the LTE predicate on the "tenant_id" field.
-func TenantIDLTE(v uint64) predicate.Tenant {
+func TenantIDLTE(v string) predicate.Tenant {
 	return predicate.Tenant(sql.FieldLTE(FieldTenantID, v))
+}
+
+// TenantIDContains applies the Contains predicate on the "tenant_id" field.
+func TenantIDContains(v string) predicate.Tenant {
+	return predicate.Tenant(sql.FieldContains(FieldTenantID, v))
+}
+
+// TenantIDHasPrefix applies the HasPrefix predicate on the "tenant_id" field.
+func TenantIDHasPrefix(v string) predicate.Tenant {
+	return predicate.Tenant(sql.FieldHasPrefix(FieldTenantID, v))
+}
+
+// TenantIDHasSuffix applies the HasSuffix predicate on the "tenant_id" field.
+func TenantIDHasSuffix(v string) predicate.Tenant {
+	return predicate.Tenant(sql.FieldHasSuffix(FieldTenantID, v))
+}
+
+// TenantIDEqualFold applies the EqualFold predicate on the "tenant_id" field.
+func TenantIDEqualFold(v string) predicate.Tenant {
+	return predicate.Tenant(sql.FieldEqualFold(FieldTenantID, v))
+}
+
+// TenantIDContainsFold applies the ContainsFold predicate on the "tenant_id" field.
+func TenantIDContainsFold(v string) predicate.Tenant {
+	return predicate.Tenant(sql.FieldContainsFold(FieldTenantID, v))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.

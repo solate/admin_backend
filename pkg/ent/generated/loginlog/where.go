@@ -64,12 +64,12 @@ func TenantCode(v string) predicate.LoginLog {
 }
 
 // LogID applies equality check predicate on the "log_id" field. It's identical to LogIDEQ.
-func LogID(v uint64) predicate.LoginLog {
+func LogID(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldLogID, v))
 }
 
 // UserID applies equality check predicate on the "user_id" field. It's identical to UserIDEQ.
-func UserID(v uint64) predicate.LoginLog {
+func UserID(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldUserID, v))
 }
 
@@ -219,83 +219,133 @@ func TenantCodeContainsFold(v string) predicate.LoginLog {
 }
 
 // LogIDEQ applies the EQ predicate on the "log_id" field.
-func LogIDEQ(v uint64) predicate.LoginLog {
+func LogIDEQ(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldLogID, v))
 }
 
 // LogIDNEQ applies the NEQ predicate on the "log_id" field.
-func LogIDNEQ(v uint64) predicate.LoginLog {
+func LogIDNEQ(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldNEQ(FieldLogID, v))
 }
 
 // LogIDIn applies the In predicate on the "log_id" field.
-func LogIDIn(vs ...uint64) predicate.LoginLog {
+func LogIDIn(vs ...string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldIn(FieldLogID, vs...))
 }
 
 // LogIDNotIn applies the NotIn predicate on the "log_id" field.
-func LogIDNotIn(vs ...uint64) predicate.LoginLog {
+func LogIDNotIn(vs ...string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldNotIn(FieldLogID, vs...))
 }
 
 // LogIDGT applies the GT predicate on the "log_id" field.
-func LogIDGT(v uint64) predicate.LoginLog {
+func LogIDGT(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldGT(FieldLogID, v))
 }
 
 // LogIDGTE applies the GTE predicate on the "log_id" field.
-func LogIDGTE(v uint64) predicate.LoginLog {
+func LogIDGTE(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldGTE(FieldLogID, v))
 }
 
 // LogIDLT applies the LT predicate on the "log_id" field.
-func LogIDLT(v uint64) predicate.LoginLog {
+func LogIDLT(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldLT(FieldLogID, v))
 }
 
 // LogIDLTE applies the LTE predicate on the "log_id" field.
-func LogIDLTE(v uint64) predicate.LoginLog {
+func LogIDLTE(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldLTE(FieldLogID, v))
 }
 
+// LogIDContains applies the Contains predicate on the "log_id" field.
+func LogIDContains(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldContains(FieldLogID, v))
+}
+
+// LogIDHasPrefix applies the HasPrefix predicate on the "log_id" field.
+func LogIDHasPrefix(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldHasPrefix(FieldLogID, v))
+}
+
+// LogIDHasSuffix applies the HasSuffix predicate on the "log_id" field.
+func LogIDHasSuffix(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldHasSuffix(FieldLogID, v))
+}
+
+// LogIDEqualFold applies the EqualFold predicate on the "log_id" field.
+func LogIDEqualFold(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldEqualFold(FieldLogID, v))
+}
+
+// LogIDContainsFold applies the ContainsFold predicate on the "log_id" field.
+func LogIDContainsFold(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldContainsFold(FieldLogID, v))
+}
+
 // UserIDEQ applies the EQ predicate on the "user_id" field.
-func UserIDEQ(v uint64) predicate.LoginLog {
+func UserIDEQ(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldEQ(FieldUserID, v))
 }
 
 // UserIDNEQ applies the NEQ predicate on the "user_id" field.
-func UserIDNEQ(v uint64) predicate.LoginLog {
+func UserIDNEQ(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldNEQ(FieldUserID, v))
 }
 
 // UserIDIn applies the In predicate on the "user_id" field.
-func UserIDIn(vs ...uint64) predicate.LoginLog {
+func UserIDIn(vs ...string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldIn(FieldUserID, vs...))
 }
 
 // UserIDNotIn applies the NotIn predicate on the "user_id" field.
-func UserIDNotIn(vs ...uint64) predicate.LoginLog {
+func UserIDNotIn(vs ...string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldNotIn(FieldUserID, vs...))
 }
 
 // UserIDGT applies the GT predicate on the "user_id" field.
-func UserIDGT(v uint64) predicate.LoginLog {
+func UserIDGT(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldGT(FieldUserID, v))
 }
 
 // UserIDGTE applies the GTE predicate on the "user_id" field.
-func UserIDGTE(v uint64) predicate.LoginLog {
+func UserIDGTE(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldGTE(FieldUserID, v))
 }
 
 // UserIDLT applies the LT predicate on the "user_id" field.
-func UserIDLT(v uint64) predicate.LoginLog {
+func UserIDLT(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldLT(FieldUserID, v))
 }
 
 // UserIDLTE applies the LTE predicate on the "user_id" field.
-func UserIDLTE(v uint64) predicate.LoginLog {
+func UserIDLTE(v string) predicate.LoginLog {
 	return predicate.LoginLog(sql.FieldLTE(FieldUserID, v))
+}
+
+// UserIDContains applies the Contains predicate on the "user_id" field.
+func UserIDContains(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldContains(FieldUserID, v))
+}
+
+// UserIDHasPrefix applies the HasPrefix predicate on the "user_id" field.
+func UserIDHasPrefix(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldHasPrefix(FieldUserID, v))
+}
+
+// UserIDHasSuffix applies the HasSuffix predicate on the "user_id" field.
+func UserIDHasSuffix(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldHasSuffix(FieldUserID, v))
+}
+
+// UserIDEqualFold applies the EqualFold predicate on the "user_id" field.
+func UserIDEqualFold(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldEqualFold(FieldUserID, v))
+}
+
+// UserIDContainsFold applies the ContainsFold predicate on the "user_id" field.
+func UserIDContainsFold(v string) predicate.LoginLog {
+	return predicate.LoginLog(sql.FieldContainsFold(FieldUserID, v))
 }
 
 // UserNameEQ applies the EQ predicate on the "user_name" field.

@@ -45,10 +45,8 @@ type LoginLogMutation struct {
 	created_at    *int64
 	addcreated_at *int64
 	tenant_code   *string
-	log_id        *uint64
-	addlog_id     *int64
-	user_id       *uint64
-	adduser_id    *int64
+	log_id        *string
+	user_id       *string
 	user_name     *string
 	ip            *string
 	message       *string
@@ -255,13 +253,12 @@ func (m *LoginLogMutation) ResetTenantCode() {
 }
 
 // SetLogID sets the "log_id" field.
-func (m *LoginLogMutation) SetLogID(u uint64) {
-	m.log_id = &u
-	m.addlog_id = nil
+func (m *LoginLogMutation) SetLogID(s string) {
+	m.log_id = &s
 }
 
 // LogID returns the value of the "log_id" field in the mutation.
-func (m *LoginLogMutation) LogID() (r uint64, exists bool) {
+func (m *LoginLogMutation) LogID() (r string, exists bool) {
 	v := m.log_id
 	if v == nil {
 		return
@@ -272,7 +269,7 @@ func (m *LoginLogMutation) LogID() (r uint64, exists bool) {
 // OldLogID returns the old "log_id" field's value of the LoginLog entity.
 // If the LoginLog object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoginLogMutation) OldLogID(ctx context.Context) (v uint64, err error) {
+func (m *LoginLogMutation) OldLogID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldLogID is only allowed on UpdateOne operations")
 	}
@@ -286,38 +283,18 @@ func (m *LoginLogMutation) OldLogID(ctx context.Context) (v uint64, err error) {
 	return oldValue.LogID, nil
 }
 
-// AddLogID adds u to the "log_id" field.
-func (m *LoginLogMutation) AddLogID(u int64) {
-	if m.addlog_id != nil {
-		*m.addlog_id += u
-	} else {
-		m.addlog_id = &u
-	}
-}
-
-// AddedLogID returns the value that was added to the "log_id" field in this mutation.
-func (m *LoginLogMutation) AddedLogID() (r int64, exists bool) {
-	v := m.addlog_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ResetLogID resets all changes to the "log_id" field.
 func (m *LoginLogMutation) ResetLogID() {
 	m.log_id = nil
-	m.addlog_id = nil
 }
 
 // SetUserID sets the "user_id" field.
-func (m *LoginLogMutation) SetUserID(u uint64) {
-	m.user_id = &u
-	m.adduser_id = nil
+func (m *LoginLogMutation) SetUserID(s string) {
+	m.user_id = &s
 }
 
 // UserID returns the value of the "user_id" field in the mutation.
-func (m *LoginLogMutation) UserID() (r uint64, exists bool) {
+func (m *LoginLogMutation) UserID() (r string, exists bool) {
 	v := m.user_id
 	if v == nil {
 		return
@@ -328,7 +305,7 @@ func (m *LoginLogMutation) UserID() (r uint64, exists bool) {
 // OldUserID returns the old "user_id" field's value of the LoginLog entity.
 // If the LoginLog object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoginLogMutation) OldUserID(ctx context.Context) (v uint64, err error) {
+func (m *LoginLogMutation) OldUserID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
 	}
@@ -342,28 +319,9 @@ func (m *LoginLogMutation) OldUserID(ctx context.Context) (v uint64, err error) 
 	return oldValue.UserID, nil
 }
 
-// AddUserID adds u to the "user_id" field.
-func (m *LoginLogMutation) AddUserID(u int64) {
-	if m.adduser_id != nil {
-		*m.adduser_id += u
-	} else {
-		m.adduser_id = &u
-	}
-}
-
-// AddedUserID returns the value that was added to the "user_id" field in this mutation.
-func (m *LoginLogMutation) AddedUserID() (r int64, exists bool) {
-	v := m.adduser_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ResetUserID resets all changes to the "user_id" field.
 func (m *LoginLogMutation) ResetUserID() {
 	m.user_id = nil
-	m.adduser_id = nil
 }
 
 // SetUserName sets the "user_name" field.
@@ -913,14 +871,14 @@ func (m *LoginLogMutation) SetField(name string, value ent.Value) error {
 		m.SetTenantCode(v)
 		return nil
 	case loginlog.FieldLogID:
-		v, ok := value.(uint64)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetLogID(v)
 		return nil
 	case loginlog.FieldUserID:
-		v, ok := value.(uint64)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -993,12 +951,6 @@ func (m *LoginLogMutation) AddedFields() []string {
 	if m.addcreated_at != nil {
 		fields = append(fields, loginlog.FieldCreatedAt)
 	}
-	if m.addlog_id != nil {
-		fields = append(fields, loginlog.FieldLogID)
-	}
-	if m.adduser_id != nil {
-		fields = append(fields, loginlog.FieldUserID)
-	}
 	if m.addlogin_time != nil {
 		fields = append(fields, loginlog.FieldLoginTime)
 	}
@@ -1012,10 +964,6 @@ func (m *LoginLogMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case loginlog.FieldCreatedAt:
 		return m.AddedCreatedAt()
-	case loginlog.FieldLogID:
-		return m.AddedLogID()
-	case loginlog.FieldUserID:
-		return m.AddedUserID()
 	case loginlog.FieldLoginTime:
 		return m.AddedLoginTime()
 	}
@@ -1033,20 +981,6 @@ func (m *LoginLogMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddCreatedAt(v)
-		return nil
-	case loginlog.FieldLogID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddLogID(v)
-		return nil
-	case loginlog.FieldUserID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddUserID(v)
 		return nil
 	case loginlog.FieldLoginTime:
 		v, ok := value.(int64)
@@ -2477,8 +2411,7 @@ type RoleMutation struct {
 	deleted_at    *int
 	adddeleted_at *int
 	tenant_code   *string
-	role_id       *uint64
-	addrole_id    *int64
+	role_id       *string
 	name          *string
 	code          *string
 	description   *string
@@ -2809,13 +2742,12 @@ func (m *RoleMutation) ResetTenantCode() {
 }
 
 // SetRoleID sets the "role_id" field.
-func (m *RoleMutation) SetRoleID(u uint64) {
-	m.role_id = &u
-	m.addrole_id = nil
+func (m *RoleMutation) SetRoleID(s string) {
+	m.role_id = &s
 }
 
 // RoleID returns the value of the "role_id" field in the mutation.
-func (m *RoleMutation) RoleID() (r uint64, exists bool) {
+func (m *RoleMutation) RoleID() (r string, exists bool) {
 	v := m.role_id
 	if v == nil {
 		return
@@ -2826,7 +2758,7 @@ func (m *RoleMutation) RoleID() (r uint64, exists bool) {
 // OldRoleID returns the old "role_id" field's value of the Role entity.
 // If the Role object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *RoleMutation) OldRoleID(ctx context.Context) (v uint64, err error) {
+func (m *RoleMutation) OldRoleID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldRoleID is only allowed on UpdateOne operations")
 	}
@@ -2840,28 +2772,9 @@ func (m *RoleMutation) OldRoleID(ctx context.Context) (v uint64, err error) {
 	return oldValue.RoleID, nil
 }
 
-// AddRoleID adds u to the "role_id" field.
-func (m *RoleMutation) AddRoleID(u int64) {
-	if m.addrole_id != nil {
-		*m.addrole_id += u
-	} else {
-		m.addrole_id = &u
-	}
-}
-
-// AddedRoleID returns the value that was added to the "role_id" field in this mutation.
-func (m *RoleMutation) AddedRoleID() (r int64, exists bool) {
-	v := m.addrole_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ResetRoleID resets all changes to the "role_id" field.
 func (m *RoleMutation) ResetRoleID() {
 	m.role_id = nil
-	m.addrole_id = nil
 }
 
 // SetName sets the "name" field.
@@ -3257,7 +3170,7 @@ func (m *RoleMutation) SetField(name string, value ent.Value) error {
 		m.SetTenantCode(v)
 		return nil
 	case role.FieldRoleID:
-		v, ok := value.(uint64)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3315,9 +3228,6 @@ func (m *RoleMutation) AddedFields() []string {
 	if m.adddeleted_at != nil {
 		fields = append(fields, role.FieldDeletedAt)
 	}
-	if m.addrole_id != nil {
-		fields = append(fields, role.FieldRoleID)
-	}
 	if m.addstatus != nil {
 		fields = append(fields, role.FieldStatus)
 	}
@@ -3338,8 +3248,6 @@ func (m *RoleMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUpdatedAt()
 	case role.FieldDeletedAt:
 		return m.AddedDeletedAt()
-	case role.FieldRoleID:
-		return m.AddedRoleID()
 	case role.FieldStatus:
 		return m.AddedStatus()
 	case role.FieldSort:
@@ -3373,13 +3281,6 @@ func (m *RoleMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddDeletedAt(v)
-		return nil
-	case role.FieldRoleID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddRoleID(v)
 		return nil
 	case role.FieldStatus:
 		v, ok := value.(int)
@@ -3532,8 +3433,7 @@ type SystemLogMutation struct {
 	action        *string
 	content       *string
 	operator      *string
-	user_id       *uint64
-	adduser_id    *int64
+	user_id       *string
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*SystemLog, error)
@@ -3875,13 +3775,12 @@ func (m *SystemLogMutation) ResetOperator() {
 }
 
 // SetUserID sets the "user_id" field.
-func (m *SystemLogMutation) SetUserID(u uint64) {
-	m.user_id = &u
-	m.adduser_id = nil
+func (m *SystemLogMutation) SetUserID(s string) {
+	m.user_id = &s
 }
 
 // UserID returns the value of the "user_id" field in the mutation.
-func (m *SystemLogMutation) UserID() (r uint64, exists bool) {
+func (m *SystemLogMutation) UserID() (r string, exists bool) {
 	v := m.user_id
 	if v == nil {
 		return
@@ -3892,7 +3791,7 @@ func (m *SystemLogMutation) UserID() (r uint64, exists bool) {
 // OldUserID returns the old "user_id" field's value of the SystemLog entity.
 // If the SystemLog object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SystemLogMutation) OldUserID(ctx context.Context) (v uint64, err error) {
+func (m *SystemLogMutation) OldUserID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
 	}
@@ -3906,28 +3805,9 @@ func (m *SystemLogMutation) OldUserID(ctx context.Context) (v uint64, err error)
 	return oldValue.UserID, nil
 }
 
-// AddUserID adds u to the "user_id" field.
-func (m *SystemLogMutation) AddUserID(u int64) {
-	if m.adduser_id != nil {
-		*m.adduser_id += u
-	} else {
-		m.adduser_id = &u
-	}
-}
-
-// AddedUserID returns the value that was added to the "user_id" field in this mutation.
-func (m *SystemLogMutation) AddedUserID() (r int64, exists bool) {
-	v := m.adduser_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ResetUserID resets all changes to the "user_id" field.
 func (m *SystemLogMutation) ResetUserID() {
 	m.user_id = nil
-	m.adduser_id = nil
 }
 
 // Where appends a list predicates to the SystemLogMutation builder.
@@ -4083,7 +3963,7 @@ func (m *SystemLogMutation) SetField(name string, value ent.Value) error {
 		m.SetOperator(v)
 		return nil
 	case systemlog.FieldUserID:
-		v, ok := value.(uint64)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -4100,9 +3980,6 @@ func (m *SystemLogMutation) AddedFields() []string {
 	if m.addcreated_at != nil {
 		fields = append(fields, systemlog.FieldCreatedAt)
 	}
-	if m.adduser_id != nil {
-		fields = append(fields, systemlog.FieldUserID)
-	}
 	return fields
 }
 
@@ -4113,8 +3990,6 @@ func (m *SystemLogMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case systemlog.FieldCreatedAt:
 		return m.AddedCreatedAt()
-	case systemlog.FieldUserID:
-		return m.AddedUserID()
 	}
 	return nil, false
 }
@@ -4130,13 +4005,6 @@ func (m *SystemLogMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddCreatedAt(v)
-		return nil
-	case systemlog.FieldUserID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddUserID(v)
 		return nil
 	}
 	return fmt.Errorf("unknown SystemLog numeric field %s", name)
@@ -4250,8 +4118,7 @@ type TenantMutation struct {
 	addupdated_at *int64
 	deleted_at    *int64
 	adddeleted_at *int64
-	tenant_id     *uint64
-	addtenant_id  *int64
+	tenant_id     *string
 	name          *string
 	code          *string
 	description   *string
@@ -4544,13 +4411,12 @@ func (m *TenantMutation) ResetDeletedAt() {
 }
 
 // SetTenantID sets the "tenant_id" field.
-func (m *TenantMutation) SetTenantID(u uint64) {
-	m.tenant_id = &u
-	m.addtenant_id = nil
+func (m *TenantMutation) SetTenantID(s string) {
+	m.tenant_id = &s
 }
 
 // TenantID returns the value of the "tenant_id" field in the mutation.
-func (m *TenantMutation) TenantID() (r uint64, exists bool) {
+func (m *TenantMutation) TenantID() (r string, exists bool) {
 	v := m.tenant_id
 	if v == nil {
 		return
@@ -4561,7 +4427,7 @@ func (m *TenantMutation) TenantID() (r uint64, exists bool) {
 // OldTenantID returns the old "tenant_id" field's value of the Tenant entity.
 // If the Tenant object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TenantMutation) OldTenantID(ctx context.Context) (v uint64, err error) {
+func (m *TenantMutation) OldTenantID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldTenantID is only allowed on UpdateOne operations")
 	}
@@ -4575,28 +4441,9 @@ func (m *TenantMutation) OldTenantID(ctx context.Context) (v uint64, err error) 
 	return oldValue.TenantID, nil
 }
 
-// AddTenantID adds u to the "tenant_id" field.
-func (m *TenantMutation) AddTenantID(u int64) {
-	if m.addtenant_id != nil {
-		*m.addtenant_id += u
-	} else {
-		m.addtenant_id = &u
-	}
-}
-
-// AddedTenantID returns the value that was added to the "tenant_id" field in this mutation.
-func (m *TenantMutation) AddedTenantID() (r int64, exists bool) {
-	v := m.addtenant_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ResetTenantID resets all changes to the "tenant_id" field.
 func (m *TenantMutation) ResetTenantID() {
 	m.tenant_id = nil
-	m.addtenant_id = nil
 }
 
 // SetName sets the "name" field.
@@ -4902,7 +4749,7 @@ func (m *TenantMutation) SetField(name string, value ent.Value) error {
 		m.SetDeletedAt(v)
 		return nil
 	case tenant.FieldTenantID:
-		v, ok := value.(uint64)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -4953,9 +4800,6 @@ func (m *TenantMutation) AddedFields() []string {
 	if m.adddeleted_at != nil {
 		fields = append(fields, tenant.FieldDeletedAt)
 	}
-	if m.addtenant_id != nil {
-		fields = append(fields, tenant.FieldTenantID)
-	}
 	if m.addstatus != nil {
 		fields = append(fields, tenant.FieldStatus)
 	}
@@ -4973,8 +4817,6 @@ func (m *TenantMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUpdatedAt()
 	case tenant.FieldDeletedAt:
 		return m.AddedDeletedAt()
-	case tenant.FieldTenantID:
-		return m.AddedTenantID()
 	case tenant.FieldStatus:
 		return m.AddedStatus()
 	}
@@ -5006,13 +4848,6 @@ func (m *TenantMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddDeletedAt(v)
-		return nil
-	case tenant.FieldTenantID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddTenantID(v)
 		return nil
 	case tenant.FieldStatus:
 		v, ok := value.(int)
@@ -5146,8 +4981,7 @@ type UserMutation struct {
 	deleted_at    *int64
 	adddeleted_at *int64
 	tenant_code   *string
-	user_id       *uint64
-	adduser_id    *int64
+	user_id       *string
 	user_name     *string
 	pwd_hashed    *string
 	pwd_salt      *string
@@ -5489,13 +5323,12 @@ func (m *UserMutation) ResetTenantCode() {
 }
 
 // SetUserID sets the "user_id" field.
-func (m *UserMutation) SetUserID(u uint64) {
-	m.user_id = &u
-	m.adduser_id = nil
+func (m *UserMutation) SetUserID(s string) {
+	m.user_id = &s
 }
 
 // UserID returns the value of the "user_id" field in the mutation.
-func (m *UserMutation) UserID() (r uint64, exists bool) {
+func (m *UserMutation) UserID() (r string, exists bool) {
 	v := m.user_id
 	if v == nil {
 		return
@@ -5506,7 +5339,7 @@ func (m *UserMutation) UserID() (r uint64, exists bool) {
 // OldUserID returns the old "user_id" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldUserID(ctx context.Context) (v uint64, err error) {
+func (m *UserMutation) OldUserID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
 	}
@@ -5520,28 +5353,9 @@ func (m *UserMutation) OldUserID(ctx context.Context) (v uint64, err error) {
 	return oldValue.UserID, nil
 }
 
-// AddUserID adds u to the "user_id" field.
-func (m *UserMutation) AddUserID(u int64) {
-	if m.adduser_id != nil {
-		*m.adduser_id += u
-	} else {
-		m.adduser_id = &u
-	}
-}
-
-// AddedUserID returns the value that was added to the "user_id" field in this mutation.
-func (m *UserMutation) AddedUserID() (r int64, exists bool) {
-	v := m.adduser_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ResetUserID resets all changes to the "user_id" field.
 func (m *UserMutation) ResetUserID() {
 	m.user_id = nil
-	m.adduser_id = nil
 }
 
 // SetUserName sets the "user_name" field.
@@ -6328,7 +6142,7 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		m.SetTenantCode(v)
 		return nil
 	case user.FieldUserID:
-		v, ok := value.(uint64)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -6442,9 +6256,6 @@ func (m *UserMutation) AddedFields() []string {
 	if m.adddeleted_at != nil {
 		fields = append(fields, user.FieldDeletedAt)
 	}
-	if m.adduser_id != nil {
-		fields = append(fields, user.FieldUserID)
-	}
 	if m.addsex != nil {
 		fields = append(fields, user.FieldSex)
 	}
@@ -6474,8 +6285,6 @@ func (m *UserMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUpdatedAt()
 	case user.FieldDeletedAt:
 		return m.AddedDeletedAt()
-	case user.FieldUserID:
-		return m.AddedUserID()
 	case user.FieldSex:
 		return m.AddedSex()
 	case user.FieldStatus:
@@ -6515,13 +6324,6 @@ func (m *UserMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddDeletedAt(v)
-		return nil
-	case user.FieldUserID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddUserID(v)
 		return nil
 	case user.FieldSex:
 		v, ok := value.(int)

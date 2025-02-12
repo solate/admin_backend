@@ -29,7 +29,7 @@ func (User) Fields() []ent.Field {
 		field.Int64("deleted_at").Optional().Nillable().Comment("删除时间"),
 		field.String("tenant_code").Comment("租户code"),
 
-		field.Uint64("user_id").Unique().Comment("用户ID"),
+		field.String("user_id").Unique().Comment("用户ID"),
 		field.String("user_name").NotEmpty().Default("").Comment("用户名"),
 		field.String("pwd_hashed").NotEmpty().Default("").Comment("hash后的密码"),
 		field.String("pwd_salt").NotEmpty().Default("").Comment("密码加盐"),

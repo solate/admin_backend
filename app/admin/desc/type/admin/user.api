@@ -27,32 +27,32 @@ type (
         Status       int      `json:"status"`                      // 状态
         Sex          int      `json:"sex"`                         // 性别
         Avatar       string   `json:"avatar"`                      // 头像
-        RoleIDs      []uint64 `json:"role_ids"`                    // 角色ID列表
+        RoleIDs      []string `json:"role_ids"`                    // 角色ID列表
     }
 
     // 创建用户响应
     CreateUserResp {
-        UserID uint64 `json:"user_id"` // 用户ID
+        UserID string `json:"user_id"` // 用户ID
     }
 
     // 更新用户请求
     UpdateUserReq {
-        UserID   uint64   `path:"user_id"`
+        UserID   string   `path:"user_id"`
         Name     string   `json:"name,optional"`
         // Phone    string   `json:"phone,optional"`
         Email    string   `json:"email,optional"`
         Status   int      `json:"status,optional"`
         Sex      int      `json:"sex,optional"`
         Avatar   string   `json:"avatar,optional"`
-        RoleIDs  []uint64 `json:"role_ids,optional"`
+        RoleIDs  []string `json:"role_ids,optional"`
     }
 
     DeleteUserReq {
-        UserID    uint64    `path:"user_id"`
+        UserID    string    `path:"user_id"`
     }
 
     GetUserReq {
-        UserID uint64 `path:"user_id"`
+        UserID string `path:"user_id"`
     }
     GetUserResp {
         UserInfo
@@ -73,7 +73,7 @@ type (
 
     // 用户基本信息
     UserInfo {
-        UserID    uint64 `json:"user_id"`      // 用户ID
+        UserID    string `json:"user_id"`      // 用户ID
         UserName  string `json:"user_name"`      // 用户名
         Name      string `json:"name"`          // 姓名
         Phone     string `json:"phone"`         // 手机号
@@ -102,8 +102,8 @@ type (
 
     // 登录记录信息
     LoginLogInfo {
-        ID         uint64 `json:"id"`                 // 记录ID
-        UserID     uint64 `json:"user_id"`            // 用户ID
+        LogID         string `json:"log_id"`                 // 记录ID
+        UserID     string `json:"user_id"`            // 用户ID
         UserName   string `json:"user_name"`          // 用户名
         IP         string `json:"ip"`                 // 登录IP
         UserAgent  string `json:"user_agent"`         // 用户代理

@@ -77,23 +77,16 @@ func (tu *TenantUpdate) ClearDeletedAt() *TenantUpdate {
 }
 
 // SetTenantID sets the "tenant_id" field.
-func (tu *TenantUpdate) SetTenantID(u uint64) *TenantUpdate {
-	tu.mutation.ResetTenantID()
-	tu.mutation.SetTenantID(u)
+func (tu *TenantUpdate) SetTenantID(s string) *TenantUpdate {
+	tu.mutation.SetTenantID(s)
 	return tu
 }
 
 // SetNillableTenantID sets the "tenant_id" field if the given value is not nil.
-func (tu *TenantUpdate) SetNillableTenantID(u *uint64) *TenantUpdate {
-	if u != nil {
-		tu.SetTenantID(*u)
+func (tu *TenantUpdate) SetNillableTenantID(s *string) *TenantUpdate {
+	if s != nil {
+		tu.SetTenantID(*s)
 	}
-	return tu
-}
-
-// AddTenantID adds u to the "tenant_id" field.
-func (tu *TenantUpdate) AddTenantID(u int64) *TenantUpdate {
-	tu.mutation.AddTenantID(u)
 	return tu
 }
 
@@ -241,10 +234,7 @@ func (tu *TenantUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(tenant.FieldDeletedAt, field.TypeInt64)
 	}
 	if value, ok := tu.mutation.TenantID(); ok {
-		_spec.SetField(tenant.FieldTenantID, field.TypeUint64, value)
-	}
-	if value, ok := tu.mutation.AddedTenantID(); ok {
-		_spec.AddField(tenant.FieldTenantID, field.TypeUint64, value)
+		_spec.SetField(tenant.FieldTenantID, field.TypeString, value)
 	}
 	if value, ok := tu.mutation.Name(); ok {
 		_spec.SetField(tenant.FieldName, field.TypeString, value)
@@ -332,23 +322,16 @@ func (tuo *TenantUpdateOne) ClearDeletedAt() *TenantUpdateOne {
 }
 
 // SetTenantID sets the "tenant_id" field.
-func (tuo *TenantUpdateOne) SetTenantID(u uint64) *TenantUpdateOne {
-	tuo.mutation.ResetTenantID()
-	tuo.mutation.SetTenantID(u)
+func (tuo *TenantUpdateOne) SetTenantID(s string) *TenantUpdateOne {
+	tuo.mutation.SetTenantID(s)
 	return tuo
 }
 
 // SetNillableTenantID sets the "tenant_id" field if the given value is not nil.
-func (tuo *TenantUpdateOne) SetNillableTenantID(u *uint64) *TenantUpdateOne {
-	if u != nil {
-		tuo.SetTenantID(*u)
+func (tuo *TenantUpdateOne) SetNillableTenantID(s *string) *TenantUpdateOne {
+	if s != nil {
+		tuo.SetTenantID(*s)
 	}
-	return tuo
-}
-
-// AddTenantID adds u to the "tenant_id" field.
-func (tuo *TenantUpdateOne) AddTenantID(u int64) *TenantUpdateOne {
-	tuo.mutation.AddTenantID(u)
 	return tuo
 }
 
@@ -526,10 +509,7 @@ func (tuo *TenantUpdateOne) sqlSave(ctx context.Context) (_node *Tenant, err err
 		_spec.ClearField(tenant.FieldDeletedAt, field.TypeInt64)
 	}
 	if value, ok := tuo.mutation.TenantID(); ok {
-		_spec.SetField(tenant.FieldTenantID, field.TypeUint64, value)
-	}
-	if value, ok := tuo.mutation.AddedTenantID(); ok {
-		_spec.AddField(tenant.FieldTenantID, field.TypeUint64, value)
+		_spec.SetField(tenant.FieldTenantID, field.TypeString, value)
 	}
 	if value, ok := tuo.mutation.Name(); ok {
 		_spec.SetField(tenant.FieldName, field.TypeString, value)

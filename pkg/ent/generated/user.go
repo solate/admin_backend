@@ -25,7 +25,7 @@ type User struct {
 	// 租户code
 	TenantCode string `json:"tenant_code,omitempty"`
 	// 用户ID
-	UserID uint64 `json:"user_id,omitempty"`
+	UserID string `json:"user_id,omitempty"`
 	// 用户名
 	UserName string `json:"user_name,omitempty"`
 	// hash后的密码
@@ -60,9 +60,9 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldID, user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldUserID, user.FieldSex, user.FieldStatus, user.FieldRoleID, user.FieldDeptID, user.FieldPostID:
+		case user.FieldID, user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldSex, user.FieldStatus, user.FieldRoleID, user.FieldDeptID, user.FieldPostID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldTenantCode, user.FieldUserName, user.FieldPwdHashed, user.FieldPwdSalt, user.FieldToken, user.FieldNickName, user.FieldAvatar, user.FieldPhone, user.FieldEmail:
+		case user.FieldTenantCode, user.FieldUserID, user.FieldUserName, user.FieldPwdHashed, user.FieldPwdSalt, user.FieldToken, user.FieldNickName, user.FieldAvatar, user.FieldPhone, user.FieldEmail:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -111,10 +111,10 @@ func (u *User) assignValues(columns []string, values []any) error {
 				u.TenantCode = value.String
 			}
 		case user.FieldUserID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value.Valid {
-				u.UserID = uint64(value.Int64)
+				u.UserID = value.String
 			}
 		case user.FieldUserName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -245,7 +245,7 @@ func (u *User) String() string {
 	builder.WriteString(u.TenantCode)
 	builder.WriteString(", ")
 	builder.WriteString("user_id=")
-	builder.WriteString(fmt.Sprintf("%v", u.UserID))
+	builder.WriteString(u.UserID)
 	builder.WriteString(", ")
 	builder.WriteString("user_name=")
 	builder.WriteString(u.UserName)

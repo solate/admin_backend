@@ -42,7 +42,7 @@ func (r *TenantRepo) Update(ctx context.Context, update *generated.Tenant) (int,
 		Where(tenant.TenantID(update.TenantID)).Save(ctx)
 }
 
-func (r *TenantRepo) GetByTenantID(ctx context.Context, tenantID uint64) (*generated.Tenant, error) {
+func (r *TenantRepo) GetByTenantID(ctx context.Context, tenantID string) (*generated.Tenant, error) {
 	return r.Get(ctx, []predicate.Tenant{tenant.TenantID(tenantID)})
 }
 

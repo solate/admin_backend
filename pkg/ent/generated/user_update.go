@@ -91,23 +91,16 @@ func (uu *UserUpdate) SetNillableTenantCode(s *string) *UserUpdate {
 }
 
 // SetUserID sets the "user_id" field.
-func (uu *UserUpdate) SetUserID(u uint64) *UserUpdate {
-	uu.mutation.ResetUserID()
-	uu.mutation.SetUserID(u)
+func (uu *UserUpdate) SetUserID(s string) *UserUpdate {
+	uu.mutation.SetUserID(s)
 	return uu
 }
 
 // SetNillableUserID sets the "user_id" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableUserID(u *uint64) *UserUpdate {
-	if u != nil {
-		uu.SetUserID(*u)
+func (uu *UserUpdate) SetNillableUserID(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetUserID(*s)
 	}
-	return uu
-}
-
-// AddUserID adds u to the "user_id" field.
-func (uu *UserUpdate) AddUserID(u int64) *UserUpdate {
-	uu.mutation.AddUserID(u)
 	return uu
 }
 
@@ -422,10 +415,7 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(user.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := uu.mutation.UserID(); ok {
-		_spec.SetField(user.FieldUserID, field.TypeUint64, value)
-	}
-	if value, ok := uu.mutation.AddedUserID(); ok {
-		_spec.AddField(user.FieldUserID, field.TypeUint64, value)
+		_spec.SetField(user.FieldUserID, field.TypeString, value)
 	}
 	if value, ok := uu.mutation.UserName(); ok {
 		_spec.SetField(user.FieldUserName, field.TypeString, value)
@@ -566,23 +556,16 @@ func (uuo *UserUpdateOne) SetNillableTenantCode(s *string) *UserUpdateOne {
 }
 
 // SetUserID sets the "user_id" field.
-func (uuo *UserUpdateOne) SetUserID(u uint64) *UserUpdateOne {
-	uuo.mutation.ResetUserID()
-	uuo.mutation.SetUserID(u)
+func (uuo *UserUpdateOne) SetUserID(s string) *UserUpdateOne {
+	uuo.mutation.SetUserID(s)
 	return uuo
 }
 
 // SetNillableUserID sets the "user_id" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableUserID(u *uint64) *UserUpdateOne {
-	if u != nil {
-		uuo.SetUserID(*u)
+func (uuo *UserUpdateOne) SetNillableUserID(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetUserID(*s)
 	}
-	return uuo
-}
-
-// AddUserID adds u to the "user_id" field.
-func (uuo *UserUpdateOne) AddUserID(u int64) *UserUpdateOne {
-	uuo.mutation.AddUserID(u)
 	return uuo
 }
 
@@ -927,10 +910,7 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 		_spec.SetField(user.FieldTenantCode, field.TypeString, value)
 	}
 	if value, ok := uuo.mutation.UserID(); ok {
-		_spec.SetField(user.FieldUserID, field.TypeUint64, value)
-	}
-	if value, ok := uuo.mutation.AddedUserID(); ok {
-		_spec.AddField(user.FieldUserID, field.TypeUint64, value)
+		_spec.SetField(user.FieldUserID, field.TypeString, value)
 	}
 	if value, ok := uuo.mutation.UserName(); ok {
 		_spec.SetField(user.FieldUserName, field.TypeString, value)

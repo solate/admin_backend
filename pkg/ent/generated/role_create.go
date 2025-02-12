@@ -70,8 +70,8 @@ func (rc *RoleCreate) SetTenantCode(s string) *RoleCreate {
 }
 
 // SetRoleID sets the "role_id" field.
-func (rc *RoleCreate) SetRoleID(u uint64) *RoleCreate {
-	rc.mutation.SetRoleID(u)
+func (rc *RoleCreate) SetRoleID(s string) *RoleCreate {
+	rc.mutation.SetRoleID(s)
 	return rc
 }
 
@@ -267,7 +267,7 @@ func (rc *RoleCreate) createSpec() (*Role, *sqlgraph.CreateSpec) {
 		_node.TenantCode = value
 	}
 	if value, ok := rc.mutation.RoleID(); ok {
-		_spec.SetField(role.FieldRoleID, field.TypeUint64, value)
+		_spec.SetField(role.FieldRoleID, field.TypeString, value)
 		_node.RoleID = value
 	}
 	if value, ok := rc.mutation.Name(); ok {

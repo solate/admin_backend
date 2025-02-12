@@ -21,9 +21,9 @@ type LoginLog struct {
 	// 租户编码
 	TenantCode string `json:"tenant_code,omitempty"`
 	// 日志ID
-	LogID uint64 `json:"log_id,omitempty"`
+	LogID string `json:"log_id,omitempty"`
 	// 用户ID
-	UserID uint64 `json:"user_id,omitempty"`
+	UserID string `json:"user_id,omitempty"`
 	// 用户名
 	UserName string `json:"user_name,omitempty"`
 	// IP地址
@@ -48,9 +48,9 @@ func (*LoginLog) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case loginlog.FieldID, loginlog.FieldCreatedAt, loginlog.FieldLogID, loginlog.FieldUserID, loginlog.FieldLoginTime:
+		case loginlog.FieldID, loginlog.FieldCreatedAt, loginlog.FieldLoginTime:
 			values[i] = new(sql.NullInt64)
-		case loginlog.FieldTenantCode, loginlog.FieldUserName, loginlog.FieldIP, loginlog.FieldMessage, loginlog.FieldUserAgent, loginlog.FieldBrowser, loginlog.FieldOs, loginlog.FieldDevice:
+		case loginlog.FieldTenantCode, loginlog.FieldLogID, loginlog.FieldUserID, loginlog.FieldUserName, loginlog.FieldIP, loginlog.FieldMessage, loginlog.FieldUserAgent, loginlog.FieldBrowser, loginlog.FieldOs, loginlog.FieldDevice:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -86,16 +86,16 @@ func (ll *LoginLog) assignValues(columns []string, values []any) error {
 				ll.TenantCode = value.String
 			}
 		case loginlog.FieldLogID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field log_id", values[i])
 			} else if value.Valid {
-				ll.LogID = uint64(value.Int64)
+				ll.LogID = value.String
 			}
 		case loginlog.FieldUserID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value.Valid {
-				ll.UserID = uint64(value.Int64)
+				ll.UserID = value.String
 			}
 		case loginlog.FieldUserName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -188,10 +188,10 @@ func (ll *LoginLog) String() string {
 	builder.WriteString(ll.TenantCode)
 	builder.WriteString(", ")
 	builder.WriteString("log_id=")
-	builder.WriteString(fmt.Sprintf("%v", ll.LogID))
+	builder.WriteString(ll.LogID)
 	builder.WriteString(", ")
 	builder.WriteString("user_id=")
-	builder.WriteString(fmt.Sprintf("%v", ll.UserID))
+	builder.WriteString(ll.UserID)
 	builder.WriteString(", ")
 	builder.WriteString("user_name=")
 	builder.WriteString(ll.UserName)

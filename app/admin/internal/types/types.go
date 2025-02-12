@@ -16,7 +16,7 @@ type CreateTenantReq struct {
 }
 
 type CreateTenantResp struct {
-	TenantID uint64 `json:"tenant_id"`
+	TenantID string `json:"tenant_id"`
 }
 
 type CreateUserReq struct {
@@ -29,23 +29,23 @@ type CreateUserReq struct {
 	Status    int      `json:"status"`     // 状态
 	Sex       int      `json:"sex"`        // 性别
 	Avatar    string   `json:"avatar"`     // 头像
-	RoleIDs   []uint64 `json:"role_ids"`   // 角色ID列表
+	RoleIDs   []string `json:"role_ids"`   // 角色ID列表
 }
 
 type CreateUserResp struct {
-	UserID uint64 `json:"user_id"` // 用户ID
+	UserID string `json:"user_id"` // 用户ID
 }
 
 type DeleteTenantReq struct {
-	TenantID uint64 `path:"tenant_id"`
+	TenantID string `path:"tenant_id"`
 }
 
 type DeleteUserReq struct {
-	UserID uint64 `path:"user_id"`
+	UserID string `path:"user_id"`
 }
 
 type GetTenantReq struct {
-	TenantID uint64 `path:"tenant_id"`
+	TenantID string `path:"tenant_id"`
 }
 
 type GetTenantResp struct {
@@ -53,7 +53,7 @@ type GetTenantResp struct {
 }
 
 type GetUserReq struct {
-	UserID uint64 `path:"user_id"`
+	UserID string `path:"user_id"`
 }
 
 type GetUserResp struct {
@@ -75,8 +75,8 @@ type ListTenantResp struct {
 }
 
 type LoginLogInfo struct {
-	ID        uint64 `json:"id"`         // 记录ID
-	UserID    uint64 `json:"user_id"`    // 用户ID
+	LogID     string `json:"log_id"`     // 记录ID
+	UserID    string `json:"user_id"`    // 用户ID
 	UserName  string `json:"user_name"`  // 用户名
 	IP        string `json:"ip"`         // 登录IP
 	UserAgent string `json:"user_agent"` // 用户代理
@@ -108,7 +108,7 @@ type LoginReq struct {
 
 type LoginResp struct {
 	Token    string `json:"token"`
-	UserID   uint64 `json:"user_id"`
+	UserID   string `json:"user_id"`
 	UserName string `json:"user_name"`
 	Phone    string `json:"phone"`
 	Email    string `json:"email"`
@@ -142,7 +142,7 @@ type RegisterReq struct {
 }
 
 type RegisterResp struct {
-	UserID uint64 `json:"user_id"`
+	UserID string `json:"user_id"`
 }
 
 type StatusRequest struct {
@@ -151,7 +151,7 @@ type StatusRequest struct {
 }
 
 type TenantInfo struct {
-	TenantID    uint64 `json:"tenant_id"`
+	TenantID    string `json:"tenant_id"`
 	Name        string `json:"name"`
 	Code        string `json:"code"`
 	Description string `json:"description"`
@@ -164,24 +164,24 @@ type TimeRange struct {
 }
 
 type UpdateTenantReq struct {
-	TenantID    uint64 `path:"tenant_id"`
+	TenantID    string `path:"tenant_id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Status      int    `json:"status"`
 }
 
 type UpdateUserReq struct {
-	UserID  uint64   `path:"user_id"`
+	UserID  string   `path:"user_id"`
 	Name    string   `json:"name,optional"`
 	Email   string   `json:"email,optional"`
 	Status  int      `json:"status,optional"`
 	Sex     int      `json:"sex,optional"`
 	Avatar  string   `json:"avatar,optional"`
-	RoleIDs []uint64 `json:"role_ids,optional"`
+	RoleIDs []string `json:"role_ids,optional"`
 }
 
 type UserInfo struct {
-	UserID    uint64 `json:"user_id"`    // 用户ID
+	UserID    string `json:"user_id"`    // 用户ID
 	UserName  string `json:"user_name"`  // 用户名
 	Name      string `json:"name"`       // 姓名
 	Phone     string `json:"phone"`      // 手机号

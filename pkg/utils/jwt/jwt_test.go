@@ -7,7 +7,7 @@ import (
 
 func TestParseToken(t *testing.T) {
 	// 生成token
-	token, err := GenerateToken(1, "test", JWTConfig{
+	token, err := GenerateToken("1", "test", JWTConfig{
 		AccessExpire: 3600,
 		AccessSecret: []byte("test"),
 	})

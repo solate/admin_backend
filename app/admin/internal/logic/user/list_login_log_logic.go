@@ -73,7 +73,7 @@ func (l *ListLoginLogLogic) ListLoginLog(req *types.LoginLogListReq) (resp *type
 	loginLogs := make([]*types.LoginLogInfo, 0)
 	for _, log := range list {
 		loginLogs = append(loginLogs, &types.LoginLogInfo{
-			ID:        log.LogID,
+			LogID:     log.LogID,
 			UserID:    log.UserID,
 			UserName:  log.UserName,
 			IP:        log.IP,

@@ -30,9 +30,6 @@ func NewUpdateTenantLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upda
 
 func (l *UpdateTenantLogic) UpdateTenant(req *types.UpdateTenantReq) (resp bool, err error) {
 	// 1. 参数验证
-	if req.TenantID == 0 {
-		return false, xerr.NewErrCode(xerr.ParamError)
-	}
 
 	// 2. 检查租户是否存在
 	tenant, err := l.tenantRepo.GetByTenantID(l.ctx, req.TenantID)
