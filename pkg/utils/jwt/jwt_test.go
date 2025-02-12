@@ -13,19 +13,18 @@ func TestParseToken(t *testing.T) {
 	})
 	if err != nil {
 		t.Fatal(err)
+		fmt.Println("token:", token)
 	}
-	fmt.Println("token:", token)
 
 	// 测试解析带Bearer前缀的token
-	claims, err := ParseToken(token, []byte("test"))
+	claims, err := ParseToken("Bearer "+token, []byte("test"))
 	if err != nil {
 		t.Fatal(err)
+		t.Log("解析带Bearer前缀的token成功:", claims.UserID, claims.TenantCode)
 	}
 	t.Log("解析带Bearer前缀的token成功:", claims.UserID, claims.TenantCode)
 
-	// 测试解析不带Bearer前缀的token
-	tokenWithoutBearer := token[7:] // 去掉"Bearer "
-	claims, err = ParseToken(tokenWithoutBearer, []byte("test"))
+	claims, err = ParseToken(token, []byte("test"))
 	if err != nil {
 		t.Fatal(err)
 	}

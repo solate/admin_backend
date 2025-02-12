@@ -43,8 +43,8 @@ func (r *UserRepo) Update(ctx context.Context, update *generated.User) (int, err
 	update.UpdatedAt = now
 	return r.db.User.Update().
 		SetUpdatedAt(now).
-		SetPhone(update.Phone).
-		SetUserName(update.UserName).
+		// SetPhone(update.Phone).
+		// SetUserName(update.UserName).
 		SetNickName(update.NickName).
 		SetEmail(update.Email).
 		SetSex(update.Sex).

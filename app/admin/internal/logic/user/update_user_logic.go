@@ -2,14 +2,12 @@ package user
 
 import (
 	"context"
-	"time"
 
 	"admin_backend/app/admin/internal/repository/userrepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated"
-	"admin_backend/pkg/ent/generated/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -33,8 +31,9 @@ func NewUpdateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Update
 
 func (l *UpdateUserLogic) UpdateUser(req *types.UpdateUserReq) (resp bool, err error) {
 	// 1. 检查用户是否存在
-	user, err := l.svcCtx.DB.User.Query().Where(user.UserID(req.UserID)).Only(l.ctx)
+	user, err := l.userRepo.GetByUserID(l.ctx, req.UserID)
 	if err != nil {
+		l.Error("UpdateUser userRepo.GetByUserID err:", err.Error())
 		if generated.IsNotFound(err) {
 			return false, xerr.NewErrMsg("用户不存在")
 		}
@@ -42,18 +41,16 @@ func (l *UpdateUserLogic) UpdateUser(req *types.UpdateUserReq) (resp bool, err e
 	}
 
 	// 2. 更新用户信息
-	updateBuilder := l.svcCtx.DB.User.UpdateOne(user).
-		SetUpdatedAt(time.Now().UnixMilli())
+	user.NickName = req.Name
+	user.Email = req.Email
+	user.Status = req.Status
+	user.Sex = req.Sex
+	user.Avatar = req.Avatar
 
-	if req.Name != "" {
-		updateBuilder.SetUserName(req.Name)
-		updateBuilder.SetNickName(req.Name)
-	}
-
-	// 3. 执行更新
-	_, err = updateBuilder.Save(l.ctx)
+	_, err = l.userRepo.Update(l.ctx, user)
 	if err != nil {
-		return false, xerr.NewErrCode(xerr.DbError)
+		l.Error("UpdateUser Update err:", err.Error())
+		return false, xerr.NewErrCodeMsg(xerr.DbError, "更新用户失败")
 	}
 
 	return true, nil
