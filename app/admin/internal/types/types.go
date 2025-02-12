@@ -114,10 +114,6 @@ type LoginResp struct {
 	Email    string `json:"email"`
 }
 
-type LogoutReq struct {
-	UserID uint64 `json:"user_id"`
-}
-
 type PageJsonRequest struct {
 	Current  int `json:"current"`   // 当前页
 	PageSize int `json:"page_size"` // 每页大小

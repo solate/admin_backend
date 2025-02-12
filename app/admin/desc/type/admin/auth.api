@@ -39,9 +39,9 @@ type (
         Email    string `json:"email"`
     }
 
-    LogoutReq {
-        UserID uint64  `json:"user_id"`
-    }
+    // LogoutReq {
+    //     UserID uint64  `json:"user_id"`
+    // }
 
     CaptchaResp {
         CaptchaId  string `json:"captcha_id"`  // 验证码ID
@@ -63,13 +63,19 @@ service admin {
     @handler Login
     post /login (LoginReq) returns (LoginResp)
 
-    @doc "用户登出"
-    @handler Logout
-    post /logout (LogoutReq) returns (bool)
-
     @doc "获取验证码"
     @handler GetCaptcha
     get /captcha returns (CaptchaResp)
 }
 
 
+@server (
+    prefix: /admin/api/v1/auth
+    group: auth
+    middleware: AuthMiddleware
+)
+service admin {
+    @doc "用户登出"
+    @handler Logout
+    post /logout returns (bool)
+}

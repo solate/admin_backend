@@ -33,11 +33,7 @@ func NewListUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListUser
 
 func (l *ListUserLogic) ListUser(req *types.UserListReq) (resp *types.UserListResp, err error) {
 
-	tenantCode, err := contextutil.GetTenantCodeFromCtx(l.ctx)
-	if err != nil {
-		l.Error("ListUser contextutil.GetTenantIDFromCtx err: ", err.Error())
-		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "get tenant id from ctx err.")
-	}
+	tenantCode := contextutil.GetTenantCodeFromCtx(l.ctx)
 
 	// 1. 构建查询条件
 	where := []predicate.User{

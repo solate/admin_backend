@@ -38,6 +38,8 @@ func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.Crea
 		return nil, xerr.NewErrCode(xerr.ParamError)
 	}
 
+	tenantCode := contextutil.GetTenantCodeFromCtx(l.ctx)
+
 	// 2. 检查手机号是否已存在
 	user, err := l.userRepo.GetByPhone(l.ctx, req.Phone)
 	if err != nil {
@@ -46,12 +48,6 @@ func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.Crea
 	}
 	if user.Phone == req.Phone {
 		return nil, xerr.NewErrMsg("手机号已存在")
-	}
-
-	tenantCode, err := contextutil.GetTenantCodeFromCtx(l.ctx)
-	if err != nil {
-		l.Error("ListUser context_util.GetTenantIDFromCtx err: ", err.Error())
-		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "get tenant id from ctx err.")
 	}
 
 	// 3. 生成密码盐和加密密码

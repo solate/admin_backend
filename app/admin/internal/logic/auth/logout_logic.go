@@ -6,7 +6,7 @@ import (
 	"admin_backend/app/admin/internal/repository/loginlogrepo"
 	"admin_backend/app/admin/internal/repository/userrepo"
 	"admin_backend/app/admin/internal/svc"
-	"admin_backend/app/admin/internal/types"
+	"admin_backend/pkg/common/contextutil"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated"
 
@@ -32,10 +32,12 @@ func NewLogoutLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LogoutLogi
 	}
 }
 
-func (l *LogoutLogic) Logout(req *types.LogoutReq) (resp bool, err error) {
+func (l *LogoutLogic) Logout() (resp bool, err error) {
+
+	userID := contextutil.GetUserIDFromCtx(l.ctx)
 
 	// 1. 查找用户
-	user, err := l.userRepo.GetByUserID(l.ctx, req.UserID)
+	user, err := l.userRepo.GetByUserID(l.ctx, userID)
 	if err != nil {
 		l.Error("Logout User.Query Error:", err.Error())
 		if generated.IsNotFound(err) {
@@ -45,7 +47,7 @@ func (l *LogoutLogic) Logout(req *types.LogoutReq) (resp bool, err error) {
 	}
 
 	// 更新user
-	_, err = l.userRepo.Logout(l.ctx, req.UserID)
+	_, err = l.userRepo.Logout(l.ctx, userID)
 	if err != nil {
 		l.Error("Logout User.Logout Error:", err.Error())
 		return false, xerr.NewErrCodeMsg(xerr.DbError, err.Error())

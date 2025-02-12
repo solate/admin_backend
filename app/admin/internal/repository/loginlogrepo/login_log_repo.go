@@ -64,10 +64,7 @@ func (r *LoginLogRepo) PageList(ctx context.Context, current, limit int, where [
 
 // addLoginLog
 func (l *LoginLogRepo) AddLoginLog(ctx context.Context, user *generated.User, message string) error {
-	tenantCode, err := contextutil.GetTenantCodeFromCtx(ctx)
-	if err != nil {
-		return err
-	}
+	tenantCode := contextutil.GetTenantCodeFromCtx(ctx)
 
 	id, err := idgen.GenerateUUID()
 	if err != nil {

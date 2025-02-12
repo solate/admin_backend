@@ -71,16 +71,6 @@
             }
           }
         },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/LogoutReq"
-            }
-          }
-        ],
         "tags": [
           "auth"
         ]
@@ -968,19 +958,6 @@
         "user_name",
         "phone",
         "email"
-      ]
-    },
-    "LogoutReq": {
-      "type": "object",
-      "properties": {
-        "user_id": {
-          "type": "integer",
-          "format": "int64"
-        }
-      },
-      "title": "LogoutReq",
-      "required": [
-        "user_id"
       ]
     },
     "PageJsonRequest": {

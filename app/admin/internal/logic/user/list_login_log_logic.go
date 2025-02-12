@@ -34,12 +34,7 @@ func NewListLoginLogLogic(ctx context.Context, svcCtx *svc.ServiceContext) *List
 
 func (l *ListLoginLogLogic) ListLoginLog(req *types.LoginLogListReq) (resp *types.LoginLogListResp, err error) {
 	// 获取租户编码
-	tenantCode, err := contextutil.GetTenantCodeFromCtx(l.ctx)
-	if err != nil {
-		l.Error("ListLoginLog context_util.GetTenantCodeFromCtx err:", err.Error())
-		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "获取租户编码失败")
-	}
-
+	tenantCode := contextutil.GetTenantCodeFromCtx(l.ctx)
 	// 构建查询条件
 	where := []predicate.LoginLog{
 		loginlog.TenantCode(tenantCode),
