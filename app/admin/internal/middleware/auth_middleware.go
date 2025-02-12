@@ -32,7 +32,7 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 
 		claims, err := jwt.ParseToken(tokenString, []byte(m.Config.JwtAuth.AccessSecret))
 		if err != nil {
-			httpx.Error(w, xerr.NewErrCodeMsg(http.StatusInternalServerError, err.Error()))
+			httpx.Error(w, xerr.NewErrCodeMsg(http.StatusUnauthorized, err.Error()))
 			return
 		}
 
