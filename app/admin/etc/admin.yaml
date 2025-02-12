@@ -19,7 +19,7 @@ Redis:
   Host: 127.0.0.1
   Port: 6379
   Type: node  # 可以是 node 或 cluster，取决于Redis部署类型
-  Pass:  # 如果Redis设置了密码，请填写这里
+  Pass: "123456" # 如果Redis设置了密码，请填写这里
 
 
 JwtAuth:
