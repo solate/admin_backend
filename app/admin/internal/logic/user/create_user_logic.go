@@ -38,8 +38,6 @@ func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.Crea
 		return nil, xerr.NewErrCode(xerr.ParamError)
 	}
 
-	tenantCode := contextutil.GetTenantCodeFromCtx(l.ctx)
-
 	// 2. 检查手机号是否已存在
 	user, err := l.userRepo.GetByPhone(l.ctx, req.Phone)
 	if err != nil {
@@ -70,7 +68,7 @@ func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.Crea
 
 	// 4. 创建用户
 	newUser := &generated.User{
-		TenantCode: tenantCode,
+		TenantCode: contextutil.GetTenantCodeFromCtx(l.ctx),
 		UserID:     userID,
 		Phone:      req.Phone,
 		UserName:   req.Name,

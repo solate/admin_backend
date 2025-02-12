@@ -33,12 +33,10 @@ func NewListUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListUser
 
 func (l *ListUserLogic) ListUser(req *types.UserListReq) (resp *types.UserListResp, err error) {
 
-	tenantCode := contextutil.GetTenantCodeFromCtx(l.ctx)
-
 	// 1. 构建查询条件
 	where := []predicate.User{
 		user.DeletedAtIsNil(), // 未删除的用户
-		user.TenantCode(tenantCode),
+		user.TenantCode(contextutil.GetTenantCodeFromCtx(l.ctx)),
 	}
 
 	list, total, err := l.userRepo.PageList(l.ctx, req.Current, req.PageSize, where)

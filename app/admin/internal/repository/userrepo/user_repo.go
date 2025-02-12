@@ -97,3 +97,11 @@ func (r *UserRepo) Logout(ctx context.Context, userID uint64) (int, error) {
 		SetToken("").
 		Where(user.UserID(userID)).Save(ctx)
 }
+
+// 用户登录
+func (r *UserRepo) UpdateToken(ctx context.Context, userID uint64, token string) (int, error) {
+	return r.db.User.Update().
+		SetToken(token).
+		SetUpdatedAt(time.Now().UnixMilli()).
+		Where(user.UserID(userID)).Save(ctx)
+}

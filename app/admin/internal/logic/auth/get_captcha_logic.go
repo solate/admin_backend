@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"fmt"
 
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
@@ -27,7 +26,6 @@ func NewGetCaptchaLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetCap
 }
 
 func (l *GetCaptchaLogic) GetCaptcha() (resp *types.CaptchaResp, err error) {
-	fmt.Println("============1111=====")
 
 	// 生成验证码
 	id, b64s, _, err := l.svcCtx.CaptchaManager.Generate()
@@ -35,8 +33,6 @@ func (l *GetCaptchaLogic) GetCaptcha() (resp *types.CaptchaResp, err error) {
 		l.Error("GetCaptcha Generate err:", err.Error())
 		return nil, xerr.NewErrCode(xerr.ServerError)
 	}
-
-	fmt.Println("=================", id, b64s)
 
 	return &types.CaptchaResp{
 		CaptchaId:  id,

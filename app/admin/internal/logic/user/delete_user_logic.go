@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"time"
 
 	"admin_backend/app/admin/internal/repository/userrepo"
 	"admin_backend/app/admin/internal/svc"
@@ -42,9 +41,7 @@ func (l *DeleteUserLogic) DeleteUser(req *types.DeleteUserReq) (resp bool, err e
 	}
 
 	// 2. 软删除用户
-	now := time.Now().UnixMilli()
-	user.DeletedAt = &now
-	_, err = l.userRepo.Update(l.ctx, user)
+	_, err = l.userRepo.DeleteByUserID(l.ctx, user)
 	if err != nil {
 		l.Error("DeleteUser userRepo.Update err:", err.Error())
 		return false, xerr.NewErrCodeMsg(xerr.DbError, "删除用户失败")

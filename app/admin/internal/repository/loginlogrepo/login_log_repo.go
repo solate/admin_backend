@@ -11,7 +11,7 @@ import (
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/utils/idgen"
-	"admin_backend/pkg/utils/useragent"
+	useragent "admin_backend/pkg/utils/userAgent"
 )
 
 type LoginLogRepo struct {
@@ -63,7 +63,7 @@ func (r *LoginLogRepo) PageList(ctx context.Context, current, limit int, where [
 }
 
 // addLoginLog
-func (l *LoginLogRepo) AddLoginLog(ctx context.Context, user *generated.User, message string) error {
+func (l *LoginLogRepo) AddLoginLog(ctx context.Context, r *http.Request, user *generated.User, message string) error {
 	tenantCode := contextutil.GetTenantCodeFromCtx(ctx)
 
 	id, err := idgen.GenerateUUID()
@@ -71,7 +71,6 @@ func (l *LoginLogRepo) AddLoginLog(ctx context.Context, user *generated.User, me
 		return err
 	}
 
-	r := ctx.Value("request").(*http.Request)
 	// 获取客户端信息
 	clientInfo := useragent.GetClientInfo(r)
 	log := &generated.LoginLog{

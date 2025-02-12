@@ -2,7 +2,7 @@ package auth
 
 import (
 	"context"
-	"time"
+	"net/http"
 
 	"admin_backend/app/admin/internal/repository/loginlogrepo"
 	"admin_backend/app/admin/internal/repository/userrepo"
@@ -22,25 +22,27 @@ type LoginLogic struct {
 	svcCtx       *svc.ServiceContext
 	userRepo     *userrepo.UserRepo
 	loginLogRepo *loginlogrepo.LoginLogRepo
+	r            *http.Request
 }
 
 // 用户登录
-func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic {
+func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext, r *http.Request) *LoginLogic {
 	return &LoginLogic{
 		Logger:       logx.WithContext(ctx),
 		ctx:          ctx,
 		svcCtx:       svcCtx,
 		userRepo:     userrepo.NewUserRepo(svcCtx.DB),
 		loginLogRepo: loginlogrepo.NewLoginLogRepo(svcCtx.DB),
+		r:            r,
 	}
 }
 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err error) {
 
-	// 1. 验证验证码
-	if !l.svcCtx.CaptchaManager.Verify(req.CaptchaId, req.Captcha) {
-		return nil, xerr.NewErrMsg("验证码错误或已过期")
-	}
+	// // 1. 验证验证码
+	// if !l.svcCtx.CaptchaManager.Verify(req.CaptchaId, req.Captcha) {
+	// 	return nil, xerr.NewErrMsg("验证码错误或已过期")
+	// }
 
 	// 2. 查找用户
 	user, err := l.userRepo.GetByUserName(l.ctx, req.UserName)
@@ -75,16 +77,14 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	}
 
 	// 5. 更新用户Token
-	_, err = l.svcCtx.DB.User.UpdateOne(user).
-		SetToken(token).
-		SetUpdatedAt(time.Now().UnixMilli()).
-		Save(l.ctx)
+	_, err = l.userRepo.UpdateToken(l.ctx, user.UserID, token)
 	if err != nil {
+		l.Error("Login userRepo.UpdateToken err:", err.Error())
 		return nil, xerr.NewErrCode(xerr.DbError)
 	}
 
 	// 添加登录日志
-	err = l.loginLogRepo.AddLoginLog(l.ctx, user, "登录成功")
+	err = l.loginLogRepo.AddLoginLog(l.ctx, l.r, user, "登录成功")
 	if err != nil {
 		l.Error("Login addLoginLog err:", err.Error())
 	}

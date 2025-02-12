@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"net/http"
 
 	"admin_backend/app/admin/internal/repository/loginlogrepo"
 	"admin_backend/app/admin/internal/repository/userrepo"
@@ -19,16 +20,18 @@ type LogoutLogic struct {
 	svcCtx       *svc.ServiceContext
 	userRepo     *userrepo.UserRepo
 	loginLogRepo *loginlogrepo.LoginLogRepo
+	r            *http.Request
 }
 
 // 用户登出
-func NewLogoutLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LogoutLogic {
+func NewLogoutLogic(ctx context.Context, svcCtx *svc.ServiceContext, r *http.Request) *LogoutLogic {
 	return &LogoutLogic{
 		Logger:       logx.WithContext(ctx),
 		ctx:          ctx,
 		svcCtx:       svcCtx,
 		userRepo:     userrepo.NewUserRepo(svcCtx.DB),
 		loginLogRepo: loginlogrepo.NewLoginLogRepo(svcCtx.DB),
+		r:            r,
 	}
 }
 
@@ -54,7 +57,7 @@ func (l *LogoutLogic) Logout() (resp bool, err error) {
 	}
 
 	// 添加登出日志
-	err = l.loginLogRepo.AddLoginLog(l.ctx, user, "登出成功")
+	err = l.loginLogRepo.AddLoginLog(l.ctx, l.r, user, "登出成功")
 	if err != nil {
 		l.Error("Logout addLoginLog err:", err.Error())
 	}
