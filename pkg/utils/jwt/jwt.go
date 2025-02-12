@@ -21,8 +21,6 @@ type JWTConfig struct {
 	AccessExpire int64  // 过期时间
 }
 
-const bearerPrefix = "Bearer "
-
 // 生成JWT Token
 func GenerateToken(userID uint64, tenantCode string, config JWTConfig) (string, error) {
 	now := time.Now()
@@ -42,13 +40,13 @@ func GenerateToken(userID uint64, tenantCode string, config JWTConfig) (string, 
 	if err != nil {
 		return "", err
 	}
-	return bearerPrefix + tokenString, nil
+	return tokenString, nil
 }
 
 // 解析JWT Token
 func ParseToken(tokenString string, accessSecret []byte) (*Claims, error) {
 	// 检查并去除Bearer前缀
-	tokenString = strings.TrimPrefix(tokenString, bearerPrefix)
+	tokenString = strings.TrimPrefix(tokenString, "Bearer ")
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return accessSecret, nil
 	})

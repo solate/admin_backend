@@ -50,6 +50,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 		l.Error("Login userRepo.GetByUserName err:", err.Error())
 		if generated.IsNotFound(err) {
 			return nil, xerr.NewErrMsg("用户不存在")
+
 		}
 		return nil, xerr.NewErrCode(xerr.DbError)
 	}
