@@ -6,7 +6,6 @@ import (
 	"admin_backend/app/admin/internal/repository/userrepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
-	"admin_backend/pkg/common/contextutil"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/ent/generated/user"
@@ -34,9 +33,18 @@ func NewListUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListUser
 func (l *ListUserLogic) ListUser(req *types.UserListReq) (resp *types.UserListResp, err error) {
 
 	// 1. 构建查询条件
-	where := []predicate.User{
-		user.DeletedAtIsNil(), // 未删除的用户
-		user.TenantCode(contextutil.GetTenantCodeFromCtx(l.ctx)),
+	where := []predicate.User{}
+
+	if req.Name != "" {
+		where = append(where, user.NickNameContains(req.Name))
+	}
+
+	if req.Phone != "" {
+		where = append(where, user.Phone(req.Phone))
+	}
+
+	if req.Status != 0 {
+		where = append(where, user.StatusEQ(req.Status))
 	}
 
 	list, total, err := l.userRepo.PageList(l.ctx, req.Current, req.PageSize, where)

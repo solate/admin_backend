@@ -42,15 +42,24 @@ func (r *TenantRepo) Update(ctx context.Context, update *generated.Tenant) (int,
 		Where(tenant.TenantID(update.TenantID)).Save(ctx)
 }
 
-// func (r *TenantRepo) GetByID(ctx context.Context, id uint64) (*generated.Tenant, error) {
-// 	return r.db.Tenant.Query().Where(tenant.ID(id)).Only(ctx)
-// }
-
 func (r *TenantRepo) GetByTenantID(ctx context.Context, tenantID uint64) (*generated.Tenant, error) {
-	return r.db.Tenant.Query().Where(tenant.TenantID(tenantID)).Only(ctx)
+	return r.Get(ctx, []predicate.Tenant{tenant.TenantID(tenantID)})
+}
+
+// defaultQuery 默认查询条件
+func (r *TenantRepo) defaultQuery(where []predicate.Tenant) []predicate.Tenant {
+	where = append(where, tenant.DeletedAtIsNil())
+	return where
+}
+func (r *TenantRepo) Get(ctx context.Context, where []predicate.Tenant) (*generated.Tenant, error) {
+	where = r.defaultQuery(where)
+	return r.db.Tenant.Query().Where(where...).Only(ctx)
 }
 
 func (r *TenantRepo) PageList(ctx context.Context, current, limit int, where []predicate.Tenant) ([]*generated.Tenant, int, error) {
+
+	where = r.defaultQuery(where)
+
 	offset := common.Offset(current, limit)
 	query := r.db.Tenant.Query().Where(where...).Order(generated.Desc(tenant.FieldCreatedAt))
 

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"admin_backend/pkg/common"
+	"admin_backend/pkg/common/contextutil"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/ent/generated/user"
@@ -56,18 +57,33 @@ func (r *UserRepo) Update(ctx context.Context, update *generated.User) (int, err
 // }
 
 func (r *UserRepo) GetByUserID(ctx context.Context, userID uint64) (*generated.User, error) {
-	return r.db.User.Query().Where(user.UserID(userID)).Only(ctx)
+	return r.Get(ctx, []predicate.User{user.UserID(userID)})
 }
 
 func (r *UserRepo) GetByPhone(ctx context.Context, phone string) (*generated.User, error) {
-	return r.db.User.Query().Where(user.Phone(phone)).Only(ctx)
+	return r.Get(ctx, []predicate.User{user.Phone(phone)})
 }
 
 func (r *UserRepo) GetByUserName(ctx context.Context, userName string) (*generated.User, error) {
-	return r.db.User.Query().Where(user.UserName(userName)).Only(ctx)
+	return r.Get(ctx, []predicate.User{user.UserName(userName)})
+}
+
+// defaultQuery 默认查询条件
+func (r *UserRepo) defaultQuery(ctx context.Context, where []predicate.User) []predicate.User {
+	where = append(where, user.DeletedAtIsNil())
+	where = append(where, user.TenantCode(contextutil.GetTenantCodeFromCtx(ctx)))
+	return where
+}
+
+func (r *UserRepo) Get(ctx context.Context, where []predicate.User) (*generated.User, error) {
+	where = r.defaultQuery(ctx, where)
+	return r.db.User.Query().Where(where...).Only(ctx)
 }
 
 func (r *UserRepo) PageList(ctx context.Context, current, limit int, where []predicate.User) ([]*generated.User, int, error) {
+
+	where = r.defaultQuery(ctx, where)
+
 	offset := common.Offset(current, limit)
 	query := r.db.User.Query().Where(where...).Order(generated.Desc(user.FieldCreatedAt))
 

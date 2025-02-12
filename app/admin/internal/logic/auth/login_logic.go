@@ -39,10 +39,10 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext, r *http.Requ
 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err error) {
 
-	// // 1. 验证验证码
-	// if !l.svcCtx.CaptchaManager.Verify(req.CaptchaId, req.Captcha) {
-	// 	return nil, xerr.NewErrMsg("验证码错误或已过期")
-	// }
+	// 1. 验证验证码
+	if !l.svcCtx.CaptchaManager.Verify(req.CaptchaId, req.Captcha) {
+		return nil, xerr.NewErrMsg("验证码错误或已过期")
+	}
 
 	// 2. 查找用户
 	user, err := l.userRepo.GetByUserName(l.ctx, req.UserName)
@@ -56,13 +56,13 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 
 	// 2. 验证密码
 	if passwordgen.VerifyPassword(req.Password, user.PwdSalt) {
-		l.Error("Login passwordgen.VerifyPassword err:", err.Error())
+		l.Error("Login passwordgen.VerifyPassword err")
 		return nil, xerr.NewErrMsg("密码错误")
 	}
 
 	// 3. 检查用户状态
 	if user.Status != 1 {
-		l.Error("Login user.Status != 1 err:", err.Error())
+		l.Error("Login user.Status != 1 err")
 		return nil, xerr.NewErrMsg("用户已被禁用")
 	}
 

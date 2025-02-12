@@ -31,11 +31,10 @@ func NewListTenantLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListTe
 }
 
 func (l *ListTenantLogic) ListTenant(req *types.ListTenantReq) (*types.ListTenantResp, error) {
+
 	// 1. 构建查询条件
-	where := []predicate.Tenant{
-		tenant.DeletedAtIsNil(), // 未删除的租户
-	}
-	// 3. 状态筛选
+	where := []predicate.Tenant{}
+	// 2. 状态筛选
 	if req.Status > 0 {
 		where = append(where, tenant.Status(req.Status))
 	}
