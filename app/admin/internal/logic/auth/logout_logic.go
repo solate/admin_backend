@@ -44,7 +44,7 @@ func (l *LogoutLogic) Logout() (resp bool, err error) {
 	if err != nil {
 		l.Error("Logout User.Query Error:", err.Error())
 		if generated.IsNotFound(err) {
-			return false, xerr.NewErrMsg("用户不存在")
+			return false, xerr.NewErrCodeMsg(xerr.DbError, "用户不存在")
 		}
 		return false, xerr.NewErrCodeMsg(xerr.DbError, err.Error())
 	}
