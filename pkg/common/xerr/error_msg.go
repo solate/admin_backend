@@ -24,7 +24,7 @@ func init() {
 	message[UserTokenInvalid] = "无效的token"
 	message[UserLoginExpired] = "用户登录已过期"
 	message[UserHasNoPermission] = "用户无权限"
-	message[InnerTokenInvalid] = "内部鉴权错误"
+	message[TokenInvalid] = "鉴权错误"
 
 	message[UserDisabled] = "用户已被禁用"
 	message[UserExpired] = "用户已过期"

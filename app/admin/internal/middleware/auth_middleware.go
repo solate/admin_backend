@@ -26,13 +26,15 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		tokenString := r.Header.Get("Authorization")
 		if tokenString == "" {
-			httpx.Error(w, xerr.NewErrCodeMsg(http.StatusBadRequest, "请先登录"))
+			w.WriteHeader(http.StatusUnauthorized)
+			httpx.Error(w, xerr.NewErrCodeMsg(xerr.TokenInvalid, "请先登录"))
 			return
 		}
 
 		claims, err := jwt.ParseToken(tokenString, []byte(m.Config.JwtAuth.AccessSecret))
 		if err != nil {
-			httpx.Error(w, xerr.NewErrCodeMsg(http.StatusUnauthorized, err.Error()))
+			w.WriteHeader(http.StatusUnauthorized)
+			httpx.Error(w, xerr.NewErrCodeMsg(xerr.TokenInvalid, err.Error()))
 			return
 		}
 
@@ -80,7 +82,34 @@ func (m *AuthMiddleware) validateRoles(claims *jwt.Claims) error {
 	// 		return error.New("用户角色不符合要求")
 	// 	}
 	// }
+
 	return nil
+}
+
+func (m *AuthMiddleware) validatePermission(r *http.Request) error {
+
+	// // 从上下文或请求头中获取用户信息
+	// user := r.Header.Get("X-User-ID")
+	// domain := r.Header.Get("X-Domain")
+
+	// // 从请求路径构造资源标识
+	// resource := strings.TrimPrefix(r.URL.Path, "/")
+	// action := strings.ToLower(r.Method)
+
+	// // 检查权限
+	// hasPermission, err := m.pm.CheckPermission(user, domain, resource, action)
+	// if err != nil {
+	// 	fmt.Println("权限验证失败")
+	// 	return err
+	// }
+
+	// if !hasPermission {
+	// 	fmt.Println("无访问权限")
+	// 	return err
+	// }
+
+	return nil
+
 }
 
 // 辅助函数：检查切片是否包含某个元素
