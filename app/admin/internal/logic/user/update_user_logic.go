@@ -40,6 +40,10 @@ func (l *UpdateUserLogic) UpdateUser(req *types.UpdateUserReq) (resp bool, err e
 		return false, xerr.NewErrCode(xerr.DbError)
 	}
 
+	if user.UserName == "admin" && req.Status != 1 {
+		return false, xerr.NewErrMsg("管理员账号不能禁用")
+	}
+
 	// 2. 更新用户信息
 	user.NickName = req.Name
 	user.Email = req.Email

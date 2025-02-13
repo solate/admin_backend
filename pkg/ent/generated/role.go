@@ -17,11 +17,11 @@ type Role struct {
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// 创建时间
-	CreatedAt int `json:"created_at,omitempty"`
+	CreatedAt int64 `json:"created_at,omitempty"`
 	// 修改时间
-	UpdatedAt int `json:"updated_at,omitempty"`
+	UpdatedAt int64 `json:"updated_at,omitempty"`
 	// 删除时间
-	DeletedAt *int `json:"deleted_at,omitempty"`
+	DeletedAt *int64 `json:"deleted_at,omitempty"`
 	// 租户编码
 	TenantCode string `json:"tenant_code,omitempty"`
 	// 角色ID
@@ -73,20 +73,20 @@ func (r *Role) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				r.CreatedAt = int(value.Int64)
+				r.CreatedAt = value.Int64
 			}
 		case role.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				r.UpdatedAt = int(value.Int64)
+				r.UpdatedAt = value.Int64
 			}
 		case role.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
-				r.DeletedAt = new(int)
-				*r.DeletedAt = int(value.Int64)
+				r.DeletedAt = new(int64)
+				*r.DeletedAt = value.Int64
 			}
 		case role.FieldTenantCode:
 			if value, ok := values[i].(*sql.NullString); !ok {

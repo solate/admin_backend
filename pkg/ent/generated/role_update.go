@@ -29,14 +29,14 @@ func (ru *RoleUpdate) Where(ps ...predicate.Role) *RoleUpdate {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (ru *RoleUpdate) SetUpdatedAt(i int) *RoleUpdate {
+func (ru *RoleUpdate) SetUpdatedAt(i int64) *RoleUpdate {
 	ru.mutation.ResetUpdatedAt()
 	ru.mutation.SetUpdatedAt(i)
 	return ru
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableUpdatedAt(i *int) *RoleUpdate {
+func (ru *RoleUpdate) SetNillableUpdatedAt(i *int64) *RoleUpdate {
 	if i != nil {
 		ru.SetUpdatedAt(*i)
 	}
@@ -44,20 +44,20 @@ func (ru *RoleUpdate) SetNillableUpdatedAt(i *int) *RoleUpdate {
 }
 
 // AddUpdatedAt adds i to the "updated_at" field.
-func (ru *RoleUpdate) AddUpdatedAt(i int) *RoleUpdate {
+func (ru *RoleUpdate) AddUpdatedAt(i int64) *RoleUpdate {
 	ru.mutation.AddUpdatedAt(i)
 	return ru
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (ru *RoleUpdate) SetDeletedAt(i int) *RoleUpdate {
+func (ru *RoleUpdate) SetDeletedAt(i int64) *RoleUpdate {
 	ru.mutation.ResetDeletedAt()
 	ru.mutation.SetDeletedAt(i)
 	return ru
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableDeletedAt(i *int) *RoleUpdate {
+func (ru *RoleUpdate) SetNillableDeletedAt(i *int64) *RoleUpdate {
 	if i != nil {
 		ru.SetDeletedAt(*i)
 	}
@@ -65,7 +65,7 @@ func (ru *RoleUpdate) SetNillableDeletedAt(i *int) *RoleUpdate {
 }
 
 // AddDeletedAt adds i to the "deleted_at" field.
-func (ru *RoleUpdate) AddDeletedAt(i int) *RoleUpdate {
+func (ru *RoleUpdate) AddDeletedAt(i int64) *RoleUpdate {
 	ru.mutation.AddDeletedAt(i)
 	return ru
 }
@@ -251,19 +251,19 @@ func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 	}
 	if value, ok := ru.mutation.UpdatedAt(); ok {
-		_spec.SetField(role.FieldUpdatedAt, field.TypeInt, value)
+		_spec.SetField(role.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := ru.mutation.AddedUpdatedAt(); ok {
-		_spec.AddField(role.FieldUpdatedAt, field.TypeInt, value)
+		_spec.AddField(role.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := ru.mutation.DeletedAt(); ok {
-		_spec.SetField(role.FieldDeletedAt, field.TypeInt, value)
+		_spec.SetField(role.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if value, ok := ru.mutation.AddedDeletedAt(); ok {
-		_spec.AddField(role.FieldDeletedAt, field.TypeInt, value)
+		_spec.AddField(role.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if ru.mutation.DeletedAtCleared() {
-		_spec.ClearField(role.FieldDeletedAt, field.TypeInt)
+		_spec.ClearField(role.FieldDeletedAt, field.TypeInt64)
 	}
 	if value, ok := ru.mutation.TenantCode(); ok {
 		_spec.SetField(role.FieldTenantCode, field.TypeString, value)
@@ -315,14 +315,14 @@ type RoleUpdateOne struct {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (ruo *RoleUpdateOne) SetUpdatedAt(i int) *RoleUpdateOne {
+func (ruo *RoleUpdateOne) SetUpdatedAt(i int64) *RoleUpdateOne {
 	ruo.mutation.ResetUpdatedAt()
 	ruo.mutation.SetUpdatedAt(i)
 	return ruo
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableUpdatedAt(i *int) *RoleUpdateOne {
+func (ruo *RoleUpdateOne) SetNillableUpdatedAt(i *int64) *RoleUpdateOne {
 	if i != nil {
 		ruo.SetUpdatedAt(*i)
 	}
@@ -330,20 +330,20 @@ func (ruo *RoleUpdateOne) SetNillableUpdatedAt(i *int) *RoleUpdateOne {
 }
 
 // AddUpdatedAt adds i to the "updated_at" field.
-func (ruo *RoleUpdateOne) AddUpdatedAt(i int) *RoleUpdateOne {
+func (ruo *RoleUpdateOne) AddUpdatedAt(i int64) *RoleUpdateOne {
 	ruo.mutation.AddUpdatedAt(i)
 	return ruo
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (ruo *RoleUpdateOne) SetDeletedAt(i int) *RoleUpdateOne {
+func (ruo *RoleUpdateOne) SetDeletedAt(i int64) *RoleUpdateOne {
 	ruo.mutation.ResetDeletedAt()
 	ruo.mutation.SetDeletedAt(i)
 	return ruo
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableDeletedAt(i *int) *RoleUpdateOne {
+func (ruo *RoleUpdateOne) SetNillableDeletedAt(i *int64) *RoleUpdateOne {
 	if i != nil {
 		ruo.SetDeletedAt(*i)
 	}
@@ -351,7 +351,7 @@ func (ruo *RoleUpdateOne) SetNillableDeletedAt(i *int) *RoleUpdateOne {
 }
 
 // AddDeletedAt adds i to the "deleted_at" field.
-func (ruo *RoleUpdateOne) AddDeletedAt(i int) *RoleUpdateOne {
+func (ruo *RoleUpdateOne) AddDeletedAt(i int64) *RoleUpdateOne {
 	ruo.mutation.AddDeletedAt(i)
 	return ruo
 }
@@ -567,19 +567,19 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 		}
 	}
 	if value, ok := ruo.mutation.UpdatedAt(); ok {
-		_spec.SetField(role.FieldUpdatedAt, field.TypeInt, value)
+		_spec.SetField(role.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := ruo.mutation.AddedUpdatedAt(); ok {
-		_spec.AddField(role.FieldUpdatedAt, field.TypeInt, value)
+		_spec.AddField(role.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := ruo.mutation.DeletedAt(); ok {
-		_spec.SetField(role.FieldDeletedAt, field.TypeInt, value)
+		_spec.SetField(role.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if value, ok := ruo.mutation.AddedDeletedAt(); ok {
-		_spec.AddField(role.FieldDeletedAt, field.TypeInt, value)
+		_spec.AddField(role.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if ruo.mutation.DeletedAtCleared() {
-		_spec.ClearField(role.FieldDeletedAt, field.TypeInt)
+		_spec.ClearField(role.FieldDeletedAt, field.TypeInt64)
 	}
 	if value, ok := ruo.mutation.TenantCode(); ok {
 		_spec.SetField(role.FieldTenantCode, field.TypeString, value)

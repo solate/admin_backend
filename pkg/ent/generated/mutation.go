@@ -2404,12 +2404,12 @@ type RoleMutation struct {
 	op            Op
 	typ           string
 	id            *int
-	created_at    *int
-	addcreated_at *int
-	updated_at    *int
-	addupdated_at *int
-	deleted_at    *int
-	adddeleted_at *int
+	created_at    *int64
+	addcreated_at *int64
+	updated_at    *int64
+	addupdated_at *int64
+	deleted_at    *int64
+	adddeleted_at *int64
 	tenant_code   *string
 	role_id       *string
 	name          *string
@@ -2524,13 +2524,13 @@ func (m *RoleMutation) IDs(ctx context.Context) ([]int, error) {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (m *RoleMutation) SetCreatedAt(i int) {
+func (m *RoleMutation) SetCreatedAt(i int64) {
 	m.created_at = &i
 	m.addcreated_at = nil
 }
 
 // CreatedAt returns the value of the "created_at" field in the mutation.
-func (m *RoleMutation) CreatedAt() (r int, exists bool) {
+func (m *RoleMutation) CreatedAt() (r int64, exists bool) {
 	v := m.created_at
 	if v == nil {
 		return
@@ -2541,7 +2541,7 @@ func (m *RoleMutation) CreatedAt() (r int, exists bool) {
 // OldCreatedAt returns the old "created_at" field's value of the Role entity.
 // If the Role object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *RoleMutation) OldCreatedAt(ctx context.Context) (v int, err error) {
+func (m *RoleMutation) OldCreatedAt(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
 	}
@@ -2556,7 +2556,7 @@ func (m *RoleMutation) OldCreatedAt(ctx context.Context) (v int, err error) {
 }
 
 // AddCreatedAt adds i to the "created_at" field.
-func (m *RoleMutation) AddCreatedAt(i int) {
+func (m *RoleMutation) AddCreatedAt(i int64) {
 	if m.addcreated_at != nil {
 		*m.addcreated_at += i
 	} else {
@@ -2565,7 +2565,7 @@ func (m *RoleMutation) AddCreatedAt(i int) {
 }
 
 // AddedCreatedAt returns the value that was added to the "created_at" field in this mutation.
-func (m *RoleMutation) AddedCreatedAt() (r int, exists bool) {
+func (m *RoleMutation) AddedCreatedAt() (r int64, exists bool) {
 	v := m.addcreated_at
 	if v == nil {
 		return
@@ -2580,13 +2580,13 @@ func (m *RoleMutation) ResetCreatedAt() {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (m *RoleMutation) SetUpdatedAt(i int) {
+func (m *RoleMutation) SetUpdatedAt(i int64) {
 	m.updated_at = &i
 	m.addupdated_at = nil
 }
 
 // UpdatedAt returns the value of the "updated_at" field in the mutation.
-func (m *RoleMutation) UpdatedAt() (r int, exists bool) {
+func (m *RoleMutation) UpdatedAt() (r int64, exists bool) {
 	v := m.updated_at
 	if v == nil {
 		return
@@ -2597,7 +2597,7 @@ func (m *RoleMutation) UpdatedAt() (r int, exists bool) {
 // OldUpdatedAt returns the old "updated_at" field's value of the Role entity.
 // If the Role object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *RoleMutation) OldUpdatedAt(ctx context.Context) (v int, err error) {
+func (m *RoleMutation) OldUpdatedAt(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
 	}
@@ -2612,7 +2612,7 @@ func (m *RoleMutation) OldUpdatedAt(ctx context.Context) (v int, err error) {
 }
 
 // AddUpdatedAt adds i to the "updated_at" field.
-func (m *RoleMutation) AddUpdatedAt(i int) {
+func (m *RoleMutation) AddUpdatedAt(i int64) {
 	if m.addupdated_at != nil {
 		*m.addupdated_at += i
 	} else {
@@ -2621,7 +2621,7 @@ func (m *RoleMutation) AddUpdatedAt(i int) {
 }
 
 // AddedUpdatedAt returns the value that was added to the "updated_at" field in this mutation.
-func (m *RoleMutation) AddedUpdatedAt() (r int, exists bool) {
+func (m *RoleMutation) AddedUpdatedAt() (r int64, exists bool) {
 	v := m.addupdated_at
 	if v == nil {
 		return
@@ -2636,13 +2636,13 @@ func (m *RoleMutation) ResetUpdatedAt() {
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (m *RoleMutation) SetDeletedAt(i int) {
+func (m *RoleMutation) SetDeletedAt(i int64) {
 	m.deleted_at = &i
 	m.adddeleted_at = nil
 }
 
 // DeletedAt returns the value of the "deleted_at" field in the mutation.
-func (m *RoleMutation) DeletedAt() (r int, exists bool) {
+func (m *RoleMutation) DeletedAt() (r int64, exists bool) {
 	v := m.deleted_at
 	if v == nil {
 		return
@@ -2653,7 +2653,7 @@ func (m *RoleMutation) DeletedAt() (r int, exists bool) {
 // OldDeletedAt returns the old "deleted_at" field's value of the Role entity.
 // If the Role object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *RoleMutation) OldDeletedAt(ctx context.Context) (v *int, err error) {
+func (m *RoleMutation) OldDeletedAt(ctx context.Context) (v *int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
 	}
@@ -2668,7 +2668,7 @@ func (m *RoleMutation) OldDeletedAt(ctx context.Context) (v *int, err error) {
 }
 
 // AddDeletedAt adds i to the "deleted_at" field.
-func (m *RoleMutation) AddDeletedAt(i int) {
+func (m *RoleMutation) AddDeletedAt(i int64) {
 	if m.adddeleted_at != nil {
 		*m.adddeleted_at += i
 	} else {
@@ -2677,7 +2677,7 @@ func (m *RoleMutation) AddDeletedAt(i int) {
 }
 
 // AddedDeletedAt returns the value that was added to the "deleted_at" field in this mutation.
-func (m *RoleMutation) AddedDeletedAt() (r int, exists bool) {
+func (m *RoleMutation) AddedDeletedAt() (r int64, exists bool) {
 	v := m.adddeleted_at
 	if v == nil {
 		return
@@ -3142,21 +3142,21 @@ func (m *RoleMutation) OldField(ctx context.Context, name string) (ent.Value, er
 func (m *RoleMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case role.FieldCreatedAt:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCreatedAt(v)
 		return nil
 	case role.FieldUpdatedAt:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUpdatedAt(v)
 		return nil
 	case role.FieldDeletedAt:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3262,21 +3262,21 @@ func (m *RoleMutation) AddedField(name string) (ent.Value, bool) {
 func (m *RoleMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case role.FieldCreatedAt:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddCreatedAt(v)
 		return nil
 	case role.FieldUpdatedAt:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddUpdatedAt(v)
 		return nil
 	case role.FieldDeletedAt:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

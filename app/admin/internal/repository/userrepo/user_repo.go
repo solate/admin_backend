@@ -99,12 +99,11 @@ func (r *UserRepo) PageList(ctx context.Context, current, limit int, where []pre
 }
 
 // DeleteByUserID 根据用户ID删除用户，软删除
-func (r *UserRepo) DeleteByUserID(ctx context.Context, delete *generated.User) (int, error) {
+func (r *UserRepo) Delete(ctx context.Context, userID string) (int, error) {
 	now := time.Now().UnixMilli()
-	delete.DeletedAt = &now
 	return r.db.User.Update().
 		SetDeletedAt(now).
-		Where(user.UserID(delete.UserID)).Save(ctx)
+		Where(user.UserID(userID)).Save(ctx)
 }
 
 // 用户登出

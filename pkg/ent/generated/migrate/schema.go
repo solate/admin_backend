@@ -64,9 +64,9 @@ var (
 	// RolesColumns holds the columns for the "roles" table.
 	RolesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "created_at", Type: field.TypeInt, Comment: "创建时间", Default: 0},
-		{Name: "updated_at", Type: field.TypeInt, Comment: "修改时间", Default: 0},
-		{Name: "deleted_at", Type: field.TypeInt, Nullable: true, Comment: "删除时间"},
+		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
 		{Name: "tenant_code", Type: field.TypeString, Comment: "租户编码"},
 		{Name: "role_id", Type: field.TypeString, Unique: true, Comment: "角色ID"},
 		{Name: "name", Type: field.TypeString, Comment: "角色名"},

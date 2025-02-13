@@ -33,31 +33,35 @@ func NewCreateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Create
 }
 
 func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.CreateUserResp, err error) {
-	// 1. 参数验证
-	if req.Phone == "" || req.Name == "" {
-		return nil, xerr.NewErrCode(xerr.ParamError)
+
+	// 1. 检查用户名是否已存在
+	user, err := l.userRepo.GetByUserName(l.ctx, req.UserName)
+	if err != nil && !generated.IsNotFound(err) {
+		l.Error("GetUser l.userRepo.GetByUserName err: ", err.Error())
+		return nil, xerr.NewErrCodeMsg(xerr.DbError, "数据库查询错误")
+	}
+	if user != nil {
+		return nil, xerr.NewErrCodeMsg(xerr.DbRecordExist, "用户名已存在")
 	}
 
-	// 2. 检查手机号是否已存在
-	user, err := l.userRepo.GetByPhone(l.ctx, req.Phone)
-	if err != nil {
-		l.Error("CreateUser User.Exist err:", err.Error())
-		return nil, xerr.NewErrCodeMsg(xerr.DbError, "查询用户失败")
+	// 检查电话号是否已存在
+	user, err = l.userRepo.GetByPhone(l.ctx, req.Phone)
+	if err != nil && !generated.IsNotFound(err) {
+		l.Error("GetUser l.userRepo.GetByPhone err: ", err.Error())
+		return nil, xerr.NewErrCodeMsg(xerr.DbError, "数据库查询错误")
 	}
-	if user.Phone == req.Phone {
-		return nil, xerr.NewErrMsg("手机号已存在")
+	if user != nil {
+		return nil, xerr.NewErrCodeMsg(xerr.DbRecordExist, "手机号已存在")
 	}
 
 	// 3. 生成密码盐和加密密码
 	salt, err := passwordgen.GenerateSalt()
 	if err != nil {
-		l.Error("CreateUser GenerateSalt err:", err.Error())
 		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "生成密码盐失败")
 	}
-	hashedPassword, err := passwordgen.Argon2Hash(req.PwdHashed, salt)
+	hashedPassword, err := passwordgen.Argon2Hash(req.Password, salt)
 	if err != nil {
-		l.Error("CreateUser Argon2Hash err:", err.Error())
-		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "生成密码加盐失败")
+		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "密码加密失败")
 	}
 
 	userID, err := idgen.GenerateUUID()
@@ -66,18 +70,22 @@ func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.Crea
 		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "生成用户ID失败")
 	}
 
+	if req.Status == 0 {
+		req.Status = 1 // 默认启用
+	}
+
 	// 4. 创建用户
 	newUser := &generated.User{
 		TenantCode: contextutil.GetTenantCodeFromCtx(l.ctx),
 		UserID:     userID,
 		Phone:      req.Phone,
-		UserName:   req.Name,
-		PwdHashed:  hashedPassword,
-		PwdSalt:    string(salt),
-		Status:     1, // 默认启用
+		UserName:   req.UserName,
 		NickName:   req.Name,
 		Email:      req.Email,
 		Sex:        req.Sex,
+		PwdHashed:  hashedPassword,
+		PwdSalt:    salt,
+		Status:     req.Status, // 默认启用
 	}
 	user, err = l.userRepo.Create(l.ctx, newUser)
 	if err != nil {
@@ -87,6 +95,6 @@ func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.Crea
 
 	// 5. 返回结果
 	return &types.CreateUserResp{
-		UserID: user.UserID,
+		UserID: newUser.UserID,
 	}, nil
 }

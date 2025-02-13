@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"net/http"
 
 	"admin_backend/app/admin/internal/config"
@@ -30,8 +29,6 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 			httpx.Error(w, xerr.NewErrCodeMsg(http.StatusBadRequest, "请先登录"))
 			return
 		}
-
-		fmt.Println("===================tokenString:", tokenString)
 
 		claims, err := jwt.ParseToken(tokenString, []byte(m.Config.JwtAuth.AccessSecret))
 		if err != nil {

@@ -11,7 +11,7 @@ import (
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/utils/idgen"
-	useragent "admin_backend/pkg/utils/userAgent"
+	"admin_backend/pkg/utils/useragent"
 )
 
 type LoginLogRepo struct {

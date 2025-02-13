@@ -69,11 +69,11 @@ func init() {
 	// roleDescCreatedAt is the schema descriptor for created_at field.
 	roleDescCreatedAt := roleFields[0].Descriptor()
 	// role.DefaultCreatedAt holds the default value on creation for the created_at field.
-	role.DefaultCreatedAt = roleDescCreatedAt.Default.(int)
+	role.DefaultCreatedAt = roleDescCreatedAt.Default.(int64)
 	// roleDescUpdatedAt is the schema descriptor for updated_at field.
 	roleDescUpdatedAt := roleFields[1].Descriptor()
 	// role.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	role.DefaultUpdatedAt = roleDescUpdatedAt.Default.(int)
+	role.DefaultUpdatedAt = roleDescUpdatedAt.Default.(int64)
 	// roleDescTenantCode is the schema descriptor for tenant_code field.
 	roleDescTenantCode := roleFields[3].Descriptor()
 	// role.TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.

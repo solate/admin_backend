@@ -41,7 +41,7 @@ func (l *DeleteUserLogic) DeleteUser(req *types.DeleteUserReq) (resp bool, err e
 	}
 
 	// 2. 软删除用户
-	_, err = l.userRepo.DeleteByUserID(l.ctx, user)
+	_, err = l.userRepo.Delete(l.ctx, user.UserID)
 	if err != nil {
 		l.Error("DeleteUser userRepo.Update err:", err.Error())
 		return false, xerr.NewErrCodeMsg(xerr.DbError, "删除用户失败")

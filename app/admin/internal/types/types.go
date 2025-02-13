@@ -8,6 +8,18 @@ type CaptchaResp struct {
 	CaptchaUrl string `json:"captcha_url"` // 验证码图片（base64）
 }
 
+type CreateRoleReq struct {
+	Name        string `json:"name"`                 // 角色名
+	Code        string `json:"code"`                 // 角色编码
+	Description string `json:"description,optional"` // 角色描述
+	Status      int    `json:"status"`               // 状态: 1:启用, 2:禁用
+	Sort        int    `json:"sort,optional"`        // 排序
+}
+
+type CreateRoleResp struct {
+	RoleID string `json:"role_id"` // 角色ID
+}
+
 type CreateTenantReq struct {
 	Name        string `json:"name" validate:"required"`
 	Code        string `json:"code" validate:"required"`
@@ -20,20 +32,23 @@ type CreateTenantResp struct {
 }
 
 type CreateUserReq struct {
-	UserName  string   `json:"user_name"`  // 用户名
-	Name      string   `json:"name"`       // 姓名
-	Phone     string   `json:"phone"`      // 手机号
-	Email     string   `json:"email"`      // 邮箱
-	PwdHashed string   `json:"pwd_hashed"` // 密码哈希
-	PwdSalt   string   `json:"pwd_salt"`   // 密码盐值
-	Status    int      `json:"status"`     // 状态
-	Sex       int      `json:"sex"`        // 性别
-	Avatar    string   `json:"avatar"`     // 头像
-	RoleIDs   []string `json:"role_ids"`   // 角色ID列表
+	UserName string   `json:"user_name"`         // 用户名
+	Name     string   `json:"name"`              // 姓名
+	Password string   `json:"password"`          // 密码
+	Status   int      `json:"status"`            // 状态
+	Phone    string   `json:"phone,optional"`    // 手机号
+	Email    string   `json:"email,optional"`    // 邮箱
+	Sex      int      `json:"sex,optional"`      // 性别
+	Avatar   string   `json:"avatar,optional"`   // 头像
+	RoleIDs  []string `json:"role_ids,optional"` // 角色ID列表
 }
 
 type CreateUserResp struct {
 	UserID string `json:"user_id"` // 用户ID
+}
+
+type DeleteRoleReq struct {
+	RoleID string `path:"role_id"`
 }
 
 type DeleteTenantReq struct {
@@ -42,6 +57,14 @@ type DeleteTenantReq struct {
 
 type DeleteUserReq struct {
 	UserID string `path:"user_id"`
+}
+
+type GetRoleReq struct {
+	RoleID string `path:"role_id"`
+}
+
+type GetRoleResp struct {
+	RoleInfo
 }
 
 type GetTenantReq struct {
@@ -82,7 +105,7 @@ type LoginLogInfo struct {
 	UserAgent string `json:"user_agent"` // 用户代理
 	Status    int    `json:"status"`     // 登录状态
 	Message   string `json:"message"`    // 状态信息
-	CreatedAt string `json:"created_at"` // 登录时间
+	CreatedAt int64  `json:"created_at"` // 创建时间
 }
 
 type LoginLogListReq struct {
@@ -145,6 +168,28 @@ type RegisterResp struct {
 	UserID string `json:"user_id"`
 }
 
+type RoleInfo struct {
+	RoleID      string `json:"role_id"`     // 角色ID
+	Name        string `json:"name"`        // 角色名
+	Code        string `json:"code"`        // 角色编码
+	Description string `json:"description"` // 角色描述
+	Status      int    `json:"status"`      // 状态
+	Sort        int    `json:"sort"`        // 排序
+	CreatedAt   int64  `json:"created_at"`  // 创建时间
+}
+
+type RoleListReq struct {
+	PageRequest
+	Name   string `form:"name,optional"`   // 角色名
+	Code   string `form:"code,optional"`   // 角色编码
+	Status int    `form:"status,optional"` // 状态
+}
+
+type RoleListResp struct {
+	Page *PageResponse `json:"page"` // 分页
+	List []*RoleInfo   `json:"list"` // 角色列表
+}
+
 type StatusRequest struct {
 	ID     int `json:"id"`     // ID
 	Status int `json:"status"` // 状态
@@ -161,6 +206,14 @@ type TenantInfo struct {
 type TimeRange struct {
 	StartTime string `form:"start_time,optional"` // 开始时间
 	EndTime   string `form:"end_time,optional"`   // 结束时间
+}
+
+type UpdateRoleReq struct {
+	RoleID      string `path:"role_id"`
+	Name        string `json:"name,optional"`        // 角色名
+	Description string `json:"description,optional"` // 角色描述
+	Status      int    `json:"status,optional"`      // 状态
+	Sort        int    `json:"sort,optional"`        // 排序
 }
 
 type UpdateTenantReq struct {
@@ -188,7 +241,7 @@ type UserInfo struct {
 	Email     string `json:"email"`      // 邮箱
 	Avatar    string `json:"avatar"`     // 头像
 	Status    int    `json:"status"`     // 状态
-	CreatedAt string `json:"created_at"` // 创建时间
+	CreatedAt int64  `json:"created_at"` // 创建时间
 }
 
 type UserListReq struct {

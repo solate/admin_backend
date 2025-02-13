@@ -79,7 +79,7 @@ func (l *ListLoginLogLogic) ListLoginLog(req *types.LoginLogListReq) (resp *type
 			IP:        log.IP,
 			UserAgent: log.UserAgent,
 			Message:   log.Message,
-			CreatedAt: time.UnixMilli(log.CreatedAt).Format("2006-01-02 15:04:05"),
+			CreatedAt: log.CreatedAt,
 		})
 	}
 

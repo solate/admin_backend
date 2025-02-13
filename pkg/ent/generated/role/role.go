@@ -62,9 +62,9 @@ func ValidColumn(column string) bool {
 
 var (
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
-	DefaultCreatedAt int
+	DefaultCreatedAt int64
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
-	DefaultUpdatedAt int
+	DefaultUpdatedAt int64
 	// TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
 	TenantCodeValidator func(string) error
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.

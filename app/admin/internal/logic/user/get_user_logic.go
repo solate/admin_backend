@@ -39,13 +39,14 @@ func (l *GetUserLogic) GetUser(req *types.GetUserReq) (resp *types.GetUserResp, 
 
 	resp = &types.GetUserResp{
 		UserInfo: types.UserInfo{
-			UserID:   user.UserID,
-			UserName: user.UserName,
-			Name:     user.NickName,
-			Phone:    user.Phone,
-			Email:    user.Email,
-			Avatar:   user.Avatar,
-			Status:   user.Status,
+			UserID:    user.UserID,
+			UserName:  user.UserName,
+			Name:      user.NickName,
+			Phone:     user.Phone,
+			Email:     user.Email,
+			Avatar:    user.Avatar,
+			Status:    user.Status,
+			CreatedAt: user.CreatedAt,
 		},
 	}
 

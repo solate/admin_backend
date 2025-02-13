@@ -22,13 +22,13 @@ type RoleCreate struct {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (rc *RoleCreate) SetCreatedAt(i int) *RoleCreate {
+func (rc *RoleCreate) SetCreatedAt(i int64) *RoleCreate {
 	rc.mutation.SetCreatedAt(i)
 	return rc
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (rc *RoleCreate) SetNillableCreatedAt(i *int) *RoleCreate {
+func (rc *RoleCreate) SetNillableCreatedAt(i *int64) *RoleCreate {
 	if i != nil {
 		rc.SetCreatedAt(*i)
 	}
@@ -36,13 +36,13 @@ func (rc *RoleCreate) SetNillableCreatedAt(i *int) *RoleCreate {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (rc *RoleCreate) SetUpdatedAt(i int) *RoleCreate {
+func (rc *RoleCreate) SetUpdatedAt(i int64) *RoleCreate {
 	rc.mutation.SetUpdatedAt(i)
 	return rc
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (rc *RoleCreate) SetNillableUpdatedAt(i *int) *RoleCreate {
+func (rc *RoleCreate) SetNillableUpdatedAt(i *int64) *RoleCreate {
 	if i != nil {
 		rc.SetUpdatedAt(*i)
 	}
@@ -50,13 +50,13 @@ func (rc *RoleCreate) SetNillableUpdatedAt(i *int) *RoleCreate {
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (rc *RoleCreate) SetDeletedAt(i int) *RoleCreate {
+func (rc *RoleCreate) SetDeletedAt(i int64) *RoleCreate {
 	rc.mutation.SetDeletedAt(i)
 	return rc
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (rc *RoleCreate) SetNillableDeletedAt(i *int) *RoleCreate {
+func (rc *RoleCreate) SetNillableDeletedAt(i *int64) *RoleCreate {
 	if i != nil {
 		rc.SetDeletedAt(*i)
 	}
@@ -251,15 +251,15 @@ func (rc *RoleCreate) createSpec() (*Role, *sqlgraph.CreateSpec) {
 	)
 	_spec.OnConflict = rc.conflict
 	if value, ok := rc.mutation.CreatedAt(); ok {
-		_spec.SetField(role.FieldCreatedAt, field.TypeInt, value)
+		_spec.SetField(role.FieldCreatedAt, field.TypeInt64, value)
 		_node.CreatedAt = value
 	}
 	if value, ok := rc.mutation.UpdatedAt(); ok {
-		_spec.SetField(role.FieldUpdatedAt, field.TypeInt, value)
+		_spec.SetField(role.FieldUpdatedAt, field.TypeInt64, value)
 		_node.UpdatedAt = value
 	}
 	if value, ok := rc.mutation.DeletedAt(); ok {
-		_spec.SetField(role.FieldDeletedAt, field.TypeInt, value)
+		_spec.SetField(role.FieldDeletedAt, field.TypeInt64, value)
 		_node.DeletedAt = &value
 	}
 	if value, ok := rc.mutation.TenantCode(); ok {
@@ -343,7 +343,7 @@ type (
 )
 
 // SetUpdatedAt sets the "updated_at" field.
-func (u *RoleUpsert) SetUpdatedAt(v int) *RoleUpsert {
+func (u *RoleUpsert) SetUpdatedAt(v int64) *RoleUpsert {
 	u.Set(role.FieldUpdatedAt, v)
 	return u
 }
@@ -355,13 +355,13 @@ func (u *RoleUpsert) UpdateUpdatedAt() *RoleUpsert {
 }
 
 // AddUpdatedAt adds v to the "updated_at" field.
-func (u *RoleUpsert) AddUpdatedAt(v int) *RoleUpsert {
+func (u *RoleUpsert) AddUpdatedAt(v int64) *RoleUpsert {
 	u.Add(role.FieldUpdatedAt, v)
 	return u
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (u *RoleUpsert) SetDeletedAt(v int) *RoleUpsert {
+func (u *RoleUpsert) SetDeletedAt(v int64) *RoleUpsert {
 	u.Set(role.FieldDeletedAt, v)
 	return u
 }
@@ -373,7 +373,7 @@ func (u *RoleUpsert) UpdateDeletedAt() *RoleUpsert {
 }
 
 // AddDeletedAt adds v to the "deleted_at" field.
-func (u *RoleUpsert) AddDeletedAt(v int) *RoleUpsert {
+func (u *RoleUpsert) AddDeletedAt(v int64) *RoleUpsert {
 	u.Add(role.FieldDeletedAt, v)
 	return u
 }
@@ -523,14 +523,14 @@ func (u *RoleUpsertOne) Update(set func(*RoleUpsert)) *RoleUpsertOne {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (u *RoleUpsertOne) SetUpdatedAt(v int) *RoleUpsertOne {
+func (u *RoleUpsertOne) SetUpdatedAt(v int64) *RoleUpsertOne {
 	return u.Update(func(s *RoleUpsert) {
 		s.SetUpdatedAt(v)
 	})
 }
 
 // AddUpdatedAt adds v to the "updated_at" field.
-func (u *RoleUpsertOne) AddUpdatedAt(v int) *RoleUpsertOne {
+func (u *RoleUpsertOne) AddUpdatedAt(v int64) *RoleUpsertOne {
 	return u.Update(func(s *RoleUpsert) {
 		s.AddUpdatedAt(v)
 	})
@@ -544,14 +544,14 @@ func (u *RoleUpsertOne) UpdateUpdatedAt() *RoleUpsertOne {
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (u *RoleUpsertOne) SetDeletedAt(v int) *RoleUpsertOne {
+func (u *RoleUpsertOne) SetDeletedAt(v int64) *RoleUpsertOne {
 	return u.Update(func(s *RoleUpsert) {
 		s.SetDeletedAt(v)
 	})
 }
 
 // AddDeletedAt adds v to the "deleted_at" field.
-func (u *RoleUpsertOne) AddDeletedAt(v int) *RoleUpsertOne {
+func (u *RoleUpsertOne) AddDeletedAt(v int64) *RoleUpsertOne {
 	return u.Update(func(s *RoleUpsert) {
 		s.AddDeletedAt(v)
 	})
@@ -891,14 +891,14 @@ func (u *RoleUpsertBulk) Update(set func(*RoleUpsert)) *RoleUpsertBulk {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (u *RoleUpsertBulk) SetUpdatedAt(v int) *RoleUpsertBulk {
+func (u *RoleUpsertBulk) SetUpdatedAt(v int64) *RoleUpsertBulk {
 	return u.Update(func(s *RoleUpsert) {
 		s.SetUpdatedAt(v)
 	})
 }
 
 // AddUpdatedAt adds v to the "updated_at" field.
-func (u *RoleUpsertBulk) AddUpdatedAt(v int) *RoleUpsertBulk {
+func (u *RoleUpsertBulk) AddUpdatedAt(v int64) *RoleUpsertBulk {
 	return u.Update(func(s *RoleUpsert) {
 		s.AddUpdatedAt(v)
 	})
@@ -912,14 +912,14 @@ func (u *RoleUpsertBulk) UpdateUpdatedAt() *RoleUpsertBulk {
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (u *RoleUpsertBulk) SetDeletedAt(v int) *RoleUpsertBulk {
+func (u *RoleUpsertBulk) SetDeletedAt(v int64) *RoleUpsertBulk {
 	return u.Update(func(s *RoleUpsert) {
 		s.SetDeletedAt(v)
 	})
 }
 
 // AddDeletedAt adds v to the "deleted_at" field.
-func (u *RoleUpsertBulk) AddDeletedAt(v int) *RoleUpsertBulk {
+func (u *RoleUpsertBulk) AddDeletedAt(v int64) *RoleUpsertBulk {
 	return u.Update(func(s *RoleUpsert) {
 		s.AddDeletedAt(v)
 	})

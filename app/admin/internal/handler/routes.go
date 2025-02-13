@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	auth "admin_backend/app/admin/internal/handler/auth"
+	role "admin_backend/app/admin/internal/handler/role"
 	tenant "admin_backend/app/admin/internal/handler/tenant"
 	user "admin_backend/app/admin/internal/handler/user"
 	"admin_backend/app/admin/internal/svc"
@@ -52,6 +53,45 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/admin/api/v1/auth"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.AuthMiddleware},
+			[]rest.Route{
+				{
+					// 创建角色
+					Method:  http.MethodPost,
+					Path:    "/roles",
+					Handler: role.CreateRoleHandler(serverCtx),
+				},
+				{
+					// 获取角色列表
+					Method:  http.MethodGet,
+					Path:    "/roles",
+					Handler: role.ListRoleHandler(serverCtx),
+				},
+				{
+					// 更新角色
+					Method:  http.MethodPut,
+					Path:    "/roles/:role_id",
+					Handler: role.UpdateRoleHandler(serverCtx),
+				},
+				{
+					// 删除角色
+					Method:  http.MethodDelete,
+					Path:    "/roles/:role_id",
+					Handler: role.DeleteRoleHandler(serverCtx),
+				},
+				{
+					// 获取角色详情
+					Method:  http.MethodGet,
+					Path:    "/roles/:role_id",
+					Handler: role.GetRoleHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/admin/api/v1"),
 	)
 
 	server.AddRoutes(

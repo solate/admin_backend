@@ -15,19 +15,18 @@ info (
    
 type (
     
-
+       
     // 创建用户请求
-    CreateUserReq {
-        UserName      string   `json:"user_name"` // 用户名
-        Name         string   `json:"name"`                         // 姓名
-        Phone        string   `json:"phone"`                        // 手机号
-        Email        string   `json:"email"`                        // 邮箱
-        PwdHashed    string   `json:"pwd_hashed"`                  // 密码哈希
-        PwdSalt      string   `json:"pwd_salt"`                    // 密码盐值
-        Status       int      `json:"status"`                      // 状态
-        Sex          int      `json:"sex"`                         // 性别
-        Avatar       string   `json:"avatar"`                      // 头像
-        RoleIDs      []string `json:"role_ids"`                    // 角色ID列表
+    CreateUserReq { 
+        UserName      string   `json:"user_name"`   // 用户名
+        Name         string   `json:"name"`         // 姓名
+        Password    string   `json:"password"`     // 密码
+        Status       int      `json:"status"`       // 状态
+        Phone        string   `json:"phone,optional"`   // 手机号
+        Email        string   `json:"email,optional"`   // 邮箱
+        Sex          int      `json:"sex,optional"`     // 性别
+        Avatar       string   `json:"avatar,optional"`  // 头像
+        RoleIDs      []string `json:"role_ids,optional"`// 角色ID列表
     }
 
     // 创建用户响应
@@ -80,7 +79,7 @@ type (
         Email     string `json:"email"`         // 邮箱
         Avatar    string `json:"avatar"`        // 头像
         Status    int    `json:"status"`        // 状态
-        CreatedAt string `json:"created_at"`    // 创建时间
+        CreatedAt int64 `json:"created_at"`    // 创建时间
     }
 
 
@@ -109,7 +108,7 @@ type (
         UserAgent  string `json:"user_agent"`         // 用户代理
         Status     int    `json:"status"`             // 登录状态
         Message    string `json:"message"`            // 状态信息
-        CreatedAt  string `json:"created_at"`         // 登录时间
+        CreatedAt  int64 `json:"created_at"`         // 创建时间
     }
 )
 
