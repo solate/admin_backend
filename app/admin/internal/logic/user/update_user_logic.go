@@ -37,11 +37,11 @@ func (l *UpdateUserLogic) UpdateUser(req *types.UpdateUserReq) (resp bool, err e
 		if generated.IsNotFound(err) {
 			return false, xerr.NewErrMsg("用户不存在")
 		}
-		return false, xerr.NewErrCode(xerr.DbError)
+		return false, xerr.NewErrCodeMsg(xerr.DbError, "查询用户失败")
 	}
 
 	if user.UserName == "admin" && req.Status != 1 {
-		return false, xerr.NewErrMsg("管理员账号不能禁用")
+		return false, xerr.NewErrCodeMsg(xerr.ParamError, "管理员账号不能禁用")
 	}
 
 	// 2. 更新用户信息

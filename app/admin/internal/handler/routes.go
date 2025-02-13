@@ -45,10 +45,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.AuthMiddleware},
 			[]rest.Route{
 				{
+					// 修改密码
+					Method:  http.MethodPost,
+					Path:    "/change-password",
+					Handler: auth.ChangePasswordHandler(serverCtx),
+				},
+				{
 					// 用户登出
 					Method:  http.MethodPost,
 					Path:    "/logout",
 					Handler: auth.LogoutHandler(serverCtx),
+				},
+				{
+					// 重置密码
+					Method:  http.MethodPost,
+					Path:    "/reset-password",
+					Handler: auth.ResetPasswordHandler(serverCtx),
 				},
 			}...,
 		),

@@ -32,6 +32,34 @@
         ]
       }
     },
+    "/admin/api/v1/auth/change-password": {
+      "post": {
+        "summary": "修改密码",
+        "operationId": "ChangePassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 修改密码请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ChangePasswordReq"
+            }
+          }
+        ],
+        "tags": [
+          "auth"
+        ]
+      }
+    },
     "/admin/api/v1/auth/login": {
       "post": {
         "summary": "用户登录",
@@ -95,6 +123,34 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/RegisterReq"
+            }
+          }
+        ],
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/admin/api/v1/auth/reset-password": {
+      "post": {
+        "summary": "重置密码",
+        "operationId": "ResetPassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 重置密码请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResetPasswordReq"
             }
           }
         ],
@@ -715,6 +771,24 @@
         "captcha_url"
       ]
     },
+    "ChangePasswordReq": {
+      "type": "object",
+      "properties": {
+        "old_password": {
+          "type": "string",
+          "description": " 原密码"
+        },
+        "new_password": {
+          "type": "string",
+          "description": " 新密码"
+        }
+      },
+      "title": "ChangePasswordReq",
+      "required": [
+        "old_password",
+        "new_password"
+      ]
+    },
     "CreateRoleReq": {
       "type": "object",
       "properties": {
@@ -846,7 +920,8 @@
         "user_name",
         "name",
         "password",
-        "status"
+        "status",
+        "phone"
       ]
     },
     "CreateUserResp": {
@@ -1330,6 +1405,24 @@
       "title": "RegisterResp",
       "required": [
         "user_id"
+      ]
+    },
+    "ResetPasswordReq": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "description": " 用户ID"
+        },
+        "new_password": {
+          "type": "string",
+          "description": " 新密码"
+        }
+      },
+      "title": "ResetPasswordReq",
+      "required": [
+        "user_id",
+        "new_password"
       ]
     },
     "RoleInfo": {

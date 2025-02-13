@@ -9,7 +9,18 @@ info (
 
 
 type (
- 
+    // 修改密码请求
+    ChangePasswordReq {
+        OldPassword string `json:"old_password" validate:"required"` // 原密码
+        NewPassword string `json:"new_password" validate:"required"` // 新密码
+    }
+
+    // 重置密码请求
+    ResetPasswordReq {
+        UserID      string `json:"user_id" validate:"required"`      // 用户ID
+        NewPassword string `json:"new_password" validate:"required"` // 新密码
+    }
+
     RegisterReq {
         UserName string `json:"user_name"`
         Password string `json:"password"`
@@ -78,4 +89,12 @@ service admin {
     @doc "用户登出"
     @handler Logout
     post /logout returns (bool)
+
+    @doc "修改密码"
+    @handler ChangePassword
+    post /change-password (ChangePasswordReq) returns (bool)
+
+    @doc "重置密码"
+    @handler ResetPassword
+    post /reset-password (ResetPasswordReq) returns (bool)
 }

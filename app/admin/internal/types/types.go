@@ -8,6 +8,11 @@ type CaptchaResp struct {
 	CaptchaUrl string `json:"captcha_url"` // 验证码图片（base64）
 }
 
+type ChangePasswordReq struct {
+	OldPassword string `json:"old_password" validate:"required"` // 原密码
+	NewPassword string `json:"new_password" validate:"required"` // 新密码
+}
+
 type CreateRoleReq struct {
 	Name        string `json:"name"`                 // 角色名
 	Code        string `json:"code"`                 // 角色编码
@@ -36,7 +41,7 @@ type CreateUserReq struct {
 	Name     string   `json:"name"`              // 姓名
 	Password string   `json:"password"`          // 密码
 	Status   int      `json:"status"`            // 状态
-	Phone    string   `json:"phone,optional"`    // 手机号
+	Phone    string   `json:"phone"`             // 手机号
 	Email    string   `json:"email,optional"`    // 邮箱
 	Sex      int      `json:"sex,optional"`      // 性别
 	Avatar   string   `json:"avatar,optional"`   // 头像
@@ -166,6 +171,11 @@ type RegisterReq struct {
 
 type RegisterResp struct {
 	UserID string `json:"user_id"`
+}
+
+type ResetPasswordReq struct {
+	UserID      string `json:"user_id" validate:"required"`      // 用户ID
+	NewPassword string `json:"new_password" validate:"required"` // 新密码
 }
 
 type RoleInfo struct {
