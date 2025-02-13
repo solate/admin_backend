@@ -196,8 +196,6 @@ func init() {
 	userDescPhone := userFields[11].Descriptor()
 	// user.DefaultPhone holds the default value on creation for the phone field.
 	user.DefaultPhone = userDescPhone.Default.(string)
-	// user.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
-	user.PhoneValidator = userDescPhone.Validators[0].(func(string) error)
 	// userDescEmail is the schema descriptor for email field.
 	userDescEmail := userFields[12].Descriptor()
 	// user.DefaultEmail holds the default value on creation for the email field.

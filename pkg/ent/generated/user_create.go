@@ -404,11 +404,6 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.Phone(); !ok {
 		return &ValidationError{Name: "phone", err: errors.New(`generated: missing required field "User.phone"`)}
 	}
-	if v, ok := uc.mutation.Phone(); ok {
-		if err := user.PhoneValidator(v); err != nil {
-			return &ValidationError{Name: "phone", err: fmt.Errorf(`generated: validator failed for field "User.phone": %w`, err)}
-		}
-	}
 	if _, ok := uc.mutation.Email(); !ok {
 		return &ValidationError{Name: "email", err: errors.New(`generated: missing required field "User.email"`)}
 	}

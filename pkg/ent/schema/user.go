@@ -37,7 +37,7 @@ func (User) Fields() []ent.Field {
 
 		field.String("nick_name").Default("").Comment("昵称"),
 		field.String("avatar").Default("").Comment("头像"),
-		field.String("phone").NotEmpty().Default("").Comment("电话"),
+		field.String("phone").Default("").Comment("电话"),
 		field.String("email").Default("").Comment("邮箱"),
 		field.Int("sex").Default(0).Comment("性别: 1：男 2：女"),
 		field.Int("status").Default(1).Comment("状态: 1:启用, 2:禁用"),

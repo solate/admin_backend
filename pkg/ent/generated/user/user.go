@@ -109,8 +109,6 @@ var (
 	DefaultAvatar string
 	// DefaultPhone holds the default value on creation for the "phone" field.
 	DefaultPhone string
-	// PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
-	PhoneValidator func(string) error
 	// DefaultEmail holds the default value on creation for the "email" field.
 	DefaultEmail string
 	// DefaultSex holds the default value on creation for the "sex" field.

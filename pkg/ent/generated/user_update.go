@@ -370,11 +370,6 @@ func (uu *UserUpdate) check() error {
 			return &ValidationError{Name: "pwd_salt", err: fmt.Errorf(`generated: validator failed for field "User.pwd_salt": %w`, err)}
 		}
 	}
-	if v, ok := uu.mutation.Phone(); ok {
-		if err := user.PhoneValidator(v); err != nil {
-			return &ValidationError{Name: "phone", err: fmt.Errorf(`generated: validator failed for field "User.phone": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -846,11 +841,6 @@ func (uuo *UserUpdateOne) check() error {
 	if v, ok := uuo.mutation.PwdSalt(); ok {
 		if err := user.PwdSaltValidator(v); err != nil {
 			return &ValidationError{Name: "pwd_salt", err: fmt.Errorf(`generated: validator failed for field "User.pwd_salt": %w`, err)}
-		}
-	}
-	if v, ok := uuo.mutation.Phone(); ok {
-		if err := user.PhoneValidator(v); err != nil {
-			return &ValidationError{Name: "phone", err: fmt.Errorf(`generated: validator failed for field "User.phone": %w`, err)}
 		}
 	}
 	return nil

@@ -179,6 +179,183 @@
         ]
       }
     },
+    "/admin/api/v1/roles": {
+      "get": {
+        "summary": "获取角色列表",
+        "operationId": "ListRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RoleListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": " 当前页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          },
+          {
+            "name": "page_size",
+            "description": " 每页大小",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "10"
+          },
+          {
+            "name": "name",
+            "description": " 角色名",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "description": " 角色编码",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": " 状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "role"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      },
+      "post": {
+        "summary": "创建角色",
+        "operationId": "CreateRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateRoleResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 创建角色请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateRoleReq"
+            }
+          }
+        ],
+        "tags": [
+          "role"
+        ]
+      }
+    },
+    "/admin/api/v1/roles/{role_id}": {
+      "get": {
+        "summary": "获取角色详情",
+        "operationId": "GetRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetRoleResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "role"
+        ]
+      },
+      "delete": {
+        "summary": "删除角色",
+        "operationId": "DeleteRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 删除角色请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteRoleReq"
+            }
+          }
+        ],
+        "tags": [
+          "role"
+        ]
+      },
+      "put": {
+        "summary": "更新角色",
+        "operationId": "UpdateRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 更新角色请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateRoleReq"
+            }
+          }
+        ],
+        "tags": [
+          "role"
+        ]
+      }
+    },
     "/admin/api/v1/tenants": {
       "get": {
         "summary": "获取租户列表",
@@ -538,6 +715,52 @@
         "captcha_url"
       ]
     },
+    "CreateRoleReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 角色名"
+        },
+        "code": {
+          "type": "string",
+          "description": " 角色编码"
+        },
+        "description": {
+          "type": "string",
+          "description": " 角色描述"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态: 1:启用, 2:禁用"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 排序"
+        }
+      },
+      "title": "CreateRoleReq",
+      "required": [
+        "name",
+        "code",
+        "status"
+      ]
+    },
+    "CreateRoleResp": {
+      "type": "object",
+      "properties": {
+        "role_id": {
+          "type": "string",
+          "description": " 角色ID"
+        }
+      },
+      "title": "CreateRoleResp",
+      "required": [
+        "role_id"
+      ]
+    },
     "CreateTenantReq": {
       "type": "object",
       "properties": {
@@ -584,6 +807,15 @@
           "type": "string",
           "description": " 姓名"
         },
+        "password": {
+          "type": "string",
+          "description": " 密码"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
         "phone": {
           "type": "string",
           "description": " 手机号"
@@ -591,19 +823,6 @@
         "email": {
           "type": "string",
           "description": " 邮箱"
-        },
-        "pwd_hashed": {
-          "type": "string",
-          "description": " 密码哈希"
-        },
-        "pwd_salt": {
-          "type": "string",
-          "description": " 密码盐值"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32",
-          "description": " 状态"
         },
         "sex": {
           "type": "integer",
@@ -626,14 +845,8 @@
       "required": [
         "user_name",
         "name",
-        "phone",
-        "email",
-        "pwd_hashed",
-        "pwd_salt",
-        "status",
-        "sex",
-        "avatar",
-        "role_ids"
+        "password",
+        "status"
       ]
     },
     "CreateUserResp": {
@@ -649,6 +862,10 @@
         "user_id"
       ]
     },
+    "DeleteRoleReq": {
+      "type": "object",
+      "title": "DeleteRoleReq"
+    },
     "DeleteTenantReq": {
       "type": "object",
       "title": "DeleteTenantReq"
@@ -656,6 +873,47 @@
     "DeleteUserReq": {
       "type": "object",
       "title": "DeleteUserReq"
+    },
+    "GetRoleReq": {
+      "type": "object",
+      "title": "GetRoleReq"
+    },
+    "GetRoleResp": {
+      "type": "object",
+      "properties": {
+        "role_id": {
+          "type": "string",
+          "description": " 角色ID"
+        },
+        "name": {
+          "type": "string",
+          "description": " 角色名"
+        },
+        "code": {
+          "type": "string",
+          "description": " 角色编码"
+        },
+        "description": {
+          "type": "string",
+          "description": " 角色描述"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 排序"
+        },
+        "created_at": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建时间"
+        }
+      },
+      "title": "GetRoleResp"
     },
     "GetTenantReq": {
       "type": "object",
@@ -720,7 +978,8 @@
           "description": " 状态"
         },
         "created_at": {
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "description": " 创建时间"
         }
       },
@@ -820,8 +1079,9 @@
           "description": " 状态信息"
         },
         "created_at": {
-          "type": "string",
-          "description": " 登录时间"
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建时间"
         }
       },
       "title": "LoginLogInfo",
@@ -1072,6 +1332,104 @@
         "user_id"
       ]
     },
+    "RoleInfo": {
+      "type": "object",
+      "properties": {
+        "role_id": {
+          "type": "string",
+          "description": " 角色ID"
+        },
+        "name": {
+          "type": "string",
+          "description": " 角色名"
+        },
+        "code": {
+          "type": "string",
+          "description": " 角色编码"
+        },
+        "description": {
+          "type": "string",
+          "description": " 角色描述"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 排序"
+        },
+        "created_at": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建时间"
+        }
+      },
+      "title": "RoleInfo",
+      "required": [
+        "role_id",
+        "name",
+        "code",
+        "description",
+        "status",
+        "sort",
+        "created_at"
+      ]
+    },
+    "RoleListReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 当前页"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32",
+          "default": "10",
+          "description": " 每页大小"
+        },
+        "name": {
+          "type": "string",
+          "description": " 角色名"
+        },
+        "code": {
+          "type": "string",
+          "description": " 角色编码"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        }
+      },
+      "title": "RoleListReq"
+    },
+    "RoleListResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageResponse",
+          "description": " 分页"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoleInfo"
+          },
+          "description": " 角色列表"
+        }
+      },
+      "title": "RoleListResp",
+      "required": [
+        "page",
+        "list"
+      ]
+    },
     "StatusRequest": {
       "type": "object",
       "properties": {
@@ -1134,6 +1492,30 @@
         }
       },
       "title": "TimeRange"
+    },
+    "UpdateRoleReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 角色名"
+        },
+        "description": {
+          "type": "string",
+          "description": " 角色描述"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 排序"
+        }
+      },
+      "title": "UpdateRoleReq"
     },
     "UpdateTenantReq": {
       "type": "object",
@@ -1218,7 +1600,8 @@
           "description": " 状态"
         },
         "created_at": {
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "description": " 创建时间"
         }
       },
