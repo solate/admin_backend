@@ -25,8 +25,8 @@ const (
 	FieldCode = "code"
 	// FieldType holds the string denoting the type field in the database.
 	FieldType = "type"
-	// FieldPath holds the string denoting the path field in the database.
-	FieldPath = "path"
+	// FieldResource holds the string denoting the resource field in the database.
+	FieldResource = "resource"
 	// FieldAction holds the string denoting the action field in the database.
 	FieldAction = "action"
 	// FieldParentID holds the string denoting the parent_id field in the database.
@@ -49,7 +49,7 @@ var Columns = []string{
 	FieldName,
 	FieldCode,
 	FieldType,
-	FieldPath,
+	FieldResource,
 	FieldAction,
 	FieldParentID,
 	FieldDescription,
@@ -126,9 +126,9 @@ func ByType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldType, opts...).ToFunc()
 }
 
-// ByPath orders the results by the path field.
-func ByPath(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPath, opts...).ToFunc()
+// ByResource orders the results by the resource field.
+func ByResource(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldResource, opts...).ToFunc()
 }
 
 // ByAction orders the results by the action field.

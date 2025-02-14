@@ -1812,7 +1812,7 @@ type PermissionMutation struct {
 	code          *string
 	_type         *int
 	add_type      *int
-	_path         *string
+	resource      *string
 	action        *int
 	addaction     *int
 	parent_id     *int
@@ -2270,53 +2270,53 @@ func (m *PermissionMutation) ResetType() {
 	m.add_type = nil
 }
 
-// SetPath sets the "path" field.
-func (m *PermissionMutation) SetPath(s string) {
-	m._path = &s
+// SetResource sets the "resource" field.
+func (m *PermissionMutation) SetResource(s string) {
+	m.resource = &s
 }
 
-// Path returns the value of the "path" field in the mutation.
-func (m *PermissionMutation) Path() (r string, exists bool) {
-	v := m._path
+// Resource returns the value of the "resource" field in the mutation.
+func (m *PermissionMutation) Resource() (r string, exists bool) {
+	v := m.resource
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPath returns the old "path" field's value of the Permission entity.
+// OldResource returns the old "resource" field's value of the Permission entity.
 // If the Permission object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PermissionMutation) OldPath(ctx context.Context) (v string, err error) {
+func (m *PermissionMutation) OldResource(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPath is only allowed on UpdateOne operations")
+		return v, errors.New("OldResource is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPath requires an ID field in the mutation")
+		return v, errors.New("OldResource requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPath: %w", err)
+		return v, fmt.Errorf("querying old value for OldResource: %w", err)
 	}
-	return oldValue.Path, nil
+	return oldValue.Resource, nil
 }
 
-// ClearPath clears the value of the "path" field.
-func (m *PermissionMutation) ClearPath() {
-	m._path = nil
-	m.clearedFields[permission.FieldPath] = struct{}{}
+// ClearResource clears the value of the "resource" field.
+func (m *PermissionMutation) ClearResource() {
+	m.resource = nil
+	m.clearedFields[permission.FieldResource] = struct{}{}
 }
 
-// PathCleared returns if the "path" field was cleared in this mutation.
-func (m *PermissionMutation) PathCleared() bool {
-	_, ok := m.clearedFields[permission.FieldPath]
+// ResourceCleared returns if the "resource" field was cleared in this mutation.
+func (m *PermissionMutation) ResourceCleared() bool {
+	_, ok := m.clearedFields[permission.FieldResource]
 	return ok
 }
 
-// ResetPath resets all changes to the "path" field.
-func (m *PermissionMutation) ResetPath() {
-	m._path = nil
-	delete(m.clearedFields, permission.FieldPath)
+// ResetResource resets all changes to the "resource" field.
+func (m *PermissionMutation) ResetResource() {
+	m.resource = nil
+	delete(m.clearedFields, permission.FieldResource)
 }
 
 // SetAction sets the "action" field.
@@ -2620,8 +2620,8 @@ func (m *PermissionMutation) Fields() []string {
 	if m._type != nil {
 		fields = append(fields, permission.FieldType)
 	}
-	if m._path != nil {
-		fields = append(fields, permission.FieldPath)
+	if m.resource != nil {
+		fields = append(fields, permission.FieldResource)
 	}
 	if m.action != nil {
 		fields = append(fields, permission.FieldAction)
@@ -2657,8 +2657,8 @@ func (m *PermissionMutation) Field(name string) (ent.Value, bool) {
 		return m.Code()
 	case permission.FieldType:
 		return m.GetType()
-	case permission.FieldPath:
-		return m.Path()
+	case permission.FieldResource:
+		return m.Resource()
 	case permission.FieldAction:
 		return m.Action()
 	case permission.FieldParentID:
@@ -2690,8 +2690,8 @@ func (m *PermissionMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldCode(ctx)
 	case permission.FieldType:
 		return m.OldType(ctx)
-	case permission.FieldPath:
-		return m.OldPath(ctx)
+	case permission.FieldResource:
+		return m.OldResource(ctx)
 	case permission.FieldAction:
 		return m.OldAction(ctx)
 	case permission.FieldParentID:
@@ -2758,12 +2758,12 @@ func (m *PermissionMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetType(v)
 		return nil
-	case permission.FieldPath:
+	case permission.FieldResource:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetPath(v)
+		m.SetResource(v)
 		return nil
 	case permission.FieldAction:
 		v, ok := value.(int)
@@ -2913,8 +2913,8 @@ func (m *PermissionMutation) ClearedFields() []string {
 	if m.FieldCleared(permission.FieldDeletedAt) {
 		fields = append(fields, permission.FieldDeletedAt)
 	}
-	if m.FieldCleared(permission.FieldPath) {
-		fields = append(fields, permission.FieldPath)
+	if m.FieldCleared(permission.FieldResource) {
+		fields = append(fields, permission.FieldResource)
 	}
 	if m.FieldCleared(permission.FieldAction) {
 		fields = append(fields, permission.FieldAction)
@@ -2942,8 +2942,8 @@ func (m *PermissionMutation) ClearField(name string) error {
 	case permission.FieldDeletedAt:
 		m.ClearDeletedAt()
 		return nil
-	case permission.FieldPath:
-		m.ClearPath()
+	case permission.FieldResource:
+		m.ClearResource()
 		return nil
 	case permission.FieldAction:
 		m.ClearAction()
@@ -2983,8 +2983,8 @@ func (m *PermissionMutation) ResetField(name string) error {
 	case permission.FieldType:
 		m.ResetType()
 		return nil
-	case permission.FieldPath:
-		m.ResetPath()
+	case permission.FieldResource:
+		m.ResetResource()
 		return nil
 	case permission.FieldAction:
 		m.ResetAction()

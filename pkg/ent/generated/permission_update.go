@@ -139,23 +139,23 @@ func (pu *PermissionUpdate) AddType(i int) *PermissionUpdate {
 	return pu
 }
 
-// SetPath sets the "path" field.
-func (pu *PermissionUpdate) SetPath(s string) *PermissionUpdate {
-	pu.mutation.SetPath(s)
+// SetResource sets the "resource" field.
+func (pu *PermissionUpdate) SetResource(s string) *PermissionUpdate {
+	pu.mutation.SetResource(s)
 	return pu
 }
 
-// SetNillablePath sets the "path" field if the given value is not nil.
-func (pu *PermissionUpdate) SetNillablePath(s *string) *PermissionUpdate {
+// SetNillableResource sets the "resource" field if the given value is not nil.
+func (pu *PermissionUpdate) SetNillableResource(s *string) *PermissionUpdate {
 	if s != nil {
-		pu.SetPath(*s)
+		pu.SetResource(*s)
 	}
 	return pu
 }
 
-// ClearPath clears the value of the "path" field.
-func (pu *PermissionUpdate) ClearPath() *PermissionUpdate {
-	pu.mutation.ClearPath()
+// ClearResource clears the value of the "resource" field.
+func (pu *PermissionUpdate) ClearResource() *PermissionUpdate {
+	pu.mutation.ClearResource()
 	return pu
 }
 
@@ -354,11 +354,11 @@ func (pu *PermissionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := pu.mutation.AddedType(); ok {
 		_spec.AddField(permission.FieldType, field.TypeInt, value)
 	}
-	if value, ok := pu.mutation.Path(); ok {
-		_spec.SetField(permission.FieldPath, field.TypeString, value)
+	if value, ok := pu.mutation.Resource(); ok {
+		_spec.SetField(permission.FieldResource, field.TypeString, value)
 	}
-	if pu.mutation.PathCleared() {
-		_spec.ClearField(permission.FieldPath, field.TypeString)
+	if pu.mutation.ResourceCleared() {
+		_spec.ClearField(permission.FieldResource, field.TypeString)
 	}
 	if value, ok := pu.mutation.Action(); ok {
 		_spec.SetField(permission.FieldAction, field.TypeInt, value)
@@ -523,23 +523,23 @@ func (puo *PermissionUpdateOne) AddType(i int) *PermissionUpdateOne {
 	return puo
 }
 
-// SetPath sets the "path" field.
-func (puo *PermissionUpdateOne) SetPath(s string) *PermissionUpdateOne {
-	puo.mutation.SetPath(s)
+// SetResource sets the "resource" field.
+func (puo *PermissionUpdateOne) SetResource(s string) *PermissionUpdateOne {
+	puo.mutation.SetResource(s)
 	return puo
 }
 
-// SetNillablePath sets the "path" field if the given value is not nil.
-func (puo *PermissionUpdateOne) SetNillablePath(s *string) *PermissionUpdateOne {
+// SetNillableResource sets the "resource" field if the given value is not nil.
+func (puo *PermissionUpdateOne) SetNillableResource(s *string) *PermissionUpdateOne {
 	if s != nil {
-		puo.SetPath(*s)
+		puo.SetResource(*s)
 	}
 	return puo
 }
 
-// ClearPath clears the value of the "path" field.
-func (puo *PermissionUpdateOne) ClearPath() *PermissionUpdateOne {
-	puo.mutation.ClearPath()
+// ClearResource clears the value of the "resource" field.
+func (puo *PermissionUpdateOne) ClearResource() *PermissionUpdateOne {
+	puo.mutation.ClearResource()
 	return puo
 }
 
@@ -768,11 +768,11 @@ func (puo *PermissionUpdateOne) sqlSave(ctx context.Context) (_node *Permission,
 	if value, ok := puo.mutation.AddedType(); ok {
 		_spec.AddField(permission.FieldType, field.TypeInt, value)
 	}
-	if value, ok := puo.mutation.Path(); ok {
-		_spec.SetField(permission.FieldPath, field.TypeString, value)
+	if value, ok := puo.mutation.Resource(); ok {
+		_spec.SetField(permission.FieldResource, field.TypeString, value)
 	}
-	if puo.mutation.PathCleared() {
-		_spec.ClearField(permission.FieldPath, field.TypeString)
+	if puo.mutation.ResourceCleared() {
+		_spec.ClearField(permission.FieldResource, field.TypeString)
 	}
 	if value, ok := puo.mutation.Action(); ok {
 		_spec.SetField(permission.FieldAction, field.TypeInt, value)

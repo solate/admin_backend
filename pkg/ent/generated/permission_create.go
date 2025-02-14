@@ -87,16 +87,16 @@ func (pc *PermissionCreate) SetType(i int) *PermissionCreate {
 	return pc
 }
 
-// SetPath sets the "path" field.
-func (pc *PermissionCreate) SetPath(s string) *PermissionCreate {
-	pc.mutation.SetPath(s)
+// SetResource sets the "resource" field.
+func (pc *PermissionCreate) SetResource(s string) *PermissionCreate {
+	pc.mutation.SetResource(s)
 	return pc
 }
 
-// SetNillablePath sets the "path" field if the given value is not nil.
-func (pc *PermissionCreate) SetNillablePath(s *string) *PermissionCreate {
+// SetNillableResource sets the "resource" field if the given value is not nil.
+func (pc *PermissionCreate) SetNillableResource(s *string) *PermissionCreate {
 	if s != nil {
-		pc.SetPath(*s)
+		pc.SetResource(*s)
 	}
 	return pc
 }
@@ -303,9 +303,9 @@ func (pc *PermissionCreate) createSpec() (*Permission, *sqlgraph.CreateSpec) {
 		_spec.SetField(permission.FieldType, field.TypeInt, value)
 		_node.Type = value
 	}
-	if value, ok := pc.mutation.Path(); ok {
-		_spec.SetField(permission.FieldPath, field.TypeString, value)
-		_node.Path = value
+	if value, ok := pc.mutation.Resource(); ok {
+		_spec.SetField(permission.FieldResource, field.TypeString, value)
+		_node.Resource = value
 	}
 	if value, ok := pc.mutation.Action(); ok {
 		_spec.SetField(permission.FieldAction, field.TypeInt, value)
@@ -471,21 +471,21 @@ func (u *PermissionUpsert) AddType(v int) *PermissionUpsert {
 	return u
 }
 
-// SetPath sets the "path" field.
-func (u *PermissionUpsert) SetPath(v string) *PermissionUpsert {
-	u.Set(permission.FieldPath, v)
+// SetResource sets the "resource" field.
+func (u *PermissionUpsert) SetResource(v string) *PermissionUpsert {
+	u.Set(permission.FieldResource, v)
 	return u
 }
 
-// UpdatePath sets the "path" field to the value that was provided on create.
-func (u *PermissionUpsert) UpdatePath() *PermissionUpsert {
-	u.SetExcluded(permission.FieldPath)
+// UpdateResource sets the "resource" field to the value that was provided on create.
+func (u *PermissionUpsert) UpdateResource() *PermissionUpsert {
+	u.SetExcluded(permission.FieldResource)
 	return u
 }
 
-// ClearPath clears the value of the "path" field.
-func (u *PermissionUpsert) ClearPath() *PermissionUpsert {
-	u.SetNull(permission.FieldPath)
+// ClearResource clears the value of the "resource" field.
+func (u *PermissionUpsert) ClearResource() *PermissionUpsert {
+	u.SetNull(permission.FieldResource)
 	return u
 }
 
@@ -730,24 +730,24 @@ func (u *PermissionUpsertOne) UpdateType() *PermissionUpsertOne {
 	})
 }
 
-// SetPath sets the "path" field.
-func (u *PermissionUpsertOne) SetPath(v string) *PermissionUpsertOne {
+// SetResource sets the "resource" field.
+func (u *PermissionUpsertOne) SetResource(v string) *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
-		s.SetPath(v)
+		s.SetResource(v)
 	})
 }
 
-// UpdatePath sets the "path" field to the value that was provided on create.
-func (u *PermissionUpsertOne) UpdatePath() *PermissionUpsertOne {
+// UpdateResource sets the "resource" field to the value that was provided on create.
+func (u *PermissionUpsertOne) UpdateResource() *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
-		s.UpdatePath()
+		s.UpdateResource()
 	})
 }
 
-// ClearPath clears the value of the "path" field.
-func (u *PermissionUpsertOne) ClearPath() *PermissionUpsertOne {
+// ClearResource clears the value of the "resource" field.
+func (u *PermissionUpsertOne) ClearResource() *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
-		s.ClearPath()
+		s.ClearResource()
 	})
 }
 
@@ -1172,24 +1172,24 @@ func (u *PermissionUpsertBulk) UpdateType() *PermissionUpsertBulk {
 	})
 }
 
-// SetPath sets the "path" field.
-func (u *PermissionUpsertBulk) SetPath(v string) *PermissionUpsertBulk {
+// SetResource sets the "resource" field.
+func (u *PermissionUpsertBulk) SetResource(v string) *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
-		s.SetPath(v)
+		s.SetResource(v)
 	})
 }
 
-// UpdatePath sets the "path" field to the value that was provided on create.
-func (u *PermissionUpsertBulk) UpdatePath() *PermissionUpsertBulk {
+// UpdateResource sets the "resource" field to the value that was provided on create.
+func (u *PermissionUpsertBulk) UpdateResource() *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
-		s.UpdatePath()
+		s.UpdateResource()
 	})
 }
 
-// ClearPath clears the value of the "path" field.
-func (u *PermissionUpsertBulk) ClearPath() *PermissionUpsertBulk {
+// ClearResource clears the value of the "resource" field.
+func (u *PermissionUpsertBulk) ClearResource() *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
-		s.ClearPath()
+		s.ClearResource()
 	})
 }
 

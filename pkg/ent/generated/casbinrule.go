@@ -16,19 +16,19 @@ type CasbinRule struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// Ptype holds the value of the "Ptype" field.
+	// 策略类型：'p'(权限策略) 或 'g'(角色关系)
 	Ptype string `json:"Ptype,omitempty"`
-	// V0 holds the value of the "V0" field.
+	// 用户/角色
 	V0 string `json:"V0,omitempty"`
-	// V1 holds the value of the "V1" field.
+	// 角色/资源
 	V1 string `json:"V1,omitempty"`
-	// V2 holds the value of the "V2" field.
+	// 域/动作
 	V2 string `json:"V2,omitempty"`
-	// V3 holds the value of the "V3" field.
+	// 其他属性
 	V3 string `json:"V3,omitempty"`
-	// V4 holds the value of the "V4" field.
+	// 其他属性
 	V4 string `json:"V4,omitempty"`
-	// V5 holds the value of the "V5" field.
+	// 其他属性
 	V5           string `json:"V5,omitempty"`
 	selectValues sql.SelectValues
 }

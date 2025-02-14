@@ -88,9 +88,9 @@ func Type(v int) predicate.Permission {
 	return predicate.Permission(sql.FieldEQ(FieldType, v))
 }
 
-// Path applies equality check predicate on the "path" field. It's identical to PathEQ.
-func Path(v string) predicate.Permission {
-	return predicate.Permission(sql.FieldEQ(FieldPath, v))
+// Resource applies equality check predicate on the "resource" field. It's identical to ResourceEQ.
+func Resource(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldEQ(FieldResource, v))
 }
 
 // Action applies equality check predicate on the "action" field. It's identical to ActionEQ.
@@ -478,79 +478,79 @@ func TypeLTE(v int) predicate.Permission {
 	return predicate.Permission(sql.FieldLTE(FieldType, v))
 }
 
-// PathEQ applies the EQ predicate on the "path" field.
-func PathEQ(v string) predicate.Permission {
-	return predicate.Permission(sql.FieldEQ(FieldPath, v))
+// ResourceEQ applies the EQ predicate on the "resource" field.
+func ResourceEQ(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldEQ(FieldResource, v))
 }
 
-// PathNEQ applies the NEQ predicate on the "path" field.
-func PathNEQ(v string) predicate.Permission {
-	return predicate.Permission(sql.FieldNEQ(FieldPath, v))
+// ResourceNEQ applies the NEQ predicate on the "resource" field.
+func ResourceNEQ(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldNEQ(FieldResource, v))
 }
 
-// PathIn applies the In predicate on the "path" field.
-func PathIn(vs ...string) predicate.Permission {
-	return predicate.Permission(sql.FieldIn(FieldPath, vs...))
+// ResourceIn applies the In predicate on the "resource" field.
+func ResourceIn(vs ...string) predicate.Permission {
+	return predicate.Permission(sql.FieldIn(FieldResource, vs...))
 }
 
-// PathNotIn applies the NotIn predicate on the "path" field.
-func PathNotIn(vs ...string) predicate.Permission {
-	return predicate.Permission(sql.FieldNotIn(FieldPath, vs...))
+// ResourceNotIn applies the NotIn predicate on the "resource" field.
+func ResourceNotIn(vs ...string) predicate.Permission {
+	return predicate.Permission(sql.FieldNotIn(FieldResource, vs...))
 }
 
-// PathGT applies the GT predicate on the "path" field.
-func PathGT(v string) predicate.Permission {
-	return predicate.Permission(sql.FieldGT(FieldPath, v))
+// ResourceGT applies the GT predicate on the "resource" field.
+func ResourceGT(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldGT(FieldResource, v))
 }
 
-// PathGTE applies the GTE predicate on the "path" field.
-func PathGTE(v string) predicate.Permission {
-	return predicate.Permission(sql.FieldGTE(FieldPath, v))
+// ResourceGTE applies the GTE predicate on the "resource" field.
+func ResourceGTE(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldGTE(FieldResource, v))
 }
 
-// PathLT applies the LT predicate on the "path" field.
-func PathLT(v string) predicate.Permission {
-	return predicate.Permission(sql.FieldLT(FieldPath, v))
+// ResourceLT applies the LT predicate on the "resource" field.
+func ResourceLT(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldLT(FieldResource, v))
 }
 
-// PathLTE applies the LTE predicate on the "path" field.
-func PathLTE(v string) predicate.Permission {
-	return predicate.Permission(sql.FieldLTE(FieldPath, v))
+// ResourceLTE applies the LTE predicate on the "resource" field.
+func ResourceLTE(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldLTE(FieldResource, v))
 }
 
-// PathContains applies the Contains predicate on the "path" field.
-func PathContains(v string) predicate.Permission {
-	return predicate.Permission(sql.FieldContains(FieldPath, v))
+// ResourceContains applies the Contains predicate on the "resource" field.
+func ResourceContains(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldContains(FieldResource, v))
 }
 
-// PathHasPrefix applies the HasPrefix predicate on the "path" field.
-func PathHasPrefix(v string) predicate.Permission {
-	return predicate.Permission(sql.FieldHasPrefix(FieldPath, v))
+// ResourceHasPrefix applies the HasPrefix predicate on the "resource" field.
+func ResourceHasPrefix(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldHasPrefix(FieldResource, v))
 }
 
-// PathHasSuffix applies the HasSuffix predicate on the "path" field.
-func PathHasSuffix(v string) predicate.Permission {
-	return predicate.Permission(sql.FieldHasSuffix(FieldPath, v))
+// ResourceHasSuffix applies the HasSuffix predicate on the "resource" field.
+func ResourceHasSuffix(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldHasSuffix(FieldResource, v))
 }
 
-// PathIsNil applies the IsNil predicate on the "path" field.
-func PathIsNil() predicate.Permission {
-	return predicate.Permission(sql.FieldIsNull(FieldPath))
+// ResourceIsNil applies the IsNil predicate on the "resource" field.
+func ResourceIsNil() predicate.Permission {
+	return predicate.Permission(sql.FieldIsNull(FieldResource))
 }
 
-// PathNotNil applies the NotNil predicate on the "path" field.
-func PathNotNil() predicate.Permission {
-	return predicate.Permission(sql.FieldNotNull(FieldPath))
+// ResourceNotNil applies the NotNil predicate on the "resource" field.
+func ResourceNotNil() predicate.Permission {
+	return predicate.Permission(sql.FieldNotNull(FieldResource))
 }
 
-// PathEqualFold applies the EqualFold predicate on the "path" field.
-func PathEqualFold(v string) predicate.Permission {
-	return predicate.Permission(sql.FieldEqualFold(FieldPath, v))
+// ResourceEqualFold applies the EqualFold predicate on the "resource" field.
+func ResourceEqualFold(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldEqualFold(FieldResource, v))
 }
 
-// PathContainsFold applies the ContainsFold predicate on the "path" field.
-func PathContainsFold(v string) predicate.Permission {
-	return predicate.Permission(sql.FieldContainsFold(FieldPath, v))
+// ResourceContainsFold applies the ContainsFold predicate on the "resource" field.
+func ResourceContainsFold(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldContainsFold(FieldResource, v))
 }
 
 // ActionEQ applies the EQ predicate on the "action" field.

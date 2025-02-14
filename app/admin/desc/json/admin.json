@@ -235,6 +235,23 @@
         ]
       }
     },
+    "/admin/api/v1/me": {
+      "get": {
+        "summary": "获取当前用户信息",
+        "operationId": "GetCurrentUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetUserResp"
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      }
+    },
     "/admin/api/v1/roles": {
       "get": {
         "summary": "获取角色列表",

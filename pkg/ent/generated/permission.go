@@ -28,11 +28,11 @@ type Permission struct {
 	Name string `json:"name,omitempty"`
 	// 权限编码
 	Code string `json:"code,omitempty"`
-	// 类型 1:菜单menu 2:按钮buttn 3:接口 api
+	// 类型类型: menu/page/button/api/data
 	Type int `json:"type,omitempty"`
-	// 路径
-	Path string `json:"path,omitempty"`
-	// 操作类型: 1:all 2:read 3:write
+	// 资源
+	Resource string `json:"resource,omitempty"`
+	// 操作类型: action: GET/POST/PUT/DELETE
 	Action int `json:"action,omitempty"`
 	// 父级ID
 	ParentID int `json:"parent_id,omitempty"`
@@ -50,7 +50,7 @@ func (*Permission) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case permission.FieldID, permission.FieldCreatedAt, permission.FieldUpdatedAt, permission.FieldDeletedAt, permission.FieldType, permission.FieldAction, permission.FieldParentID, permission.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case permission.FieldTenantCode, permission.FieldName, permission.FieldCode, permission.FieldPath, permission.FieldDescription:
+		case permission.FieldTenantCode, permission.FieldName, permission.FieldCode, permission.FieldResource, permission.FieldDescription:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -116,11 +116,11 @@ func (pe *Permission) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pe.Type = int(value.Int64)
 			}
-		case permission.FieldPath:
+		case permission.FieldResource:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field path", values[i])
+				return fmt.Errorf("unexpected type %T for field resource", values[i])
 			} else if value.Valid {
-				pe.Path = value.String
+				pe.Resource = value.String
 			}
 		case permission.FieldAction:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -205,8 +205,8 @@ func (pe *Permission) String() string {
 	builder.WriteString("type=")
 	builder.WriteString(fmt.Sprintf("%v", pe.Type))
 	builder.WriteString(", ")
-	builder.WriteString("path=")
-	builder.WriteString(pe.Path)
+	builder.WriteString("resource=")
+	builder.WriteString(pe.Resource)
 	builder.WriteString(", ")
 	builder.WriteString("action=")
 	builder.WriteString(fmt.Sprintf("%v", pe.Action))

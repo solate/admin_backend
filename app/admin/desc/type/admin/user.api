@@ -141,4 +141,9 @@ service admin {
     @doc "查询登录记录"
     @handler ListLoginLog
     get /login-logs (LoginLogListReq) returns (LoginLogListResp)
+
+    @doc "获取当前用户信息"
+    @handler GetCurrentUser
+    get /me returns (GetUserResp)
+
 }

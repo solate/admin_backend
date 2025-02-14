@@ -2,7 +2,6 @@ syntax = "v1"
 
 import (
     "../base.api"
-    "./user.api"
 )
 
 info (
@@ -91,9 +90,6 @@ service admin {
     middleware: AuthMiddleware
 )
 service admin {
-    @doc "获取当前用户信息"
-    @handler GetCurrentUser
-    get /me returns (GetUserResp)
 
     @doc "用户登出"
     @handler Logout
