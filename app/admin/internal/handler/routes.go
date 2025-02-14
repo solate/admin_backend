@@ -57,6 +57,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: auth.LogoutHandler(serverCtx),
 				},
 				{
+					// 获取当前用户信息
+					Method:  http.MethodGet,
+					Path:    "/me",
+					Handler: auth.GetCurrentUserHandler(serverCtx),
+				},
+				{
 					// 重置密码
 					Method:  http.MethodPost,
 					Path:    "/reset-password",

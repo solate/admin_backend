@@ -1,5 +1,10 @@
 syntax = "v1"
 
+import (
+    "../base.api"
+    "./user.api"
+)
+
 info (
 	title   : "Auth服务接口"
 	desc    : "用户登录注册相关接口定义"
@@ -86,6 +91,10 @@ service admin {
     middleware: AuthMiddleware
 )
 service admin {
+    @doc "获取当前用户信息"
+    @handler GetCurrentUser
+    get /me returns (GetUserResp)
+
     @doc "用户登出"
     @handler Logout
     post /logout returns (bool)
