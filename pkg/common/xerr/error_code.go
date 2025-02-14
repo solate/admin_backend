@@ -9,6 +9,7 @@ const InternalError uint32 = 500
 // ServerCommonError 全局错误码
 const ServerError uint32 = 200001
 const ParamError uint32 = 200002
+const ForbiddenError uint32 = 200003
 const DbError uint32 = 200005
 const NotifyError uint32 = 200007
 const GetGlobalConfigError uint32 = 200008

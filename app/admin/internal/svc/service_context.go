@@ -23,7 +23,7 @@ type ServiceContext struct {
 	Redis           *redis.Redis
 	AuthMiddleware  rest.Middleware
 	PermissionCache *cache.PermissionCache
-	CaptchaManager  *captcha.CaptchaManager
+	CaptchaManager  *captcha.CaptchaManager // 验证码管理
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {

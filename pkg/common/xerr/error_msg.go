@@ -7,6 +7,7 @@ func init() {
 	message[OK] = "SUCCESS"
 	message[ServerError] = "服务器开小差啦,稍后再来试一试"
 	message[ParamError] = "参数错误"
+	message[ForbiddenError] = "无权限操作"
 	message[DbError] = "数据库繁忙,请稍后再试"
 	message[NotifyError] = "!!! 请联系开发人员确认操作 !!!"
 	message[GetGlobalConfigError] = "获取全局配置失败"
@@ -44,5 +45,12 @@ func IsCodeErr(errCode uint32) bool {
 		return true
 	} else {
 		return false
+	}
+}
+
+func NewErrCodeMsgByCode(errCode uint32) *CodeError {
+	return &CodeError{
+		errCode: errCode,
+		errMsg:  MapErrMsg(errCode),
 	}
 }

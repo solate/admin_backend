@@ -52,6 +52,12 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 		// 	}
 		// }
 
+		if err := m.CheckAPIPermission(r, claims); err != nil {
+			w.WriteHeader(http.StatusForbidden)
+			httpx.Error(w, xerr.NewErrCodeMsg(http.StatusForbidden, "权限不足"))
+			return
+		}
+
 		// 将租户ID和用户ID存入context
 		ctx := r.Context()
 		ctx = contextutil.SetUserIDToCtx(ctx, claims.UserID)
@@ -81,6 +87,23 @@ func (m *AuthMiddleware) validateRoles(claims *jwt.Claims) error {
 	// 	if !contains(userRoles, requiredRole) {
 	// 		return error.New("用户角色不符合要求")
 	// 	}
+	// }
+
+	return nil
+}
+
+func (m *AuthMiddleware) CheckAPIPermission(r *http.Request, claims *jwt.Claims) error {
+
+	// userID := claims.UserID
+	// tenantCode := claims.TenantCode
+	// path := r.URL.Path
+	// method := r.Method
+
+	// hasPermission, err := casbin.PermissionManager.CheckPermission(userID, tenantCode, path, method, "api")
+
+	// if err != nil || !hasPermission {
+
+	// 	return xerr.NewErrCodeMsgByCode(xerr.ForbiddenError)
 	// }
 
 	return nil

@@ -30,9 +30,9 @@ func (Permission) Fields() []ent.Field {
 
 		field.String("name").NotEmpty().Comment("权限名称"),
 		field.String("code").Unique().NotEmpty().Comment("权限编码"),
-		field.Int("type").Comment("类型 1:菜单menu 2:按钮buttn 3:接口 api"),
-		field.String("path").Optional().Comment("路径"),
-		field.Int("action").Default(1).Optional().Comment("操作类型: 1:all 2:read 3:write"),
+		field.Int("type").Comment("类型类型: menu/page/button/api/data"),
+		field.String("resource").Optional().Comment("资源"),
+		field.Int("action").Default(1).Optional().Comment("操作类型: action: GET/POST/PUT/DELETE"),
 		field.Int("parent_id").Optional().Comment("父级ID"),
 		field.String("description").Optional().Comment("描述"),
 		field.Int("status").Default(1).Comment("状态 1:启用 2:禁用"),

@@ -46,8 +46,8 @@ func (l *ChangePasswordLogic) ChangePassword(req *types.ChangePasswordReq) (resp
 	}
 
 	// 3. 验证原密码
-	if !passwordgen.VerifyPassword(req.OldPassword, user.PwdSalt) {
-		return false, xerr.NewErrMsg("原密码错误")
+	if !passwordgen.VerifyPassword(req.OldPassword, user.PwdHashed) {
+		return false, xerr.NewErrCodeMsg(xerr.ParamError, "原密码错误")
 	}
 
 	// 4. 生成新的密码盐和加密密码

@@ -56,7 +56,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	}
 
 	// 2. 验证密码
-	if passwordgen.VerifyPassword(req.Password, user.PwdSalt) {
+	if !passwordgen.VerifyPassword(req.Password, user.PwdHashed) {
 		l.Error("Login passwordgen.VerifyPassword err")
 		return nil, xerr.NewErrMsg("密码错误")
 	}

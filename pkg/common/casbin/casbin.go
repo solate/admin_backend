@@ -17,10 +17,10 @@ func NewCasbin(db *generated.Client) (*casbin.Enforcer, error) {
 	// 定义RBAC模型
 	m, err := model.NewModelFromString(`
 [request_definition]
-r = sub, dom, obj, act
+r = sub, dom, obj, act, type
 
 [policy_definition]
-p = sub, dom, obj, act
+p = sub, dom, obj, act, type
 
 [role_definition]
 g = _, _, _
@@ -29,7 +29,7 @@ g = _, _, _
 e = some(where (p.eft == allow))
 
 [matchers]
-m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act || r.sub == "root"
+m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act && r.type == p.type || r.act == "*" || r.sub == "admin"
 	`)
 	if err != nil {
 		return nil, err

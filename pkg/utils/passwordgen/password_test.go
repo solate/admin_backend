@@ -43,3 +43,14 @@ func TestPasswordFlow(t *testing.T) {
 		t.Error("篡改哈希验证通过")
 	}
 }
+
+func TestValidate(t *testing.T) {
+
+	pwd := "123456"
+	pwdHashed := "$argon2id$v=19$m=65536,t=3,p=2$px7rmwwXslPmm0rPSfAFdA==$omP8ZnYVI5JeJjagSmiMNCVNqEsB5HK+lwBJqU397lI="
+
+	// 验证正确密码
+	if !VerifyPassword(pwd, pwdHashed) {
+		t.Error("正确密码验证失败")
+	}
+}
