@@ -6,6 +6,7 @@ import (
 	"admin_backend/app/admin/internal/repository/rolerepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
+	"admin_backend/pkg/common/contextutil"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated"
 
@@ -38,6 +39,18 @@ func (l *DeleteRoleLogic) DeleteRole(req *types.DeleteRoleReq) (resp bool, err e
 			return false, xerr.NewErrMsg("角色不存在")
 		}
 		return false, xerr.NewErrCodeMsg(xerr.DbError, "查询角色失败")
+	}
+
+	// 2. 判断是否具有权限
+	pm := l.svcCtx.CasbinManager
+	tenantCode := contextutil.GetTenantCodeFromCtx(l.ctx)
+	casbinPermissionList, err := pm.GetRolePermissions(role.Code, tenantCode)
+	if err != nil {
+		l.Errorf("获取角色权限列表失败: %v", err)
+		return false, xerr.NewErrCodeMsg(xerr.DbError, "查询角色失败")
+	}
+	if len(casbinPermissionList) != 0 {
+		return false, xerr.NewErrCodeMsg(xerr.ForbiddenError, "角色存在权限，不能删除")
 	}
 
 	// 2. 软删除角色
