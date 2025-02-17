@@ -220,12 +220,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: user.ListLoginLogHandler(serverCtx),
 				},
 				{
-					// 获取当前用户信息
-					Method:  http.MethodGet,
-					Path:    "/me",
-					Handler: user.GetCurrentUserHandler(serverCtx),
-				},
-				{
 					// 创建用户
 					Method:  http.MethodPost,
 					Path:    "/users",
@@ -254,6 +248,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodGet,
 					Path:    "/users/:user_id",
 					Handler: user.GetUserHandler(serverCtx),
+				},
+				{
+					// 获取当前用户信息
+					Method:  http.MethodGet,
+					Path:    "/users/me",
+					Handler: user.GetCurrentUserHandler(serverCtx),
 				},
 			}...,
 		),

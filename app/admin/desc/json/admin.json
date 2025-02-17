@@ -235,23 +235,6 @@
         ]
       }
     },
-    "/admin/api/v1/me": {
-      "get": {
-        "summary": "获取当前用户信息",
-        "operationId": "GetCurrentUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/UserInfo"
-            }
-          }
-        },
-        "tags": [
-          "user"
-        ]
-      }
-    },
     "/admin/api/v1/permission/roles/{role_id}/permissions": {
       "get": {
         "summary": "获取角色权限列表",
@@ -932,6 +915,23 @@
             }
           }
         ],
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/admin/api/v1/users/me": {
+      "get": {
+        "summary": "获取当前用户信息",
+        "operationId": "GetCurrentUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserInfo"
+            }
+          }
+        },
         "tags": [
           "user"
         ]
