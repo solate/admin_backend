@@ -29,7 +29,7 @@ func NewGetCurrentUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 	}
 }
 
-func (l *GetCurrentUserLogic) GetCurrentUser() (resp *types.GetUserResp, err error) {
+func (l *GetCurrentUserLogic) GetCurrentUser() (resp *types.UserInfo, err error) {
 	// 从上下文中获取当前用户ID
 	userID := contextutil.GetUserIDFromCtx(l.ctx)
 
@@ -40,17 +40,15 @@ func (l *GetCurrentUserLogic) GetCurrentUser() (resp *types.GetUserResp, err err
 		return nil, xerr.NewErrCodeMsg(xerr.DbError, "获取用户信息失败")
 	}
 
-	resp = &types.GetUserResp{
-		UserInfo: types.UserInfo{
-			UserID:    user.UserID,
-			UserName:  user.UserName,
-			Name:      user.NickName,
-			Phone:     user.Phone,
-			Email:     user.Email,
-			Avatar:    user.Avatar,
-			Status:    user.Status,
-			CreatedAt: user.CreatedAt,
-		},
+	resp = &types.UserInfo{
+		UserID:    user.UserID,
+		UserName:  user.UserName,
+		Name:      user.NickName,
+		Phone:     user.Phone,
+		Email:     user.Email,
+		Avatar:    user.Avatar,
+		Status:    user.Status,
+		CreatedAt: user.CreatedAt,
 	}
 
 	return

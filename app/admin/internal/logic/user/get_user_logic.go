@@ -28,7 +28,7 @@ func NewGetUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUserLo
 	}
 }
 
-func (l *GetUserLogic) GetUser(req *types.GetUserReq) (resp *types.GetUserResp, err error) {
+func (l *GetUserLogic) GetUser(req *types.GetUserReq) (resp *types.UserInfo, err error) {
 
 	// 查询用户信息
 	user, err := l.userRepo.GetByUserID(l.ctx, req.UserID)
@@ -37,17 +37,15 @@ func (l *GetUserLogic) GetUser(req *types.GetUserReq) (resp *types.GetUserResp, 
 		return nil, xerr.NewErrCodeMsg(xerr.DbError, "获取用户信息失败")
 	}
 
-	resp = &types.GetUserResp{
-		UserInfo: types.UserInfo{
-			UserID:    user.UserID,
-			UserName:  user.UserName,
-			Name:      user.NickName,
-			Phone:     user.Phone,
-			Email:     user.Email,
-			Avatar:    user.Avatar,
-			Status:    user.Status,
-			CreatedAt: user.CreatedAt,
-		},
+	resp = &types.UserInfo{
+		UserID:    user.UserID,
+		UserName:  user.UserName,
+		Name:      user.NickName,
+		Phone:     user.Phone,
+		Email:     user.Email,
+		Avatar:    user.Avatar,
+		Status:    user.Status,
+		CreatedAt: user.CreatedAt,
 	}
 
 	return

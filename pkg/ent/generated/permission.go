@@ -17,13 +17,15 @@ type Permission struct {
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// 创建时间
-	CreatedAt int `json:"created_at,omitempty"`
+	CreatedAt int64 `json:"created_at,omitempty"`
 	// 修改时间
-	UpdatedAt int `json:"updated_at,omitempty"`
+	UpdatedAt int64 `json:"updated_at,omitempty"`
 	// 删除时间
-	DeletedAt *int `json:"deleted_at,omitempty"`
+	DeletedAt *int64 `json:"deleted_at,omitempty"`
 	// 租户编码
 	TenantCode string `json:"tenant_code,omitempty"`
+	// 权限ID
+	PermissionID string `json:"permission_id,omitempty"`
 	// 权限名称
 	Name string `json:"name,omitempty"`
 	// 权限编码
@@ -32,14 +34,16 @@ type Permission struct {
 	Type int `json:"type,omitempty"`
 	// 资源
 	Resource string `json:"resource,omitempty"`
-	// 操作类型: action: GET/POST/PUT/DELETE
-	Action int `json:"action,omitempty"`
+	// 操作类型
+	Action string `json:"action,omitempty"`
 	// 父级ID
 	ParentID int `json:"parent_id,omitempty"`
 	// 描述
 	Description string `json:"description,omitempty"`
 	// 状态 1:启用 2:禁用
-	Status       int `json:"status,omitempty"`
+	Status int `json:"status,omitempty"`
+	// 菜单ID
+	MenuID       string `json:"menu_id,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -48,9 +52,9 @@ func (*Permission) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case permission.FieldID, permission.FieldCreatedAt, permission.FieldUpdatedAt, permission.FieldDeletedAt, permission.FieldType, permission.FieldAction, permission.FieldParentID, permission.FieldStatus:
+		case permission.FieldID, permission.FieldCreatedAt, permission.FieldUpdatedAt, permission.FieldDeletedAt, permission.FieldType, permission.FieldParentID, permission.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case permission.FieldTenantCode, permission.FieldName, permission.FieldCode, permission.FieldResource, permission.FieldDescription:
+		case permission.FieldTenantCode, permission.FieldPermissionID, permission.FieldName, permission.FieldCode, permission.FieldResource, permission.FieldAction, permission.FieldDescription, permission.FieldMenuID:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -77,26 +81,32 @@ func (pe *Permission) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				pe.CreatedAt = int(value.Int64)
+				pe.CreatedAt = value.Int64
 			}
 		case permission.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				pe.UpdatedAt = int(value.Int64)
+				pe.UpdatedAt = value.Int64
 			}
 		case permission.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
-				pe.DeletedAt = new(int)
-				*pe.DeletedAt = int(value.Int64)
+				pe.DeletedAt = new(int64)
+				*pe.DeletedAt = value.Int64
 			}
 		case permission.FieldTenantCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field tenant_code", values[i])
 			} else if value.Valid {
 				pe.TenantCode = value.String
+			}
+		case permission.FieldPermissionID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field permission_id", values[i])
+			} else if value.Valid {
+				pe.PermissionID = value.String
 			}
 		case permission.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -123,10 +133,10 @@ func (pe *Permission) assignValues(columns []string, values []any) error {
 				pe.Resource = value.String
 			}
 		case permission.FieldAction:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field action", values[i])
 			} else if value.Valid {
-				pe.Action = int(value.Int64)
+				pe.Action = value.String
 			}
 		case permission.FieldParentID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -145,6 +155,12 @@ func (pe *Permission) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				pe.Status = int(value.Int64)
+			}
+		case permission.FieldMenuID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field menu_id", values[i])
+			} else if value.Valid {
+				pe.MenuID = value.String
 			}
 		default:
 			pe.selectValues.Set(columns[i], values[i])
@@ -196,6 +212,9 @@ func (pe *Permission) String() string {
 	builder.WriteString("tenant_code=")
 	builder.WriteString(pe.TenantCode)
 	builder.WriteString(", ")
+	builder.WriteString("permission_id=")
+	builder.WriteString(pe.PermissionID)
+	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(pe.Name)
 	builder.WriteString(", ")
@@ -209,7 +228,7 @@ func (pe *Permission) String() string {
 	builder.WriteString(pe.Resource)
 	builder.WriteString(", ")
 	builder.WriteString("action=")
-	builder.WriteString(fmt.Sprintf("%v", pe.Action))
+	builder.WriteString(pe.Action)
 	builder.WriteString(", ")
 	builder.WriteString("parent_id=")
 	builder.WriteString(fmt.Sprintf("%v", pe.ParentID))
@@ -219,6 +238,9 @@ func (pe *Permission) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", pe.Status))
+	builder.WriteString(", ")
+	builder.WriteString("menu_id=")
+	builder.WriteString(pe.MenuID)
 	builder.WriteByte(')')
 	return builder.String()
 }

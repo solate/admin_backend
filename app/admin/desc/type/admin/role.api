@@ -45,10 +45,7 @@ type (
         RoleID string `path:"role_id"`
     }
 
-    // 获取角色响应
-    GetRoleResp {
-        RoleInfo
-    }
+  
 
     // 角色列表请求
     RoleListReq {
@@ -72,8 +69,26 @@ type (
         Description string `json:"description"` // 角色描述
         Status      int    `json:"status"`      // 状态
         Sort        int    `json:"sort"`        // 排序
-        CreatedAt   int64 `json:"created_at"` // 创建时间
+        CreatedAt   int64  `json:"created_at"` // 创建时间
     }
+
+    // 分配用户角色请求
+    SetUserRolesReq {
+        UserID  string   `path:"user_id"`                    // 用户ID
+        RoleCodeList []string `json:"role_code_list" validate:"required"` // 角色Code列表
+    }
+
+    // 获取用户角色请求
+    GetUserRolesReq {
+        UserID string `path:"user_id"` // 用户ID
+    }
+
+    // 获取用户角色响应
+    GetUserRolesResp {
+        List []*RoleInfo `json:"list"` // 角色列表
+    }
+
+   
 )
 
 @server (
@@ -100,5 +115,15 @@ service admin {
 
     @doc "获取角色详情"
     @handler GetRole
-    get /roles/:role_id (GetRoleReq) returns (GetRoleResp)
+    get /roles/:role_id (GetRoleReq) returns (RoleInfo)
+
+    @doc "设置用户角色"
+    @handler SetUserRoles
+    post /users/:user_id/roles (SetUserRolesReq) returns (bool)
+
+    @doc "获取用户角色列表"
+    @handler GetUserRoles
+    get /users/:user_id/roles (GetUserRolesReq) returns (GetUserRolesResp)
+
+
 }

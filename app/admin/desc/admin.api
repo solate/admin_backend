@@ -6,5 +6,6 @@ import (
 	"type/admin/auth.api"
 	"type/admin/tenant.api"
 	"type/admin/role.api"
+	"type/admin/permission.api"
 )
 

@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	auth "admin_backend/app/admin/internal/handler/auth"
+	permission "admin_backend/app/admin/internal/handler/permission"
 	role "admin_backend/app/admin/internal/handler/role"
 	tenant "admin_backend/app/admin/internal/handler/tenant"
 	user "admin_backend/app/admin/internal/handler/user"
@@ -72,6 +73,57 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.AuthMiddleware},
 			[]rest.Route{
 				{
+					// 设置角色权限
+					Method:  http.MethodPost,
+					Path:    "/roles/:role_id/permissions",
+					Handler: permission.SetRolePermissionsHandler(serverCtx),
+				},
+				{
+					// 获取角色权限列表
+					Method:  http.MethodGet,
+					Path:    "/roles/:role_id/permissions",
+					Handler: permission.GetRolePermissionsHandler(serverCtx),
+				},
+				{
+					// 创建权限规则
+					Method:  http.MethodPost,
+					Path:    "/rules",
+					Handler: permission.CreatePermissionHandler(serverCtx),
+				},
+				{
+					// 获取权限规则列表
+					Method:  http.MethodGet,
+					Path:    "/rules",
+					Handler: permission.ListPermissionHandler(serverCtx),
+				},
+				{
+					// 更新权限规则
+					Method:  http.MethodPut,
+					Path:    "/rules/:id",
+					Handler: permission.UpdatePermissionHandler(serverCtx),
+				},
+				{
+					// 删除权限规则
+					Method:  http.MethodDelete,
+					Path:    "/rules/:id",
+					Handler: permission.DeletePermissionHandler(serverCtx),
+				},
+				{
+					// 获取权限规则详情
+					Method:  http.MethodGet,
+					Path:    "/rules/:id",
+					Handler: permission.GetPermissionHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/admin/api/v1/permission"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.AuthMiddleware},
+			[]rest.Route{
+				{
 					// 创建角色
 					Method:  http.MethodPost,
 					Path:    "/roles",
@@ -100,6 +152,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodGet,
 					Path:    "/roles/:role_id",
 					Handler: role.GetRoleHandler(serverCtx),
+				},
+				{
+					// 设置用户角色
+					Method:  http.MethodPost,
+					Path:    "/users/:user_id/roles",
+					Handler: role.SetUserRolesHandler(serverCtx),
+				},
+				{
+					// 获取用户角色列表
+					Method:  http.MethodGet,
+					Path:    "/users/:user_id/roles",
+					Handler: role.GetUserRolesHandler(serverCtx),
 				},
 			}...,
 		),

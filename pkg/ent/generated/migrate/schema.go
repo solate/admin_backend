@@ -55,21 +55,61 @@ var (
 			},
 		},
 	}
+	// MenusColumns holds the columns for the "menus" table.
+	MenusColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
+		{Name: "tenant_code", Type: field.TypeString, Comment: "租户code"},
+		{Name: "menu_id", Type: field.TypeString, Unique: true, Comment: "菜单ID"},
+		{Name: "menu_code", Type: field.TypeString, Comment: "菜单code"},
+		{Name: "parent_id", Type: field.TypeString, Comment: "父菜单ID", Default: ""},
+		{Name: "name", Type: field.TypeString, Comment: "菜单名称"},
+		{Name: "path", Type: field.TypeString, Comment: "路由路径", Default: ""},
+		{Name: "component", Type: field.TypeString, Comment: "前端组件路径", Default: ""},
+		{Name: "redirect", Type: field.TypeString, Comment: "重定向路径", Default: ""},
+		{Name: "icon", Type: field.TypeString, Comment: "菜单图标", Default: ""},
+		{Name: "sort", Type: field.TypeInt, Comment: "排序号", Default: 0},
+		{Name: "type", Type: field.TypeInt, Comment: "菜单类型 1:目录 2:菜单 3:按钮", Default: 1},
+		{Name: "status", Type: field.TypeInt, Comment: "状态 1:启用 2:禁用", Default: 1},
+	}
+	// MenusTable holds the schema information for the "menus" table.
+	MenusTable = &schema.Table{
+		Name:       "menus",
+		Comment:    "菜单",
+		Columns:    MenusColumns,
+		PrimaryKey: []*schema.Column{MenusColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "menu_menu_id",
+				Unique:  false,
+				Columns: []*schema.Column{MenusColumns[5]},
+			},
+			{
+				Name:    "menu_parent_id",
+				Unique:  false,
+				Columns: []*schema.Column{MenusColumns[7]},
+			},
+		},
+	}
 	// PermissionsColumns holds the columns for the "permissions" table.
 	PermissionsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "created_at", Type: field.TypeInt, Comment: "创建时间", Default: 0},
-		{Name: "updated_at", Type: field.TypeInt, Comment: "修改时间", Default: 0},
-		{Name: "deleted_at", Type: field.TypeInt, Nullable: true, Comment: "删除时间"},
+		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
 		{Name: "tenant_code", Type: field.TypeString, Comment: "租户编码"},
+		{Name: "permission_id", Type: field.TypeString, Unique: true, Comment: "权限ID"},
 		{Name: "name", Type: field.TypeString, Comment: "权限名称"},
 		{Name: "code", Type: field.TypeString, Unique: true, Comment: "权限编码"},
 		{Name: "type", Type: field.TypeInt, Comment: "类型类型: menu/page/button/api/data"},
-		{Name: "resource", Type: field.TypeString, Nullable: true, Comment: "资源"},
-		{Name: "action", Type: field.TypeInt, Nullable: true, Comment: "操作类型: action: GET/POST/PUT/DELETE", Default: 1},
+		{Name: "resource", Type: field.TypeString, Comment: "资源"},
+		{Name: "action", Type: field.TypeString, Comment: "操作类型"},
 		{Name: "parent_id", Type: field.TypeInt, Nullable: true, Comment: "父级ID"},
 		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "描述"},
 		{Name: "status", Type: field.TypeInt, Comment: "状态 1:启用 2:禁用", Default: 1},
+		{Name: "menu_id", Type: field.TypeString, Nullable: true, Comment: "菜单ID"},
 	}
 	// PermissionsTable holds the schema information for the "permissions" table.
 	PermissionsTable = &schema.Table{
@@ -207,6 +247,7 @@ var (
 	Tables = []*schema.Table{
 		CasbinRulesTable,
 		LoginLogTable,
+		MenusTable,
 		PermissionsTable,
 		RolesTable,
 		SystemLogsTable,
@@ -218,6 +259,9 @@ var (
 func init() {
 	LoginLogTable.Annotation = &entsql.Annotation{
 		Table: "login_log",
+	}
+	MenusTable.Annotation = &entsql.Annotation{
+		Table: "menus",
 	}
 	PermissionsTable.Annotation = &entsql.Annotation{
 		Table: "permissions",

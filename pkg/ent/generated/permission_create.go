@@ -22,13 +22,13 @@ type PermissionCreate struct {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (pc *PermissionCreate) SetCreatedAt(i int) *PermissionCreate {
+func (pc *PermissionCreate) SetCreatedAt(i int64) *PermissionCreate {
 	pc.mutation.SetCreatedAt(i)
 	return pc
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (pc *PermissionCreate) SetNillableCreatedAt(i *int) *PermissionCreate {
+func (pc *PermissionCreate) SetNillableCreatedAt(i *int64) *PermissionCreate {
 	if i != nil {
 		pc.SetCreatedAt(*i)
 	}
@@ -36,13 +36,13 @@ func (pc *PermissionCreate) SetNillableCreatedAt(i *int) *PermissionCreate {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (pc *PermissionCreate) SetUpdatedAt(i int) *PermissionCreate {
+func (pc *PermissionCreate) SetUpdatedAt(i int64) *PermissionCreate {
 	pc.mutation.SetUpdatedAt(i)
 	return pc
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (pc *PermissionCreate) SetNillableUpdatedAt(i *int) *PermissionCreate {
+func (pc *PermissionCreate) SetNillableUpdatedAt(i *int64) *PermissionCreate {
 	if i != nil {
 		pc.SetUpdatedAt(*i)
 	}
@@ -50,13 +50,13 @@ func (pc *PermissionCreate) SetNillableUpdatedAt(i *int) *PermissionCreate {
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (pc *PermissionCreate) SetDeletedAt(i int) *PermissionCreate {
+func (pc *PermissionCreate) SetDeletedAt(i int64) *PermissionCreate {
 	pc.mutation.SetDeletedAt(i)
 	return pc
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (pc *PermissionCreate) SetNillableDeletedAt(i *int) *PermissionCreate {
+func (pc *PermissionCreate) SetNillableDeletedAt(i *int64) *PermissionCreate {
 	if i != nil {
 		pc.SetDeletedAt(*i)
 	}
@@ -66,6 +66,12 @@ func (pc *PermissionCreate) SetNillableDeletedAt(i *int) *PermissionCreate {
 // SetTenantCode sets the "tenant_code" field.
 func (pc *PermissionCreate) SetTenantCode(s string) *PermissionCreate {
 	pc.mutation.SetTenantCode(s)
+	return pc
+}
+
+// SetPermissionID sets the "permission_id" field.
+func (pc *PermissionCreate) SetPermissionID(s string) *PermissionCreate {
+	pc.mutation.SetPermissionID(s)
 	return pc
 }
 
@@ -93,25 +99,9 @@ func (pc *PermissionCreate) SetResource(s string) *PermissionCreate {
 	return pc
 }
 
-// SetNillableResource sets the "resource" field if the given value is not nil.
-func (pc *PermissionCreate) SetNillableResource(s *string) *PermissionCreate {
-	if s != nil {
-		pc.SetResource(*s)
-	}
-	return pc
-}
-
 // SetAction sets the "action" field.
-func (pc *PermissionCreate) SetAction(i int) *PermissionCreate {
-	pc.mutation.SetAction(i)
-	return pc
-}
-
-// SetNillableAction sets the "action" field if the given value is not nil.
-func (pc *PermissionCreate) SetNillableAction(i *int) *PermissionCreate {
-	if i != nil {
-		pc.SetAction(*i)
-	}
+func (pc *PermissionCreate) SetAction(s string) *PermissionCreate {
+	pc.mutation.SetAction(s)
 	return pc
 }
 
@@ -153,6 +143,20 @@ func (pc *PermissionCreate) SetStatus(i int) *PermissionCreate {
 func (pc *PermissionCreate) SetNillableStatus(i *int) *PermissionCreate {
 	if i != nil {
 		pc.SetStatus(*i)
+	}
+	return pc
+}
+
+// SetMenuID sets the "menu_id" field.
+func (pc *PermissionCreate) SetMenuID(s string) *PermissionCreate {
+	pc.mutation.SetMenuID(s)
+	return pc
+}
+
+// SetNillableMenuID sets the "menu_id" field if the given value is not nil.
+func (pc *PermissionCreate) SetNillableMenuID(s *string) *PermissionCreate {
+	if s != nil {
+		pc.SetMenuID(*s)
 	}
 	return pc
 }
@@ -200,10 +204,6 @@ func (pc *PermissionCreate) defaults() {
 		v := permission.DefaultUpdatedAt
 		pc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := pc.mutation.Action(); !ok {
-		v := permission.DefaultAction
-		pc.mutation.SetAction(v)
-	}
 	if _, ok := pc.mutation.Status(); !ok {
 		v := permission.DefaultStatus
 		pc.mutation.SetStatus(v)
@@ -226,6 +226,9 @@ func (pc *PermissionCreate) check() error {
 			return &ValidationError{Name: "tenant_code", err: fmt.Errorf(`generated: validator failed for field "Permission.tenant_code": %w`, err)}
 		}
 	}
+	if _, ok := pc.mutation.PermissionID(); !ok {
+		return &ValidationError{Name: "permission_id", err: errors.New(`generated: missing required field "Permission.permission_id"`)}
+	}
 	if _, ok := pc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Permission.name"`)}
 	}
@@ -244,6 +247,22 @@ func (pc *PermissionCreate) check() error {
 	}
 	if _, ok := pc.mutation.GetType(); !ok {
 		return &ValidationError{Name: "type", err: errors.New(`generated: missing required field "Permission.type"`)}
+	}
+	if _, ok := pc.mutation.Resource(); !ok {
+		return &ValidationError{Name: "resource", err: errors.New(`generated: missing required field "Permission.resource"`)}
+	}
+	if v, ok := pc.mutation.Resource(); ok {
+		if err := permission.ResourceValidator(v); err != nil {
+			return &ValidationError{Name: "resource", err: fmt.Errorf(`generated: validator failed for field "Permission.resource": %w`, err)}
+		}
+	}
+	if _, ok := pc.mutation.Action(); !ok {
+		return &ValidationError{Name: "action", err: errors.New(`generated: missing required field "Permission.action"`)}
+	}
+	if v, ok := pc.mutation.Action(); ok {
+		if err := permission.ActionValidator(v); err != nil {
+			return &ValidationError{Name: "action", err: fmt.Errorf(`generated: validator failed for field "Permission.action": %w`, err)}
+		}
 	}
 	if _, ok := pc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "Permission.status"`)}
@@ -276,20 +295,24 @@ func (pc *PermissionCreate) createSpec() (*Permission, *sqlgraph.CreateSpec) {
 	)
 	_spec.OnConflict = pc.conflict
 	if value, ok := pc.mutation.CreatedAt(); ok {
-		_spec.SetField(permission.FieldCreatedAt, field.TypeInt, value)
+		_spec.SetField(permission.FieldCreatedAt, field.TypeInt64, value)
 		_node.CreatedAt = value
 	}
 	if value, ok := pc.mutation.UpdatedAt(); ok {
-		_spec.SetField(permission.FieldUpdatedAt, field.TypeInt, value)
+		_spec.SetField(permission.FieldUpdatedAt, field.TypeInt64, value)
 		_node.UpdatedAt = value
 	}
 	if value, ok := pc.mutation.DeletedAt(); ok {
-		_spec.SetField(permission.FieldDeletedAt, field.TypeInt, value)
+		_spec.SetField(permission.FieldDeletedAt, field.TypeInt64, value)
 		_node.DeletedAt = &value
 	}
 	if value, ok := pc.mutation.TenantCode(); ok {
 		_spec.SetField(permission.FieldTenantCode, field.TypeString, value)
 		_node.TenantCode = value
+	}
+	if value, ok := pc.mutation.PermissionID(); ok {
+		_spec.SetField(permission.FieldPermissionID, field.TypeString, value)
+		_node.PermissionID = value
 	}
 	if value, ok := pc.mutation.Name(); ok {
 		_spec.SetField(permission.FieldName, field.TypeString, value)
@@ -308,7 +331,7 @@ func (pc *PermissionCreate) createSpec() (*Permission, *sqlgraph.CreateSpec) {
 		_node.Resource = value
 	}
 	if value, ok := pc.mutation.Action(); ok {
-		_spec.SetField(permission.FieldAction, field.TypeInt, value)
+		_spec.SetField(permission.FieldAction, field.TypeString, value)
 		_node.Action = value
 	}
 	if value, ok := pc.mutation.ParentID(); ok {
@@ -322,6 +345,10 @@ func (pc *PermissionCreate) createSpec() (*Permission, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.Status(); ok {
 		_spec.SetField(permission.FieldStatus, field.TypeInt, value)
 		_node.Status = value
+	}
+	if value, ok := pc.mutation.MenuID(); ok {
+		_spec.SetField(permission.FieldMenuID, field.TypeString, value)
+		_node.MenuID = value
 	}
 	return _node, _spec
 }
@@ -376,7 +403,7 @@ type (
 )
 
 // SetUpdatedAt sets the "updated_at" field.
-func (u *PermissionUpsert) SetUpdatedAt(v int) *PermissionUpsert {
+func (u *PermissionUpsert) SetUpdatedAt(v int64) *PermissionUpsert {
 	u.Set(permission.FieldUpdatedAt, v)
 	return u
 }
@@ -388,13 +415,13 @@ func (u *PermissionUpsert) UpdateUpdatedAt() *PermissionUpsert {
 }
 
 // AddUpdatedAt adds v to the "updated_at" field.
-func (u *PermissionUpsert) AddUpdatedAt(v int) *PermissionUpsert {
+func (u *PermissionUpsert) AddUpdatedAt(v int64) *PermissionUpsert {
 	u.Add(permission.FieldUpdatedAt, v)
 	return u
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (u *PermissionUpsert) SetDeletedAt(v int) *PermissionUpsert {
+func (u *PermissionUpsert) SetDeletedAt(v int64) *PermissionUpsert {
 	u.Set(permission.FieldDeletedAt, v)
 	return u
 }
@@ -406,7 +433,7 @@ func (u *PermissionUpsert) UpdateDeletedAt() *PermissionUpsert {
 }
 
 // AddDeletedAt adds v to the "deleted_at" field.
-func (u *PermissionUpsert) AddDeletedAt(v int) *PermissionUpsert {
+func (u *PermissionUpsert) AddDeletedAt(v int64) *PermissionUpsert {
 	u.Add(permission.FieldDeletedAt, v)
 	return u
 }
@@ -483,14 +510,8 @@ func (u *PermissionUpsert) UpdateResource() *PermissionUpsert {
 	return u
 }
 
-// ClearResource clears the value of the "resource" field.
-func (u *PermissionUpsert) ClearResource() *PermissionUpsert {
-	u.SetNull(permission.FieldResource)
-	return u
-}
-
 // SetAction sets the "action" field.
-func (u *PermissionUpsert) SetAction(v int) *PermissionUpsert {
+func (u *PermissionUpsert) SetAction(v string) *PermissionUpsert {
 	u.Set(permission.FieldAction, v)
 	return u
 }
@@ -498,18 +519,6 @@ func (u *PermissionUpsert) SetAction(v int) *PermissionUpsert {
 // UpdateAction sets the "action" field to the value that was provided on create.
 func (u *PermissionUpsert) UpdateAction() *PermissionUpsert {
 	u.SetExcluded(permission.FieldAction)
-	return u
-}
-
-// AddAction adds v to the "action" field.
-func (u *PermissionUpsert) AddAction(v int) *PermissionUpsert {
-	u.Add(permission.FieldAction, v)
-	return u
-}
-
-// ClearAction clears the value of the "action" field.
-func (u *PermissionUpsert) ClearAction() *PermissionUpsert {
-	u.SetNull(permission.FieldAction)
 	return u
 }
 
@@ -573,6 +582,24 @@ func (u *PermissionUpsert) AddStatus(v int) *PermissionUpsert {
 	return u
 }
 
+// SetMenuID sets the "menu_id" field.
+func (u *PermissionUpsert) SetMenuID(v string) *PermissionUpsert {
+	u.Set(permission.FieldMenuID, v)
+	return u
+}
+
+// UpdateMenuID sets the "menu_id" field to the value that was provided on create.
+func (u *PermissionUpsert) UpdateMenuID() *PermissionUpsert {
+	u.SetExcluded(permission.FieldMenuID)
+	return u
+}
+
+// ClearMenuID clears the value of the "menu_id" field.
+func (u *PermissionUpsert) ClearMenuID() *PermissionUpsert {
+	u.SetNull(permission.FieldMenuID)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create.
 // Using this option is equivalent to using:
 //
@@ -586,6 +613,9 @@ func (u *PermissionUpsertOne) UpdateNewValues() *PermissionUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
 		if _, exists := u.create.mutation.CreatedAt(); exists {
 			s.SetIgnore(permission.FieldCreatedAt)
+		}
+		if _, exists := u.create.mutation.PermissionID(); exists {
+			s.SetIgnore(permission.FieldPermissionID)
 		}
 	}))
 	return u
@@ -619,14 +649,14 @@ func (u *PermissionUpsertOne) Update(set func(*PermissionUpsert)) *PermissionUps
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (u *PermissionUpsertOne) SetUpdatedAt(v int) *PermissionUpsertOne {
+func (u *PermissionUpsertOne) SetUpdatedAt(v int64) *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
 		s.SetUpdatedAt(v)
 	})
 }
 
 // AddUpdatedAt adds v to the "updated_at" field.
-func (u *PermissionUpsertOne) AddUpdatedAt(v int) *PermissionUpsertOne {
+func (u *PermissionUpsertOne) AddUpdatedAt(v int64) *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
 		s.AddUpdatedAt(v)
 	})
@@ -640,14 +670,14 @@ func (u *PermissionUpsertOne) UpdateUpdatedAt() *PermissionUpsertOne {
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (u *PermissionUpsertOne) SetDeletedAt(v int) *PermissionUpsertOne {
+func (u *PermissionUpsertOne) SetDeletedAt(v int64) *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
 		s.SetDeletedAt(v)
 	})
 }
 
 // AddDeletedAt adds v to the "deleted_at" field.
-func (u *PermissionUpsertOne) AddDeletedAt(v int) *PermissionUpsertOne {
+func (u *PermissionUpsertOne) AddDeletedAt(v int64) *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
 		s.AddDeletedAt(v)
 	})
@@ -744,24 +774,10 @@ func (u *PermissionUpsertOne) UpdateResource() *PermissionUpsertOne {
 	})
 }
 
-// ClearResource clears the value of the "resource" field.
-func (u *PermissionUpsertOne) ClearResource() *PermissionUpsertOne {
-	return u.Update(func(s *PermissionUpsert) {
-		s.ClearResource()
-	})
-}
-
 // SetAction sets the "action" field.
-func (u *PermissionUpsertOne) SetAction(v int) *PermissionUpsertOne {
+func (u *PermissionUpsertOne) SetAction(v string) *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
 		s.SetAction(v)
-	})
-}
-
-// AddAction adds v to the "action" field.
-func (u *PermissionUpsertOne) AddAction(v int) *PermissionUpsertOne {
-	return u.Update(func(s *PermissionUpsert) {
-		s.AddAction(v)
 	})
 }
 
@@ -769,13 +785,6 @@ func (u *PermissionUpsertOne) AddAction(v int) *PermissionUpsertOne {
 func (u *PermissionUpsertOne) UpdateAction() *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
 		s.UpdateAction()
-	})
-}
-
-// ClearAction clears the value of the "action" field.
-func (u *PermissionUpsertOne) ClearAction() *PermissionUpsertOne {
-	return u.Update(func(s *PermissionUpsert) {
-		s.ClearAction()
 	})
 }
 
@@ -846,6 +855,27 @@ func (u *PermissionUpsertOne) AddStatus(v int) *PermissionUpsertOne {
 func (u *PermissionUpsertOne) UpdateStatus() *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
 		s.UpdateStatus()
+	})
+}
+
+// SetMenuID sets the "menu_id" field.
+func (u *PermissionUpsertOne) SetMenuID(v string) *PermissionUpsertOne {
+	return u.Update(func(s *PermissionUpsert) {
+		s.SetMenuID(v)
+	})
+}
+
+// UpdateMenuID sets the "menu_id" field to the value that was provided on create.
+func (u *PermissionUpsertOne) UpdateMenuID() *PermissionUpsertOne {
+	return u.Update(func(s *PermissionUpsert) {
+		s.UpdateMenuID()
+	})
+}
+
+// ClearMenuID clears the value of the "menu_id" field.
+func (u *PermissionUpsertOne) ClearMenuID() *PermissionUpsertOne {
+	return u.Update(func(s *PermissionUpsert) {
+		s.ClearMenuID()
 	})
 }
 
@@ -1028,6 +1058,9 @@ func (u *PermissionUpsertBulk) UpdateNewValues() *PermissionUpsertBulk {
 			if _, exists := b.mutation.CreatedAt(); exists {
 				s.SetIgnore(permission.FieldCreatedAt)
 			}
+			if _, exists := b.mutation.PermissionID(); exists {
+				s.SetIgnore(permission.FieldPermissionID)
+			}
 		}
 	}))
 	return u
@@ -1061,14 +1094,14 @@ func (u *PermissionUpsertBulk) Update(set func(*PermissionUpsert)) *PermissionUp
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (u *PermissionUpsertBulk) SetUpdatedAt(v int) *PermissionUpsertBulk {
+func (u *PermissionUpsertBulk) SetUpdatedAt(v int64) *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
 		s.SetUpdatedAt(v)
 	})
 }
 
 // AddUpdatedAt adds v to the "updated_at" field.
-func (u *PermissionUpsertBulk) AddUpdatedAt(v int) *PermissionUpsertBulk {
+func (u *PermissionUpsertBulk) AddUpdatedAt(v int64) *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
 		s.AddUpdatedAt(v)
 	})
@@ -1082,14 +1115,14 @@ func (u *PermissionUpsertBulk) UpdateUpdatedAt() *PermissionUpsertBulk {
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (u *PermissionUpsertBulk) SetDeletedAt(v int) *PermissionUpsertBulk {
+func (u *PermissionUpsertBulk) SetDeletedAt(v int64) *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
 		s.SetDeletedAt(v)
 	})
 }
 
 // AddDeletedAt adds v to the "deleted_at" field.
-func (u *PermissionUpsertBulk) AddDeletedAt(v int) *PermissionUpsertBulk {
+func (u *PermissionUpsertBulk) AddDeletedAt(v int64) *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
 		s.AddDeletedAt(v)
 	})
@@ -1186,24 +1219,10 @@ func (u *PermissionUpsertBulk) UpdateResource() *PermissionUpsertBulk {
 	})
 }
 
-// ClearResource clears the value of the "resource" field.
-func (u *PermissionUpsertBulk) ClearResource() *PermissionUpsertBulk {
-	return u.Update(func(s *PermissionUpsert) {
-		s.ClearResource()
-	})
-}
-
 // SetAction sets the "action" field.
-func (u *PermissionUpsertBulk) SetAction(v int) *PermissionUpsertBulk {
+func (u *PermissionUpsertBulk) SetAction(v string) *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
 		s.SetAction(v)
-	})
-}
-
-// AddAction adds v to the "action" field.
-func (u *PermissionUpsertBulk) AddAction(v int) *PermissionUpsertBulk {
-	return u.Update(func(s *PermissionUpsert) {
-		s.AddAction(v)
 	})
 }
 
@@ -1211,13 +1230,6 @@ func (u *PermissionUpsertBulk) AddAction(v int) *PermissionUpsertBulk {
 func (u *PermissionUpsertBulk) UpdateAction() *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
 		s.UpdateAction()
-	})
-}
-
-// ClearAction clears the value of the "action" field.
-func (u *PermissionUpsertBulk) ClearAction() *PermissionUpsertBulk {
-	return u.Update(func(s *PermissionUpsert) {
-		s.ClearAction()
 	})
 }
 
@@ -1288,6 +1300,27 @@ func (u *PermissionUpsertBulk) AddStatus(v int) *PermissionUpsertBulk {
 func (u *PermissionUpsertBulk) UpdateStatus() *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
 		s.UpdateStatus()
+	})
+}
+
+// SetMenuID sets the "menu_id" field.
+func (u *PermissionUpsertBulk) SetMenuID(v string) *PermissionUpsertBulk {
+	return u.Update(func(s *PermissionUpsert) {
+		s.SetMenuID(v)
+	})
+}
+
+// UpdateMenuID sets the "menu_id" field to the value that was provided on create.
+func (u *PermissionUpsertBulk) UpdateMenuID() *PermissionUpsertBulk {
+	return u.Update(func(s *PermissionUpsert) {
+		s.UpdateMenuID()
+	})
+}
+
+// ClearMenuID clears the value of the "menu_id" field.
+func (u *PermissionUpsertBulk) ClearMenuID() *PermissionUpsertBulk {
+	return u.Update(func(s *PermissionUpsert) {
+		s.ClearMenuID()
 	})
 }
 

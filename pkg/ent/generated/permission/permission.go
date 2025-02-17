@@ -19,6 +19,8 @@ const (
 	FieldDeletedAt = "deleted_at"
 	// FieldTenantCode holds the string denoting the tenant_code field in the database.
 	FieldTenantCode = "tenant_code"
+	// FieldPermissionID holds the string denoting the permission_id field in the database.
+	FieldPermissionID = "permission_id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldCode holds the string denoting the code field in the database.
@@ -35,6 +37,8 @@ const (
 	FieldDescription = "description"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// FieldMenuID holds the string denoting the menu_id field in the database.
+	FieldMenuID = "menu_id"
 	// Table holds the table name of the permission in the database.
 	Table = "permissions"
 )
@@ -46,6 +50,7 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldDeletedAt,
 	FieldTenantCode,
+	FieldPermissionID,
 	FieldName,
 	FieldCode,
 	FieldType,
@@ -54,6 +59,7 @@ var Columns = []string{
 	FieldParentID,
 	FieldDescription,
 	FieldStatus,
+	FieldMenuID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -68,17 +74,19 @@ func ValidColumn(column string) bool {
 
 var (
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
-	DefaultCreatedAt int
+	DefaultCreatedAt int64
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
-	DefaultUpdatedAt int
+	DefaultUpdatedAt int64
 	// TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
 	TenantCodeValidator func(string) error
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
 	// CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	CodeValidator func(string) error
-	// DefaultAction holds the default value on creation for the "action" field.
-	DefaultAction int
+	// ResourceValidator is a validator for the "resource" field. It is called by the builders before save.
+	ResourceValidator func(string) error
+	// ActionValidator is a validator for the "action" field. It is called by the builders before save.
+	ActionValidator func(string) error
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
 )
@@ -109,6 +117,11 @@ func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 // ByTenantCode orders the results by the tenant_code field.
 func ByTenantCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTenantCode, opts...).ToFunc()
+}
+
+// ByPermissionID orders the results by the permission_id field.
+func ByPermissionID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPermissionID, opts...).ToFunc()
 }
 
 // ByName orders the results by the name field.
@@ -149,4 +162,9 @@ func ByDescription(opts ...sql.OrderTermOption) OrderOption {
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
+}
+
+// ByMenuID orders the results by the menu_id field.
+func ByMenuID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMenuID, opts...).ToFunc()
 }

@@ -243,12 +243,269 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/GetUserResp"
+              "$ref": "#/definitions/UserInfo"
             }
           }
         },
         "tags": [
           "user"
+        ]
+      }
+    },
+    "/admin/api/v1/permission/roles/{role_id}/permissions": {
+      "get": {
+        "summary": "获取角色权限列表",
+        "operationId": "GetRolePermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetRolePermissionsResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "permission"
+        ]
+      },
+      "post": {
+        "summary": "设置角色权限",
+        "operationId": "SetRolePermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 分配角色权限请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SetRolePermissionsReq"
+            }
+          }
+        ],
+        "tags": [
+          "permission"
+        ]
+      }
+    },
+    "/admin/api/v1/permission/rules": {
+      "get": {
+        "summary": "获取权限规则列表",
+        "operationId": "ListPermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListPermissionResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": " 当前页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          },
+          {
+            "name": "page_size",
+            "description": " 每页大小",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "10"
+          },
+          {
+            "name": "name",
+            "description": " 权限名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "description": " 权限编码",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "description": " 权限类型",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "resource",
+            "description": " 资源路径",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "action",
+            "description": " 操作类型",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "status",
+            "description": " 状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "permission"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      },
+      "post": {
+        "summary": "创建权限规则",
+        "operationId": "CreatePermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreatePermissionResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 创建权限规则请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreatePermissionReq"
+            }
+          }
+        ],
+        "tags": [
+          "permission"
+        ]
+      }
+    },
+    "/admin/api/v1/permission/rules/{id}": {
+      "get": {
+        "summary": "获取权限规则详情",
+        "operationId": "GetPermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PermissionInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "permission"
+        ]
+      },
+      "delete": {
+        "summary": "删除权限规则",
+        "operationId": "DeletePermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 删除权限规则请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeletePermissionReq"
+            }
+          }
+        ],
+        "tags": [
+          "permission"
+        ]
+      },
+      "put": {
+        "summary": "更新权限规则",
+        "operationId": "UpdatePermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 更新权限规则请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdatePermissionReq"
+            }
+          }
+        ],
+        "tags": [
+          "permission"
         ]
       }
     },
@@ -348,7 +605,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/GetRoleResp"
+              "$ref": "#/definitions/RoleInfo"
             }
           }
         },
@@ -688,7 +945,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/GetUserResp"
+              "$ref": "#/definitions/UserInfo"
             }
           }
         },
@@ -767,6 +1024,63 @@
           "user"
         ]
       }
+    },
+    "/admin/api/v1/users/{user_id}/roles": {
+      "get": {
+        "summary": "获取用户角色列表",
+        "operationId": "GetUserRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetUserRolesResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "role"
+        ]
+      },
+      "post": {
+        "summary": "设置用户角色",
+        "operationId": "SetUserRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 分配用户角色请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SetUserRolesReq"
+            }
+          }
+        ],
+        "tags": [
+          "role"
+        ]
+      }
     }
   },
   "definitions": {
@@ -804,6 +1118,71 @@
       "required": [
         "old_password",
         "new_password"
+      ]
+    },
+    "CreatePermissionReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 权限名称"
+        },
+        "code": {
+          "type": "string",
+          "description": " 权限编码"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 权限类型(1:菜单menu 2:页面page 3:按钮button 4:接口api 5:数据data)"
+        },
+        "resource": {
+          "type": "string",
+          "description": " 资源路径"
+        },
+        "action": {
+          "type": "string",
+          "description": " 操作类型"
+        },
+        "parent_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 父级ID"
+        },
+        "description": {
+          "type": "string",
+          "description": " 描述"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态(1:启用 2:禁用)"
+        },
+        "menu_id": {
+          "type": "string",
+          "description": " 菜单ID"
+        }
+      },
+      "title": "CreatePermissionReq",
+      "required": [
+        "name",
+        "code",
+        "type",
+        "resource",
+        "action"
+      ]
+    },
+    "CreatePermissionResp": {
+      "type": "object",
+      "properties": {
+        "permission_id": {
+          "type": "string",
+          "description": " 权限规则ID"
+        }
+      },
+      "title": "CreatePermissionResp",
+      "required": [
+        "permission_id"
       ]
     },
     "CreateRoleReq": {
@@ -954,6 +1333,10 @@
         "user_id"
       ]
     },
+    "DeletePermissionReq": {
+      "type": "object",
+      "title": "DeletePermissionReq"
+    },
     "DeleteRoleReq": {
       "type": "object",
       "title": "DeleteRoleReq"
@@ -966,38 +1349,63 @@
       "type": "object",
       "title": "DeleteUserReq"
     },
-    "GetRoleReq": {
+    "GetPermissionReq": {
       "type": "object",
-      "title": "GetRoleReq"
+      "title": "GetPermissionReq"
     },
-    "GetRoleResp": {
+    "GetPermissionResp": {
       "type": "object",
       "properties": {
-        "role_id": {
+        "id": {
           "type": "string",
-          "description": " 角色ID"
+          "description": " 权限规则ID"
+        },
+        "tenant_code": {
+          "type": "string",
+          "description": " 租户编码"
+        },
+        "permission_id": {
+          "type": "string",
+          "description": " 权限规则ID"
         },
         "name": {
           "type": "string",
-          "description": " 角色名"
+          "description": " 权限名称"
         },
         "code": {
           "type": "string",
-          "description": " 角色编码"
+          "description": " 权限编码"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 权限类型"
+        },
+        "resource": {
+          "type": "string",
+          "description": " 资源路径"
+        },
+        "action": {
+          "type": "string",
+          "description": " 操作类型"
+        },
+        "parent_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 父级ID"
         },
         "description": {
           "type": "string",
-          "description": " 角色描述"
+          "description": " 描述"
         },
         "status": {
           "type": "integer",
           "format": "int32",
           "description": " 状态"
         },
-        "sort": {
-          "type": "integer",
-          "format": "int32",
-          "description": " 排序"
+        "menu_id": {
+          "type": "string",
+          "description": " 菜单ID"
         },
         "created_at": {
           "type": "integer",
@@ -1005,7 +1413,31 @@
           "description": " 创建时间"
         }
       },
-      "title": "GetRoleResp"
+      "title": "GetPermissionResp"
+    },
+    "GetRolePermissionsReq": {
+      "type": "object",
+      "title": "GetRolePermissionsReq"
+    },
+    "GetRolePermissionsResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PermissionInfo"
+          },
+          "description": " 权限列表"
+        }
+      },
+      "title": "GetRolePermissionsResp",
+      "required": [
+        "list"
+      ]
+    },
+    "GetRoleReq": {
+      "type": "object",
+      "title": "GetRoleReq"
     },
     "GetTenantReq": {
       "type": "object",
@@ -1037,45 +1469,25 @@
       "type": "object",
       "title": "GetUserReq"
     },
-    "GetUserResp": {
+    "GetUserRolesReq": {
+      "type": "object",
+      "title": "GetUserRolesReq"
+    },
+    "GetUserRolesResp": {
       "type": "object",
       "properties": {
-        "user_id": {
-          "type": "string",
-          "description": " 用户ID"
-        },
-        "user_name": {
-          "type": "string",
-          "description": " 用户名"
-        },
-        "name": {
-          "type": "string",
-          "description": " 姓名"
-        },
-        "phone": {
-          "type": "string",
-          "description": " 手机号"
-        },
-        "email": {
-          "type": "string",
-          "description": " 邮箱"
-        },
-        "avatar": {
-          "type": "string",
-          "description": " 头像"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32",
-          "description": " 状态"
-        },
-        "created_at": {
-          "type": "integer",
-          "format": "int64",
-          "description": " 创建时间"
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoleInfo"
+          },
+          "description": " 角色列表"
         }
       },
-      "title": "GetUserResp"
+      "title": "GetUserRolesResp",
+      "required": [
+        "list"
+      ]
     },
     "IDRequest": {
       "type": "object",
@@ -1089,6 +1501,72 @@
       "title": "IDRequest",
       "required": [
         "id"
+      ]
+    },
+    "ListPermissionReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 当前页"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32",
+          "default": "10",
+          "description": " 每页大小"
+        },
+        "name": {
+          "type": "string",
+          "description": " 权限名称"
+        },
+        "code": {
+          "type": "string",
+          "description": " 权限编码"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 权限类型"
+        },
+        "resource": {
+          "type": "string",
+          "description": " 资源路径"
+        },
+        "action": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 操作类型"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        }
+      },
+      "title": "ListPermissionReq"
+    },
+    "ListPermissionResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageResponse",
+          "description": " 分页信息"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PermissionInfo"
+          },
+          "description": " 权限规则列表"
+        }
+      },
+      "title": "ListPermissionResp",
+      "required": [
+        "page",
+        "list"
       ]
     },
     "ListTenantReq": {
@@ -1378,6 +1856,106 @@
         "current"
       ]
     },
+    "Permission": {
+      "type": "object",
+      "properties": {
+        "permission_code": {
+          "type": "string",
+          "description": " 权限码"
+        },
+        "action": {
+          "type": "string",
+          "description": " 操作类型"
+        },
+        "type": {
+          "type": "string",
+          "description": " 权限类型"
+        }
+      },
+      "title": "Permission",
+      "required": [
+        "permission_code",
+        "action",
+        "type"
+      ]
+    },
+    "PermissionInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " 权限规则ID"
+        },
+        "tenant_code": {
+          "type": "string",
+          "description": " 租户编码"
+        },
+        "permission_id": {
+          "type": "string",
+          "description": " 权限规则ID"
+        },
+        "name": {
+          "type": "string",
+          "description": " 权限名称"
+        },
+        "code": {
+          "type": "string",
+          "description": " 权限编码"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 权限类型"
+        },
+        "resource": {
+          "type": "string",
+          "description": " 资源路径"
+        },
+        "action": {
+          "type": "string",
+          "description": " 操作类型"
+        },
+        "parent_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 父级ID"
+        },
+        "description": {
+          "type": "string",
+          "description": " 描述"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
+        "menu_id": {
+          "type": "string",
+          "description": " 菜单ID"
+        },
+        "created_at": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建时间"
+        }
+      },
+      "title": "PermissionInfo",
+      "required": [
+        "id",
+        "tenant_code",
+        "permission_id",
+        "name",
+        "code",
+        "type",
+        "resource",
+        "action",
+        "parent_id",
+        "description",
+        "status",
+        "menu_id",
+        "created_at"
+      ]
+    },
     "RegisterReq": {
       "type": "object",
       "properties": {
@@ -1540,6 +2118,38 @@
         "list"
       ]
     },
+    "SetRolePermissionsReq": {
+      "type": "object",
+      "properties": {
+        "permission_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Permission"
+          },
+          "description": " 权限列表"
+        }
+      },
+      "title": "SetRolePermissionsReq",
+      "required": [
+        "permission_list"
+      ]
+    },
+    "SetUserRolesReq": {
+      "type": "object",
+      "properties": {
+        "role_code_list": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": " 角色Code列表"
+        }
+      },
+      "title": "SetUserRolesReq",
+      "required": [
+        "role_code_list"
+      ]
+    },
     "StatusRequest": {
       "type": "object",
       "properties": {
@@ -1602,6 +2212,47 @@
         }
       },
       "title": "TimeRange"
+    },
+    "UpdatePermissionReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 权限名称"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 权限类型"
+        },
+        "resource": {
+          "type": "string",
+          "description": " 资源路径"
+        },
+        "action": {
+          "type": "string",
+          "description": " 操作类型"
+        },
+        "parent_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 父级ID"
+        },
+        "description": {
+          "type": "string",
+          "description": " 描述"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
+        "menu_id": {
+          "type": "string",
+          "description": " 菜单ID"
+        }
+      },
+      "title": "UpdatePermissionReq"
     },
     "UpdateRoleReq": {
       "type": "object",

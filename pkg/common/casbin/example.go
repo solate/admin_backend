@@ -43,7 +43,7 @@ package casbin
 // }
 
 // // 初始化默认角色和权限
-// func InitializeDefaultPermissions(pm *casbin.PermissionManager) error {
+// func InitializeDefaultPermissions(pm *casbin.CasbinManager) error {
 // 	// 创建角色
 // 	policies := [][]string{
 // 		{"admin", "domain1", "/api/*", "GET"},
@@ -80,7 +80,7 @@ package casbin
 // 	return pm.BatchAddPermissions(policies)
 // }
 
-// // func AuthMiddleware(pm *casbin.PermissionManager) gin.HandlerFunc {
+// // func AuthMiddleware(pm *casbin.CasbinManager) gin.HandlerFunc {
 // // 	return func(c *gin.Context) {
 // // 		user := GetCurrentUser(c)     // 从上下文获取用户
 // // 		domain := GetCurrentDomain(c) // 获取当前域
@@ -102,7 +102,7 @@ package casbin
 // // }
 
 // // 更新角色权限
-// func UpdateRolePermissions(pm *casbin.PermissionManager, role, domain string, permissions []Permission) error {
+// func UpdateRolePermissions(pm *casbin.CasbinManager, role, domain string, permissions []Permission) error {
 // 	// 先清除旧权限
 // 	oldPermissions, _ := pm.GetRolePermissions(role, domain)
 // 	pm.BatchRemovePermissions(oldPermissions)
@@ -179,7 +179,7 @@ package casbin
 // p     | admin | tenant1 | /api/user | GET    |    |    // 权限策略
 // p     | admin | tenant1 | btn:add   | access |    |    // 按钮权限
 
-// func InitializePermissions(pm *PermissionManager, tenantID string) error {
+// func InitializePermissions(pm *CasbinManager, tenantID string) error {
 //     // 1. 创建角色
 //     role := "admin"
 

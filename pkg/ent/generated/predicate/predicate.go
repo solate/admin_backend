@@ -12,6 +12,9 @@ type CasbinRule func(*sql.Selector)
 // LoginLog is the predicate function for loginlog builders.
 type LoginLog func(*sql.Selector)
 
+// Menu is the predicate function for menu builders.
+type Menu func(*sql.Selector)
+
 // Permission is the predicate function for permission builders.
 type Permission func(*sql.Selector)
 

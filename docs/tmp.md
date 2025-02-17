@@ -1,6 +1,6 @@
 我来帮你了解 Casbin 的使用，特别是在 RBAC (基于角色的访问控制) 和 ABAC (基于属性的访问控制) 方面。
 
-从你的代码来看，你已经创建了一个很好的 PermissionManager 封装，我来解释如何使用它并扩展功能。
+从你的代码来看，你已经创建了一个很好的 CasbinManager 封装，我来解释如何使用它并扩展功能。
 
 ### 1. 基本概念
 Casbin 中的几个核心概念：
@@ -13,7 +13,7 @@ Casbin 中的几个核心概念：
 ```go
 func main() {
     // 初始化权限管理器
-    pm, err := casbin_sdk.NewPermissionManager("./rbac_model.conf")
+    pm, err := casbin_sdk.NewCasbinManager("./rbac_model.conf")
     if err != nil {
         panic(err)
     }
@@ -54,7 +54,7 @@ RBAC 模型配置文件 (rbac_model.conf):
 
 ```go
 // 更新角色权限
-func UpdateRolePermissions(pm *casbin_sdk.PermissionManager, role, domain string, permissions []Permission) error {
+func UpdateRolePermissions(pm *casbin_sdk.CasbinManager, role, domain string, permissions []Permission) error {
     // 先清除旧权限
     oldPermissions, _ := pm.GetRolePermissions(role, domain)
     pm.BatchRemovePermissions(oldPermissions)
@@ -230,7 +230,7 @@ p     | admin      | tenant1   | button:/users:delete | access
 // ... existing code ...
 
 // GetButtonPermissions 获取指定菜单下的按钮权限
-func (pm *PermissionManager) GetButtonPermissions(role, domain, menuPath string) ([]string, error) {
+func (pm *CasbinManager) GetButtonPermissions(role, domain, menuPath string) ([]string, error) {
     permissions, err := pm.GetRolePermissions(role, domain)
     if err != nil {
         return nil, err
@@ -251,7 +251,7 @@ func (pm *PermissionManager) GetButtonPermissions(role, domain, menuPath string)
 }
 
 // HasButtonPermission 检查用户是否有指定按钮的权限
-func (pm *PermissionManager) HasButtonPermission(user, domain, menuPath, buttonCode string) (bool, error) {
+func (pm *CasbinManager) HasButtonPermission(user, domain, menuPath, buttonCode string) (bool, error) {
     return pm.CheckPermission(user, domain, fmt.Sprintf("button:%s:%s", menuPath, buttonCode), "access")
 }
 ```
@@ -260,7 +260,7 @@ func (pm *PermissionManager) HasButtonPermission(user, domain, menuPath, buttonC
 
 ```go
 func Example() {
-    pm, _ := NewPermissionManager(db)
+    pm, _ := NewCasbinManager(db)
     
     // 1. 添加按钮权限
     pm.AddPermissionForRole("admin", "tenant1", "button:/users:add", "access")

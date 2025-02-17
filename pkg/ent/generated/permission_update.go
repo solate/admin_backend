@@ -29,14 +29,14 @@ func (pu *PermissionUpdate) Where(ps ...predicate.Permission) *PermissionUpdate 
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (pu *PermissionUpdate) SetUpdatedAt(i int) *PermissionUpdate {
+func (pu *PermissionUpdate) SetUpdatedAt(i int64) *PermissionUpdate {
 	pu.mutation.ResetUpdatedAt()
 	pu.mutation.SetUpdatedAt(i)
 	return pu
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (pu *PermissionUpdate) SetNillableUpdatedAt(i *int) *PermissionUpdate {
+func (pu *PermissionUpdate) SetNillableUpdatedAt(i *int64) *PermissionUpdate {
 	if i != nil {
 		pu.SetUpdatedAt(*i)
 	}
@@ -44,20 +44,20 @@ func (pu *PermissionUpdate) SetNillableUpdatedAt(i *int) *PermissionUpdate {
 }
 
 // AddUpdatedAt adds i to the "updated_at" field.
-func (pu *PermissionUpdate) AddUpdatedAt(i int) *PermissionUpdate {
+func (pu *PermissionUpdate) AddUpdatedAt(i int64) *PermissionUpdate {
 	pu.mutation.AddUpdatedAt(i)
 	return pu
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (pu *PermissionUpdate) SetDeletedAt(i int) *PermissionUpdate {
+func (pu *PermissionUpdate) SetDeletedAt(i int64) *PermissionUpdate {
 	pu.mutation.ResetDeletedAt()
 	pu.mutation.SetDeletedAt(i)
 	return pu
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (pu *PermissionUpdate) SetNillableDeletedAt(i *int) *PermissionUpdate {
+func (pu *PermissionUpdate) SetNillableDeletedAt(i *int64) *PermissionUpdate {
 	if i != nil {
 		pu.SetDeletedAt(*i)
 	}
@@ -65,7 +65,7 @@ func (pu *PermissionUpdate) SetNillableDeletedAt(i *int) *PermissionUpdate {
 }
 
 // AddDeletedAt adds i to the "deleted_at" field.
-func (pu *PermissionUpdate) AddDeletedAt(i int) *PermissionUpdate {
+func (pu *PermissionUpdate) AddDeletedAt(i int64) *PermissionUpdate {
 	pu.mutation.AddDeletedAt(i)
 	return pu
 }
@@ -153,36 +153,17 @@ func (pu *PermissionUpdate) SetNillableResource(s *string) *PermissionUpdate {
 	return pu
 }
 
-// ClearResource clears the value of the "resource" field.
-func (pu *PermissionUpdate) ClearResource() *PermissionUpdate {
-	pu.mutation.ClearResource()
-	return pu
-}
-
 // SetAction sets the "action" field.
-func (pu *PermissionUpdate) SetAction(i int) *PermissionUpdate {
-	pu.mutation.ResetAction()
-	pu.mutation.SetAction(i)
+func (pu *PermissionUpdate) SetAction(s string) *PermissionUpdate {
+	pu.mutation.SetAction(s)
 	return pu
 }
 
 // SetNillableAction sets the "action" field if the given value is not nil.
-func (pu *PermissionUpdate) SetNillableAction(i *int) *PermissionUpdate {
-	if i != nil {
-		pu.SetAction(*i)
+func (pu *PermissionUpdate) SetNillableAction(s *string) *PermissionUpdate {
+	if s != nil {
+		pu.SetAction(*s)
 	}
-	return pu
-}
-
-// AddAction adds i to the "action" field.
-func (pu *PermissionUpdate) AddAction(i int) *PermissionUpdate {
-	pu.mutation.AddAction(i)
-	return pu
-}
-
-// ClearAction clears the value of the "action" field.
-func (pu *PermissionUpdate) ClearAction() *PermissionUpdate {
-	pu.mutation.ClearAction()
 	return pu
 }
 
@@ -254,6 +235,26 @@ func (pu *PermissionUpdate) AddStatus(i int) *PermissionUpdate {
 	return pu
 }
 
+// SetMenuID sets the "menu_id" field.
+func (pu *PermissionUpdate) SetMenuID(s string) *PermissionUpdate {
+	pu.mutation.SetMenuID(s)
+	return pu
+}
+
+// SetNillableMenuID sets the "menu_id" field if the given value is not nil.
+func (pu *PermissionUpdate) SetNillableMenuID(s *string) *PermissionUpdate {
+	if s != nil {
+		pu.SetMenuID(*s)
+	}
+	return pu
+}
+
+// ClearMenuID clears the value of the "menu_id" field.
+func (pu *PermissionUpdate) ClearMenuID() *PermissionUpdate {
+	pu.mutation.ClearMenuID()
+	return pu
+}
+
 // Mutation returns the PermissionMutation object of the builder.
 func (pu *PermissionUpdate) Mutation() *PermissionMutation {
 	return pu.mutation
@@ -303,6 +304,16 @@ func (pu *PermissionUpdate) check() error {
 			return &ValidationError{Name: "code", err: fmt.Errorf(`generated: validator failed for field "Permission.code": %w`, err)}
 		}
 	}
+	if v, ok := pu.mutation.Resource(); ok {
+		if err := permission.ResourceValidator(v); err != nil {
+			return &ValidationError{Name: "resource", err: fmt.Errorf(`generated: validator failed for field "Permission.resource": %w`, err)}
+		}
+	}
+	if v, ok := pu.mutation.Action(); ok {
+		if err := permission.ActionValidator(v); err != nil {
+			return &ValidationError{Name: "action", err: fmt.Errorf(`generated: validator failed for field "Permission.action": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -325,19 +336,19 @@ func (pu *PermissionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 	}
 	if value, ok := pu.mutation.UpdatedAt(); ok {
-		_spec.SetField(permission.FieldUpdatedAt, field.TypeInt, value)
+		_spec.SetField(permission.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := pu.mutation.AddedUpdatedAt(); ok {
-		_spec.AddField(permission.FieldUpdatedAt, field.TypeInt, value)
+		_spec.AddField(permission.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := pu.mutation.DeletedAt(); ok {
-		_spec.SetField(permission.FieldDeletedAt, field.TypeInt, value)
+		_spec.SetField(permission.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if value, ok := pu.mutation.AddedDeletedAt(); ok {
-		_spec.AddField(permission.FieldDeletedAt, field.TypeInt, value)
+		_spec.AddField(permission.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if pu.mutation.DeletedAtCleared() {
-		_spec.ClearField(permission.FieldDeletedAt, field.TypeInt)
+		_spec.ClearField(permission.FieldDeletedAt, field.TypeInt64)
 	}
 	if value, ok := pu.mutation.TenantCode(); ok {
 		_spec.SetField(permission.FieldTenantCode, field.TypeString, value)
@@ -357,17 +368,8 @@ func (pu *PermissionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := pu.mutation.Resource(); ok {
 		_spec.SetField(permission.FieldResource, field.TypeString, value)
 	}
-	if pu.mutation.ResourceCleared() {
-		_spec.ClearField(permission.FieldResource, field.TypeString)
-	}
 	if value, ok := pu.mutation.Action(); ok {
-		_spec.SetField(permission.FieldAction, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedAction(); ok {
-		_spec.AddField(permission.FieldAction, field.TypeInt, value)
-	}
-	if pu.mutation.ActionCleared() {
-		_spec.ClearField(permission.FieldAction, field.TypeInt)
+		_spec.SetField(permission.FieldAction, field.TypeString, value)
 	}
 	if value, ok := pu.mutation.ParentID(); ok {
 		_spec.SetField(permission.FieldParentID, field.TypeInt, value)
@@ -389,6 +391,12 @@ func (pu *PermissionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := pu.mutation.AddedStatus(); ok {
 		_spec.AddField(permission.FieldStatus, field.TypeInt, value)
+	}
+	if value, ok := pu.mutation.MenuID(); ok {
+		_spec.SetField(permission.FieldMenuID, field.TypeString, value)
+	}
+	if pu.mutation.MenuIDCleared() {
+		_spec.ClearField(permission.FieldMenuID, field.TypeString)
 	}
 	_spec.AddModifiers(pu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
@@ -413,14 +421,14 @@ type PermissionUpdateOne struct {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (puo *PermissionUpdateOne) SetUpdatedAt(i int) *PermissionUpdateOne {
+func (puo *PermissionUpdateOne) SetUpdatedAt(i int64) *PermissionUpdateOne {
 	puo.mutation.ResetUpdatedAt()
 	puo.mutation.SetUpdatedAt(i)
 	return puo
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (puo *PermissionUpdateOne) SetNillableUpdatedAt(i *int) *PermissionUpdateOne {
+func (puo *PermissionUpdateOne) SetNillableUpdatedAt(i *int64) *PermissionUpdateOne {
 	if i != nil {
 		puo.SetUpdatedAt(*i)
 	}
@@ -428,20 +436,20 @@ func (puo *PermissionUpdateOne) SetNillableUpdatedAt(i *int) *PermissionUpdateOn
 }
 
 // AddUpdatedAt adds i to the "updated_at" field.
-func (puo *PermissionUpdateOne) AddUpdatedAt(i int) *PermissionUpdateOne {
+func (puo *PermissionUpdateOne) AddUpdatedAt(i int64) *PermissionUpdateOne {
 	puo.mutation.AddUpdatedAt(i)
 	return puo
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (puo *PermissionUpdateOne) SetDeletedAt(i int) *PermissionUpdateOne {
+func (puo *PermissionUpdateOne) SetDeletedAt(i int64) *PermissionUpdateOne {
 	puo.mutation.ResetDeletedAt()
 	puo.mutation.SetDeletedAt(i)
 	return puo
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (puo *PermissionUpdateOne) SetNillableDeletedAt(i *int) *PermissionUpdateOne {
+func (puo *PermissionUpdateOne) SetNillableDeletedAt(i *int64) *PermissionUpdateOne {
 	if i != nil {
 		puo.SetDeletedAt(*i)
 	}
@@ -449,7 +457,7 @@ func (puo *PermissionUpdateOne) SetNillableDeletedAt(i *int) *PermissionUpdateOn
 }
 
 // AddDeletedAt adds i to the "deleted_at" field.
-func (puo *PermissionUpdateOne) AddDeletedAt(i int) *PermissionUpdateOne {
+func (puo *PermissionUpdateOne) AddDeletedAt(i int64) *PermissionUpdateOne {
 	puo.mutation.AddDeletedAt(i)
 	return puo
 }
@@ -537,36 +545,17 @@ func (puo *PermissionUpdateOne) SetNillableResource(s *string) *PermissionUpdate
 	return puo
 }
 
-// ClearResource clears the value of the "resource" field.
-func (puo *PermissionUpdateOne) ClearResource() *PermissionUpdateOne {
-	puo.mutation.ClearResource()
-	return puo
-}
-
 // SetAction sets the "action" field.
-func (puo *PermissionUpdateOne) SetAction(i int) *PermissionUpdateOne {
-	puo.mutation.ResetAction()
-	puo.mutation.SetAction(i)
+func (puo *PermissionUpdateOne) SetAction(s string) *PermissionUpdateOne {
+	puo.mutation.SetAction(s)
 	return puo
 }
 
 // SetNillableAction sets the "action" field if the given value is not nil.
-func (puo *PermissionUpdateOne) SetNillableAction(i *int) *PermissionUpdateOne {
-	if i != nil {
-		puo.SetAction(*i)
+func (puo *PermissionUpdateOne) SetNillableAction(s *string) *PermissionUpdateOne {
+	if s != nil {
+		puo.SetAction(*s)
 	}
-	return puo
-}
-
-// AddAction adds i to the "action" field.
-func (puo *PermissionUpdateOne) AddAction(i int) *PermissionUpdateOne {
-	puo.mutation.AddAction(i)
-	return puo
-}
-
-// ClearAction clears the value of the "action" field.
-func (puo *PermissionUpdateOne) ClearAction() *PermissionUpdateOne {
-	puo.mutation.ClearAction()
 	return puo
 }
 
@@ -638,6 +627,26 @@ func (puo *PermissionUpdateOne) AddStatus(i int) *PermissionUpdateOne {
 	return puo
 }
 
+// SetMenuID sets the "menu_id" field.
+func (puo *PermissionUpdateOne) SetMenuID(s string) *PermissionUpdateOne {
+	puo.mutation.SetMenuID(s)
+	return puo
+}
+
+// SetNillableMenuID sets the "menu_id" field if the given value is not nil.
+func (puo *PermissionUpdateOne) SetNillableMenuID(s *string) *PermissionUpdateOne {
+	if s != nil {
+		puo.SetMenuID(*s)
+	}
+	return puo
+}
+
+// ClearMenuID clears the value of the "menu_id" field.
+func (puo *PermissionUpdateOne) ClearMenuID() *PermissionUpdateOne {
+	puo.mutation.ClearMenuID()
+	return puo
+}
+
 // Mutation returns the PermissionMutation object of the builder.
 func (puo *PermissionUpdateOne) Mutation() *PermissionMutation {
 	return puo.mutation
@@ -700,6 +709,16 @@ func (puo *PermissionUpdateOne) check() error {
 			return &ValidationError{Name: "code", err: fmt.Errorf(`generated: validator failed for field "Permission.code": %w`, err)}
 		}
 	}
+	if v, ok := puo.mutation.Resource(); ok {
+		if err := permission.ResourceValidator(v); err != nil {
+			return &ValidationError{Name: "resource", err: fmt.Errorf(`generated: validator failed for field "Permission.resource": %w`, err)}
+		}
+	}
+	if v, ok := puo.mutation.Action(); ok {
+		if err := permission.ActionValidator(v); err != nil {
+			return &ValidationError{Name: "action", err: fmt.Errorf(`generated: validator failed for field "Permission.action": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -739,19 +758,19 @@ func (puo *PermissionUpdateOne) sqlSave(ctx context.Context) (_node *Permission,
 		}
 	}
 	if value, ok := puo.mutation.UpdatedAt(); ok {
-		_spec.SetField(permission.FieldUpdatedAt, field.TypeInt, value)
+		_spec.SetField(permission.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := puo.mutation.AddedUpdatedAt(); ok {
-		_spec.AddField(permission.FieldUpdatedAt, field.TypeInt, value)
+		_spec.AddField(permission.FieldUpdatedAt, field.TypeInt64, value)
 	}
 	if value, ok := puo.mutation.DeletedAt(); ok {
-		_spec.SetField(permission.FieldDeletedAt, field.TypeInt, value)
+		_spec.SetField(permission.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if value, ok := puo.mutation.AddedDeletedAt(); ok {
-		_spec.AddField(permission.FieldDeletedAt, field.TypeInt, value)
+		_spec.AddField(permission.FieldDeletedAt, field.TypeInt64, value)
 	}
 	if puo.mutation.DeletedAtCleared() {
-		_spec.ClearField(permission.FieldDeletedAt, field.TypeInt)
+		_spec.ClearField(permission.FieldDeletedAt, field.TypeInt64)
 	}
 	if value, ok := puo.mutation.TenantCode(); ok {
 		_spec.SetField(permission.FieldTenantCode, field.TypeString, value)
@@ -771,17 +790,8 @@ func (puo *PermissionUpdateOne) sqlSave(ctx context.Context) (_node *Permission,
 	if value, ok := puo.mutation.Resource(); ok {
 		_spec.SetField(permission.FieldResource, field.TypeString, value)
 	}
-	if puo.mutation.ResourceCleared() {
-		_spec.ClearField(permission.FieldResource, field.TypeString)
-	}
 	if value, ok := puo.mutation.Action(); ok {
-		_spec.SetField(permission.FieldAction, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedAction(); ok {
-		_spec.AddField(permission.FieldAction, field.TypeInt, value)
-	}
-	if puo.mutation.ActionCleared() {
-		_spec.ClearField(permission.FieldAction, field.TypeInt)
+		_spec.SetField(permission.FieldAction, field.TypeString, value)
 	}
 	if value, ok := puo.mutation.ParentID(); ok {
 		_spec.SetField(permission.FieldParentID, field.TypeInt, value)
@@ -803,6 +813,12 @@ func (puo *PermissionUpdateOne) sqlSave(ctx context.Context) (_node *Permission,
 	}
 	if value, ok := puo.mutation.AddedStatus(); ok {
 		_spec.AddField(permission.FieldStatus, field.TypeInt, value)
+	}
+	if value, ok := puo.mutation.MenuID(); ok {
+		_spec.SetField(permission.FieldMenuID, field.TypeString, value)
+	}
+	if puo.mutation.MenuIDCleared() {
+		_spec.ClearField(permission.FieldMenuID, field.TypeString)
 	}
 	_spec.AddModifiers(puo.modifiers...)
 	_node = &Permission{config: puo.config}

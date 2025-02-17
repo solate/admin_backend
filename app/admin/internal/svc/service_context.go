@@ -6,6 +6,7 @@ import (
 
 	"admin_backend/app/admin/internal/config"
 	"admin_backend/app/admin/internal/middleware"
+	"admin_backend/pkg/common/casbin"
 	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/utils/cache"
@@ -24,6 +25,7 @@ type ServiceContext struct {
 	AuthMiddleware  rest.Middleware
 	PermissionCache *cache.PermissionCache
 	CaptchaManager  *captcha.CaptchaManager // 验证码管理
+	CasbinManager   *casbin.CasbinManager
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -38,6 +40,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		AuthMiddleware:  middleware.NewAuthMiddleware(c).Handle,
 		PermissionCache: cache.NewPermissionCache(rdb),
 		CaptchaManager:  captcha.NewCaptchaManager(rdb),
+		CasbinManager:   casbin.NewCasbinManager(client),
 	}
 }
 

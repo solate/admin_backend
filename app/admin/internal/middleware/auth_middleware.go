@@ -99,7 +99,7 @@ func (m *AuthMiddleware) CheckAPIPermission(r *http.Request, claims *jwt.Claims)
 	// path := r.URL.Path
 	// method := r.Method
 
-	// hasPermission, err := casbin.PermissionManager.CheckPermission(userID, tenantCode, path, method, "api")
+	// hasPermission, err := casbin.CasbinManager.CheckPermission(userID, tenantCode, path, method, "api")
 
 	// if err != nil || !hasPermission {
 

@@ -83,7 +83,7 @@ func (r *RoleRepo) GetByCode(ctx context.Context, code string) (*generated.Role,
 }
 
 // List 获取角色列表
-func (r *RoleRepo) List(ctx context.Context, current, limit int, name, code string, status int) ([]*generated.Role, int, error) {
+func (r *RoleRepo) PageList(ctx context.Context, current, limit int, name, code string, status int) ([]*generated.Role, int, error) {
 	where := []predicate.Role{}
 
 	if name != "" {
@@ -110,4 +110,10 @@ func (r *RoleRepo) List(ctx context.Context, current, limit int, name, code stri
 	// 分页查询
 	roles, err := query.Offset(offset).Limit(limit).All(ctx)
 	return roles, total, err
+}
+
+// List 获取角色列表（不分页）
+func (r *RoleRepo) List(ctx context.Context, where []predicate.Role) ([]*generated.Role, error) {
+	where = r.defaultQuery(ctx, where)
+	return r.db.Role.Query().Where(where...).Order(generated.Desc(role.FieldCreatedAt)).All(ctx)
 }

@@ -13,6 +13,22 @@ type ChangePasswordReq struct {
 	NewPassword string `json:"new_password" validate:"required"` // 新密码
 }
 
+type CreatePermissionReq struct {
+	Name        string `json:"name" validate:"required"`     // 权限名称
+	Code        string `json:"code" validate:"required"`     // 权限编码
+	Type        int    `json:"type" validate:"required"`     // 权限类型(1:菜单menu 2:页面page 3:按钮button 4:接口api 5:数据data)
+	Resource    string `json:"resource" validate:"required"` // 资源路径
+	Action      string `json:"action" validate:"required"`   // 操作类型
+	ParentID    int    `json:"parent_id,optional"`           // 父级ID
+	Description string `json:"description,optional"`         // 描述
+	Status      int    `json:"status,optional"`              // 状态(1:启用 2:禁用)
+	MenuID      string `json:"menu_id,optional"`             // 菜单ID
+}
+
+type CreatePermissionResp struct {
+	PermissionID string `json:"permission_id"` // 权限规则ID
+}
+
 type CreateRoleReq struct {
 	Name        string `json:"name"`                 // 角色名
 	Code        string `json:"code"`                 // 角色编码
@@ -52,6 +68,10 @@ type CreateUserResp struct {
 	UserID string `json:"user_id"` // 用户ID
 }
 
+type DeletePermissionReq struct {
+	PermissionID string `path:"permission_id" validate:"required"` // 权限规则ID
+}
+
 type DeleteRoleReq struct {
 	RoleID string `path:"role_id"`
 }
@@ -64,12 +84,24 @@ type DeleteUserReq struct {
 	UserID string `path:"user_id"`
 }
 
-type GetRoleReq struct {
-	RoleID string `path:"role_id"`
+type GetPermissionReq struct {
+	PermissionID string `path:"permission_id" validate:"required"` // 权限规则ID
 }
 
-type GetRoleResp struct {
-	RoleInfo
+type GetPermissionResp struct {
+	PermissionInfo
+}
+
+type GetRolePermissionsReq struct {
+	RoleCode string `path:"role_code"` // 角色ID
+}
+
+type GetRolePermissionsResp struct {
+	List []*PermissionInfo `json:"list"` // 权限列表
+}
+
+type GetRoleReq struct {
+	RoleID string `path:"role_id"`
 }
 
 type GetTenantReq struct {
@@ -84,12 +116,31 @@ type GetUserReq struct {
 	UserID string `path:"user_id"`
 }
 
-type GetUserResp struct {
-	UserInfo
+type GetUserRolesReq struct {
+	UserID string `path:"user_id"` // 用户ID
+}
+
+type GetUserRolesResp struct {
+	List []*RoleInfo `json:"list"` // 角色列表
 }
 
 type IDRequest struct {
 	ID int `json:"id"` // ID
+}
+
+type ListPermissionReq struct {
+	PageRequest
+	Name     string `form:"name,optional"`     // 权限名称
+	Code     string `form:"code,optional"`     // 权限编码
+	Type     int    `form:"type,optional"`     // 权限类型
+	Resource string `form:"resource,optional"` // 资源路径
+	Action   int    `form:"action,optional"`   // 操作类型
+	Status   int    `form:"status,optional"`   // 状态
+}
+
+type ListPermissionResp struct {
+	Page *PageResponse     `json:"page"` // 分页信息
+	List []*PermissionInfo `json:"list"` // 权限规则列表
 }
 
 type ListTenantReq struct {
@@ -159,6 +210,28 @@ type PageResponse struct {
 	Current         int `json:"current"`           // 当前页
 }
 
+type Permission struct {
+	PermissionCode string `json:"permission_code"` // 权限码
+	Action         string `json:"action"`          // 操作类型
+	Type           string `json:"type"`            // 权限类型
+}
+
+type PermissionInfo struct {
+	ID           string `json:"id"`            // 权限规则ID
+	TenantCode   string `json:"tenant_code"`   // 租户编码
+	PermissionID string `json:"permission_id"` // 权限规则ID
+	Name         string `json:"name"`          // 权限名称
+	Code         string `json:"code"`          // 权限编码
+	Type         int    `json:"type"`          // 权限类型
+	Resource     string `json:"resource"`      // 资源路径
+	Action       string `json:"action"`        // 操作类型
+	ParentID     int    `json:"parent_id"`     // 父级ID
+	Description  string `json:"description"`   // 描述
+	Status       int    `json:"status"`        // 状态
+	MenuID       string `json:"menu_id"`       // 菜单ID
+	CreatedAt    int64  `json:"created_at"`    // 创建时间
+}
+
 type RegisterReq struct {
 	UserName string `json:"user_name"`
 	Password string `json:"password"`
@@ -200,6 +273,16 @@ type RoleListResp struct {
 	List []*RoleInfo   `json:"list"` // 角色列表
 }
 
+type SetRolePermissionsReq struct {
+	RoleCode       string        `path:"role_code"`                           // 角色ID
+	PermissionList []*Permission `json:"permission_list" validate:"required"` // 权限列表
+}
+
+type SetUserRolesReq struct {
+	UserID       string   `path:"user_id"`                            // 用户ID
+	RoleCodeList []string `json:"role_code_list" validate:"required"` // 角色Code列表
+}
+
 type StatusRequest struct {
 	ID     int `json:"id"`     // ID
 	Status int `json:"status"` // 状态
@@ -216,6 +299,18 @@ type TenantInfo struct {
 type TimeRange struct {
 	StartTime string `form:"start_time,optional"` // 开始时间
 	EndTime   string `form:"end_time,optional"`   // 结束时间
+}
+
+type UpdatePermissionReq struct {
+	PermissionID string `path:"permission_id"`        // 权限规则ID
+	Name         string `json:"name,optional"`        // 权限名称
+	Type         int    `json:"type,optional"`        // 权限类型
+	Resource     string `json:"resource,optional"`    // 资源路径
+	Action       string `json:"action,optional"`      // 操作类型
+	ParentID     int    `json:"parent_id,optional"`   // 父级ID
+	Description  string `json:"description,optional"` // 描述
+	Status       int    `json:"status,optional"`      // 状态
+	MenuID       string `json:"menu_id,optional"`     // 菜单ID
 }
 
 type UpdateRoleReq struct {

@@ -28,7 +28,7 @@ func NewGetRoleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetRoleLo
 	}
 }
 
-func (l *GetRoleLogic) GetRole(req *types.GetRoleReq) (resp *types.GetRoleResp, err error) {
+func (l *GetRoleLogic) GetRole(req *types.GetRoleReq) (resp *types.RoleInfo, err error) {
 	// 查询角色信息
 	role, err := l.roleRepo.GetByRoleID(l.ctx, req.RoleID)
 	if err != nil {
@@ -36,16 +36,14 @@ func (l *GetRoleLogic) GetRole(req *types.GetRoleReq) (resp *types.GetRoleResp, 
 		return nil, xerr.NewErrCodeMsg(xerr.DbError, "获取角色信息失败")
 	}
 
-	resp = &types.GetRoleResp{
-		RoleInfo: types.RoleInfo{
-			RoleID:      role.RoleID,
-			Name:        role.Name,
-			Code:        role.Code,
-			Description: role.Description,
-			Status:      role.Status,
-			Sort:        role.Sort,
-			CreatedAt:   role.CreatedAt,
-		},
+	resp = &types.RoleInfo{
+		RoleID:      role.RoleID,
+		Name:        role.Name,
+		Code:        role.Code,
+		Description: role.Description,
+		Status:      role.Status,
+		Sort:        role.Sort,
+		CreatedAt:   role.CreatedAt,
 	}
 
 	return

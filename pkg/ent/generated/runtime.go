@@ -5,6 +5,7 @@ package generated
 import (
 	"admin_backend/pkg/ent/generated/casbinrule"
 	"admin_backend/pkg/ent/generated/loginlog"
+	"admin_backend/pkg/ent/generated/menu"
 	"admin_backend/pkg/ent/generated/permission"
 	"admin_backend/pkg/ent/generated/role"
 	"admin_backend/pkg/ent/generated/systemlog"
@@ -65,34 +66,88 @@ func init() {
 	loginlogDescIP := loginlogFields[5].Descriptor()
 	// loginlog.IPValidator is a validator for the "ip" field. It is called by the builders before save.
 	loginlog.IPValidator = loginlogDescIP.Validators[0].(func(string) error)
+	menuFields := schema.Menu{}.Fields()
+	_ = menuFields
+	// menuDescCreatedAt is the schema descriptor for created_at field.
+	menuDescCreatedAt := menuFields[0].Descriptor()
+	// menu.DefaultCreatedAt holds the default value on creation for the created_at field.
+	menu.DefaultCreatedAt = menuDescCreatedAt.Default.(int64)
+	// menuDescUpdatedAt is the schema descriptor for updated_at field.
+	menuDescUpdatedAt := menuFields[1].Descriptor()
+	// menu.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	menu.DefaultUpdatedAt = menuDescUpdatedAt.Default.(int64)
+	// menuDescMenuCode is the schema descriptor for menu_code field.
+	menuDescMenuCode := menuFields[5].Descriptor()
+	// menu.MenuCodeValidator is a validator for the "menu_code" field. It is called by the builders before save.
+	menu.MenuCodeValidator = menuDescMenuCode.Validators[0].(func(string) error)
+	// menuDescParentID is the schema descriptor for parent_id field.
+	menuDescParentID := menuFields[6].Descriptor()
+	// menu.DefaultParentID holds the default value on creation for the parent_id field.
+	menu.DefaultParentID = menuDescParentID.Default.(string)
+	// menuDescName is the schema descriptor for name field.
+	menuDescName := menuFields[7].Descriptor()
+	// menu.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	menu.NameValidator = menuDescName.Validators[0].(func(string) error)
+	// menuDescPath is the schema descriptor for path field.
+	menuDescPath := menuFields[8].Descriptor()
+	// menu.DefaultPath holds the default value on creation for the path field.
+	menu.DefaultPath = menuDescPath.Default.(string)
+	// menuDescComponent is the schema descriptor for component field.
+	menuDescComponent := menuFields[9].Descriptor()
+	// menu.DefaultComponent holds the default value on creation for the component field.
+	menu.DefaultComponent = menuDescComponent.Default.(string)
+	// menuDescRedirect is the schema descriptor for redirect field.
+	menuDescRedirect := menuFields[10].Descriptor()
+	// menu.DefaultRedirect holds the default value on creation for the redirect field.
+	menu.DefaultRedirect = menuDescRedirect.Default.(string)
+	// menuDescIcon is the schema descriptor for icon field.
+	menuDescIcon := menuFields[11].Descriptor()
+	// menu.DefaultIcon holds the default value on creation for the icon field.
+	menu.DefaultIcon = menuDescIcon.Default.(string)
+	// menuDescSort is the schema descriptor for sort field.
+	menuDescSort := menuFields[12].Descriptor()
+	// menu.DefaultSort holds the default value on creation for the sort field.
+	menu.DefaultSort = menuDescSort.Default.(int)
+	// menuDescType is the schema descriptor for type field.
+	menuDescType := menuFields[13].Descriptor()
+	// menu.DefaultType holds the default value on creation for the type field.
+	menu.DefaultType = menuDescType.Default.(int)
+	// menuDescStatus is the schema descriptor for status field.
+	menuDescStatus := menuFields[14].Descriptor()
+	// menu.DefaultStatus holds the default value on creation for the status field.
+	menu.DefaultStatus = menuDescStatus.Default.(int)
 	permissionFields := schema.Permission{}.Fields()
 	_ = permissionFields
 	// permissionDescCreatedAt is the schema descriptor for created_at field.
 	permissionDescCreatedAt := permissionFields[0].Descriptor()
 	// permission.DefaultCreatedAt holds the default value on creation for the created_at field.
-	permission.DefaultCreatedAt = permissionDescCreatedAt.Default.(int)
+	permission.DefaultCreatedAt = permissionDescCreatedAt.Default.(int64)
 	// permissionDescUpdatedAt is the schema descriptor for updated_at field.
 	permissionDescUpdatedAt := permissionFields[1].Descriptor()
 	// permission.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	permission.DefaultUpdatedAt = permissionDescUpdatedAt.Default.(int)
+	permission.DefaultUpdatedAt = permissionDescUpdatedAt.Default.(int64)
 	// permissionDescTenantCode is the schema descriptor for tenant_code field.
 	permissionDescTenantCode := permissionFields[3].Descriptor()
 	// permission.TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
 	permission.TenantCodeValidator = permissionDescTenantCode.Validators[0].(func(string) error)
 	// permissionDescName is the schema descriptor for name field.
-	permissionDescName := permissionFields[4].Descriptor()
+	permissionDescName := permissionFields[5].Descriptor()
 	// permission.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	permission.NameValidator = permissionDescName.Validators[0].(func(string) error)
 	// permissionDescCode is the schema descriptor for code field.
-	permissionDescCode := permissionFields[5].Descriptor()
+	permissionDescCode := permissionFields[6].Descriptor()
 	// permission.CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	permission.CodeValidator = permissionDescCode.Validators[0].(func(string) error)
+	// permissionDescResource is the schema descriptor for resource field.
+	permissionDescResource := permissionFields[8].Descriptor()
+	// permission.ResourceValidator is a validator for the "resource" field. It is called by the builders before save.
+	permission.ResourceValidator = permissionDescResource.Validators[0].(func(string) error)
 	// permissionDescAction is the schema descriptor for action field.
-	permissionDescAction := permissionFields[8].Descriptor()
-	// permission.DefaultAction holds the default value on creation for the action field.
-	permission.DefaultAction = permissionDescAction.Default.(int)
+	permissionDescAction := permissionFields[9].Descriptor()
+	// permission.ActionValidator is a validator for the "action" field. It is called by the builders before save.
+	permission.ActionValidator = permissionDescAction.Validators[0].(func(string) error)
 	// permissionDescStatus is the schema descriptor for status field.
-	permissionDescStatus := permissionFields[11].Descriptor()
+	permissionDescStatus := permissionFields[12].Descriptor()
 	// permission.DefaultStatus holds the default value on creation for the status field.
 	permission.DefaultStatus = permissionDescStatus.Default.(int)
 	roleFields := schema.Role{}.Fields()

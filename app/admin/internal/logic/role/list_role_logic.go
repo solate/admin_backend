@@ -30,7 +30,7 @@ func NewListRoleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListRole
 
 func (l *ListRoleLogic) ListRole(req *types.RoleListReq) (resp *types.RoleListResp, err error) {
 	// 1. 获取角色列表
-	roles, total, err := l.roleRepo.List(l.ctx, req.Current, req.PageSize, req.Name, req.Code, req.Status)
+	roles, total, err := l.roleRepo.PageList(l.ctx, req.Current, req.PageSize, req.Name, req.Code, req.Status)
 	if err != nil {
 		l.Error("ListRole List err:", err.Error())
 		return nil, xerr.NewErrMsg("获取角色列表失败")
