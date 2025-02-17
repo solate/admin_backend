@@ -111,6 +111,18 @@ type (
         Type     string `json:"type"`     // 权限类型
     }
 
+
+    // 资源类型信息
+    ResourceTypeInfo {
+        Type      string   `json:"type"`       // 资源类型
+        Actions   []string `json:"actions"`    // 可用操作
+        DataRules []string `json:"data_rules"` // 数据规则（仅对数据权限类型有效）
+    }
+
+    // 获取资源类型列表响应
+    GetResourceTypesResp {
+        Types map[string]ResourceTypeInfo `json:"types"` // 资源类型列表
+    }
     
 )
 
@@ -148,4 +160,7 @@ service admin {
     @handler GetRolePermissions
     get /roles/:role_id/permissions (GetRolePermissionsReq) returns (GetRolePermissionsResp)
 
+    @doc "获取资源类型列表"
+    @handler GetResourceTypes
+    get /resource-types returns (GetResourceTypesResp)
 }

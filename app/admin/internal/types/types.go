@@ -92,6 +92,10 @@ type GetPermissionResp struct {
 	PermissionInfo
 }
 
+type GetResourceTypesResp struct {
+	Types map[string]ResourceTypeInfo `json:"types"` // 资源类型列表
+}
+
 type GetRolePermissionsReq struct {
 	RoleCode string `path:"role_code"` // 角色ID
 }
@@ -249,6 +253,12 @@ type RegisterResp struct {
 type ResetPasswordReq struct {
 	UserID      string `json:"user_id" validate:"required"`      // 用户ID
 	NewPassword string `json:"new_password" validate:"required"` // 新密码
+}
+
+type ResourceTypeInfo struct {
+	Type      string   `json:"type"`       // 资源类型
+	Actions   []string `json:"actions"`    // 可用操作
+	DataRules []string `json:"data_rules"` // 数据规则（仅对数据权限类型有效）
 }
 
 type RoleInfo struct {

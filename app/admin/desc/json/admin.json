@@ -235,6 +235,23 @@
         ]
       }
     },
+    "/admin/api/v1/permission/resource-types": {
+      "get": {
+        "summary": "获取资源类型列表",
+        "operationId": "GetResourceTypes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetResourceTypesResp"
+            }
+          }
+        },
+        "tags": [
+          "permission"
+        ]
+      }
+    },
     "/admin/api/v1/permission/roles/{role_id}/permissions": {
       "get": {
         "summary": "获取角色权限列表",
@@ -1415,6 +1432,19 @@
       },
       "title": "GetPermissionResp"
     },
+    "GetResourceTypesResp": {
+      "type": "object",
+      "properties": {
+        "types": {
+          "$ref": "#/definitions/mapstringResourceTypeInfo",
+          "description": " 资源类型列表"
+        }
+      },
+      "title": "GetResourceTypesResp",
+      "required": [
+        "types"
+      ]
+    },
     "GetRolePermissionsReq": {
       "type": "object",
       "title": "GetRolePermissionsReq"
@@ -2018,6 +2048,35 @@
       "required": [
         "user_id",
         "new_password"
+      ]
+    },
+    "ResourceTypeInfo": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": " 资源类型"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": " 可用操作"
+        },
+        "data_rules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": " 数据规则（仅对数据权限类型有效）"
+        }
+      },
+      "title": "ResourceTypeInfo",
+      "required": [
+        "type",
+        "actions",
+        "data_rules"
       ]
     },
     "RoleInfo": {

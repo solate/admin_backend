@@ -73,6 +73,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.AuthMiddleware},
 			[]rest.Route{
 				{
+					// 获取资源类型列表
+					Method:  http.MethodGet,
+					Path:    "/resource-types",
+					Handler: permission.GetResourceTypesHandler(serverCtx),
+				},
+				{
 					// 设置角色权限
 					Method:  http.MethodPost,
 					Path:    "/roles/:role_id/permissions",
