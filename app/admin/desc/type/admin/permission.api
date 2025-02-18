@@ -121,7 +121,7 @@ type (
 
     // 获取资源类型列表响应
     GetResourceTypesResp {
-        Types map[string]ResourceTypeInfo `json:"types"` // 资源类型列表
+        List []*ResourceTypeInfo `json:"list"` // 资源类型列表   
     }
     
 )

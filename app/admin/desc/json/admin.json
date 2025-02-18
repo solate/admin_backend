@@ -235,6 +235,199 @@
         ]
       }
     },
+    "/admin/api/v1/menus": {
+      "get": {
+        "summary": "获取菜单列表",
+        "operationId": "ListMenu",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MenuListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": " 当前页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          },
+          {
+            "name": "page_size",
+            "description": " 每页大小",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "10"
+          },
+          {
+            "name": "name",
+            "description": " 菜单名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "description": " 菜单类型",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": " 状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "menu"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      },
+      "post": {
+        "summary": "创建菜单",
+        "operationId": "CreateMenu",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateMenuResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 创建菜单请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateMenuReq"
+            }
+          }
+        ],
+        "tags": [
+          "menu"
+        ]
+      }
+    },
+    "/admin/api/v1/menus/tree": {
+      "get": {
+        "summary": "获取菜单树",
+        "operationId": "GetMenuTree",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MenuTreeResp"
+            }
+          }
+        },
+        "tags": [
+          "menu"
+        ]
+      }
+    },
+    "/admin/api/v1/menus/{menu_id}": {
+      "get": {
+        "summary": "获取菜单详情",
+        "operationId": "GetMenu",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MenuInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "menu_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "menu"
+        ]
+      },
+      "delete": {
+        "summary": "删除菜单",
+        "operationId": "DeleteMenu",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "menu_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteMenuReq"
+            }
+          }
+        ],
+        "tags": [
+          "menu"
+        ]
+      },
+      "put": {
+        "summary": "更新菜单",
+        "operationId": "UpdateMenu",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "menu_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 更新菜单请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateMenuReq"
+            }
+          }
+        ],
+        "tags": [
+          "menu"
+        ]
+      }
+    },
     "/admin/api/v1/roles": {
       "get": {
         "summary": "获取角色列表",
@@ -469,117 +662,6 @@
         ]
       }
     },
-    "/admin/api/v1/rules": {
-      "get": {
-        "summary": "获取权限规则列表",
-        "operationId": "ListPermission",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ListPermissionResp"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "page",
-            "description": " 当前页",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "int32",
-            "default": "1"
-          },
-          {
-            "name": "page_size",
-            "description": " 每页大小",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "int32",
-            "default": "10"
-          },
-          {
-            "name": "name",
-            "description": " 权限名称",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "code",
-            "description": " 权限编码",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "type",
-            "description": " 权限类型",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "resource",
-            "description": " 资源路径",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "action",
-            "description": " 操作类型",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "status",
-            "description": " 状态",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "permission"
-        ],
-        "consumes": [
-          "multipart/form-data"
-        ]
-      },
-      "post": {
-        "summary": "创建权限规则",
-        "operationId": "CreatePermission",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/CreatePermissionResp"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "description": " 创建权限规则请求",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/CreatePermissionReq"
-            }
-          }
-        ],
-        "tags": [
-          "permission"
-        ]
-      }
-    },
     "/admin/api/v1/rules/resource-types": {
       "get": {
         "summary": "获取资源类型列表",
@@ -592,95 +674,6 @@
             }
           }
         },
-        "tags": [
-          "permission"
-        ]
-      }
-    },
-    "/admin/api/v1/rules/{id}": {
-      "get": {
-        "summary": "获取权限规则详情",
-        "operationId": "GetPermission",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/PermissionInfo"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "permission"
-        ]
-      },
-      "delete": {
-        "summary": "删除权限规则",
-        "operationId": "DeletePermission",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/bool"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "description": " 删除权限规则请求",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/DeletePermissionReq"
-            }
-          }
-        ],
-        "tags": [
-          "permission"
-        ]
-      },
-      "put": {
-        "summary": "更新权限规则",
-        "operationId": "UpdatePermission",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/bool"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "description": " 更新权限规则请求",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UpdatePermissionReq"
-            }
-          }
-        ],
         "tags": [
           "permission"
         ]
@@ -1137,6 +1130,78 @@
         "new_password"
       ]
     },
+    "CreateMenuReq": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": " 菜单code"
+        },
+        "action": {
+          "type": "string",
+          "description": " 权限标识"
+        },
+        "type": {
+          "type": "string",
+          "description": " 菜单类型"
+        },
+        "parent_id": {
+          "type": "string",
+          "description": " 父菜单ID"
+        },
+        "name": {
+          "type": "string",
+          "description": " 菜单名称"
+        },
+        "path": {
+          "type": "string",
+          "description": " 路由路径"
+        },
+        "component": {
+          "type": "string",
+          "description": " 前端组件路径"
+        },
+        "redirect": {
+          "type": "string",
+          "description": " 重定向路径"
+        },
+        "icon": {
+          "type": "string",
+          "description": " 菜单图标"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 排序号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态 1:启用 2:禁用"
+        }
+      },
+      "title": "CreateMenuReq",
+      "required": [
+        "code",
+        "action",
+        "type",
+        "parent_id",
+        "name"
+      ]
+    },
+    "CreateMenuResp": {
+      "type": "object",
+      "properties": {
+        "menu_id": {
+          "type": "string",
+          "description": " 菜单ID"
+        }
+      },
+      "title": "CreateMenuResp",
+      "required": [
+        "menu_id"
+      ]
+    },
     "CreatePermissionReq": {
       "type": "object",
       "properties": {
@@ -1149,8 +1214,7 @@
           "description": " 权限编码"
         },
         "type": {
-          "type": "integer",
-          "format": "int32",
+          "type": "string",
           "description": " 权限类型(1:菜单menu 2:页面page 3:按钮button 4:接口api 5:数据data)"
         },
         "resource": {
@@ -1162,8 +1226,7 @@
           "description": " 操作类型"
         },
         "parent_id": {
-          "type": "integer",
-          "format": "int32",
+          "type": "string",
           "description": " 父级ID"
         },
         "description": {
@@ -1350,6 +1413,10 @@
         "user_id"
       ]
     },
+    "DeleteMenuReq": {
+      "type": "object",
+      "title": "DeleteMenuReq"
+    },
     "DeletePermissionReq": {
       "type": "object",
       "title": "DeletePermissionReq"
@@ -1365,6 +1432,10 @@
     "DeleteUserReq": {
       "type": "object",
       "title": "DeleteUserReq"
+    },
+    "GetMenuReq": {
+      "type": "object",
+      "title": "GetMenuReq"
     },
     "GetPermissionReq": {
       "type": "object",
@@ -1394,8 +1465,7 @@
           "description": " 权限编码"
         },
         "type": {
-          "type": "integer",
-          "format": "int32",
+          "type": "string",
           "description": " 权限类型"
         },
         "resource": {
@@ -1407,8 +1477,7 @@
           "description": " 操作类型"
         },
         "parent_id": {
-          "type": "integer",
-          "format": "int32",
+          "type": "string",
           "description": " 父级ID"
         },
         "description": {
@@ -1435,14 +1504,17 @@
     "GetResourceTypesResp": {
       "type": "object",
       "properties": {
-        "types": {
-          "$ref": "#/definitions/mapstringResourceTypeInfo",
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceTypeInfo"
+          },
           "description": " 资源类型列表"
         }
       },
       "title": "GetResourceTypesResp",
       "required": [
-        "types"
+        "list"
       ]
     },
     "GetRolePermissionsReq": {
@@ -1455,7 +1527,7 @@
         "list": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/PermissionInfo"
+            "$ref": "#/definitions/Permission"
           },
           "description": " 权限列表"
         }
@@ -1557,8 +1629,7 @@
           "description": " 权限编码"
         },
         "type": {
-          "type": "integer",
-          "format": "int32",
+          "type": "string",
           "description": " 权限类型"
         },
         "resource": {
@@ -1812,6 +1883,218 @@
         "email"
       ]
     },
+    "MenuInfo": {
+      "type": "object",
+      "properties": {
+        "menu_id": {
+          "type": "string",
+          "description": " 菜单ID"
+        },
+        "code": {
+          "type": "string",
+          "description": " 菜单code"
+        },
+        "parent_id": {
+          "type": "string",
+          "description": " 父菜单ID"
+        },
+        "name": {
+          "type": "string",
+          "description": " 菜单名称"
+        },
+        "path": {
+          "type": "string",
+          "description": " 路由路径"
+        },
+        "component": {
+          "type": "string",
+          "description": " 前端组件路径"
+        },
+        "redirect": {
+          "type": "string",
+          "description": " 重定向路径"
+        },
+        "icon": {
+          "type": "string",
+          "description": " 菜单图标"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 排序号"
+        },
+        "type": {
+          "type": "string",
+          "description": " 菜单类型"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
+        "created_at": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建时间"
+        }
+      },
+      "title": "MenuInfo",
+      "required": [
+        "menu_id",
+        "code",
+        "parent_id",
+        "name",
+        "path",
+        "component",
+        "redirect",
+        "icon",
+        "sort",
+        "type",
+        "status",
+        "created_at"
+      ]
+    },
+    "MenuListReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 当前页"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32",
+          "default": "10",
+          "description": " 每页大小"
+        },
+        "name": {
+          "type": "string",
+          "description": " 菜单名称"
+        },
+        "type": {
+          "type": "string",
+          "description": " 菜单类型"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        }
+      },
+      "title": "MenuListReq"
+    },
+    "MenuListResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageResponse",
+          "description": " 分页"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MenuInfo"
+          },
+          "description": " 菜单列表"
+        }
+      },
+      "title": "MenuListResp",
+      "required": [
+        "page",
+        "list"
+      ]
+    },
+    "MenuTree": {
+      "type": "object",
+      "properties": {
+        "menu_id": {
+          "type": "string",
+          "description": " 菜单ID"
+        },
+        "code": {
+          "type": "string",
+          "description": " 菜单code"
+        },
+        "parent_id": {
+          "type": "string",
+          "description": " 父菜单ID"
+        },
+        "name": {
+          "type": "string",
+          "description": " 菜单名称"
+        },
+        "path": {
+          "type": "string",
+          "description": " 路由路径"
+        },
+        "component": {
+          "type": "string",
+          "description": " 前端组件路径"
+        },
+        "redirect": {
+          "type": "string",
+          "description": " 重定向路径"
+        },
+        "icon": {
+          "type": "string",
+          "description": " 菜单图标"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 排序号"
+        },
+        "type": {
+          "type": "string",
+          "description": " 菜单类型"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MenuTree"
+          },
+          "description": " 子菜单"
+        }
+      },
+      "title": "MenuTree",
+      "required": [
+        "menu_id",
+        "code",
+        "parent_id",
+        "name",
+        "path",
+        "component",
+        "redirect",
+        "icon",
+        "sort",
+        "type",
+        "status",
+        "children"
+      ]
+    },
+    "MenuTreeResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MenuTree"
+          },
+          "description": " 菜单树列表"
+        }
+      },
+      "title": "MenuTreeResp",
+      "required": [
+        "list"
+      ]
+    },
     "PageJsonRequest": {
       "type": "object",
       "properties": {
@@ -1889,9 +2172,9 @@
     "Permission": {
       "type": "object",
       "properties": {
-        "permission_code": {
+        "resource": {
           "type": "string",
-          "description": " 权限码"
+          "description": " 资源"
         },
         "action": {
           "type": "string",
@@ -1904,7 +2187,7 @@
       },
       "title": "Permission",
       "required": [
-        "permission_code",
+        "resource",
         "action",
         "type"
       ]
@@ -1933,8 +2216,7 @@
           "description": " 权限编码"
         },
         "type": {
-          "type": "integer",
-          "format": "int32",
+          "type": "string",
           "description": " 权限类型"
         },
         "resource": {
@@ -1946,8 +2228,7 @@
           "description": " 操作类型"
         },
         "parent_id": {
-          "type": "integer",
-          "format": "int32",
+          "type": "string",
           "description": " 父级ID"
         },
         "description": {
@@ -2272,6 +2553,42 @@
       },
       "title": "TimeRange"
     },
+    "UpdateMenuReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 菜单名称"
+        },
+        "path": {
+          "type": "string",
+          "description": " 路由路径"
+        },
+        "component": {
+          "type": "string",
+          "description": " 前端组件路径"
+        },
+        "redirect": {
+          "type": "string",
+          "description": " 重定向路径"
+        },
+        "icon": {
+          "type": "string",
+          "description": " 菜单图标"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 排序号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        }
+      },
+      "title": "UpdateMenuReq"
+    },
     "UpdatePermissionReq": {
       "type": "object",
       "properties": {
@@ -2280,8 +2597,7 @@
           "description": " 权限名称"
         },
         "type": {
-          "type": "integer",
-          "format": "int32",
+          "type": "string",
           "description": " 权限类型"
         },
         "resource": {
@@ -2293,8 +2609,7 @@
           "description": " 操作类型"
         },
         "parent_id": {
-          "type": "integer",
-          "format": "int32",
+          "type": "string",
           "description": " 父级ID"
         },
         "description": {

@@ -119,7 +119,7 @@ type GetPermissionResp struct {
 }
 
 type GetResourceTypesResp struct {
-	Types map[string]ResourceTypeInfo `json:"types"` // 资源类型列表
+	List []*ResourceTypeInfo `json:"list"` // 资源类型列表
 }
 
 type GetRolePermissionsReq struct {

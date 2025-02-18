@@ -26,17 +26,19 @@ func NewGetResourceTypesLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *GetResourceTypesLogic) GetResourceTypes() (resp *types.GetResourceTypesResp, err error) {
-	resp = &types.GetResourceTypesResp{
-		Types: make(map[string]types.ResourceTypeInfo),
-	}
 
+	var list []*types.ResourceTypeInfo
 	// 将 casbin.ResourceTypes 转换为 API 响应格式
-	for key, rt := range casbin.ResourceTypes {
-		resp.Types[key] = types.ResourceTypeInfo{
+	for _, rt := range casbin.ResourceTypes {
+		list = append(list, &types.ResourceTypeInfo{
 			Type:      rt.Type,
 			Actions:   rt.Actions,
 			DataRules: rt.DataRules,
-		}
+		})
+	}
+
+	resp = &types.GetResourceTypesResp{
+		List: list,
 	}
 
 	return resp, nil
