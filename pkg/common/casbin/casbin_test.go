@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func setupTestDB(t *testing.T) (*generated.Client, error) {
+func setupTestDB(_ *testing.T) (*generated.Client, error) {
 	dataSource := "user=root password=root host=127.0.0.1 port=5432 dbname=testdb sslmode=disable"
 	client, err := ent.NewClient(context.Background(), dataSource)
 	if err != nil {
