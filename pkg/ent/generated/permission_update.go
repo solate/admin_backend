@@ -119,23 +119,16 @@ func (pu *PermissionUpdate) SetNillableCode(s *string) *PermissionUpdate {
 }
 
 // SetType sets the "type" field.
-func (pu *PermissionUpdate) SetType(i int) *PermissionUpdate {
-	pu.mutation.ResetType()
-	pu.mutation.SetType(i)
+func (pu *PermissionUpdate) SetType(s string) *PermissionUpdate {
+	pu.mutation.SetType(s)
 	return pu
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (pu *PermissionUpdate) SetNillableType(i *int) *PermissionUpdate {
-	if i != nil {
-		pu.SetType(*i)
+func (pu *PermissionUpdate) SetNillableType(s *string) *PermissionUpdate {
+	if s != nil {
+		pu.SetType(*s)
 	}
-	return pu
-}
-
-// AddType adds i to the "type" field.
-func (pu *PermissionUpdate) AddType(i int) *PermissionUpdate {
-	pu.mutation.AddType(i)
 	return pu
 }
 
@@ -168,23 +161,16 @@ func (pu *PermissionUpdate) SetNillableAction(s *string) *PermissionUpdate {
 }
 
 // SetParentID sets the "parent_id" field.
-func (pu *PermissionUpdate) SetParentID(i int) *PermissionUpdate {
-	pu.mutation.ResetParentID()
-	pu.mutation.SetParentID(i)
+func (pu *PermissionUpdate) SetParentID(s string) *PermissionUpdate {
+	pu.mutation.SetParentID(s)
 	return pu
 }
 
 // SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (pu *PermissionUpdate) SetNillableParentID(i *int) *PermissionUpdate {
-	if i != nil {
-		pu.SetParentID(*i)
+func (pu *PermissionUpdate) SetNillableParentID(s *string) *PermissionUpdate {
+	if s != nil {
+		pu.SetParentID(*s)
 	}
-	return pu
-}
-
-// AddParentID adds i to the "parent_id" field.
-func (pu *PermissionUpdate) AddParentID(i int) *PermissionUpdate {
-	pu.mutation.AddParentID(i)
 	return pu
 }
 
@@ -360,10 +346,7 @@ func (pu *PermissionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(permission.FieldCode, field.TypeString, value)
 	}
 	if value, ok := pu.mutation.GetType(); ok {
-		_spec.SetField(permission.FieldType, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedType(); ok {
-		_spec.AddField(permission.FieldType, field.TypeInt, value)
+		_spec.SetField(permission.FieldType, field.TypeString, value)
 	}
 	if value, ok := pu.mutation.Resource(); ok {
 		_spec.SetField(permission.FieldResource, field.TypeString, value)
@@ -372,13 +355,10 @@ func (pu *PermissionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(permission.FieldAction, field.TypeString, value)
 	}
 	if value, ok := pu.mutation.ParentID(); ok {
-		_spec.SetField(permission.FieldParentID, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedParentID(); ok {
-		_spec.AddField(permission.FieldParentID, field.TypeInt, value)
+		_spec.SetField(permission.FieldParentID, field.TypeString, value)
 	}
 	if pu.mutation.ParentIDCleared() {
-		_spec.ClearField(permission.FieldParentID, field.TypeInt)
+		_spec.ClearField(permission.FieldParentID, field.TypeString)
 	}
 	if value, ok := pu.mutation.Description(); ok {
 		_spec.SetField(permission.FieldDescription, field.TypeString, value)
@@ -511,23 +491,16 @@ func (puo *PermissionUpdateOne) SetNillableCode(s *string) *PermissionUpdateOne 
 }
 
 // SetType sets the "type" field.
-func (puo *PermissionUpdateOne) SetType(i int) *PermissionUpdateOne {
-	puo.mutation.ResetType()
-	puo.mutation.SetType(i)
+func (puo *PermissionUpdateOne) SetType(s string) *PermissionUpdateOne {
+	puo.mutation.SetType(s)
 	return puo
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (puo *PermissionUpdateOne) SetNillableType(i *int) *PermissionUpdateOne {
-	if i != nil {
-		puo.SetType(*i)
+func (puo *PermissionUpdateOne) SetNillableType(s *string) *PermissionUpdateOne {
+	if s != nil {
+		puo.SetType(*s)
 	}
-	return puo
-}
-
-// AddType adds i to the "type" field.
-func (puo *PermissionUpdateOne) AddType(i int) *PermissionUpdateOne {
-	puo.mutation.AddType(i)
 	return puo
 }
 
@@ -560,23 +533,16 @@ func (puo *PermissionUpdateOne) SetNillableAction(s *string) *PermissionUpdateOn
 }
 
 // SetParentID sets the "parent_id" field.
-func (puo *PermissionUpdateOne) SetParentID(i int) *PermissionUpdateOne {
-	puo.mutation.ResetParentID()
-	puo.mutation.SetParentID(i)
+func (puo *PermissionUpdateOne) SetParentID(s string) *PermissionUpdateOne {
+	puo.mutation.SetParentID(s)
 	return puo
 }
 
 // SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (puo *PermissionUpdateOne) SetNillableParentID(i *int) *PermissionUpdateOne {
-	if i != nil {
-		puo.SetParentID(*i)
+func (puo *PermissionUpdateOne) SetNillableParentID(s *string) *PermissionUpdateOne {
+	if s != nil {
+		puo.SetParentID(*s)
 	}
-	return puo
-}
-
-// AddParentID adds i to the "parent_id" field.
-func (puo *PermissionUpdateOne) AddParentID(i int) *PermissionUpdateOne {
-	puo.mutation.AddParentID(i)
 	return puo
 }
 
@@ -782,10 +748,7 @@ func (puo *PermissionUpdateOne) sqlSave(ctx context.Context) (_node *Permission,
 		_spec.SetField(permission.FieldCode, field.TypeString, value)
 	}
 	if value, ok := puo.mutation.GetType(); ok {
-		_spec.SetField(permission.FieldType, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedType(); ok {
-		_spec.AddField(permission.FieldType, field.TypeInt, value)
+		_spec.SetField(permission.FieldType, field.TypeString, value)
 	}
 	if value, ok := puo.mutation.Resource(); ok {
 		_spec.SetField(permission.FieldResource, field.TypeString, value)
@@ -794,13 +757,10 @@ func (puo *PermissionUpdateOne) sqlSave(ctx context.Context) (_node *Permission,
 		_spec.SetField(permission.FieldAction, field.TypeString, value)
 	}
 	if value, ok := puo.mutation.ParentID(); ok {
-		_spec.SetField(permission.FieldParentID, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedParentID(); ok {
-		_spec.AddField(permission.FieldParentID, field.TypeInt, value)
+		_spec.SetField(permission.FieldParentID, field.TypeString, value)
 	}
 	if puo.mutation.ParentIDCleared() {
-		_spec.ClearField(permission.FieldParentID, field.TypeInt)
+		_spec.ClearField(permission.FieldParentID, field.TypeString)
 	}
 	if value, ok := puo.mutation.Description(); ok {
 		_spec.SetField(permission.FieldDescription, field.TypeString, value)

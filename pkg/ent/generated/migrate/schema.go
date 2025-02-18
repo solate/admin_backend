@@ -71,7 +71,7 @@ var (
 		{Name: "redirect", Type: field.TypeString, Comment: "重定向路径", Default: ""},
 		{Name: "icon", Type: field.TypeString, Comment: "菜单图标", Default: ""},
 		{Name: "sort", Type: field.TypeInt, Comment: "排序号", Default: 0},
-		{Name: "type", Type: field.TypeInt, Comment: "菜单类型 1:目录 2:菜单 3:按钮", Default: 1},
+		{Name: "type", Type: field.TypeString, Comment: "菜单类型 menu/page/button", Default: ""},
 		{Name: "status", Type: field.TypeInt, Comment: "状态 1:启用 2:禁用", Default: 1},
 	}
 	// MenusTable holds the schema information for the "menus" table.
@@ -103,10 +103,10 @@ var (
 		{Name: "permission_id", Type: field.TypeString, Unique: true, Comment: "权限ID"},
 		{Name: "name", Type: field.TypeString, Comment: "权限名称"},
 		{Name: "code", Type: field.TypeString, Unique: true, Comment: "权限编码"},
-		{Name: "type", Type: field.TypeInt, Comment: "类型类型: menu/page/button/api/data"},
+		{Name: "type", Type: field.TypeString, Comment: "类型类型: menu/page/button/api/data"},
 		{Name: "resource", Type: field.TypeString, Comment: "资源"},
 		{Name: "action", Type: field.TypeString, Comment: "操作类型"},
-		{Name: "parent_id", Type: field.TypeInt, Nullable: true, Comment: "父级ID"},
+		{Name: "parent_id", Type: field.TypeString, Nullable: true, Comment: "父级ID"},
 		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "描述"},
 		{Name: "status", Type: field.TypeInt, Comment: "状态 1:启用 2:禁用", Default: 1},
 		{Name: "menu_id", Type: field.TypeString, Nullable: true, Comment: "菜单ID"},

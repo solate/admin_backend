@@ -131,36 +131,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: permission.GetRolePermissionsHandler(serverCtx),
 				},
 				{
-					// 创建权限规则
-					Method:  http.MethodPost,
-					Path:    "/rules",
-					Handler: permission.CreatePermissionHandler(serverCtx),
-				},
-				{
-					// 获取权限规则列表
-					Method:  http.MethodGet,
-					Path:    "/rules",
-					Handler: permission.ListPermissionHandler(serverCtx),
-				},
-				{
-					// 更新权限规则
-					Method:  http.MethodPut,
-					Path:    "/rules/:id",
-					Handler: permission.UpdatePermissionHandler(serverCtx),
-				},
-				{
-					// 删除权限规则
-					Method:  http.MethodDelete,
-					Path:    "/rules/:id",
-					Handler: permission.DeletePermissionHandler(serverCtx),
-				},
-				{
-					// 获取权限规则详情
-					Method:  http.MethodGet,
-					Path:    "/rules/:id",
-					Handler: permission.GetPermissionHandler(serverCtx),
-				},
-				{
 					// 获取资源类型列表
 					Method:  http.MethodGet,
 					Path:    "/rules/resource-types",

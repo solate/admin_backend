@@ -15,6 +15,8 @@ type ChangePasswordReq struct {
 
 type CreateMenuReq struct {
 	Code      string `json:"code"`               // 菜单code
+	Action    string `json:"action"`             // 权限标识
+	Type      string `json:"type"`               // 菜单类型
 	ParentID  string `json:"parent_id"`          // 父菜单ID
 	Name      string `json:"name"`               // 菜单名称
 	Path      string `json:"path,optional"`      // 路由路径
@@ -22,7 +24,6 @@ type CreateMenuReq struct {
 	Redirect  string `json:"redirect,optional"`  // 重定向路径
 	Icon      string `json:"icon,optional"`      // 菜单图标
 	Sort      int    `json:"sort,optional"`      // 排序号
-	Type      int    `json:"type"`               // 菜单类型 1:目录 2:菜单 3:按钮
 	Status    int    `json:"status,optional"`    // 状态 1:启用 2:禁用
 }
 
@@ -33,10 +34,10 @@ type CreateMenuResp struct {
 type CreatePermissionReq struct {
 	Name        string `json:"name" validate:"required"`     // 权限名称
 	Code        string `json:"code" validate:"required"`     // 权限编码
-	Type        int    `json:"type" validate:"required"`     // 权限类型(1:菜单menu 2:页面page 3:按钮button 4:接口api 5:数据data)
+	Type        string `json:"type" validate:"required"`     // 权限类型(1:菜单menu 2:页面page 3:按钮button 4:接口api 5:数据data)
 	Resource    string `json:"resource" validate:"required"` // 资源路径
 	Action      string `json:"action" validate:"required"`   // 操作类型
-	ParentID    int    `json:"parent_id,optional"`           // 父级ID
+	ParentID    string `json:"parent_id,optional"`           // 父级ID
 	Description string `json:"description,optional"`         // 描述
 	Status      int    `json:"status,optional"`              // 状态(1:启用 2:禁用)
 	MenuID      string `json:"menu_id,optional"`             // 菜单ID
@@ -126,7 +127,7 @@ type GetRolePermissionsReq struct {
 }
 
 type GetRolePermissionsResp struct {
-	List []*PermissionInfo `json:"list"` // 权限列表
+	List []*Permission `json:"list"` // 权限列表
 }
 
 type GetRoleReq struct {
@@ -161,7 +162,7 @@ type ListPermissionReq struct {
 	PageRequest
 	Name     string `form:"name,optional"`     // 权限名称
 	Code     string `form:"code,optional"`     // 权限编码
-	Type     int    `form:"type,optional"`     // 权限类型
+	Type     string `form:"type,optional"`     // 权限类型
 	Resource string `form:"resource,optional"` // 资源路径
 	Action   int    `form:"action,optional"`   // 操作类型
 	Status   int    `form:"status,optional"`   // 状态
@@ -232,7 +233,7 @@ type MenuInfo struct {
 	Redirect  string `json:"redirect"`   // 重定向路径
 	Icon      string `json:"icon"`       // 菜单图标
 	Sort      int    `json:"sort"`       // 排序号
-	Type      int    `json:"type"`       // 菜单类型
+	Type      string `json:"type"`       // 菜单类型
 	Status    int    `json:"status"`     // 状态
 	CreatedAt int64  `json:"created_at"` // 创建时间
 }
@@ -240,7 +241,7 @@ type MenuInfo struct {
 type MenuListReq struct {
 	PageRequest
 	Name   string `form:"name,optional"`   // 菜单名称
-	Type   int    `form:"type,optional"`   // 菜单类型
+	Type   string `form:"type,optional"`   // 菜单类型
 	Status int    `form:"status,optional"` // 状态
 }
 
@@ -259,7 +260,7 @@ type MenuTree struct {
 	Redirect  string      `json:"redirect"`  // 重定向路径
 	Icon      string      `json:"icon"`      // 菜单图标
 	Sort      int         `json:"sort"`      // 排序号
-	Type      int         `json:"type"`      // 菜单类型
+	Type      string      `json:"type"`      // 菜单类型
 	Status    int         `json:"status"`    // 状态
 	Children  []*MenuTree `json:"children"`  // 子菜单
 }
@@ -286,9 +287,9 @@ type PageResponse struct {
 }
 
 type Permission struct {
-	PermissionCode string `json:"permission_code"` // 权限码
-	Action         string `json:"action"`          // 操作类型
-	Type           string `json:"type"`            // 权限类型
+	Resource string `json:"resource"` // 资源
+	Action   string `json:"action"`   // 操作类型
+	Type     string `json:"type"`     // 权限类型
 }
 
 type PermissionInfo struct {
@@ -297,10 +298,10 @@ type PermissionInfo struct {
 	PermissionID string `json:"permission_id"` // 权限规则ID
 	Name         string `json:"name"`          // 权限名称
 	Code         string `json:"code"`          // 权限编码
-	Type         int    `json:"type"`          // 权限类型
+	Type         string `json:"type"`          // 权限类型
 	Resource     string `json:"resource"`      // 资源路径
 	Action       string `json:"action"`        // 操作类型
-	ParentID     int    `json:"parent_id"`     // 父级ID
+	ParentID     string `json:"parent_id"`     // 父级ID
 	Description  string `json:"description"`   // 描述
 	Status       int    `json:"status"`        // 状态
 	MenuID       string `json:"menu_id"`       // 菜单ID
@@ -396,10 +397,10 @@ type UpdateMenuReq struct {
 type UpdatePermissionReq struct {
 	PermissionID string `path:"permission_id"`        // 权限规则ID
 	Name         string `json:"name,optional"`        // 权限名称
-	Type         int    `json:"type,optional"`        // 权限类型
+	Type         string `json:"type,optional"`        // 权限类型
 	Resource     string `json:"resource,optional"`    // 资源路径
 	Action       string `json:"action,optional"`      // 操作类型
-	ParentID     int    `json:"parent_id,optional"`   // 父级ID
+	ParentID     string `json:"parent_id,optional"`   // 父级ID
 	Description  string `json:"description,optional"` // 描述
 	Status       int    `json:"status,optional"`      // 状态
 	MenuID       string `json:"menu_id,optional"`     // 菜单ID

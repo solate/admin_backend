@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"admin_backend/app/admin/internal/repository/menurepo"
+	"admin_backend/app/admin/internal/repository/permissionrepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
 	"admin_backend/pkg/common/contextutil"
@@ -16,18 +17,20 @@ import (
 
 type CreateMenuLogic struct {
 	logx.Logger
-	ctx      context.Context
-	svcCtx   *svc.ServiceContext
-	menuRepo *menurepo.MenuRepo
+	ctx            context.Context
+	svcCtx         *svc.ServiceContext
+	menuRepo       *menurepo.MenuRepo
+	permissionRepo *permissionrepo.PermissionRepo
 }
 
 // 创建菜单
 func NewCreateMenuLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateMenuLogic {
 	return &CreateMenuLogic{
-		Logger:   logx.WithContext(ctx),
-		ctx:      ctx,
-		svcCtx:   svcCtx,
-		menuRepo: menurepo.NewMenuRepo(svcCtx.DB),
+		Logger:         logx.WithContext(ctx),
+		ctx:            ctx,
+		svcCtx:         svcCtx,
+		menuRepo:       menurepo.NewMenuRepo(svcCtx.DB),
+		permissionRepo: permissionrepo.NewPermissionRepo(svcCtx.DB),
 	}
 }
 
@@ -70,10 +73,34 @@ func (l *CreateMenuLogic) CreateMenu(req *types.CreateMenuReq) (resp *types.Crea
 		Status:     req.Status,
 	}
 
-	menu, err = l.menuRepo.Create(l.ctx, newMenu)
+	_, err = l.menuRepo.Create(l.ctx, newMenu)
 	if err != nil {
 		l.Error("CreateMenu Create err:", err.Error())
-		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "创建菜单失败")
+		return nil, xerr.NewErrCodeMsg(xerr.DbError, "创建菜单失败")
+	}
+
+	// 5. 创建权限
+	permissionID, err := idgen.GenerateUUID()
+	if err != nil {
+		l.Error("CreateMenu GenerateUUID err:", err.Error())
+		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "生成权限ID失败")
+	}
+	newPermission := &generated.Permission{
+		PermissionID: permissionID,
+		Name:         req.Name,
+		Code:         req.Code + "_perm",
+		Type:         req.Type,
+		Resource:     req.Code,
+		Action:       req.Action,
+		ParentID:     "",
+		Description:  "",
+		Status:       req.Status,
+		MenuID:       newMenu.MenuID,
+	}
+	_, err = l.permissionRepo.Create(l.ctx, newPermission)
+	if err != nil {
+		l.Error("CreatePermission Create err:", err.Error())
+		return nil, xerr.NewErrCodeMsg(xerr.DbError, "创建权限失败")
 	}
 
 	// 5. 返回结果

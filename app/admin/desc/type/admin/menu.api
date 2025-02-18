@@ -15,6 +15,8 @@ type (
     // 创建菜单请求
     CreateMenuReq { 
         Code    string  `json:"code"`      // 菜单code
+        Action     string  `json:"action"`   // 权限标识
+        Type       string     `json:"type"`             // 菜单类型 
         ParentID   string  `json:"parent_id"`      // 父菜单ID
         Name       string  `json:"name"`          // 菜单名称
         Path       string  `json:"path,optional"`  // 路由路径
@@ -22,8 +24,8 @@ type (
         Redirect   string  `json:"redirect,optional"`  // 重定向路径
         Icon       string  `json:"icon,optional"`     // 菜单图标
         Sort       int     `json:"sort,optional"`     // 排序号
-        Type       int     `json:"type"`             // 菜单类型 1:目录 2:菜单 3:按钮
         Status     int     `json:"status,optional"`   // 状态 1:启用 2:禁用
+    
     }
 
     // 创建菜单响应
@@ -54,7 +56,7 @@ type (
     MenuListReq {
         PageRequest
         Name     string `form:"name,optional"`      // 菜单名称
-        Type     int    `form:"type,optional"`     // 菜单类型
+        Type     string    `form:"type,optional"`     // 菜单类型
         Status   int    `form:"status,optional"`   // 状态
     }
 
@@ -80,7 +82,7 @@ type (
         Redirect   string `json:"redirect"`    // 重定向路径
         Icon       string `json:"icon"`        // 菜单图标
         Sort       int    `json:"sort"`        // 排序号
-        Type       int    `json:"type"`        // 菜单类型
+        Type       string    `json:"type"`        // 菜单类型
         Status     int    `json:"status"`      // 状态
         CreatedAt  int64  `json:"created_at"` // 创建时间
     }
@@ -96,7 +98,7 @@ type (
         Redirect   string      `json:"redirect"`    // 重定向路径
         Icon       string      `json:"icon"`        // 菜单图标
         Sort       int         `json:"sort"`        // 排序号
-        Type       int         `json:"type"`        // 菜单类型
+        Type       string         `json:"type"`        // 菜单类型
         Status     int         `json:"status"`      // 状态
         Children   []*MenuTree `json:"children"`    // 子菜单
     }

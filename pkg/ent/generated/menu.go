@@ -42,8 +42,8 @@ type Menu struct {
 	Icon string `json:"icon,omitempty"`
 	// 排序号
 	Sort int `json:"sort,omitempty"`
-	// 菜单类型 1:目录 2:菜单 3:按钮
-	Type int `json:"type,omitempty"`
+	// 菜单类型 menu/page/button
+	Type string `json:"type,omitempty"`
 	// 状态 1:启用 2:禁用
 	Status       int `json:"status,omitempty"`
 	selectValues sql.SelectValues
@@ -54,9 +54,9 @@ func (*Menu) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case menu.FieldID, menu.FieldCreatedAt, menu.FieldUpdatedAt, menu.FieldDeletedAt, menu.FieldSort, menu.FieldType, menu.FieldStatus:
+		case menu.FieldID, menu.FieldCreatedAt, menu.FieldUpdatedAt, menu.FieldDeletedAt, menu.FieldSort, menu.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case menu.FieldTenantCode, menu.FieldMenuID, menu.FieldCode, menu.FieldParentID, menu.FieldName, menu.FieldPath, menu.FieldComponent, menu.FieldRedirect, menu.FieldIcon:
+		case menu.FieldTenantCode, menu.FieldMenuID, menu.FieldCode, menu.FieldParentID, menu.FieldName, menu.FieldPath, menu.FieldComponent, menu.FieldRedirect, menu.FieldIcon, menu.FieldType:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -159,10 +159,10 @@ func (m *Menu) assignValues(columns []string, values []any) error {
 				m.Sort = int(value.Int64)
 			}
 		case menu.FieldType:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field type", values[i])
 			} else if value.Valid {
-				m.Type = int(value.Int64)
+				m.Type = value.String
 			}
 		case menu.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -248,7 +248,7 @@ func (m *Menu) String() string {
 	builder.WriteString(fmt.Sprintf("%v", m.Sort))
 	builder.WriteString(", ")
 	builder.WriteString("type=")
-	builder.WriteString(fmt.Sprintf("%v", m.Type))
+	builder.WriteString(m.Type)
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", m.Status))

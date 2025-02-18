@@ -40,6 +40,7 @@ func (l *GetMenuTreeLogic) GetMenuTree() (resp *types.MenuTreeResp, err error) {
 	// 2. 获取用户角色编码
 	roleCode := contextutil.GetRoleCodeFromCtx(l.ctx)
 
+	// 3. 获取角色权限
 	pm := l.svcCtx.CasbinManager
 	permissions, err := pm.GetRolePermissions(roleCode, tenantCode)
 	if err != nil {
@@ -47,15 +48,14 @@ func (l *GetMenuTreeLogic) GetMenuTree() (resp *types.MenuTreeResp, err error) {
 		return nil, err
 	}
 
-	var permissionCodeList []string
+	// 4. 获取权限编码
+	var resources []string
 	for _, permission := range permissions {
-		// 1. 获取资源
-		permissionCode := permission[2]
-		permissionCodeList = append(permissionCodeList, permissionCode)
+		resource := permission[2]
+		resources = append(resources, resource)
 	}
-
 	where := []predicate.Permission{
-		permission.CodeIn(permissionCodeList...),
+		permission.ResourceIn(resources...),
 	}
 	permissionList, err := l.permissionRepo.List(l.ctx, where)
 	if err != nil {
@@ -63,23 +63,22 @@ func (l *GetMenuTreeLogic) GetMenuTree() (resp *types.MenuTreeResp, err error) {
 		return nil, err
 	}
 
+	// 5. 获取菜单ID
 	var menuIDList []string
 	for _, v := range permissionList {
 		menuIDList = append(menuIDList, v.MenuID)
 	}
-
 	menuWhere := []predicate.Menu{
 		menu.MenuIDIn(menuIDList...),
 	}
-
-	// 3. 获取所有菜单
+	// 6. 获取菜单列表
 	menus, err := l.menuRepo.List(l.ctx, menuWhere)
 	if err != nil {
 		l.Errorf("获取菜单列表失败: %v", err)
 		return nil, err
 	}
 
-	// 4. 使用Casbin过滤有权限的菜单
+	// 7. 过滤
 	var authorizedMenus []*types.MenuTree
 	for _, m := range menus {
 		authorizedMenus = append(authorizedMenus, &types.MenuTree{
@@ -95,7 +94,7 @@ func (l *GetMenuTreeLogic) GetMenuTree() (resp *types.MenuTreeResp, err error) {
 		})
 	}
 
-	// 5. 构建菜单树
+	// 8. 构建菜单树
 	tree := buildMenuTree(authorizedMenus, "") // 从根节点(parentId="")开始构建
 
 	return &types.MenuTreeResp{

@@ -224,23 +224,16 @@ func (mu *MenuUpdate) AddSort(i int) *MenuUpdate {
 }
 
 // SetType sets the "type" field.
-func (mu *MenuUpdate) SetType(i int) *MenuUpdate {
-	mu.mutation.ResetType()
-	mu.mutation.SetType(i)
+func (mu *MenuUpdate) SetType(s string) *MenuUpdate {
+	mu.mutation.SetType(s)
 	return mu
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (mu *MenuUpdate) SetNillableType(i *int) *MenuUpdate {
-	if i != nil {
-		mu.SetType(*i)
+func (mu *MenuUpdate) SetNillableType(s *string) *MenuUpdate {
+	if s != nil {
+		mu.SetType(*s)
 	}
-	return mu
-}
-
-// AddType adds i to the "type" field.
-func (mu *MenuUpdate) AddType(i int) *MenuUpdate {
-	mu.mutation.AddType(i)
 	return mu
 }
 
@@ -379,10 +372,7 @@ func (mu *MenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.AddField(menu.FieldSort, field.TypeInt, value)
 	}
 	if value, ok := mu.mutation.GetType(); ok {
-		_spec.SetField(menu.FieldType, field.TypeInt, value)
-	}
-	if value, ok := mu.mutation.AddedType(); ok {
-		_spec.AddField(menu.FieldType, field.TypeInt, value)
+		_spec.SetField(menu.FieldType, field.TypeString, value)
 	}
 	if value, ok := mu.mutation.Status(); ok {
 		_spec.SetField(menu.FieldStatus, field.TypeInt, value)
@@ -608,23 +598,16 @@ func (muo *MenuUpdateOne) AddSort(i int) *MenuUpdateOne {
 }
 
 // SetType sets the "type" field.
-func (muo *MenuUpdateOne) SetType(i int) *MenuUpdateOne {
-	muo.mutation.ResetType()
-	muo.mutation.SetType(i)
+func (muo *MenuUpdateOne) SetType(s string) *MenuUpdateOne {
+	muo.mutation.SetType(s)
 	return muo
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (muo *MenuUpdateOne) SetNillableType(i *int) *MenuUpdateOne {
-	if i != nil {
-		muo.SetType(*i)
+func (muo *MenuUpdateOne) SetNillableType(s *string) *MenuUpdateOne {
+	if s != nil {
+		muo.SetType(*s)
 	}
-	return muo
-}
-
-// AddType adds i to the "type" field.
-func (muo *MenuUpdateOne) AddType(i int) *MenuUpdateOne {
-	muo.mutation.AddType(i)
 	return muo
 }
 
@@ -793,10 +776,7 @@ func (muo *MenuUpdateOne) sqlSave(ctx context.Context) (_node *Menu, err error) 
 		_spec.AddField(menu.FieldSort, field.TypeInt, value)
 	}
 	if value, ok := muo.mutation.GetType(); ok {
-		_spec.SetField(menu.FieldType, field.TypeInt, value)
-	}
-	if value, ok := muo.mutation.AddedType(); ok {
-		_spec.AddField(menu.FieldType, field.TypeInt, value)
+		_spec.SetField(menu.FieldType, field.TypeString, value)
 	}
 	if value, ok := muo.mutation.Status(); ok {
 		_spec.SetField(menu.FieldStatus, field.TypeInt, value)

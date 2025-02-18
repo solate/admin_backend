@@ -88,8 +88,8 @@ func (pc *PermissionCreate) SetCode(s string) *PermissionCreate {
 }
 
 // SetType sets the "type" field.
-func (pc *PermissionCreate) SetType(i int) *PermissionCreate {
-	pc.mutation.SetType(i)
+func (pc *PermissionCreate) SetType(s string) *PermissionCreate {
+	pc.mutation.SetType(s)
 	return pc
 }
 
@@ -106,15 +106,15 @@ func (pc *PermissionCreate) SetAction(s string) *PermissionCreate {
 }
 
 // SetParentID sets the "parent_id" field.
-func (pc *PermissionCreate) SetParentID(i int) *PermissionCreate {
-	pc.mutation.SetParentID(i)
+func (pc *PermissionCreate) SetParentID(s string) *PermissionCreate {
+	pc.mutation.SetParentID(s)
 	return pc
 }
 
 // SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (pc *PermissionCreate) SetNillableParentID(i *int) *PermissionCreate {
-	if i != nil {
-		pc.SetParentID(*i)
+func (pc *PermissionCreate) SetNillableParentID(s *string) *PermissionCreate {
+	if s != nil {
+		pc.SetParentID(*s)
 	}
 	return pc
 }
@@ -323,7 +323,7 @@ func (pc *PermissionCreate) createSpec() (*Permission, *sqlgraph.CreateSpec) {
 		_node.Code = value
 	}
 	if value, ok := pc.mutation.GetType(); ok {
-		_spec.SetField(permission.FieldType, field.TypeInt, value)
+		_spec.SetField(permission.FieldType, field.TypeString, value)
 		_node.Type = value
 	}
 	if value, ok := pc.mutation.Resource(); ok {
@@ -335,7 +335,7 @@ func (pc *PermissionCreate) createSpec() (*Permission, *sqlgraph.CreateSpec) {
 		_node.Action = value
 	}
 	if value, ok := pc.mutation.ParentID(); ok {
-		_spec.SetField(permission.FieldParentID, field.TypeInt, value)
+		_spec.SetField(permission.FieldParentID, field.TypeString, value)
 		_node.ParentID = value
 	}
 	if value, ok := pc.mutation.Description(); ok {
@@ -481,7 +481,7 @@ func (u *PermissionUpsert) UpdateCode() *PermissionUpsert {
 }
 
 // SetType sets the "type" field.
-func (u *PermissionUpsert) SetType(v int) *PermissionUpsert {
+func (u *PermissionUpsert) SetType(v string) *PermissionUpsert {
 	u.Set(permission.FieldType, v)
 	return u
 }
@@ -489,12 +489,6 @@ func (u *PermissionUpsert) SetType(v int) *PermissionUpsert {
 // UpdateType sets the "type" field to the value that was provided on create.
 func (u *PermissionUpsert) UpdateType() *PermissionUpsert {
 	u.SetExcluded(permission.FieldType)
-	return u
-}
-
-// AddType adds v to the "type" field.
-func (u *PermissionUpsert) AddType(v int) *PermissionUpsert {
-	u.Add(permission.FieldType, v)
 	return u
 }
 
@@ -523,7 +517,7 @@ func (u *PermissionUpsert) UpdateAction() *PermissionUpsert {
 }
 
 // SetParentID sets the "parent_id" field.
-func (u *PermissionUpsert) SetParentID(v int) *PermissionUpsert {
+func (u *PermissionUpsert) SetParentID(v string) *PermissionUpsert {
 	u.Set(permission.FieldParentID, v)
 	return u
 }
@@ -531,12 +525,6 @@ func (u *PermissionUpsert) SetParentID(v int) *PermissionUpsert {
 // UpdateParentID sets the "parent_id" field to the value that was provided on create.
 func (u *PermissionUpsert) UpdateParentID() *PermissionUpsert {
 	u.SetExcluded(permission.FieldParentID)
-	return u
-}
-
-// AddParentID adds v to the "parent_id" field.
-func (u *PermissionUpsert) AddParentID(v int) *PermissionUpsert {
-	u.Add(permission.FieldParentID, v)
 	return u
 }
 
@@ -740,16 +728,9 @@ func (u *PermissionUpsertOne) UpdateCode() *PermissionUpsertOne {
 }
 
 // SetType sets the "type" field.
-func (u *PermissionUpsertOne) SetType(v int) *PermissionUpsertOne {
+func (u *PermissionUpsertOne) SetType(v string) *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
 		s.SetType(v)
-	})
-}
-
-// AddType adds v to the "type" field.
-func (u *PermissionUpsertOne) AddType(v int) *PermissionUpsertOne {
-	return u.Update(func(s *PermissionUpsert) {
-		s.AddType(v)
 	})
 }
 
@@ -789,16 +770,9 @@ func (u *PermissionUpsertOne) UpdateAction() *PermissionUpsertOne {
 }
 
 // SetParentID sets the "parent_id" field.
-func (u *PermissionUpsertOne) SetParentID(v int) *PermissionUpsertOne {
+func (u *PermissionUpsertOne) SetParentID(v string) *PermissionUpsertOne {
 	return u.Update(func(s *PermissionUpsert) {
 		s.SetParentID(v)
-	})
-}
-
-// AddParentID adds v to the "parent_id" field.
-func (u *PermissionUpsertOne) AddParentID(v int) *PermissionUpsertOne {
-	return u.Update(func(s *PermissionUpsert) {
-		s.AddParentID(v)
 	})
 }
 
@@ -1185,16 +1159,9 @@ func (u *PermissionUpsertBulk) UpdateCode() *PermissionUpsertBulk {
 }
 
 // SetType sets the "type" field.
-func (u *PermissionUpsertBulk) SetType(v int) *PermissionUpsertBulk {
+func (u *PermissionUpsertBulk) SetType(v string) *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
 		s.SetType(v)
-	})
-}
-
-// AddType adds v to the "type" field.
-func (u *PermissionUpsertBulk) AddType(v int) *PermissionUpsertBulk {
-	return u.Update(func(s *PermissionUpsert) {
-		s.AddType(v)
 	})
 }
 
@@ -1234,16 +1201,9 @@ func (u *PermissionUpsertBulk) UpdateAction() *PermissionUpsertBulk {
 }
 
 // SetParentID sets the "parent_id" field.
-func (u *PermissionUpsertBulk) SetParentID(v int) *PermissionUpsertBulk {
+func (u *PermissionUpsertBulk) SetParentID(v string) *PermissionUpsertBulk {
 	return u.Update(func(s *PermissionUpsert) {
 		s.SetParentID(v)
-	})
-}
-
-// AddParentID adds v to the "parent_id" field.
-func (u *PermissionUpsertBulk) AddParentID(v int) *PermissionUpsertBulk {
-	return u.Update(func(s *PermissionUpsert) {
-		s.AddParentID(v)
 	})
 }
 

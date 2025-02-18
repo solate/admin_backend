@@ -89,7 +89,7 @@ func Code(v string) predicate.Permission {
 }
 
 // Type applies equality check predicate on the "type" field. It's identical to TypeEQ.
-func Type(v int) predicate.Permission {
+func Type(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldEQ(FieldType, v))
 }
 
@@ -104,7 +104,7 @@ func Action(v string) predicate.Permission {
 }
 
 // ParentID applies equality check predicate on the "parent_id" field. It's identical to ParentIDEQ.
-func ParentID(v int) predicate.Permission {
+func ParentID(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldEQ(FieldParentID, v))
 }
 
@@ -514,43 +514,68 @@ func CodeContainsFold(v string) predicate.Permission {
 }
 
 // TypeEQ applies the EQ predicate on the "type" field.
-func TypeEQ(v int) predicate.Permission {
+func TypeEQ(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldEQ(FieldType, v))
 }
 
 // TypeNEQ applies the NEQ predicate on the "type" field.
-func TypeNEQ(v int) predicate.Permission {
+func TypeNEQ(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldNEQ(FieldType, v))
 }
 
 // TypeIn applies the In predicate on the "type" field.
-func TypeIn(vs ...int) predicate.Permission {
+func TypeIn(vs ...string) predicate.Permission {
 	return predicate.Permission(sql.FieldIn(FieldType, vs...))
 }
 
 // TypeNotIn applies the NotIn predicate on the "type" field.
-func TypeNotIn(vs ...int) predicate.Permission {
+func TypeNotIn(vs ...string) predicate.Permission {
 	return predicate.Permission(sql.FieldNotIn(FieldType, vs...))
 }
 
 // TypeGT applies the GT predicate on the "type" field.
-func TypeGT(v int) predicate.Permission {
+func TypeGT(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldGT(FieldType, v))
 }
 
 // TypeGTE applies the GTE predicate on the "type" field.
-func TypeGTE(v int) predicate.Permission {
+func TypeGTE(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldGTE(FieldType, v))
 }
 
 // TypeLT applies the LT predicate on the "type" field.
-func TypeLT(v int) predicate.Permission {
+func TypeLT(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldLT(FieldType, v))
 }
 
 // TypeLTE applies the LTE predicate on the "type" field.
-func TypeLTE(v int) predicate.Permission {
+func TypeLTE(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldLTE(FieldType, v))
+}
+
+// TypeContains applies the Contains predicate on the "type" field.
+func TypeContains(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldContains(FieldType, v))
+}
+
+// TypeHasPrefix applies the HasPrefix predicate on the "type" field.
+func TypeHasPrefix(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldHasPrefix(FieldType, v))
+}
+
+// TypeHasSuffix applies the HasSuffix predicate on the "type" field.
+func TypeHasSuffix(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldHasSuffix(FieldType, v))
+}
+
+// TypeEqualFold applies the EqualFold predicate on the "type" field.
+func TypeEqualFold(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldEqualFold(FieldType, v))
+}
+
+// TypeContainsFold applies the ContainsFold predicate on the "type" field.
+func TypeContainsFold(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldContainsFold(FieldType, v))
 }
 
 // ResourceEQ applies the EQ predicate on the "resource" field.
@@ -684,43 +709,58 @@ func ActionContainsFold(v string) predicate.Permission {
 }
 
 // ParentIDEQ applies the EQ predicate on the "parent_id" field.
-func ParentIDEQ(v int) predicate.Permission {
+func ParentIDEQ(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldEQ(FieldParentID, v))
 }
 
 // ParentIDNEQ applies the NEQ predicate on the "parent_id" field.
-func ParentIDNEQ(v int) predicate.Permission {
+func ParentIDNEQ(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldNEQ(FieldParentID, v))
 }
 
 // ParentIDIn applies the In predicate on the "parent_id" field.
-func ParentIDIn(vs ...int) predicate.Permission {
+func ParentIDIn(vs ...string) predicate.Permission {
 	return predicate.Permission(sql.FieldIn(FieldParentID, vs...))
 }
 
 // ParentIDNotIn applies the NotIn predicate on the "parent_id" field.
-func ParentIDNotIn(vs ...int) predicate.Permission {
+func ParentIDNotIn(vs ...string) predicate.Permission {
 	return predicate.Permission(sql.FieldNotIn(FieldParentID, vs...))
 }
 
 // ParentIDGT applies the GT predicate on the "parent_id" field.
-func ParentIDGT(v int) predicate.Permission {
+func ParentIDGT(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldGT(FieldParentID, v))
 }
 
 // ParentIDGTE applies the GTE predicate on the "parent_id" field.
-func ParentIDGTE(v int) predicate.Permission {
+func ParentIDGTE(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldGTE(FieldParentID, v))
 }
 
 // ParentIDLT applies the LT predicate on the "parent_id" field.
-func ParentIDLT(v int) predicate.Permission {
+func ParentIDLT(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldLT(FieldParentID, v))
 }
 
 // ParentIDLTE applies the LTE predicate on the "parent_id" field.
-func ParentIDLTE(v int) predicate.Permission {
+func ParentIDLTE(v string) predicate.Permission {
 	return predicate.Permission(sql.FieldLTE(FieldParentID, v))
+}
+
+// ParentIDContains applies the Contains predicate on the "parent_id" field.
+func ParentIDContains(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldContains(FieldParentID, v))
+}
+
+// ParentIDHasPrefix applies the HasPrefix predicate on the "parent_id" field.
+func ParentIDHasPrefix(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldHasPrefix(FieldParentID, v))
+}
+
+// ParentIDHasSuffix applies the HasSuffix predicate on the "parent_id" field.
+func ParentIDHasSuffix(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldHasSuffix(FieldParentID, v))
 }
 
 // ParentIDIsNil applies the IsNil predicate on the "parent_id" field.
@@ -731,6 +771,16 @@ func ParentIDIsNil() predicate.Permission {
 // ParentIDNotNil applies the NotNil predicate on the "parent_id" field.
 func ParentIDNotNil() predicate.Permission {
 	return predicate.Permission(sql.FieldNotNull(FieldParentID))
+}
+
+// ParentIDEqualFold applies the EqualFold predicate on the "parent_id" field.
+func ParentIDEqualFold(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldEqualFold(FieldParentID, v))
+}
+
+// ParentIDContainsFold applies the ContainsFold predicate on the "parent_id" field.
+func ParentIDContainsFold(v string) predicate.Permission {
+	return predicate.Permission(sql.FieldContainsFold(FieldParentID, v))
 }
 
 // DescriptionEQ applies the EQ predicate on the "description" field.

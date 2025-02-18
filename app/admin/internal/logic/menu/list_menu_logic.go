@@ -42,7 +42,7 @@ func (l *ListMenuLogic) ListMenu(req *types.MenuListReq) (resp *types.MenuListRe
 		where = append(where, menu.StatusEQ(req.Status))
 	}
 
-	if req.Type != 0 {
+	if req.Type != "" {
 		where = append(where, menu.TypeEQ(req.Type))
 	}
 

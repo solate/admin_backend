@@ -12,10 +12,10 @@ type (
     CreatePermissionReq {
         Name        string `json:"name" validate:"required"`        // 权限名称
         Code        string `json:"code" validate:"required"`        // 权限编码
-        Type        int    `json:"type" validate:"required"`        // 权限类型(1:菜单menu 2:页面page 3:按钮button 4:接口api 5:数据data)
+        Type        string    `json:"type" validate:"required"`        // 权限类型(1:菜单menu 2:页面page 3:按钮button 4:接口api 5:数据data)
         Resource    string `json:"resource" validate:"required"`    // 资源路径
         Action      string `json:"action" validate:"required"`      // 操作类型
-        ParentID    int    `json:"parent_id,optional"`              // 父级ID
+        ParentID    string    `json:"parent_id,optional"`              // 父级ID
         Description string `json:"description,optional"`            // 描述
         Status      int    `json:"status,optional"`                 // 状态(1:启用 2:禁用)
         MenuID      string `json:"menu_id,optional"`               // 菜单ID
@@ -30,10 +30,10 @@ type (
     UpdatePermissionReq {
         PermissionID string `path:"permission_id"` // 权限规则ID
         Name        string `json:"name,optional"`                   // 权限名称
-        Type        int    `json:"type,optional"`                   // 权限类型
+        Type        string    `json:"type,optional"`                   // 权限类型
         Resource    string `json:"resource,optional"`               // 资源路径
         Action      string `json:"action,optional"`                 // 操作类型
-        ParentID    int    `json:"parent_id,optional"`              // 父级ID
+        ParentID    string    `json:"parent_id,optional"`              // 父级ID
         Description string `json:"description,optional"`            // 描述
         Status      int    `json:"status,optional"`                 // 状态
         MenuID      string `json:"menu_id,optional"`               // 菜单ID
@@ -61,10 +61,10 @@ type (
         PermissionID string `json:"permission_id"`// 权限规则ID
         Name        string `json:"name"`         // 权限名称
         Code        string `json:"code"`         // 权限编码
-        Type        int    `json:"type"`         // 权限类型
+        Type        string    `json:"type"`         // 权限类型
         Resource    string `json:"resource"`     // 资源路径
         Action      string `json:"action"`       // 操作类型
-        ParentID    int    `json:"parent_id"`    // 父级ID
+        ParentID    string    `json:"parent_id"`    // 父级ID
         Description string `json:"description"`  // 描述
         Status      int    `json:"status"`       // 状态
         MenuID      string `json:"menu_id"`     // 菜单ID
@@ -76,7 +76,7 @@ type (
         PageRequest
         Name     string `form:"name,optional"`      // 权限名称
         Code     string `form:"code,optional"`      // 权限编码
-        Type     int    `form:"type,optional"`      // 权限类型
+        Type     string    `form:"type,optional"`      // 权限类型
         Resource string `form:"resource,optional"`  // 资源路径
         Action   int    `form:"action,optional"`    // 操作类型
         Status   int    `form:"status,optional"`    // 状态
@@ -101,12 +101,12 @@ type (
 
     // 获取角色权限响应
     GetRolePermissionsResp {
-        List []*PermissionInfo `json:"list"` // 权限列表
+        List []*Permission `json:"list"` // 权限列表
     }
 
     // 权限信息
     Permission {
-        PermissionCode string `json:"permission_code"` // 权限码
+        Resource string `json:"resource"` // 资源
         Action   string `json:"action"`   // 操作类型
         Type     string `json:"type"`     // 权限类型
     }
@@ -132,25 +132,25 @@ type (
     middleware: AuthMiddleware
 )
 service admin {
-    @doc "创建权限规则"
-    @handler CreatePermission
-    post /rules (CreatePermissionReq) returns (CreatePermissionResp)
+    // @doc "创建权限规则"
+    // @handler CreatePermission
+    // post /rules (CreatePermissionReq) returns (CreatePermissionResp)
 
-    @doc "更新权限规则"
-    @handler UpdatePermission
-    put /rules/:id (UpdatePermissionReq) returns (bool)
+    // @doc "更新权限规则"
+    // @handler UpdatePermission
+    // put /rules/:id (UpdatePermissionReq) returns (bool)
 
-    @doc "删除权限规则"
-    @handler DeletePermission
-    delete /rules/:id (DeletePermissionReq) returns (bool)
+    // @doc "删除权限规则"
+    // @handler DeletePermission
+    // delete /rules/:id (DeletePermissionReq) returns (bool)
 
-    @doc "获取权限规则详情"
-    @handler GetPermission
-    get /rules/:id (GetPermissionReq) returns (PermissionInfo)
+    // @doc "获取权限规则详情"
+    // @handler GetPermission
+    // get /rules/:id (GetPermissionReq) returns (PermissionInfo)
 
-    @doc "获取权限规则列表"
-    @handler ListPermission
-    get /rules (ListPermissionReq) returns (ListPermissionResp)
+    // @doc "获取权限规则列表"
+    // @handler ListPermission
+    // get /rules (ListPermissionReq) returns (ListPermissionResp)
 
     @doc "设置角色权限"
     @handler SetRolePermissions

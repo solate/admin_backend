@@ -223,3 +223,12 @@ func (pm *CasbinManager) UpdateRolePermissions(role, domain string, permissions 
 	}
 	return nil
 }
+
+// RemoveFilteredPolicy 根据字段索引和值删除策略规则
+func (pm *CasbinManager) RemoveFilteredPolicy(fieldIndex int, fieldValues ...string) error {
+	_, err := pm.enforcer.RemoveFilteredPolicy(fieldIndex, fieldValues...)
+	if err != nil {
+		return err
+	}
+	return pm.enforcer.SavePolicy()
+}

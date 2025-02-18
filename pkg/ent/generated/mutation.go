@@ -1820,8 +1820,7 @@ type MenuMutation struct {
 	icon          *string
 	sort          *int
 	addsort       *int
-	_type         *int
-	add_type      *int
+	_type         *string
 	status        *int
 	addstatus     *int
 	clearedFields map[string]struct{}
@@ -2491,13 +2490,12 @@ func (m *MenuMutation) ResetSort() {
 }
 
 // SetType sets the "type" field.
-func (m *MenuMutation) SetType(i int) {
-	m._type = &i
-	m.add_type = nil
+func (m *MenuMutation) SetType(s string) {
+	m._type = &s
 }
 
 // GetType returns the value of the "type" field in the mutation.
-func (m *MenuMutation) GetType() (r int, exists bool) {
+func (m *MenuMutation) GetType() (r string, exists bool) {
 	v := m._type
 	if v == nil {
 		return
@@ -2508,7 +2506,7 @@ func (m *MenuMutation) GetType() (r int, exists bool) {
 // OldType returns the old "type" field's value of the Menu entity.
 // If the Menu object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MenuMutation) OldType(ctx context.Context) (v int, err error) {
+func (m *MenuMutation) OldType(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldType is only allowed on UpdateOne operations")
 	}
@@ -2522,28 +2520,9 @@ func (m *MenuMutation) OldType(ctx context.Context) (v int, err error) {
 	return oldValue.Type, nil
 }
 
-// AddType adds i to the "type" field.
-func (m *MenuMutation) AddType(i int) {
-	if m.add_type != nil {
-		*m.add_type += i
-	} else {
-		m.add_type = &i
-	}
-}
-
-// AddedType returns the value that was added to the "type" field in this mutation.
-func (m *MenuMutation) AddedType() (r int, exists bool) {
-	v := m.add_type
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ResetType resets all changes to the "type" field.
 func (m *MenuMutation) ResetType() {
 	m._type = nil
-	m.add_type = nil
 }
 
 // SetStatus sets the "status" field.
@@ -2860,7 +2839,7 @@ func (m *MenuMutation) SetField(name string, value ent.Value) error {
 		m.SetSort(v)
 		return nil
 	case menu.FieldType:
-		v, ok := value.(int)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2893,9 +2872,6 @@ func (m *MenuMutation) AddedFields() []string {
 	if m.addsort != nil {
 		fields = append(fields, menu.FieldSort)
 	}
-	if m.add_type != nil {
-		fields = append(fields, menu.FieldType)
-	}
 	if m.addstatus != nil {
 		fields = append(fields, menu.FieldStatus)
 	}
@@ -2915,8 +2891,6 @@ func (m *MenuMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedDeletedAt()
 	case menu.FieldSort:
 		return m.AddedSort()
-	case menu.FieldType:
-		return m.AddedType()
 	case menu.FieldStatus:
 		return m.AddedStatus()
 	}
@@ -2955,13 +2929,6 @@ func (m *MenuMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSort(v)
-		return nil
-	case menu.FieldType:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddType(v)
 		return nil
 	case menu.FieldStatus:
 		v, ok := value.(int)
@@ -3119,12 +3086,10 @@ type PermissionMutation struct {
 	permission_id *string
 	name          *string
 	code          *string
-	_type         *int
-	add_type      *int
+	_type         *string
 	resource      *string
 	action        *string
-	parent_id     *int
-	addparent_id  *int
+	parent_id     *string
 	description   *string
 	status        *int
 	addstatus     *int
@@ -3560,13 +3525,12 @@ func (m *PermissionMutation) ResetCode() {
 }
 
 // SetType sets the "type" field.
-func (m *PermissionMutation) SetType(i int) {
-	m._type = &i
-	m.add_type = nil
+func (m *PermissionMutation) SetType(s string) {
+	m._type = &s
 }
 
 // GetType returns the value of the "type" field in the mutation.
-func (m *PermissionMutation) GetType() (r int, exists bool) {
+func (m *PermissionMutation) GetType() (r string, exists bool) {
 	v := m._type
 	if v == nil {
 		return
@@ -3577,7 +3541,7 @@ func (m *PermissionMutation) GetType() (r int, exists bool) {
 // OldType returns the old "type" field's value of the Permission entity.
 // If the Permission object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PermissionMutation) OldType(ctx context.Context) (v int, err error) {
+func (m *PermissionMutation) OldType(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldType is only allowed on UpdateOne operations")
 	}
@@ -3591,28 +3555,9 @@ func (m *PermissionMutation) OldType(ctx context.Context) (v int, err error) {
 	return oldValue.Type, nil
 }
 
-// AddType adds i to the "type" field.
-func (m *PermissionMutation) AddType(i int) {
-	if m.add_type != nil {
-		*m.add_type += i
-	} else {
-		m.add_type = &i
-	}
-}
-
-// AddedType returns the value that was added to the "type" field in this mutation.
-func (m *PermissionMutation) AddedType() (r int, exists bool) {
-	v := m.add_type
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ResetType resets all changes to the "type" field.
 func (m *PermissionMutation) ResetType() {
 	m._type = nil
-	m.add_type = nil
 }
 
 // SetResource sets the "resource" field.
@@ -3688,13 +3633,12 @@ func (m *PermissionMutation) ResetAction() {
 }
 
 // SetParentID sets the "parent_id" field.
-func (m *PermissionMutation) SetParentID(i int) {
-	m.parent_id = &i
-	m.addparent_id = nil
+func (m *PermissionMutation) SetParentID(s string) {
+	m.parent_id = &s
 }
 
 // ParentID returns the value of the "parent_id" field in the mutation.
-func (m *PermissionMutation) ParentID() (r int, exists bool) {
+func (m *PermissionMutation) ParentID() (r string, exists bool) {
 	v := m.parent_id
 	if v == nil {
 		return
@@ -3705,7 +3649,7 @@ func (m *PermissionMutation) ParentID() (r int, exists bool) {
 // OldParentID returns the old "parent_id" field's value of the Permission entity.
 // If the Permission object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PermissionMutation) OldParentID(ctx context.Context) (v int, err error) {
+func (m *PermissionMutation) OldParentID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldParentID is only allowed on UpdateOne operations")
 	}
@@ -3719,28 +3663,9 @@ func (m *PermissionMutation) OldParentID(ctx context.Context) (v int, err error)
 	return oldValue.ParentID, nil
 }
 
-// AddParentID adds i to the "parent_id" field.
-func (m *PermissionMutation) AddParentID(i int) {
-	if m.addparent_id != nil {
-		*m.addparent_id += i
-	} else {
-		m.addparent_id = &i
-	}
-}
-
-// AddedParentID returns the value that was added to the "parent_id" field in this mutation.
-func (m *PermissionMutation) AddedParentID() (r int, exists bool) {
-	v := m.addparent_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ClearParentID clears the value of the "parent_id" field.
 func (m *PermissionMutation) ClearParentID() {
 	m.parent_id = nil
-	m.addparent_id = nil
 	m.clearedFields[permission.FieldParentID] = struct{}{}
 }
 
@@ -3753,7 +3678,6 @@ func (m *PermissionMutation) ParentIDCleared() bool {
 // ResetParentID resets all changes to the "parent_id" field.
 func (m *PermissionMutation) ResetParentID() {
 	m.parent_id = nil
-	m.addparent_id = nil
 	delete(m.clearedFields, permission.FieldParentID)
 }
 
@@ -4120,7 +4044,7 @@ func (m *PermissionMutation) SetField(name string, value ent.Value) error {
 		m.SetCode(v)
 		return nil
 	case permission.FieldType:
-		v, ok := value.(int)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -4141,7 +4065,7 @@ func (m *PermissionMutation) SetField(name string, value ent.Value) error {
 		m.SetAction(v)
 		return nil
 	case permission.FieldParentID:
-		v, ok := value.(int)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -4185,12 +4109,6 @@ func (m *PermissionMutation) AddedFields() []string {
 	if m.adddeleted_at != nil {
 		fields = append(fields, permission.FieldDeletedAt)
 	}
-	if m.add_type != nil {
-		fields = append(fields, permission.FieldType)
-	}
-	if m.addparent_id != nil {
-		fields = append(fields, permission.FieldParentID)
-	}
 	if m.addstatus != nil {
 		fields = append(fields, permission.FieldStatus)
 	}
@@ -4208,10 +4126,6 @@ func (m *PermissionMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUpdatedAt()
 	case permission.FieldDeletedAt:
 		return m.AddedDeletedAt()
-	case permission.FieldType:
-		return m.AddedType()
-	case permission.FieldParentID:
-		return m.AddedParentID()
 	case permission.FieldStatus:
 		return m.AddedStatus()
 	}
@@ -4243,20 +4157,6 @@ func (m *PermissionMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddDeletedAt(v)
-		return nil
-	case permission.FieldType:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddType(v)
-		return nil
-	case permission.FieldParentID:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddParentID(v)
 		return nil
 	case permission.FieldStatus:
 		v, ok := value.(int)

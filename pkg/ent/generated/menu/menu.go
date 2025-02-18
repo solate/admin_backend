@@ -97,7 +97,7 @@ var (
 	// DefaultSort holds the default value on creation for the "sort" field.
 	DefaultSort int
 	// DefaultType holds the default value on creation for the "type" field.
-	DefaultType int
+	DefaultType string
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
 )

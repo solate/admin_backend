@@ -44,7 +44,7 @@ func (l *UpdatePermissionLogic) UpdatePermission(req *types.UpdatePermissionReq)
 	if req.Name != "" {
 		permission.Name = req.Name
 	}
-	if req.Type != 0 {
+	if req.Type != "" {
 		permission.Type = req.Type
 	}
 	if req.Resource != "" {
@@ -53,7 +53,7 @@ func (l *UpdatePermissionLogic) UpdatePermission(req *types.UpdatePermissionReq)
 	if req.Action != "" {
 		permission.Action = req.Action
 	}
-	if req.ParentID != 0 {
+	if req.ParentID != "" {
 		permission.ParentID = req.ParentID
 	}
 	if req.Description != "" {

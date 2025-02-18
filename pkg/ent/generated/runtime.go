@@ -111,7 +111,7 @@ func init() {
 	// menuDescType is the schema descriptor for type field.
 	menuDescType := menuFields[13].Descriptor()
 	// menu.DefaultType holds the default value on creation for the type field.
-	menu.DefaultType = menuDescType.Default.(int)
+	menu.DefaultType = menuDescType.Default.(string)
 	// menuDescStatus is the schema descriptor for status field.
 	menuDescStatus := menuFields[14].Descriptor()
 	// menu.DefaultStatus holds the default value on creation for the status field.

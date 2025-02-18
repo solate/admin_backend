@@ -31,13 +31,13 @@ type Permission struct {
 	// 权限编码
 	Code string `json:"code,omitempty"`
 	// 类型类型: menu/page/button/api/data
-	Type int `json:"type,omitempty"`
+	Type string `json:"type,omitempty"`
 	// 资源
 	Resource string `json:"resource,omitempty"`
 	// 操作类型
 	Action string `json:"action,omitempty"`
 	// 父级ID
-	ParentID int `json:"parent_id,omitempty"`
+	ParentID string `json:"parent_id,omitempty"`
 	// 描述
 	Description string `json:"description,omitempty"`
 	// 状态 1:启用 2:禁用
@@ -52,9 +52,9 @@ func (*Permission) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case permission.FieldID, permission.FieldCreatedAt, permission.FieldUpdatedAt, permission.FieldDeletedAt, permission.FieldType, permission.FieldParentID, permission.FieldStatus:
+		case permission.FieldID, permission.FieldCreatedAt, permission.FieldUpdatedAt, permission.FieldDeletedAt, permission.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case permission.FieldTenantCode, permission.FieldPermissionID, permission.FieldName, permission.FieldCode, permission.FieldResource, permission.FieldAction, permission.FieldDescription, permission.FieldMenuID:
+		case permission.FieldTenantCode, permission.FieldPermissionID, permission.FieldName, permission.FieldCode, permission.FieldType, permission.FieldResource, permission.FieldAction, permission.FieldParentID, permission.FieldDescription, permission.FieldMenuID:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -121,10 +121,10 @@ func (pe *Permission) assignValues(columns []string, values []any) error {
 				pe.Code = value.String
 			}
 		case permission.FieldType:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field type", values[i])
 			} else if value.Valid {
-				pe.Type = int(value.Int64)
+				pe.Type = value.String
 			}
 		case permission.FieldResource:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -139,10 +139,10 @@ func (pe *Permission) assignValues(columns []string, values []any) error {
 				pe.Action = value.String
 			}
 		case permission.FieldParentID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field parent_id", values[i])
 			} else if value.Valid {
-				pe.ParentID = int(value.Int64)
+				pe.ParentID = value.String
 			}
 		case permission.FieldDescription:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -222,7 +222,7 @@ func (pe *Permission) String() string {
 	builder.WriteString(pe.Code)
 	builder.WriteString(", ")
 	builder.WriteString("type=")
-	builder.WriteString(fmt.Sprintf("%v", pe.Type))
+	builder.WriteString(pe.Type)
 	builder.WriteString(", ")
 	builder.WriteString("resource=")
 	builder.WriteString(pe.Resource)
@@ -231,7 +231,7 @@ func (pe *Permission) String() string {
 	builder.WriteString(pe.Action)
 	builder.WriteString(", ")
 	builder.WriteString("parent_id=")
-	builder.WriteString(fmt.Sprintf("%v", pe.ParentID))
+	builder.WriteString(pe.ParentID)
 	builder.WriteString(", ")
 	builder.WriteString("description=")
 	builder.WriteString(pe.Description)

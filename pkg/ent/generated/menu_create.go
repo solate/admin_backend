@@ -172,15 +172,15 @@ func (mc *MenuCreate) SetNillableSort(i *int) *MenuCreate {
 }
 
 // SetType sets the "type" field.
-func (mc *MenuCreate) SetType(i int) *MenuCreate {
-	mc.mutation.SetType(i)
+func (mc *MenuCreate) SetType(s string) *MenuCreate {
+	mc.mutation.SetType(s)
 	return mc
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (mc *MenuCreate) SetNillableType(i *int) *MenuCreate {
-	if i != nil {
-		mc.SetType(*i)
+func (mc *MenuCreate) SetNillableType(s *string) *MenuCreate {
+	if s != nil {
+		mc.SetType(*s)
 	}
 	return mc
 }
@@ -410,7 +410,7 @@ func (mc *MenuCreate) createSpec() (*Menu, *sqlgraph.CreateSpec) {
 		_node.Sort = value
 	}
 	if value, ok := mc.mutation.GetType(); ok {
-		_spec.SetField(menu.FieldType, field.TypeInt, value)
+		_spec.SetField(menu.FieldType, field.TypeString, value)
 		_node.Type = value
 	}
 	if value, ok := mc.mutation.Status(); ok {
@@ -638,7 +638,7 @@ func (u *MenuUpsert) AddSort(v int) *MenuUpsert {
 }
 
 // SetType sets the "type" field.
-func (u *MenuUpsert) SetType(v int) *MenuUpsert {
+func (u *MenuUpsert) SetType(v string) *MenuUpsert {
 	u.Set(menu.FieldType, v)
 	return u
 }
@@ -646,12 +646,6 @@ func (u *MenuUpsert) SetType(v int) *MenuUpsert {
 // UpdateType sets the "type" field to the value that was provided on create.
 func (u *MenuUpsert) UpdateType() *MenuUpsert {
 	u.SetExcluded(menu.FieldType)
-	return u
-}
-
-// AddType adds v to the "type" field.
-func (u *MenuUpsert) AddType(v int) *MenuUpsert {
-	u.Add(menu.FieldType, v)
 	return u
 }
 
@@ -915,16 +909,9 @@ func (u *MenuUpsertOne) UpdateSort() *MenuUpsertOne {
 }
 
 // SetType sets the "type" field.
-func (u *MenuUpsertOne) SetType(v int) *MenuUpsertOne {
+func (u *MenuUpsertOne) SetType(v string) *MenuUpsertOne {
 	return u.Update(func(s *MenuUpsert) {
 		s.SetType(v)
-	})
-}
-
-// AddType adds v to the "type" field.
-func (u *MenuUpsertOne) AddType(v int) *MenuUpsertOne {
-	return u.Update(func(s *MenuUpsert) {
-		s.AddType(v)
 	})
 }
 
@@ -1364,16 +1351,9 @@ func (u *MenuUpsertBulk) UpdateSort() *MenuUpsertBulk {
 }
 
 // SetType sets the "type" field.
-func (u *MenuUpsertBulk) SetType(v int) *MenuUpsertBulk {
+func (u *MenuUpsertBulk) SetType(v string) *MenuUpsertBulk {
 	return u.Update(func(s *MenuUpsert) {
 		s.SetType(v)
-	})
-}
-
-// AddType adds v to the "type" field.
-func (u *MenuUpsertBulk) AddType(v int) *MenuUpsertBulk {
-	return u.Update(func(s *MenuUpsert) {
-		s.AddType(v)
 	})
 }
 

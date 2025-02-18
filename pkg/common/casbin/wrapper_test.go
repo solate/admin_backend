@@ -693,3 +693,135 @@ func TestUpdateRolePermissions(t *testing.T) {
 		})
 	}
 }
+
+func TestRemoveFilteredPolicy(t *testing.T) {
+	pm := setupTestEnv(t)
+
+	// 清除现有策略
+	pm.enforcer.ClearPolicy()
+
+	tests := []struct {
+		name        string
+		setupFunc   func() error
+		fieldIndex  int
+		fieldValues []string
+		wantErr     bool
+		checkFunc   func() bool
+	}{
+		{
+			name: "删除指定资源的所有权限",
+			setupFunc: func() error {
+				policies := [][]string{
+					{"admin", "tenant1", "/api/users", "GET", "api"},
+					{"admin", "tenant1", "/api/users", "POST", "api"},
+					{"admin", "tenant1", "/api/roles", "GET", "api"},
+				}
+				return pm.BatchAddPermissions(policies)
+			},
+			fieldIndex:  2, // 资源字段的索引
+			fieldValues: []string{"/api/users"},
+			wantErr:     false,
+			checkFunc: func() bool {
+				perms, _ := pm.enforcer.GetFilteredPolicy(2, "/api/users")
+				return len(perms) == 0
+			},
+		},
+		{
+			name: "删除指定角色的所有权限",
+			setupFunc: func() error {
+				policies := [][]string{
+					{"admin", "tenant1", "/api/users", "GET", "api"},
+					{"editor", "tenant1", "/api/posts", "POST", "api"},
+				}
+				return pm.BatchAddPermissions(policies)
+			},
+			fieldIndex:  0, // 角色字段的索引
+			fieldValues: []string{"admin"},
+			wantErr:     false,
+			checkFunc: func() bool {
+				perms, _ := pm.enforcer.GetFilteredPolicy(0, "admin")
+				return len(perms) == 0
+			},
+		},
+		{
+			name: "删除多个字段匹配的权限",
+			setupFunc: func() error {
+				policies := [][]string{
+					{"admin", "tenant1", "/api/users", "GET", "api"},
+					{"admin", "tenant2", "/api/users", "GET", "api"},
+					{"admin", "tenant1", "/api/roles", "GET", "api"},
+				}
+				return pm.BatchAddPermissions(policies)
+			},
+			fieldIndex:  0,
+			fieldValues: []string{"admin", "tenant1", "/api/users"},
+			wantErr:     false,
+			checkFunc: func() bool {
+				perms, _ := pm.enforcer.GetFilteredPolicy(0, "admin", "tenant1", "/api/users")
+				return len(perms) == 0
+			},
+		},
+		{
+			name: "删除不存在的权限",
+			setupFunc: func() error {
+				policies := [][]string{
+					{"admin", "tenant1", "/api/users", "GET", "api"},
+				}
+				return pm.BatchAddPermissions(policies)
+			},
+			fieldIndex:  2,
+			fieldValues: []string{"/api/nonexistent"},
+			wantErr:     false,
+			checkFunc: func() bool {
+				// 确保原有权限未被影响
+				perms, _ := pm.enforcer.GetFilteredPolicy(2, "/api/users")
+				return len(perms) == 1
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// 清除之前的测试数据
+			pm.enforcer.ClearPolicy()
+
+			// 设置测试数据
+			if tt.setupFunc != nil {
+				err := tt.setupFunc()
+				require.NoError(t, err, "设置测试数据失败")
+			}
+
+			// 执行测试
+			err := pm.RemoveFilteredPolicy(tt.fieldIndex, tt.fieldValues...)
+
+			// 验证结果
+			if tt.wantErr {
+				assert.Error(t, err)
+				return
+			}
+			assert.NoError(t, err)
+
+			// 强制重新加载策略
+			err = pm.enforcer.LoadPolicy()
+			require.NoError(t, err)
+
+			// 验证删除结果
+			assert.True(t, tt.checkFunc(), "权限删除验证失败")
+		})
+	}
+}
+
+func TestXxx(t *testing.T) {
+
+	pm := setupTestEnv(t)
+	// policies := [][]string{
+	// 	{"admin", "tenant1", "/api/users", "GET", "api"},
+	// 	{"admin", "tenant2", "/api/users", "GET", "api"},
+	// 	{"admin", "tenant1", "/api/roles", "GET", "api"},
+	// }
+	// pm.BatchAddPermissions(policies)
+
+	err := pm.RemoveFilteredPolicy(2, "/api/roles")
+	assert.NoError(t, err)
+
+}

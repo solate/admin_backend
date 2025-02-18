@@ -40,7 +40,7 @@ func (l *SetRolePermissionsLogic) SetRolePermissions(req *types.SetRolePermissio
 	// 为角色添加新的权限
 	var policies [][]string
 	for _, item := range req.PermissionList {
-		policies = append(policies, []string{req.RoleCode, tenantCode, item.PermissionCode, item.Action, item.Type})
+		policies = append(policies, []string{req.RoleCode, tenantCode, item.Resource, item.Action, item.Type})
 	}
 	err = pm.BatchAddPermissions(policies)
 	if err != nil {
