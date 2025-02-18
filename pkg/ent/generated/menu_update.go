@@ -104,16 +104,16 @@ func (mu *MenuUpdate) SetNillableMenuID(s *string) *MenuUpdate {
 	return mu
 }
 
-// SetMenuCode sets the "menu_code" field.
-func (mu *MenuUpdate) SetMenuCode(s string) *MenuUpdate {
-	mu.mutation.SetMenuCode(s)
+// SetCode sets the "code" field.
+func (mu *MenuUpdate) SetCode(s string) *MenuUpdate {
+	mu.mutation.SetCode(s)
 	return mu
 }
 
-// SetNillableMenuCode sets the "menu_code" field if the given value is not nil.
-func (mu *MenuUpdate) SetNillableMenuCode(s *string) *MenuUpdate {
+// SetNillableCode sets the "code" field if the given value is not nil.
+func (mu *MenuUpdate) SetNillableCode(s *string) *MenuUpdate {
 	if s != nil {
-		mu.SetMenuCode(*s)
+		mu.SetCode(*s)
 	}
 	return mu
 }
@@ -299,9 +299,9 @@ func (mu *MenuUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (mu *MenuUpdate) check() error {
-	if v, ok := mu.mutation.MenuCode(); ok {
-		if err := menu.MenuCodeValidator(v); err != nil {
-			return &ValidationError{Name: "menu_code", err: fmt.Errorf(`generated: validator failed for field "Menu.menu_code": %w`, err)}
+	if v, ok := mu.mutation.Code(); ok {
+		if err := menu.CodeValidator(v); err != nil {
+			return &ValidationError{Name: "code", err: fmt.Errorf(`generated: validator failed for field "Menu.code": %w`, err)}
 		}
 	}
 	if v, ok := mu.mutation.Name(); ok {
@@ -351,8 +351,8 @@ func (mu *MenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := mu.mutation.MenuID(); ok {
 		_spec.SetField(menu.FieldMenuID, field.TypeString, value)
 	}
-	if value, ok := mu.mutation.MenuCode(); ok {
-		_spec.SetField(menu.FieldMenuCode, field.TypeString, value)
+	if value, ok := mu.mutation.Code(); ok {
+		_spec.SetField(menu.FieldCode, field.TypeString, value)
 	}
 	if value, ok := mu.mutation.ParentID(); ok {
 		_spec.SetField(menu.FieldParentID, field.TypeString, value)
@@ -488,16 +488,16 @@ func (muo *MenuUpdateOne) SetNillableMenuID(s *string) *MenuUpdateOne {
 	return muo
 }
 
-// SetMenuCode sets the "menu_code" field.
-func (muo *MenuUpdateOne) SetMenuCode(s string) *MenuUpdateOne {
-	muo.mutation.SetMenuCode(s)
+// SetCode sets the "code" field.
+func (muo *MenuUpdateOne) SetCode(s string) *MenuUpdateOne {
+	muo.mutation.SetCode(s)
 	return muo
 }
 
-// SetNillableMenuCode sets the "menu_code" field if the given value is not nil.
-func (muo *MenuUpdateOne) SetNillableMenuCode(s *string) *MenuUpdateOne {
+// SetNillableCode sets the "code" field if the given value is not nil.
+func (muo *MenuUpdateOne) SetNillableCode(s *string) *MenuUpdateOne {
 	if s != nil {
-		muo.SetMenuCode(*s)
+		muo.SetCode(*s)
 	}
 	return muo
 }
@@ -696,9 +696,9 @@ func (muo *MenuUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (muo *MenuUpdateOne) check() error {
-	if v, ok := muo.mutation.MenuCode(); ok {
-		if err := menu.MenuCodeValidator(v); err != nil {
-			return &ValidationError{Name: "menu_code", err: fmt.Errorf(`generated: validator failed for field "Menu.menu_code": %w`, err)}
+	if v, ok := muo.mutation.Code(); ok {
+		if err := menu.CodeValidator(v); err != nil {
+			return &ValidationError{Name: "code", err: fmt.Errorf(`generated: validator failed for field "Menu.code": %w`, err)}
 		}
 	}
 	if v, ok := muo.mutation.Name(); ok {
@@ -765,8 +765,8 @@ func (muo *MenuUpdateOne) sqlSave(ctx context.Context) (_node *Menu, err error) 
 	if value, ok := muo.mutation.MenuID(); ok {
 		_spec.SetField(menu.FieldMenuID, field.TypeString, value)
 	}
-	if value, ok := muo.mutation.MenuCode(); ok {
-		_spec.SetField(menu.FieldMenuCode, field.TypeString, value)
+	if value, ok := muo.mutation.Code(); ok {
+		_spec.SetField(menu.FieldCode, field.TypeString, value)
 	}
 	if value, ok := muo.mutation.ParentID(); ok {
 		_spec.SetField(menu.FieldParentID, field.TypeString, value)

@@ -21,8 +21,8 @@ const (
 	FieldTenantCode = "tenant_code"
 	// FieldMenuID holds the string denoting the menu_id field in the database.
 	FieldMenuID = "menu_id"
-	// FieldMenuCode holds the string denoting the menu_code field in the database.
-	FieldMenuCode = "menu_code"
+	// FieldCode holds the string denoting the code field in the database.
+	FieldCode = "code"
 	// FieldParentID holds the string denoting the parent_id field in the database.
 	FieldParentID = "parent_id"
 	// FieldName holds the string denoting the name field in the database.
@@ -53,7 +53,7 @@ var Columns = []string{
 	FieldDeletedAt,
 	FieldTenantCode,
 	FieldMenuID,
-	FieldMenuCode,
+	FieldCode,
 	FieldParentID,
 	FieldName,
 	FieldPath,
@@ -80,8 +80,8 @@ var (
 	DefaultCreatedAt int64
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt int64
-	// MenuCodeValidator is a validator for the "menu_code" field. It is called by the builders before save.
-	MenuCodeValidator func(string) error
+	// CodeValidator is a validator for the "code" field. It is called by the builders before save.
+	CodeValidator func(string) error
 	// DefaultParentID holds the default value on creation for the "parent_id" field.
 	DefaultParentID string
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
@@ -135,9 +135,9 @@ func ByMenuID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMenuID, opts...).ToFunc()
 }
 
-// ByMenuCode orders the results by the menu_code field.
-func ByMenuCode(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMenuCode, opts...).ToFunc()
+// ByCode orders the results by the code field.
+func ByCode(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCode, opts...).ToFunc()
 }
 
 // ByParentID orders the results by the parent_id field.

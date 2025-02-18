@@ -27,7 +27,7 @@ type Menu struct {
 	// 菜单ID
 	MenuID string `json:"menu_id,omitempty"`
 	// 菜单code
-	MenuCode string `json:"menu_code,omitempty"`
+	Code string `json:"code,omitempty"`
 	// 父菜单ID
 	ParentID string `json:"parent_id,omitempty"`
 	// 菜单名称
@@ -56,7 +56,7 @@ func (*Menu) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case menu.FieldID, menu.FieldCreatedAt, menu.FieldUpdatedAt, menu.FieldDeletedAt, menu.FieldSort, menu.FieldType, menu.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case menu.FieldTenantCode, menu.FieldMenuID, menu.FieldMenuCode, menu.FieldParentID, menu.FieldName, menu.FieldPath, menu.FieldComponent, menu.FieldRedirect, menu.FieldIcon:
+		case menu.FieldTenantCode, menu.FieldMenuID, menu.FieldCode, menu.FieldParentID, menu.FieldName, menu.FieldPath, menu.FieldComponent, menu.FieldRedirect, menu.FieldIcon:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -110,11 +110,11 @@ func (m *Menu) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				m.MenuID = value.String
 			}
-		case menu.FieldMenuCode:
+		case menu.FieldCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field menu_code", values[i])
+				return fmt.Errorf("unexpected type %T for field code", values[i])
 			} else if value.Valid {
-				m.MenuCode = value.String
+				m.Code = value.String
 			}
 		case menu.FieldParentID:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -223,8 +223,8 @@ func (m *Menu) String() string {
 	builder.WriteString("menu_id=")
 	builder.WriteString(m.MenuID)
 	builder.WriteString(", ")
-	builder.WriteString("menu_code=")
-	builder.WriteString(m.MenuCode)
+	builder.WriteString("code=")
+	builder.WriteString(m.Code)
 	builder.WriteString(", ")
 	builder.WriteString("parent_id=")
 	builder.WriteString(m.ParentID)

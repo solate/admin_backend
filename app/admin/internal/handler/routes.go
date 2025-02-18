@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	auth "admin_backend/app/admin/internal/handler/auth"
+	menu "admin_backend/app/admin/internal/handler/menu"
 	permission "admin_backend/app/admin/internal/handler/permission"
 	role "admin_backend/app/admin/internal/handler/role"
 	tenant "admin_backend/app/admin/internal/handler/tenant"
@@ -73,11 +74,50 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.AuthMiddleware},
 			[]rest.Route{
 				{
-					// 获取资源类型列表
-					Method:  http.MethodGet,
-					Path:    "/resource-types",
-					Handler: permission.GetResourceTypesHandler(serverCtx),
+					// 创建菜单
+					Method:  http.MethodPost,
+					Path:    "/menus",
+					Handler: menu.CreateMenuHandler(serverCtx),
 				},
+				{
+					// 获取菜单列表
+					Method:  http.MethodGet,
+					Path:    "/menus",
+					Handler: menu.ListMenuHandler(serverCtx),
+				},
+				{
+					// 更新菜单
+					Method:  http.MethodPut,
+					Path:    "/menus/:menu_id",
+					Handler: menu.UpdateMenuHandler(serverCtx),
+				},
+				{
+					// 删除菜单
+					Method:  http.MethodDelete,
+					Path:    "/menus/:menu_id",
+					Handler: menu.DeleteMenuHandler(serverCtx),
+				},
+				{
+					// 获取菜单详情
+					Method:  http.MethodGet,
+					Path:    "/menus/:menu_id",
+					Handler: menu.GetMenuHandler(serverCtx),
+				},
+				{
+					// 获取菜单树
+					Method:  http.MethodGet,
+					Path:    "/menus/tree",
+					Handler: menu.GetMenuTreeHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/admin/api/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.AuthMiddleware},
+			[]rest.Route{
 				{
 					// 设置角色权限
 					Method:  http.MethodPost,
@@ -120,9 +160,15 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/rules/:id",
 					Handler: permission.GetPermissionHandler(serverCtx),
 				},
+				{
+					// 获取资源类型列表
+					Method:  http.MethodGet,
+					Path:    "/rules/resource-types",
+					Handler: permission.GetResourceTypesHandler(serverCtx),
+				},
 			}...,
 		),
-		rest.WithPrefix("/admin/api/v1/permission"),
+		rest.WithPrefix("/admin/api/v1"),
 	)
 
 	server.AddRoutes(

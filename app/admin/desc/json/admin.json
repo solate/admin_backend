@@ -235,280 +235,6 @@
         ]
       }
     },
-    "/admin/api/v1/permission/resource-types": {
-      "get": {
-        "summary": "获取资源类型列表",
-        "operationId": "GetResourceTypes",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/GetResourceTypesResp"
-            }
-          }
-        },
-        "tags": [
-          "permission"
-        ]
-      }
-    },
-    "/admin/api/v1/permission/roles/{role_id}/permissions": {
-      "get": {
-        "summary": "获取角色权限列表",
-        "operationId": "GetRolePermissions",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/GetRolePermissionsResp"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "role_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "permission"
-        ]
-      },
-      "post": {
-        "summary": "设置角色权限",
-        "operationId": "SetRolePermissions",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/bool"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "role_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "description": " 分配角色权限请求",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/SetRolePermissionsReq"
-            }
-          }
-        ],
-        "tags": [
-          "permission"
-        ]
-      }
-    },
-    "/admin/api/v1/permission/rules": {
-      "get": {
-        "summary": "获取权限规则列表",
-        "operationId": "ListPermission",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ListPermissionResp"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "page",
-            "description": " 当前页",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "int32",
-            "default": "1"
-          },
-          {
-            "name": "page_size",
-            "description": " 每页大小",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "int32",
-            "default": "10"
-          },
-          {
-            "name": "name",
-            "description": " 权限名称",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "code",
-            "description": " 权限编码",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "type",
-            "description": " 权限类型",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "resource",
-            "description": " 资源路径",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "action",
-            "description": " 操作类型",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "status",
-            "description": " 状态",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "permission"
-        ],
-        "consumes": [
-          "multipart/form-data"
-        ]
-      },
-      "post": {
-        "summary": "创建权限规则",
-        "operationId": "CreatePermission",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/CreatePermissionResp"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "description": " 创建权限规则请求",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/CreatePermissionReq"
-            }
-          }
-        ],
-        "tags": [
-          "permission"
-        ]
-      }
-    },
-    "/admin/api/v1/permission/rules/{id}": {
-      "get": {
-        "summary": "获取权限规则详情",
-        "operationId": "GetPermission",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/PermissionInfo"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "permission"
-        ]
-      },
-      "delete": {
-        "summary": "删除权限规则",
-        "operationId": "DeletePermission",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/bool"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "description": " 删除权限规则请求",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/DeletePermissionReq"
-            }
-          }
-        ],
-        "tags": [
-          "permission"
-        ]
-      },
-      "put": {
-        "summary": "更新权限规则",
-        "operationId": "UpdatePermission",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/bool"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "description": " 更新权限规则请求",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UpdatePermissionReq"
-            }
-          }
-        ],
-        "tags": [
-          "permission"
-        ]
-      }
-    },
     "/admin/api/v1/roles": {
       "get": {
         "summary": "获取角色列表",
@@ -683,6 +409,280 @@
         ],
         "tags": [
           "role"
+        ]
+      }
+    },
+    "/admin/api/v1/roles/{role_id}/permissions": {
+      "get": {
+        "summary": "获取角色权限列表",
+        "operationId": "GetRolePermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetRolePermissionsResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "permission"
+        ]
+      },
+      "post": {
+        "summary": "设置角色权限",
+        "operationId": "SetRolePermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 分配角色权限请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SetRolePermissionsReq"
+            }
+          }
+        ],
+        "tags": [
+          "permission"
+        ]
+      }
+    },
+    "/admin/api/v1/rules": {
+      "get": {
+        "summary": "获取权限规则列表",
+        "operationId": "ListPermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListPermissionResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": " 当前页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          },
+          {
+            "name": "page_size",
+            "description": " 每页大小",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "10"
+          },
+          {
+            "name": "name",
+            "description": " 权限名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "description": " 权限编码",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "description": " 权限类型",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "resource",
+            "description": " 资源路径",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "action",
+            "description": " 操作类型",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "status",
+            "description": " 状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "permission"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      },
+      "post": {
+        "summary": "创建权限规则",
+        "operationId": "CreatePermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreatePermissionResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 创建权限规则请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreatePermissionReq"
+            }
+          }
+        ],
+        "tags": [
+          "permission"
+        ]
+      }
+    },
+    "/admin/api/v1/rules/resource-types": {
+      "get": {
+        "summary": "获取资源类型列表",
+        "operationId": "GetResourceTypes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetResourceTypesResp"
+            }
+          }
+        },
+        "tags": [
+          "permission"
+        ]
+      }
+    },
+    "/admin/api/v1/rules/{id}": {
+      "get": {
+        "summary": "获取权限规则详情",
+        "operationId": "GetPermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PermissionInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "permission"
+        ]
+      },
+      "delete": {
+        "summary": "删除权限规则",
+        "operationId": "DeletePermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 删除权限规则请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeletePermissionReq"
+            }
+          }
+        ],
+        "tags": [
+          "permission"
+        ]
+      },
+      "put": {
+        "summary": "更新权限规则",
+        "operationId": "UpdatePermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 更新权限规则请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdatePermissionReq"
+            }
+          }
+        ],
+        "tags": [
+          "permission"
         ]
       }
     },

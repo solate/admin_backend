@@ -76,10 +76,10 @@ func init() {
 	menuDescUpdatedAt := menuFields[1].Descriptor()
 	// menu.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	menu.DefaultUpdatedAt = menuDescUpdatedAt.Default.(int64)
-	// menuDescMenuCode is the schema descriptor for menu_code field.
-	menuDescMenuCode := menuFields[5].Descriptor()
-	// menu.MenuCodeValidator is a validator for the "menu_code" field. It is called by the builders before save.
-	menu.MenuCodeValidator = menuDescMenuCode.Validators[0].(func(string) error)
+	// menuDescCode is the schema descriptor for code field.
+	menuDescCode := menuFields[5].Descriptor()
+	// menu.CodeValidator is a validator for the "code" field. It is called by the builders before save.
+	menu.CodeValidator = menuDescCode.Validators[0].(func(string) error)
 	// menuDescParentID is the schema descriptor for parent_id field.
 	menuDescParentID := menuFields[6].Descriptor()
 	// menu.DefaultParentID holds the default value on creation for the parent_id field.

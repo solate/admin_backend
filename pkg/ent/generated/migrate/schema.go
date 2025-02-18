@@ -63,7 +63,7 @@ var (
 		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
 		{Name: "tenant_code", Type: field.TypeString, Comment: "租户code"},
 		{Name: "menu_id", Type: field.TypeString, Unique: true, Comment: "菜单ID"},
-		{Name: "menu_code", Type: field.TypeString, Comment: "菜单code"},
+		{Name: "code", Type: field.TypeString, Comment: "菜单code"},
 		{Name: "parent_id", Type: field.TypeString, Comment: "父菜单ID", Default: ""},
 		{Name: "name", Type: field.TypeString, Comment: "菜单名称"},
 		{Name: "path", Type: field.TypeString, Comment: "路由路径", Default: ""},

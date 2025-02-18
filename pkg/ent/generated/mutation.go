@@ -1811,7 +1811,7 @@ type MenuMutation struct {
 	adddeleted_at *int64
 	tenant_code   *string
 	menu_id       *string
-	menu_code     *string
+	code          *string
 	parent_id     *string
 	name          *string
 	_path         *string
@@ -2182,40 +2182,40 @@ func (m *MenuMutation) ResetMenuID() {
 	m.menu_id = nil
 }
 
-// SetMenuCode sets the "menu_code" field.
-func (m *MenuMutation) SetMenuCode(s string) {
-	m.menu_code = &s
+// SetCode sets the "code" field.
+func (m *MenuMutation) SetCode(s string) {
+	m.code = &s
 }
 
-// MenuCode returns the value of the "menu_code" field in the mutation.
-func (m *MenuMutation) MenuCode() (r string, exists bool) {
-	v := m.menu_code
+// Code returns the value of the "code" field in the mutation.
+func (m *MenuMutation) Code() (r string, exists bool) {
+	v := m.code
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldMenuCode returns the old "menu_code" field's value of the Menu entity.
+// OldCode returns the old "code" field's value of the Menu entity.
 // If the Menu object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MenuMutation) OldMenuCode(ctx context.Context) (v string, err error) {
+func (m *MenuMutation) OldCode(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMenuCode is only allowed on UpdateOne operations")
+		return v, errors.New("OldCode is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMenuCode requires an ID field in the mutation")
+		return v, errors.New("OldCode requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMenuCode: %w", err)
+		return v, fmt.Errorf("querying old value for OldCode: %w", err)
 	}
-	return oldValue.MenuCode, nil
+	return oldValue.Code, nil
 }
 
-// ResetMenuCode resets all changes to the "menu_code" field.
-func (m *MenuMutation) ResetMenuCode() {
-	m.menu_code = nil
+// ResetCode resets all changes to the "code" field.
+func (m *MenuMutation) ResetCode() {
+	m.code = nil
 }
 
 // SetParentID sets the "parent_id" field.
@@ -2652,8 +2652,8 @@ func (m *MenuMutation) Fields() []string {
 	if m.menu_id != nil {
 		fields = append(fields, menu.FieldMenuID)
 	}
-	if m.menu_code != nil {
-		fields = append(fields, menu.FieldMenuCode)
+	if m.code != nil {
+		fields = append(fields, menu.FieldCode)
 	}
 	if m.parent_id != nil {
 		fields = append(fields, menu.FieldParentID)
@@ -2700,8 +2700,8 @@ func (m *MenuMutation) Field(name string) (ent.Value, bool) {
 		return m.TenantCode()
 	case menu.FieldMenuID:
 		return m.MenuID()
-	case menu.FieldMenuCode:
-		return m.MenuCode()
+	case menu.FieldCode:
+		return m.Code()
 	case menu.FieldParentID:
 		return m.ParentID()
 	case menu.FieldName:
@@ -2739,8 +2739,8 @@ func (m *MenuMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldTenantCode(ctx)
 	case menu.FieldMenuID:
 		return m.OldMenuID(ctx)
-	case menu.FieldMenuCode:
-		return m.OldMenuCode(ctx)
+	case menu.FieldCode:
+		return m.OldCode(ctx)
 	case menu.FieldParentID:
 		return m.OldParentID(ctx)
 	case menu.FieldName:
@@ -2803,12 +2803,12 @@ func (m *MenuMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetMenuID(v)
 		return nil
-	case menu.FieldMenuCode:
+	case menu.FieldCode:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetMenuCode(v)
+		m.SetCode(v)
 		return nil
 	case menu.FieldParentID:
 		v, ok := value.(string)
@@ -3021,8 +3021,8 @@ func (m *MenuMutation) ResetField(name string) error {
 	case menu.FieldMenuID:
 		m.ResetMenuID()
 		return nil
-	case menu.FieldMenuCode:
-		m.ResetMenuCode()
+	case menu.FieldCode:
+		m.ResetCode()
 		return nil
 	case menu.FieldParentID:
 		m.ResetParentID()

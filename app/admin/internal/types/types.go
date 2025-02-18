@@ -13,6 +13,23 @@ type ChangePasswordReq struct {
 	NewPassword string `json:"new_password" validate:"required"` // 新密码
 }
 
+type CreateMenuReq struct {
+	Code      string `json:"code"`               // 菜单code
+	ParentID  string `json:"parent_id"`          // 父菜单ID
+	Name      string `json:"name"`               // 菜单名称
+	Path      string `json:"path,optional"`      // 路由路径
+	Component string `json:"component,optional"` // 前端组件路径
+	Redirect  string `json:"redirect,optional"`  // 重定向路径
+	Icon      string `json:"icon,optional"`      // 菜单图标
+	Sort      int    `json:"sort,optional"`      // 排序号
+	Type      int    `json:"type"`               // 菜单类型 1:目录 2:菜单 3:按钮
+	Status    int    `json:"status,optional"`    // 状态 1:启用 2:禁用
+}
+
+type CreateMenuResp struct {
+	MenuID string `json:"menu_id"` // 菜单ID
+}
+
 type CreatePermissionReq struct {
 	Name        string `json:"name" validate:"required"`     // 权限名称
 	Code        string `json:"code" validate:"required"`     // 权限编码
@@ -68,6 +85,10 @@ type CreateUserResp struct {
 	UserID string `json:"user_id"` // 用户ID
 }
 
+type DeleteMenuReq struct {
+	MenuID string `path:"menu_id"`
+}
+
 type DeletePermissionReq struct {
 	PermissionID string `path:"permission_id" validate:"required"` // 权限规则ID
 }
@@ -82,6 +103,10 @@ type DeleteTenantReq struct {
 
 type DeleteUserReq struct {
 	UserID string `path:"user_id"`
+}
+
+type GetMenuReq struct {
+	MenuID string `path:"menu_id"`
 }
 
 type GetPermissionReq struct {
@@ -197,6 +222,52 @@ type LoginResp struct {
 	Email    string `json:"email"`
 }
 
+type MenuInfo struct {
+	MenuID    string `json:"menu_id"`    // 菜单ID
+	Code      string `json:"code"`       // 菜单code
+	ParentID  string `json:"parent_id"`  // 父菜单ID
+	Name      string `json:"name"`       // 菜单名称
+	Path      string `json:"path"`       // 路由路径
+	Component string `json:"component"`  // 前端组件路径
+	Redirect  string `json:"redirect"`   // 重定向路径
+	Icon      string `json:"icon"`       // 菜单图标
+	Sort      int    `json:"sort"`       // 排序号
+	Type      int    `json:"type"`       // 菜单类型
+	Status    int    `json:"status"`     // 状态
+	CreatedAt int64  `json:"created_at"` // 创建时间
+}
+
+type MenuListReq struct {
+	PageRequest
+	Name   string `form:"name,optional"`   // 菜单名称
+	Type   int    `form:"type,optional"`   // 菜单类型
+	Status int    `form:"status,optional"` // 状态
+}
+
+type MenuListResp struct {
+	Page *PageResponse `json:"page"` // 分页
+	List []*MenuInfo   `json:"list"` // 菜单列表
+}
+
+type MenuTree struct {
+	MenuID    string      `json:"menu_id"`   // 菜单ID
+	Code      string      `json:"code"`      // 菜单code
+	ParentID  string      `json:"parent_id"` // 父菜单ID
+	Name      string      `json:"name"`      // 菜单名称
+	Path      string      `json:"path"`      // 路由路径
+	Component string      `json:"component"` // 前端组件路径
+	Redirect  string      `json:"redirect"`  // 重定向路径
+	Icon      string      `json:"icon"`      // 菜单图标
+	Sort      int         `json:"sort"`      // 排序号
+	Type      int         `json:"type"`      // 菜单类型
+	Status    int         `json:"status"`    // 状态
+	Children  []*MenuTree `json:"children"`  // 子菜单
+}
+
+type MenuTreeResp struct {
+	List []*MenuTree `json:"list"` // 菜单树列表
+}
+
 type PageJsonRequest struct {
 	Current  int `json:"current"`   // 当前页
 	PageSize int `json:"page_size"` // 每页大小
@@ -309,6 +380,17 @@ type TenantInfo struct {
 type TimeRange struct {
 	StartTime string `form:"start_time,optional"` // 开始时间
 	EndTime   string `form:"end_time,optional"`   // 结束时间
+}
+
+type UpdateMenuReq struct {
+	MenuID    string `path:"menu_id"`
+	Name      string `json:"name,optional"`      // 菜单名称
+	Path      string `json:"path,optional"`      // 路由路径
+	Component string `json:"component,optional"` // 前端组件路径
+	Redirect  string `json:"redirect,optional"`  // 重定向路径
+	Icon      string `json:"icon,optional"`      // 菜单图标
+	Sort      int    `json:"sort,optional"`      // 排序号
+	Status    int    `json:"status,optional"`    // 状态
 }
 
 type UpdatePermissionReq struct {

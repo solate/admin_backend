@@ -75,9 +75,9 @@ func (mc *MenuCreate) SetMenuID(s string) *MenuCreate {
 	return mc
 }
 
-// SetMenuCode sets the "menu_code" field.
-func (mc *MenuCreate) SetMenuCode(s string) *MenuCreate {
-	mc.mutation.SetMenuCode(s)
+// SetCode sets the "code" field.
+func (mc *MenuCreate) SetCode(s string) *MenuCreate {
+	mc.mutation.SetCode(s)
 	return mc
 }
 
@@ -290,12 +290,12 @@ func (mc *MenuCreate) check() error {
 	if _, ok := mc.mutation.MenuID(); !ok {
 		return &ValidationError{Name: "menu_id", err: errors.New(`generated: missing required field "Menu.menu_id"`)}
 	}
-	if _, ok := mc.mutation.MenuCode(); !ok {
-		return &ValidationError{Name: "menu_code", err: errors.New(`generated: missing required field "Menu.menu_code"`)}
+	if _, ok := mc.mutation.Code(); !ok {
+		return &ValidationError{Name: "code", err: errors.New(`generated: missing required field "Menu.code"`)}
 	}
-	if v, ok := mc.mutation.MenuCode(); ok {
-		if err := menu.MenuCodeValidator(v); err != nil {
-			return &ValidationError{Name: "menu_code", err: fmt.Errorf(`generated: validator failed for field "Menu.menu_code": %w`, err)}
+	if v, ok := mc.mutation.Code(); ok {
+		if err := menu.CodeValidator(v); err != nil {
+			return &ValidationError{Name: "code", err: fmt.Errorf(`generated: validator failed for field "Menu.code": %w`, err)}
 		}
 	}
 	if _, ok := mc.mutation.ParentID(); !ok {
@@ -377,9 +377,9 @@ func (mc *MenuCreate) createSpec() (*Menu, *sqlgraph.CreateSpec) {
 		_spec.SetField(menu.FieldMenuID, field.TypeString, value)
 		_node.MenuID = value
 	}
-	if value, ok := mc.mutation.MenuCode(); ok {
-		_spec.SetField(menu.FieldMenuCode, field.TypeString, value)
-		_node.MenuCode = value
+	if value, ok := mc.mutation.Code(); ok {
+		_spec.SetField(menu.FieldCode, field.TypeString, value)
+		_node.Code = value
 	}
 	if value, ok := mc.mutation.ParentID(); ok {
 		_spec.SetField(menu.FieldParentID, field.TypeString, value)
@@ -535,15 +535,15 @@ func (u *MenuUpsert) UpdateMenuID() *MenuUpsert {
 	return u
 }
 
-// SetMenuCode sets the "menu_code" field.
-func (u *MenuUpsert) SetMenuCode(v string) *MenuUpsert {
-	u.Set(menu.FieldMenuCode, v)
+// SetCode sets the "code" field.
+func (u *MenuUpsert) SetCode(v string) *MenuUpsert {
+	u.Set(menu.FieldCode, v)
 	return u
 }
 
-// UpdateMenuCode sets the "menu_code" field to the value that was provided on create.
-func (u *MenuUpsert) UpdateMenuCode() *MenuUpsert {
-	u.SetExcluded(menu.FieldMenuCode)
+// UpdateCode sets the "code" field to the value that was provided on create.
+func (u *MenuUpsert) UpdateCode() *MenuUpsert {
+	u.SetExcluded(menu.FieldCode)
 	return u
 }
 
@@ -795,17 +795,17 @@ func (u *MenuUpsertOne) UpdateMenuID() *MenuUpsertOne {
 	})
 }
 
-// SetMenuCode sets the "menu_code" field.
-func (u *MenuUpsertOne) SetMenuCode(v string) *MenuUpsertOne {
+// SetCode sets the "code" field.
+func (u *MenuUpsertOne) SetCode(v string) *MenuUpsertOne {
 	return u.Update(func(s *MenuUpsert) {
-		s.SetMenuCode(v)
+		s.SetCode(v)
 	})
 }
 
-// UpdateMenuCode sets the "menu_code" field to the value that was provided on create.
-func (u *MenuUpsertOne) UpdateMenuCode() *MenuUpsertOne {
+// UpdateCode sets the "code" field to the value that was provided on create.
+func (u *MenuUpsertOne) UpdateCode() *MenuUpsertOne {
 	return u.Update(func(s *MenuUpsert) {
-		s.UpdateMenuCode()
+		s.UpdateCode()
 	})
 }
 
@@ -1244,17 +1244,17 @@ func (u *MenuUpsertBulk) UpdateMenuID() *MenuUpsertBulk {
 	})
 }
 
-// SetMenuCode sets the "menu_code" field.
-func (u *MenuUpsertBulk) SetMenuCode(v string) *MenuUpsertBulk {
+// SetCode sets the "code" field.
+func (u *MenuUpsertBulk) SetCode(v string) *MenuUpsertBulk {
 	return u.Update(func(s *MenuUpsert) {
-		s.SetMenuCode(v)
+		s.SetCode(v)
 	})
 }
 
-// UpdateMenuCode sets the "menu_code" field to the value that was provided on create.
-func (u *MenuUpsertBulk) UpdateMenuCode() *MenuUpsertBulk {
+// UpdateCode sets the "code" field to the value that was provided on create.
+func (u *MenuUpsertBulk) UpdateCode() *MenuUpsertBulk {
 	return u.Update(func(s *MenuUpsert) {
-		s.UpdateMenuCode()
+		s.UpdateCode()
 	})
 }
 

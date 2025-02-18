@@ -78,9 +78,9 @@ func MenuID(v string) predicate.Menu {
 	return predicate.Menu(sql.FieldEQ(FieldMenuID, v))
 }
 
-// MenuCode applies equality check predicate on the "menu_code" field. It's identical to MenuCodeEQ.
-func MenuCode(v string) predicate.Menu {
-	return predicate.Menu(sql.FieldEQ(FieldMenuCode, v))
+// Code applies equality check predicate on the "code" field. It's identical to CodeEQ.
+func Code(v string) predicate.Menu {
+	return predicate.Menu(sql.FieldEQ(FieldCode, v))
 }
 
 // ParentID applies equality check predicate on the "parent_id" field. It's identical to ParentIDEQ.
@@ -388,69 +388,69 @@ func MenuIDContainsFold(v string) predicate.Menu {
 	return predicate.Menu(sql.FieldContainsFold(FieldMenuID, v))
 }
 
-// MenuCodeEQ applies the EQ predicate on the "menu_code" field.
-func MenuCodeEQ(v string) predicate.Menu {
-	return predicate.Menu(sql.FieldEQ(FieldMenuCode, v))
+// CodeEQ applies the EQ predicate on the "code" field.
+func CodeEQ(v string) predicate.Menu {
+	return predicate.Menu(sql.FieldEQ(FieldCode, v))
 }
 
-// MenuCodeNEQ applies the NEQ predicate on the "menu_code" field.
-func MenuCodeNEQ(v string) predicate.Menu {
-	return predicate.Menu(sql.FieldNEQ(FieldMenuCode, v))
+// CodeNEQ applies the NEQ predicate on the "code" field.
+func CodeNEQ(v string) predicate.Menu {
+	return predicate.Menu(sql.FieldNEQ(FieldCode, v))
 }
 
-// MenuCodeIn applies the In predicate on the "menu_code" field.
-func MenuCodeIn(vs ...string) predicate.Menu {
-	return predicate.Menu(sql.FieldIn(FieldMenuCode, vs...))
+// CodeIn applies the In predicate on the "code" field.
+func CodeIn(vs ...string) predicate.Menu {
+	return predicate.Menu(sql.FieldIn(FieldCode, vs...))
 }
 
-// MenuCodeNotIn applies the NotIn predicate on the "menu_code" field.
-func MenuCodeNotIn(vs ...string) predicate.Menu {
-	return predicate.Menu(sql.FieldNotIn(FieldMenuCode, vs...))
+// CodeNotIn applies the NotIn predicate on the "code" field.
+func CodeNotIn(vs ...string) predicate.Menu {
+	return predicate.Menu(sql.FieldNotIn(FieldCode, vs...))
 }
 
-// MenuCodeGT applies the GT predicate on the "menu_code" field.
-func MenuCodeGT(v string) predicate.Menu {
-	return predicate.Menu(sql.FieldGT(FieldMenuCode, v))
+// CodeGT applies the GT predicate on the "code" field.
+func CodeGT(v string) predicate.Menu {
+	return predicate.Menu(sql.FieldGT(FieldCode, v))
 }
 
-// MenuCodeGTE applies the GTE predicate on the "menu_code" field.
-func MenuCodeGTE(v string) predicate.Menu {
-	return predicate.Menu(sql.FieldGTE(FieldMenuCode, v))
+// CodeGTE applies the GTE predicate on the "code" field.
+func CodeGTE(v string) predicate.Menu {
+	return predicate.Menu(sql.FieldGTE(FieldCode, v))
 }
 
-// MenuCodeLT applies the LT predicate on the "menu_code" field.
-func MenuCodeLT(v string) predicate.Menu {
-	return predicate.Menu(sql.FieldLT(FieldMenuCode, v))
+// CodeLT applies the LT predicate on the "code" field.
+func CodeLT(v string) predicate.Menu {
+	return predicate.Menu(sql.FieldLT(FieldCode, v))
 }
 
-// MenuCodeLTE applies the LTE predicate on the "menu_code" field.
-func MenuCodeLTE(v string) predicate.Menu {
-	return predicate.Menu(sql.FieldLTE(FieldMenuCode, v))
+// CodeLTE applies the LTE predicate on the "code" field.
+func CodeLTE(v string) predicate.Menu {
+	return predicate.Menu(sql.FieldLTE(FieldCode, v))
 }
 
-// MenuCodeContains applies the Contains predicate on the "menu_code" field.
-func MenuCodeContains(v string) predicate.Menu {
-	return predicate.Menu(sql.FieldContains(FieldMenuCode, v))
+// CodeContains applies the Contains predicate on the "code" field.
+func CodeContains(v string) predicate.Menu {
+	return predicate.Menu(sql.FieldContains(FieldCode, v))
 }
 
-// MenuCodeHasPrefix applies the HasPrefix predicate on the "menu_code" field.
-func MenuCodeHasPrefix(v string) predicate.Menu {
-	return predicate.Menu(sql.FieldHasPrefix(FieldMenuCode, v))
+// CodeHasPrefix applies the HasPrefix predicate on the "code" field.
+func CodeHasPrefix(v string) predicate.Menu {
+	return predicate.Menu(sql.FieldHasPrefix(FieldCode, v))
 }
 
-// MenuCodeHasSuffix applies the HasSuffix predicate on the "menu_code" field.
-func MenuCodeHasSuffix(v string) predicate.Menu {
-	return predicate.Menu(sql.FieldHasSuffix(FieldMenuCode, v))
+// CodeHasSuffix applies the HasSuffix predicate on the "code" field.
+func CodeHasSuffix(v string) predicate.Menu {
+	return predicate.Menu(sql.FieldHasSuffix(FieldCode, v))
 }
 
-// MenuCodeEqualFold applies the EqualFold predicate on the "menu_code" field.
-func MenuCodeEqualFold(v string) predicate.Menu {
-	return predicate.Menu(sql.FieldEqualFold(FieldMenuCode, v))
+// CodeEqualFold applies the EqualFold predicate on the "code" field.
+func CodeEqualFold(v string) predicate.Menu {
+	return predicate.Menu(sql.FieldEqualFold(FieldCode, v))
 }
 
-// MenuCodeContainsFold applies the ContainsFold predicate on the "menu_code" field.
-func MenuCodeContainsFold(v string) predicate.Menu {
-	return predicate.Menu(sql.FieldContainsFold(FieldMenuCode, v))
+// CodeContainsFold applies the ContainsFold predicate on the "code" field.
+func CodeContainsFold(v string) predicate.Menu {
+	return predicate.Menu(sql.FieldContainsFold(FieldCode, v))
 }
 
 // ParentIDEQ applies the EQ predicate on the "parent_id" field.

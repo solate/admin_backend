@@ -127,7 +127,7 @@ type (
 )
 
 @server (
-    prefix: /admin/api/v1/permission
+    prefix: /admin/api/v1
     group: permission
     middleware: AuthMiddleware
 )
@@ -162,5 +162,5 @@ service admin {
 
     @doc "获取资源类型列表"
     @handler GetResourceTypes
-    get /resource-types returns (GetResourceTypesResp)
+    get /rules/resource-types returns (GetResourceTypesResp)
 }
