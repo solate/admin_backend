@@ -61,7 +61,7 @@ func (l *CreatePermissionLogic) CreatePermission(req *types.CreatePermissionReq)
 		Status:       req.Status,
 		MenuID:       req.MenuID,
 	}
-	permission, err = l.permissionRepo.Create(l.ctx, newPermission)
+	_, err = l.permissionRepo.Create(l.ctx, newPermission)
 	if err != nil {
 		l.Error("CreatePermission Create err:", err.Error())
 		return nil, xerr.NewErrCodeMsg(xerr.ServerError, "创建权限失败")
