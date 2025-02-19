@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"admin_backend/app/admin/internal/config"
+	"admin_backend/pkg/common/casbin"
 	"admin_backend/pkg/common/contextutil"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/utils/jwt"
@@ -52,7 +53,7 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 		// 	}
 		// }
 
-		if err := m.CheckAPIPermission(r, claims); err != nil {
+		if err := m.CheckPermission(r, claims); err != nil {
 			w.WriteHeader(http.StatusForbidden)
 			httpx.Error(w, xerr.NewErrCodeMsg(http.StatusForbidden, "权限不足"))
 			return
@@ -92,47 +93,25 @@ func (m *AuthMiddleware) validateRoles(claims *jwt.Claims) error {
 	return nil
 }
 
-func (m *AuthMiddleware) CheckAPIPermission(r *http.Request, claims *jwt.Claims) error {
+// 检查权限
+func (m *AuthMiddleware) CheckPermission(r *http.Request, claims *jwt.Claims) error {
 
-	// userID := claims.UserID
-	// tenantCode := claims.TenantCode
-	// path := r.URL.Path
-	// method := r.Method
+	userID := claims.UserID
+	tenantCode := claims.TenantCode
+	resource := r.Header.Get("X-Resource")
+	action := r.Header.Get("X-Action")
+	permType := r.Header.Get("X-Type")
 
-	// hasPermission, err := casbin.CasbinManager.CheckPermission(userID, tenantCode, path, method, "api")
-
-	// if err != nil || !hasPermission {
-
-	// 	return xerr.NewErrCodeMsgByCode(xerr.ForbiddenError)
-	// }
-
-	return nil
-}
-
-func (m *AuthMiddleware) validatePermission(r *http.Request) error {
-
-	// // 从上下文或请求头中获取用户信息
-	// user := r.Header.Get("X-User-ID")
-	// domain := r.Header.Get("X-Domain")
-
-	// // 从请求路径构造资源标识
-	// resource := strings.TrimPrefix(r.URL.Path, "/")
-	// action := strings.ToLower(r.Method)
-
-	// // 检查权限
-	// hasPermission, err := m.pm.CheckPermission(user, domain, resource, action)
-	// if err != nil {
-	// 	fmt.Println("权限验证失败")
-	// 	return err
-	// }
-
-	// if !hasPermission {
-	// 	fmt.Println("无访问权限")
-	// 	return err
-	// }
+	if resource != "" { // 资源路径不为空时
+		manager := casbin.GetCasbinManager()
+		if ok, err := manager.CheckPermission(userID, tenantCode, resource, action, permType); err != nil {
+			return err
+		} else if !ok {
+			return xerr.NewErrCodeMsg(xerr.ForbiddenError, "用户没有权限")
+		}
+	}
 
 	return nil
-
 }
 
 // 辅助函数：检查切片是否包含某个元素
