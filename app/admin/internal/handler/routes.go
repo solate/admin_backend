@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	auth "admin_backend/app/admin/internal/handler/auth"
+	dict "admin_backend/app/admin/internal/handler/dict"
 	menu "admin_backend/app/admin/internal/handler/menu"
 	permission "admin_backend/app/admin/internal/handler/permission"
 	role "admin_backend/app/admin/internal/handler/role"
@@ -67,6 +68,81 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/admin/api/v1/auth"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.AuthMiddleware},
+			[]rest.Route{
+				{
+					// 创建字典数据
+					Method:  http.MethodPost,
+					Path:    "/dict-items",
+					Handler: dict.CreateDictItemHandler(serverCtx),
+				},
+				{
+					// 获取字典数据列表
+					Method:  http.MethodGet,
+					Path:    "/dict-items",
+					Handler: dict.ListDictItemHandler(serverCtx),
+				},
+				{
+					// 更新字典数据
+					Method:  http.MethodPut,
+					Path:    "/dict-items/:item_id",
+					Handler: dict.UpdateDictItemHandler(serverCtx),
+				},
+				{
+					// 删除字典数据
+					Method:  http.MethodDelete,
+					Path:    "/dict-items/:item_id",
+					Handler: dict.DeleteDictItemHandler(serverCtx),
+				},
+				{
+					// 获取字典数据详情
+					Method:  http.MethodGet,
+					Path:    "/dict-items/:item_id",
+					Handler: dict.GetDictItemHandler(serverCtx),
+				},
+				{
+					// 创建字典类型
+					Method:  http.MethodPost,
+					Path:    "/dict-types",
+					Handler: dict.CreateDictTypeHandler(serverCtx),
+				},
+				{
+					// 获取字典类型列表
+					Method:  http.MethodGet,
+					Path:    "/dict-types",
+					Handler: dict.ListDictTypeHandler(serverCtx),
+				},
+				{
+					// 获取指定类型的字典数据列表
+					Method:  http.MethodGet,
+					Path:    "/dict-types/:type_code/items",
+					Handler: dict.GetDictItemsByTypeHandler(serverCtx),
+				},
+				{
+					// 更新字典类型
+					Method:  http.MethodPut,
+					Path:    "/dict-types/:type_id",
+					Handler: dict.UpdateDictTypeHandler(serverCtx),
+				},
+				{
+					// 删除字典类型
+					Method:  http.MethodDelete,
+					Path:    "/dict-types/:type_id",
+					Handler: dict.DeleteDictTypeHandler(serverCtx),
+				},
+				{
+					// 获取字典类型详情
+					Method:  http.MethodGet,
+					Path:    "/dict-types/:type_id",
+					Handler: dict.GetDictTypeHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/admin/api/v1"),
 	)
 
 	server.AddRoutes(

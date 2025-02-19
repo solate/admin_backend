@@ -14,6 +14,10 @@ type Tx struct {
 	config
 	// CasbinRule is the client for interacting with the CasbinRule builders.
 	CasbinRule *CasbinRuleClient
+	// DictItem is the client for interacting with the DictItem builders.
+	DictItem *DictItemClient
+	// DictType is the client for interacting with the DictType builders.
+	DictType *DictTypeClient
 	// LoginLog is the client for interacting with the LoginLog builders.
 	LoginLog *LoginLogClient
 	// Menu is the client for interacting with the Menu builders.
@@ -160,6 +164,8 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.CasbinRule = NewCasbinRuleClient(tx.config)
+	tx.DictItem = NewDictItemClient(tx.config)
+	tx.DictType = NewDictTypeClient(tx.config)
 	tx.LoginLog = NewLoginLogClient(tx.config)
 	tx.Menu = NewMenuClient(tx.config)
 	tx.Permission = NewPermissionClient(tx.config)

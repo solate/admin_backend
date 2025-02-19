@@ -12,6 +12,8 @@ import (
 	"admin_backend/pkg/ent/generated/migrate"
 
 	"admin_backend/pkg/ent/generated/casbinrule"
+	"admin_backend/pkg/ent/generated/dictitem"
+	"admin_backend/pkg/ent/generated/dicttype"
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/menu"
 	"admin_backend/pkg/ent/generated/permission"
@@ -32,6 +34,10 @@ type Client struct {
 	Schema *migrate.Schema
 	// CasbinRule is the client for interacting with the CasbinRule builders.
 	CasbinRule *CasbinRuleClient
+	// DictItem is the client for interacting with the DictItem builders.
+	DictItem *DictItemClient
+	// DictType is the client for interacting with the DictType builders.
+	DictType *DictTypeClient
 	// LoginLog is the client for interacting with the LoginLog builders.
 	LoginLog *LoginLogClient
 	// Menu is the client for interacting with the Menu builders.
@@ -58,6 +64,8 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.CasbinRule = NewCasbinRuleClient(c.config)
+	c.DictItem = NewDictItemClient(c.config)
+	c.DictType = NewDictTypeClient(c.config)
 	c.LoginLog = NewLoginLogClient(c.config)
 	c.Menu = NewMenuClient(c.config)
 	c.Permission = NewPermissionClient(c.config)
@@ -158,6 +166,8 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		ctx:        ctx,
 		config:     cfg,
 		CasbinRule: NewCasbinRuleClient(cfg),
+		DictItem:   NewDictItemClient(cfg),
+		DictType:   NewDictTypeClient(cfg),
 		LoginLog:   NewLoginLogClient(cfg),
 		Menu:       NewMenuClient(cfg),
 		Permission: NewPermissionClient(cfg),
@@ -185,6 +195,8 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		ctx:        ctx,
 		config:     cfg,
 		CasbinRule: NewCasbinRuleClient(cfg),
+		DictItem:   NewDictItemClient(cfg),
+		DictType:   NewDictTypeClient(cfg),
 		LoginLog:   NewLoginLogClient(cfg),
 		Menu:       NewMenuClient(cfg),
 		Permission: NewPermissionClient(cfg),
@@ -221,8 +233,8 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.CasbinRule, c.LoginLog, c.Menu, c.Permission, c.Role, c.SystemLog, c.Tenant,
-		c.User,
+		c.CasbinRule, c.DictItem, c.DictType, c.LoginLog, c.Menu, c.Permission, c.Role,
+		c.SystemLog, c.Tenant, c.User,
 	} {
 		n.Use(hooks...)
 	}
@@ -232,8 +244,8 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.CasbinRule, c.LoginLog, c.Menu, c.Permission, c.Role, c.SystemLog, c.Tenant,
-		c.User,
+		c.CasbinRule, c.DictItem, c.DictType, c.LoginLog, c.Menu, c.Permission, c.Role,
+		c.SystemLog, c.Tenant, c.User,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -244,6 +256,10 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *CasbinRuleMutation:
 		return c.CasbinRule.mutate(ctx, m)
+	case *DictItemMutation:
+		return c.DictItem.mutate(ctx, m)
+	case *DictTypeMutation:
+		return c.DictType.mutate(ctx, m)
 	case *LoginLogMutation:
 		return c.LoginLog.mutate(ctx, m)
 	case *MenuMutation:
@@ -393,6 +409,272 @@ func (c *CasbinRuleClient) mutate(ctx context.Context, m *CasbinRuleMutation) (V
 		return (&CasbinRuleDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("generated: unknown CasbinRule mutation op: %q", m.Op())
+	}
+}
+
+// DictItemClient is a client for the DictItem schema.
+type DictItemClient struct {
+	config
+}
+
+// NewDictItemClient returns a client for the DictItem from the given config.
+func NewDictItemClient(c config) *DictItemClient {
+	return &DictItemClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `dictitem.Hooks(f(g(h())))`.
+func (c *DictItemClient) Use(hooks ...Hook) {
+	c.hooks.DictItem = append(c.hooks.DictItem, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `dictitem.Intercept(f(g(h())))`.
+func (c *DictItemClient) Intercept(interceptors ...Interceptor) {
+	c.inters.DictItem = append(c.inters.DictItem, interceptors...)
+}
+
+// Create returns a builder for creating a DictItem entity.
+func (c *DictItemClient) Create() *DictItemCreate {
+	mutation := newDictItemMutation(c.config, OpCreate)
+	return &DictItemCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of DictItem entities.
+func (c *DictItemClient) CreateBulk(builders ...*DictItemCreate) *DictItemCreateBulk {
+	return &DictItemCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *DictItemClient) MapCreateBulk(slice any, setFunc func(*DictItemCreate, int)) *DictItemCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &DictItemCreateBulk{err: fmt.Errorf("calling to DictItemClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*DictItemCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &DictItemCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for DictItem.
+func (c *DictItemClient) Update() *DictItemUpdate {
+	mutation := newDictItemMutation(c.config, OpUpdate)
+	return &DictItemUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *DictItemClient) UpdateOne(di *DictItem) *DictItemUpdateOne {
+	mutation := newDictItemMutation(c.config, OpUpdateOne, withDictItem(di))
+	return &DictItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *DictItemClient) UpdateOneID(id int) *DictItemUpdateOne {
+	mutation := newDictItemMutation(c.config, OpUpdateOne, withDictItemID(id))
+	return &DictItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for DictItem.
+func (c *DictItemClient) Delete() *DictItemDelete {
+	mutation := newDictItemMutation(c.config, OpDelete)
+	return &DictItemDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *DictItemClient) DeleteOne(di *DictItem) *DictItemDeleteOne {
+	return c.DeleteOneID(di.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *DictItemClient) DeleteOneID(id int) *DictItemDeleteOne {
+	builder := c.Delete().Where(dictitem.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &DictItemDeleteOne{builder}
+}
+
+// Query returns a query builder for DictItem.
+func (c *DictItemClient) Query() *DictItemQuery {
+	return &DictItemQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeDictItem},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a DictItem entity by its id.
+func (c *DictItemClient) Get(ctx context.Context, id int) (*DictItem, error) {
+	return c.Query().Where(dictitem.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *DictItemClient) GetX(ctx context.Context, id int) *DictItem {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *DictItemClient) Hooks() []Hook {
+	return c.hooks.DictItem
+}
+
+// Interceptors returns the client interceptors.
+func (c *DictItemClient) Interceptors() []Interceptor {
+	return c.inters.DictItem
+}
+
+func (c *DictItemClient) mutate(ctx context.Context, m *DictItemMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&DictItemCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&DictItemUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&DictItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&DictItemDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown DictItem mutation op: %q", m.Op())
+	}
+}
+
+// DictTypeClient is a client for the DictType schema.
+type DictTypeClient struct {
+	config
+}
+
+// NewDictTypeClient returns a client for the DictType from the given config.
+func NewDictTypeClient(c config) *DictTypeClient {
+	return &DictTypeClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `dicttype.Hooks(f(g(h())))`.
+func (c *DictTypeClient) Use(hooks ...Hook) {
+	c.hooks.DictType = append(c.hooks.DictType, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `dicttype.Intercept(f(g(h())))`.
+func (c *DictTypeClient) Intercept(interceptors ...Interceptor) {
+	c.inters.DictType = append(c.inters.DictType, interceptors...)
+}
+
+// Create returns a builder for creating a DictType entity.
+func (c *DictTypeClient) Create() *DictTypeCreate {
+	mutation := newDictTypeMutation(c.config, OpCreate)
+	return &DictTypeCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of DictType entities.
+func (c *DictTypeClient) CreateBulk(builders ...*DictTypeCreate) *DictTypeCreateBulk {
+	return &DictTypeCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *DictTypeClient) MapCreateBulk(slice any, setFunc func(*DictTypeCreate, int)) *DictTypeCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &DictTypeCreateBulk{err: fmt.Errorf("calling to DictTypeClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*DictTypeCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &DictTypeCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for DictType.
+func (c *DictTypeClient) Update() *DictTypeUpdate {
+	mutation := newDictTypeMutation(c.config, OpUpdate)
+	return &DictTypeUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *DictTypeClient) UpdateOne(dt *DictType) *DictTypeUpdateOne {
+	mutation := newDictTypeMutation(c.config, OpUpdateOne, withDictType(dt))
+	return &DictTypeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *DictTypeClient) UpdateOneID(id int) *DictTypeUpdateOne {
+	mutation := newDictTypeMutation(c.config, OpUpdateOne, withDictTypeID(id))
+	return &DictTypeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for DictType.
+func (c *DictTypeClient) Delete() *DictTypeDelete {
+	mutation := newDictTypeMutation(c.config, OpDelete)
+	return &DictTypeDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *DictTypeClient) DeleteOne(dt *DictType) *DictTypeDeleteOne {
+	return c.DeleteOneID(dt.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *DictTypeClient) DeleteOneID(id int) *DictTypeDeleteOne {
+	builder := c.Delete().Where(dicttype.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &DictTypeDeleteOne{builder}
+}
+
+// Query returns a query builder for DictType.
+func (c *DictTypeClient) Query() *DictTypeQuery {
+	return &DictTypeQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeDictType},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a DictType entity by its id.
+func (c *DictTypeClient) Get(ctx context.Context, id int) (*DictType, error) {
+	return c.Query().Where(dicttype.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *DictTypeClient) GetX(ctx context.Context, id int) *DictType {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *DictTypeClient) Hooks() []Hook {
+	return c.hooks.DictType
+}
+
+// Interceptors returns the client interceptors.
+func (c *DictTypeClient) Interceptors() []Interceptor {
+	return c.inters.DictType
+}
+
+func (c *DictTypeClient) mutate(ctx context.Context, m *DictTypeMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&DictTypeCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&DictTypeUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&DictTypeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&DictTypeDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown DictType mutation op: %q", m.Op())
 	}
 }
 
@@ -1330,10 +1612,11 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		CasbinRule, LoginLog, Menu, Permission, Role, SystemLog, Tenant, User []ent.Hook
+		CasbinRule, DictItem, DictType, LoginLog, Menu, Permission, Role, SystemLog,
+		Tenant, User []ent.Hook
 	}
 	inters struct {
-		CasbinRule, LoginLog, Menu, Permission, Role, SystemLog, Tenant,
-		User []ent.Interceptor
+		CasbinRule, DictItem, DictType, LoginLog, Menu, Permission, Role, SystemLog,
+		Tenant, User []ent.Interceptor
 	}
 )

@@ -4,6 +4,8 @@ package generated
 
 import (
 	"admin_backend/pkg/ent/generated/casbinrule"
+	"admin_backend/pkg/ent/generated/dictitem"
+	"admin_backend/pkg/ent/generated/dicttype"
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/menu"
 	"admin_backend/pkg/ent/generated/permission"
@@ -81,6 +83,8 @@ func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
 			casbinrule.Table: casbinrule.ValidColumn,
+			dictitem.Table:   dictitem.ValidColumn,
+			dicttype.Table:   dicttype.ValidColumn,
 			loginlog.Table:   loginlog.ValidColumn,
 			menu.Table:       menu.ValidColumn,
 			permission.Table: permission.ValidColumn,

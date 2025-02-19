@@ -20,6 +20,30 @@ func (f CasbinRuleFunc) Mutate(ctx context.Context, m generated.Mutation) (gener
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.CasbinRuleMutation", m)
 }
 
+// The DictItemFunc type is an adapter to allow the use of ordinary
+// function as DictItem mutator.
+type DictItemFunc func(context.Context, *generated.DictItemMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f DictItemFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.DictItemMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.DictItemMutation", m)
+}
+
+// The DictTypeFunc type is an adapter to allow the use of ordinary
+// function as DictType mutator.
+type DictTypeFunc func(context.Context, *generated.DictTypeMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f DictTypeFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.DictTypeMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.DictTypeMutation", m)
+}
+
 // The LoginLogFunc type is an adapter to allow the use of ordinary
 // function as LoginLog mutator.
 type LoginLogFunc func(context.Context, *generated.LoginLogMutation) (generated.Value, error)

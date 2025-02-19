@@ -13,6 +13,30 @@ type ChangePasswordReq struct {
 	NewPassword string `json:"new_password" validate:"required"` // 新密码
 }
 
+type CreateDictItemReq struct {
+	TypeCode    string `json:"type_code"`            // 字典类型编码
+	Label       string `json:"label"`                // 字典标签
+	Value       string `json:"value"`                // 字典键值
+	Description string `json:"description,optional"` // 字典项描述
+	Sort        int    `json:"sort,optional"`        // 排序
+	Status      int    `json:"status"`               // 状态: 1:启用, 2:禁用
+}
+
+type CreateDictItemResp struct {
+	ItemID string `json:"item_id"` // 字典项ID
+}
+
+type CreateDictTypeReq struct {
+	Name        string `json:"name"`                 // 字典类型名称
+	Code        string `json:"code"`                 // 字典类型编码
+	Description string `json:"description,optional"` // 字典类型描述
+	Status      int    `json:"status"`               // 状态: 1:启用, 2:禁用
+}
+
+type CreateDictTypeResp struct {
+	TypeID string `json:"type_id"` // 字典类型ID
+}
+
 type CreateMenuReq struct {
 	Code      string `json:"code"`               // 菜单code
 	Action    string `json:"action"`             // 权限标识
@@ -86,6 +110,14 @@ type CreateUserResp struct {
 	UserID string `json:"user_id"` // 用户ID
 }
 
+type DeleteDictItemReq struct {
+	ItemID string `path:"item_id"`
+}
+
+type DeleteDictTypeReq struct {
+	TypeID string `path:"type_id"`
+}
+
 type DeleteMenuReq struct {
 	MenuID string `path:"menu_id"`
 }
@@ -106,8 +138,64 @@ type DeleteUserReq struct {
 	UserID string `path:"user_id"`
 }
 
+type DictItemInfo struct {
+	ItemID      string `json:"item_id"`     // 字典项ID
+	TypeCode    string `json:"type_code"`   // 字典类型编码
+	Label       string `json:"label"`       // 字典标签
+	Value       string `json:"value"`       // 字典键值
+	Description string `json:"description"` // 字典项描述
+	Sort        int    `json:"sort"`        // 排序
+	Status      int    `json:"status"`      // 状态
+	CreatedAt   int64  `json:"created_at"`  // 创建时间
+}
+
+type DictItemListReq struct {
+	PageRequest
+	TypeCode string `form:"type_code,optional"` // 字典类型编码
+	Label    string `form:"label,optional"`     // 字典标签
+	Status   int    `form:"status,optional"`    // 状态
+}
+
+type DictItemListResp struct {
+	Page *PageResponse   `json:"page"` // 分页
+	List []*DictItemInfo `json:"list"` // 字典数据列表
+}
+
+type DictTypeInfo struct {
+	TypeID      string `json:"type_id"`     // 字典类型ID
+	Name        string `json:"name"`        // 字典类型名称
+	Code        string `json:"code"`        // 字典类型编码
+	Description string `json:"description"` // 字典类型描述
+	Status      int    `json:"status"`      // 状态
+	CreatedAt   int64  `json:"created_at"`  // 创建时间
+}
+
+type DictTypeListReq struct {
+	PageRequest
+	Name   string `form:"name,optional"`   // 字典类型名称
+	Code   string `form:"code,optional"`   // 字典类型编码
+	Status int    `form:"status,optional"` // 状态
+}
+
+type DictTypeListResp struct {
+	Page *PageResponse   `json:"page"` // 分页
+	List []*DictTypeInfo `json:"list"` // 字典类型列表
+}
+
 type GetAllRolesResp struct {
 	List []*RoleInfo `json:"list"` // 角色列表
+}
+
+type GetDictItemReq struct {
+	ItemID string `path:"item_id"`
+}
+
+type GetDictItemsByTypeReq struct {
+	TypeCode string `path:"type_code"` // 字典类型编码
+}
+
+type GetDictTypeReq struct {
+	TypeID string `path:"type_id"`
 }
 
 type GetMenuReq struct {
@@ -385,6 +473,22 @@ type TenantInfo struct {
 type TimeRange struct {
 	StartTime string `form:"start_time,optional"` // 开始时间
 	EndTime   string `form:"end_time,optional"`   // 结束时间
+}
+
+type UpdateDictItemReq struct {
+	ItemID      string `path:"item_id"`
+	Label       string `json:"label,optional"`       // 字典标签
+	Value       string `json:"value,optional"`       // 字典键值
+	Description string `json:"description,optional"` // 字典项描述
+	Sort        int    `json:"sort,optional"`        // 排序
+	Status      int    `json:"status,optional"`      // 状态
+}
+
+type UpdateDictTypeReq struct {
+	TypeID      string `path:"type_id"`
+	Name        string `json:"name,optional"`        // 字典类型名称
+	Description string `json:"description,optional"` // 字典类型描述
+	Status      int    `json:"status,optional"`      // 状态
 }
 
 type UpdateMenuReq struct {

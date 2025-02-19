@@ -26,6 +26,62 @@ var (
 		Columns:    CasbinRulesColumns,
 		PrimaryKey: []*schema.Column{CasbinRulesColumns[0]},
 	}
+	// DictItemsColumns holds the columns for the "dict_items" table.
+	DictItemsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
+		{Name: "tenant_code", Type: field.TypeString, Comment: "租户编码"},
+		{Name: "item_id", Type: field.TypeString, Unique: true, Comment: "字典项ID"},
+		{Name: "type_code", Type: field.TypeString, Comment: "字典类型code"},
+		{Name: "label", Type: field.TypeString, Comment: "字典标签"},
+		{Name: "value", Type: field.TypeString, Comment: "字典键值"},
+		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "字典项描述"},
+		{Name: "sort", Type: field.TypeInt, Comment: "排序", Default: 0},
+		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
+	}
+	// DictItemsTable holds the schema information for the "dict_items" table.
+	DictItemsTable = &schema.Table{
+		Name:       "dict_items",
+		Comment:    "字典数据",
+		Columns:    DictItemsColumns,
+		PrimaryKey: []*schema.Column{DictItemsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "dictitem_type_code",
+				Unique:  false,
+				Columns: []*schema.Column{DictItemsColumns[6]},
+			},
+		},
+	}
+	// DictTypesColumns holds the columns for the "dict_types" table.
+	DictTypesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
+		{Name: "tenant_code", Type: field.TypeString, Comment: "租户编码"},
+		{Name: "type_id", Type: field.TypeString, Unique: true, Comment: "字典类型ID"},
+		{Name: "name", Type: field.TypeString, Comment: "字典类型名称"},
+		{Name: "code", Type: field.TypeString, Unique: true, Comment: "字典类型编码"},
+		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "字典类型描述"},
+		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
+	}
+	// DictTypesTable holds the schema information for the "dict_types" table.
+	DictTypesTable = &schema.Table{
+		Name:       "dict_types",
+		Comment:    "字典类型",
+		Columns:    DictTypesColumns,
+		PrimaryKey: []*schema.Column{DictTypesColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "dicttype_code",
+				Unique:  true,
+				Columns: []*schema.Column{DictTypesColumns[7]},
+			},
+		},
+	}
 	// LoginLogColumns holds the columns for the "login_log" table.
 	LoginLogColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -246,6 +302,8 @@ var (
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		CasbinRulesTable,
+		DictItemsTable,
+		DictTypesTable,
 		LoginLogTable,
 		MenusTable,
 		PermissionsTable,
@@ -257,6 +315,12 @@ var (
 )
 
 func init() {
+	DictItemsTable.Annotation = &entsql.Annotation{
+		Table: "dict_items",
+	}
+	DictTypesTable.Annotation = &entsql.Annotation{
+		Table: "dict_types",
+	}
 	LoginLogTable.Annotation = &entsql.Annotation{
 		Table: "login_log",
 	}

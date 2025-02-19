@@ -4,6 +4,8 @@ package generated
 
 import (
 	"admin_backend/pkg/ent/generated/casbinrule"
+	"admin_backend/pkg/ent/generated/dictitem"
+	"admin_backend/pkg/ent/generated/dicttype"
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/menu"
 	"admin_backend/pkg/ent/generated/permission"
@@ -48,6 +50,66 @@ func init() {
 	casbinruleDescV5 := casbinruleFields[6].Descriptor()
 	// casbinrule.DefaultV5 holds the default value on creation for the V5 field.
 	casbinrule.DefaultV5 = casbinruleDescV5.Default.(string)
+	dictitemFields := schema.DictItem{}.Fields()
+	_ = dictitemFields
+	// dictitemDescCreatedAt is the schema descriptor for created_at field.
+	dictitemDescCreatedAt := dictitemFields[0].Descriptor()
+	// dictitem.DefaultCreatedAt holds the default value on creation for the created_at field.
+	dictitem.DefaultCreatedAt = dictitemDescCreatedAt.Default.(int64)
+	// dictitemDescUpdatedAt is the schema descriptor for updated_at field.
+	dictitemDescUpdatedAt := dictitemFields[1].Descriptor()
+	// dictitem.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	dictitem.DefaultUpdatedAt = dictitemDescUpdatedAt.Default.(int64)
+	// dictitemDescTenantCode is the schema descriptor for tenant_code field.
+	dictitemDescTenantCode := dictitemFields[3].Descriptor()
+	// dictitem.TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
+	dictitem.TenantCodeValidator = dictitemDescTenantCode.Validators[0].(func(string) error)
+	// dictitemDescTypeCode is the schema descriptor for type_code field.
+	dictitemDescTypeCode := dictitemFields[5].Descriptor()
+	// dictitem.TypeCodeValidator is a validator for the "type_code" field. It is called by the builders before save.
+	dictitem.TypeCodeValidator = dictitemDescTypeCode.Validators[0].(func(string) error)
+	// dictitemDescLabel is the schema descriptor for label field.
+	dictitemDescLabel := dictitemFields[6].Descriptor()
+	// dictitem.LabelValidator is a validator for the "label" field. It is called by the builders before save.
+	dictitem.LabelValidator = dictitemDescLabel.Validators[0].(func(string) error)
+	// dictitemDescValue is the schema descriptor for value field.
+	dictitemDescValue := dictitemFields[7].Descriptor()
+	// dictitem.ValueValidator is a validator for the "value" field. It is called by the builders before save.
+	dictitem.ValueValidator = dictitemDescValue.Validators[0].(func(string) error)
+	// dictitemDescSort is the schema descriptor for sort field.
+	dictitemDescSort := dictitemFields[9].Descriptor()
+	// dictitem.DefaultSort holds the default value on creation for the sort field.
+	dictitem.DefaultSort = dictitemDescSort.Default.(int)
+	// dictitemDescStatus is the schema descriptor for status field.
+	dictitemDescStatus := dictitemFields[10].Descriptor()
+	// dictitem.DefaultStatus holds the default value on creation for the status field.
+	dictitem.DefaultStatus = dictitemDescStatus.Default.(int)
+	dicttypeFields := schema.DictType{}.Fields()
+	_ = dicttypeFields
+	// dicttypeDescCreatedAt is the schema descriptor for created_at field.
+	dicttypeDescCreatedAt := dicttypeFields[0].Descriptor()
+	// dicttype.DefaultCreatedAt holds the default value on creation for the created_at field.
+	dicttype.DefaultCreatedAt = dicttypeDescCreatedAt.Default.(int64)
+	// dicttypeDescUpdatedAt is the schema descriptor for updated_at field.
+	dicttypeDescUpdatedAt := dicttypeFields[1].Descriptor()
+	// dicttype.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	dicttype.DefaultUpdatedAt = dicttypeDescUpdatedAt.Default.(int64)
+	// dicttypeDescTenantCode is the schema descriptor for tenant_code field.
+	dicttypeDescTenantCode := dicttypeFields[3].Descriptor()
+	// dicttype.TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
+	dicttype.TenantCodeValidator = dicttypeDescTenantCode.Validators[0].(func(string) error)
+	// dicttypeDescName is the schema descriptor for name field.
+	dicttypeDescName := dicttypeFields[5].Descriptor()
+	// dicttype.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	dicttype.NameValidator = dicttypeDescName.Validators[0].(func(string) error)
+	// dicttypeDescCode is the schema descriptor for code field.
+	dicttypeDescCode := dicttypeFields[6].Descriptor()
+	// dicttype.CodeValidator is a validator for the "code" field. It is called by the builders before save.
+	dicttype.CodeValidator = dicttypeDescCode.Validators[0].(func(string) error)
+	// dicttypeDescStatus is the schema descriptor for status field.
+	dicttypeDescStatus := dicttypeFields[8].Descriptor()
+	// dicttype.DefaultStatus holds the default value on creation for the status field.
+	dicttype.DefaultStatus = dicttypeDescStatus.Default.(int)
 	loginlogFields := schema.LoginLog{}.Fields()
 	_ = loginlogFields
 	// loginlogDescCreatedAt is the schema descriptor for created_at field.

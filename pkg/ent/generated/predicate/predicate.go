@@ -9,6 +9,12 @@ import (
 // CasbinRule is the predicate function for casbinrule builders.
 type CasbinRule func(*sql.Selector)
 
+// DictItem is the predicate function for dictitem builders.
+type DictItem func(*sql.Selector)
+
+// DictType is the predicate function for dicttype builders.
+type DictType func(*sql.Selector)
+
 // LoginLog is the predicate function for loginlog builders.
 type LoginLog func(*sql.Selector)
 
