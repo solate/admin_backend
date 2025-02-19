@@ -32,7 +32,7 @@ func (Menu) Fields() []ent.Field {
 
 		// 菜单特有字段
 		field.String("menu_id").Unique().Comment("菜单ID"),
-		field.String("code").NotEmpty().Comment("菜单code"),
+		field.String("code").Unique().NotEmpty().Comment("菜单code"),
 		field.String("parent_id").Default("").Comment("父菜单ID"),
 		field.String("name").NotEmpty().Comment("菜单名称"),
 		field.String("path").Default("").Comment("路由路径"),

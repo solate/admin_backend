@@ -113,13 +113,3 @@ func (m *AuthMiddleware) CheckPermission(r *http.Request, claims *jwt.Claims) er
 
 	return nil
 }
-
-// 辅助函数：检查切片是否包含某个元素
-func contains(slice []string, item string) bool {
-	for _, s := range slice {
-		if s == item {
-			return true
-		}
-	}
-	return false
-}

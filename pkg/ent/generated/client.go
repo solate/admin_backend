@@ -12,15 +12,18 @@ import (
 	"admin_backend/pkg/ent/generated/migrate"
 
 	"admin_backend/pkg/ent/generated/casbinrule"
+	"admin_backend/pkg/ent/generated/department"
 	"admin_backend/pkg/ent/generated/dictitem"
 	"admin_backend/pkg/ent/generated/dicttype"
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/menu"
 	"admin_backend/pkg/ent/generated/permission"
+	"admin_backend/pkg/ent/generated/position"
 	"admin_backend/pkg/ent/generated/role"
 	"admin_backend/pkg/ent/generated/systemlog"
 	"admin_backend/pkg/ent/generated/tenant"
 	"admin_backend/pkg/ent/generated/user"
+	"admin_backend/pkg/ent/generated/userposition"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
@@ -34,6 +37,8 @@ type Client struct {
 	Schema *migrate.Schema
 	// CasbinRule is the client for interacting with the CasbinRule builders.
 	CasbinRule *CasbinRuleClient
+	// Department is the client for interacting with the Department builders.
+	Department *DepartmentClient
 	// DictItem is the client for interacting with the DictItem builders.
 	DictItem *DictItemClient
 	// DictType is the client for interacting with the DictType builders.
@@ -44,6 +49,8 @@ type Client struct {
 	Menu *MenuClient
 	// Permission is the client for interacting with the Permission builders.
 	Permission *PermissionClient
+	// Position is the client for interacting with the Position builders.
+	Position *PositionClient
 	// Role is the client for interacting with the Role builders.
 	Role *RoleClient
 	// SystemLog is the client for interacting with the SystemLog builders.
@@ -52,6 +59,8 @@ type Client struct {
 	Tenant *TenantClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
+	// UserPosition is the client for interacting with the UserPosition builders.
+	UserPosition *UserPositionClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -64,15 +73,18 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.CasbinRule = NewCasbinRuleClient(c.config)
+	c.Department = NewDepartmentClient(c.config)
 	c.DictItem = NewDictItemClient(c.config)
 	c.DictType = NewDictTypeClient(c.config)
 	c.LoginLog = NewLoginLogClient(c.config)
 	c.Menu = NewMenuClient(c.config)
 	c.Permission = NewPermissionClient(c.config)
+	c.Position = NewPositionClient(c.config)
 	c.Role = NewRoleClient(c.config)
 	c.SystemLog = NewSystemLogClient(c.config)
 	c.Tenant = NewTenantClient(c.config)
 	c.User = NewUserClient(c.config)
+	c.UserPosition = NewUserPositionClient(c.config)
 }
 
 type (
@@ -163,18 +175,21 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:        ctx,
-		config:     cfg,
-		CasbinRule: NewCasbinRuleClient(cfg),
-		DictItem:   NewDictItemClient(cfg),
-		DictType:   NewDictTypeClient(cfg),
-		LoginLog:   NewLoginLogClient(cfg),
-		Menu:       NewMenuClient(cfg),
-		Permission: NewPermissionClient(cfg),
-		Role:       NewRoleClient(cfg),
-		SystemLog:  NewSystemLogClient(cfg),
-		Tenant:     NewTenantClient(cfg),
-		User:       NewUserClient(cfg),
+		ctx:          ctx,
+		config:       cfg,
+		CasbinRule:   NewCasbinRuleClient(cfg),
+		Department:   NewDepartmentClient(cfg),
+		DictItem:     NewDictItemClient(cfg),
+		DictType:     NewDictTypeClient(cfg),
+		LoginLog:     NewLoginLogClient(cfg),
+		Menu:         NewMenuClient(cfg),
+		Permission:   NewPermissionClient(cfg),
+		Position:     NewPositionClient(cfg),
+		Role:         NewRoleClient(cfg),
+		SystemLog:    NewSystemLogClient(cfg),
+		Tenant:       NewTenantClient(cfg),
+		User:         NewUserClient(cfg),
+		UserPosition: NewUserPositionClient(cfg),
 	}, nil
 }
 
@@ -192,18 +207,21 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:        ctx,
-		config:     cfg,
-		CasbinRule: NewCasbinRuleClient(cfg),
-		DictItem:   NewDictItemClient(cfg),
-		DictType:   NewDictTypeClient(cfg),
-		LoginLog:   NewLoginLogClient(cfg),
-		Menu:       NewMenuClient(cfg),
-		Permission: NewPermissionClient(cfg),
-		Role:       NewRoleClient(cfg),
-		SystemLog:  NewSystemLogClient(cfg),
-		Tenant:     NewTenantClient(cfg),
-		User:       NewUserClient(cfg),
+		ctx:          ctx,
+		config:       cfg,
+		CasbinRule:   NewCasbinRuleClient(cfg),
+		Department:   NewDepartmentClient(cfg),
+		DictItem:     NewDictItemClient(cfg),
+		DictType:     NewDictTypeClient(cfg),
+		LoginLog:     NewLoginLogClient(cfg),
+		Menu:         NewMenuClient(cfg),
+		Permission:   NewPermissionClient(cfg),
+		Position:     NewPositionClient(cfg),
+		Role:         NewRoleClient(cfg),
+		SystemLog:    NewSystemLogClient(cfg),
+		Tenant:       NewTenantClient(cfg),
+		User:         NewUserClient(cfg),
+		UserPosition: NewUserPositionClient(cfg),
 	}, nil
 }
 
@@ -233,8 +251,9 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.CasbinRule, c.DictItem, c.DictType, c.LoginLog, c.Menu, c.Permission, c.Role,
-		c.SystemLog, c.Tenant, c.User,
+		c.CasbinRule, c.Department, c.DictItem, c.DictType, c.LoginLog, c.Menu,
+		c.Permission, c.Position, c.Role, c.SystemLog, c.Tenant, c.User,
+		c.UserPosition,
 	} {
 		n.Use(hooks...)
 	}
@@ -244,8 +263,9 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.CasbinRule, c.DictItem, c.DictType, c.LoginLog, c.Menu, c.Permission, c.Role,
-		c.SystemLog, c.Tenant, c.User,
+		c.CasbinRule, c.Department, c.DictItem, c.DictType, c.LoginLog, c.Menu,
+		c.Permission, c.Position, c.Role, c.SystemLog, c.Tenant, c.User,
+		c.UserPosition,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -256,6 +276,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *CasbinRuleMutation:
 		return c.CasbinRule.mutate(ctx, m)
+	case *DepartmentMutation:
+		return c.Department.mutate(ctx, m)
 	case *DictItemMutation:
 		return c.DictItem.mutate(ctx, m)
 	case *DictTypeMutation:
@@ -266,6 +288,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Menu.mutate(ctx, m)
 	case *PermissionMutation:
 		return c.Permission.mutate(ctx, m)
+	case *PositionMutation:
+		return c.Position.mutate(ctx, m)
 	case *RoleMutation:
 		return c.Role.mutate(ctx, m)
 	case *SystemLogMutation:
@@ -274,6 +298,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Tenant.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
+	case *UserPositionMutation:
+		return c.UserPosition.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("generated: unknown mutation type %T", m)
 	}
@@ -409,6 +435,139 @@ func (c *CasbinRuleClient) mutate(ctx context.Context, m *CasbinRuleMutation) (V
 		return (&CasbinRuleDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("generated: unknown CasbinRule mutation op: %q", m.Op())
+	}
+}
+
+// DepartmentClient is a client for the Department schema.
+type DepartmentClient struct {
+	config
+}
+
+// NewDepartmentClient returns a client for the Department from the given config.
+func NewDepartmentClient(c config) *DepartmentClient {
+	return &DepartmentClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `department.Hooks(f(g(h())))`.
+func (c *DepartmentClient) Use(hooks ...Hook) {
+	c.hooks.Department = append(c.hooks.Department, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `department.Intercept(f(g(h())))`.
+func (c *DepartmentClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Department = append(c.inters.Department, interceptors...)
+}
+
+// Create returns a builder for creating a Department entity.
+func (c *DepartmentClient) Create() *DepartmentCreate {
+	mutation := newDepartmentMutation(c.config, OpCreate)
+	return &DepartmentCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Department entities.
+func (c *DepartmentClient) CreateBulk(builders ...*DepartmentCreate) *DepartmentCreateBulk {
+	return &DepartmentCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *DepartmentClient) MapCreateBulk(slice any, setFunc func(*DepartmentCreate, int)) *DepartmentCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &DepartmentCreateBulk{err: fmt.Errorf("calling to DepartmentClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*DepartmentCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &DepartmentCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Department.
+func (c *DepartmentClient) Update() *DepartmentUpdate {
+	mutation := newDepartmentMutation(c.config, OpUpdate)
+	return &DepartmentUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *DepartmentClient) UpdateOne(d *Department) *DepartmentUpdateOne {
+	mutation := newDepartmentMutation(c.config, OpUpdateOne, withDepartment(d))
+	return &DepartmentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *DepartmentClient) UpdateOneID(id int) *DepartmentUpdateOne {
+	mutation := newDepartmentMutation(c.config, OpUpdateOne, withDepartmentID(id))
+	return &DepartmentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Department.
+func (c *DepartmentClient) Delete() *DepartmentDelete {
+	mutation := newDepartmentMutation(c.config, OpDelete)
+	return &DepartmentDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *DepartmentClient) DeleteOne(d *Department) *DepartmentDeleteOne {
+	return c.DeleteOneID(d.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *DepartmentClient) DeleteOneID(id int) *DepartmentDeleteOne {
+	builder := c.Delete().Where(department.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &DepartmentDeleteOne{builder}
+}
+
+// Query returns a query builder for Department.
+func (c *DepartmentClient) Query() *DepartmentQuery {
+	return &DepartmentQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeDepartment},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Department entity by its id.
+func (c *DepartmentClient) Get(ctx context.Context, id int) (*Department, error) {
+	return c.Query().Where(department.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *DepartmentClient) GetX(ctx context.Context, id int) *Department {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *DepartmentClient) Hooks() []Hook {
+	return c.hooks.Department
+}
+
+// Interceptors returns the client interceptors.
+func (c *DepartmentClient) Interceptors() []Interceptor {
+	return c.inters.Department
+}
+
+func (c *DepartmentClient) mutate(ctx context.Context, m *DepartmentMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&DepartmentCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&DepartmentUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&DepartmentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&DepartmentDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown Department mutation op: %q", m.Op())
 	}
 }
 
@@ -1077,6 +1236,139 @@ func (c *PermissionClient) mutate(ctx context.Context, m *PermissionMutation) (V
 	}
 }
 
+// PositionClient is a client for the Position schema.
+type PositionClient struct {
+	config
+}
+
+// NewPositionClient returns a client for the Position from the given config.
+func NewPositionClient(c config) *PositionClient {
+	return &PositionClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `position.Hooks(f(g(h())))`.
+func (c *PositionClient) Use(hooks ...Hook) {
+	c.hooks.Position = append(c.hooks.Position, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `position.Intercept(f(g(h())))`.
+func (c *PositionClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Position = append(c.inters.Position, interceptors...)
+}
+
+// Create returns a builder for creating a Position entity.
+func (c *PositionClient) Create() *PositionCreate {
+	mutation := newPositionMutation(c.config, OpCreate)
+	return &PositionCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Position entities.
+func (c *PositionClient) CreateBulk(builders ...*PositionCreate) *PositionCreateBulk {
+	return &PositionCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *PositionClient) MapCreateBulk(slice any, setFunc func(*PositionCreate, int)) *PositionCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &PositionCreateBulk{err: fmt.Errorf("calling to PositionClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*PositionCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &PositionCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Position.
+func (c *PositionClient) Update() *PositionUpdate {
+	mutation := newPositionMutation(c.config, OpUpdate)
+	return &PositionUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *PositionClient) UpdateOne(po *Position) *PositionUpdateOne {
+	mutation := newPositionMutation(c.config, OpUpdateOne, withPosition(po))
+	return &PositionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *PositionClient) UpdateOneID(id int) *PositionUpdateOne {
+	mutation := newPositionMutation(c.config, OpUpdateOne, withPositionID(id))
+	return &PositionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Position.
+func (c *PositionClient) Delete() *PositionDelete {
+	mutation := newPositionMutation(c.config, OpDelete)
+	return &PositionDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *PositionClient) DeleteOne(po *Position) *PositionDeleteOne {
+	return c.DeleteOneID(po.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *PositionClient) DeleteOneID(id int) *PositionDeleteOne {
+	builder := c.Delete().Where(position.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &PositionDeleteOne{builder}
+}
+
+// Query returns a query builder for Position.
+func (c *PositionClient) Query() *PositionQuery {
+	return &PositionQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypePosition},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Position entity by its id.
+func (c *PositionClient) Get(ctx context.Context, id int) (*Position, error) {
+	return c.Query().Where(position.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *PositionClient) GetX(ctx context.Context, id int) *Position {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *PositionClient) Hooks() []Hook {
+	return c.hooks.Position
+}
+
+// Interceptors returns the client interceptors.
+func (c *PositionClient) Interceptors() []Interceptor {
+	return c.inters.Position
+}
+
+func (c *PositionClient) mutate(ctx context.Context, m *PositionMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&PositionCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&PositionUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&PositionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&PositionDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown Position mutation op: %q", m.Op())
+	}
+}
+
 // RoleClient is a client for the Role schema.
 type RoleClient struct {
 	config
@@ -1609,14 +1901,147 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 	}
 }
 
+// UserPositionClient is a client for the UserPosition schema.
+type UserPositionClient struct {
+	config
+}
+
+// NewUserPositionClient returns a client for the UserPosition from the given config.
+func NewUserPositionClient(c config) *UserPositionClient {
+	return &UserPositionClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `userposition.Hooks(f(g(h())))`.
+func (c *UserPositionClient) Use(hooks ...Hook) {
+	c.hooks.UserPosition = append(c.hooks.UserPosition, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `userposition.Intercept(f(g(h())))`.
+func (c *UserPositionClient) Intercept(interceptors ...Interceptor) {
+	c.inters.UserPosition = append(c.inters.UserPosition, interceptors...)
+}
+
+// Create returns a builder for creating a UserPosition entity.
+func (c *UserPositionClient) Create() *UserPositionCreate {
+	mutation := newUserPositionMutation(c.config, OpCreate)
+	return &UserPositionCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of UserPosition entities.
+func (c *UserPositionClient) CreateBulk(builders ...*UserPositionCreate) *UserPositionCreateBulk {
+	return &UserPositionCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *UserPositionClient) MapCreateBulk(slice any, setFunc func(*UserPositionCreate, int)) *UserPositionCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &UserPositionCreateBulk{err: fmt.Errorf("calling to UserPositionClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*UserPositionCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &UserPositionCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for UserPosition.
+func (c *UserPositionClient) Update() *UserPositionUpdate {
+	mutation := newUserPositionMutation(c.config, OpUpdate)
+	return &UserPositionUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *UserPositionClient) UpdateOne(up *UserPosition) *UserPositionUpdateOne {
+	mutation := newUserPositionMutation(c.config, OpUpdateOne, withUserPosition(up))
+	return &UserPositionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *UserPositionClient) UpdateOneID(id int) *UserPositionUpdateOne {
+	mutation := newUserPositionMutation(c.config, OpUpdateOne, withUserPositionID(id))
+	return &UserPositionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for UserPosition.
+func (c *UserPositionClient) Delete() *UserPositionDelete {
+	mutation := newUserPositionMutation(c.config, OpDelete)
+	return &UserPositionDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *UserPositionClient) DeleteOne(up *UserPosition) *UserPositionDeleteOne {
+	return c.DeleteOneID(up.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *UserPositionClient) DeleteOneID(id int) *UserPositionDeleteOne {
+	builder := c.Delete().Where(userposition.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &UserPositionDeleteOne{builder}
+}
+
+// Query returns a query builder for UserPosition.
+func (c *UserPositionClient) Query() *UserPositionQuery {
+	return &UserPositionQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeUserPosition},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a UserPosition entity by its id.
+func (c *UserPositionClient) Get(ctx context.Context, id int) (*UserPosition, error) {
+	return c.Query().Where(userposition.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *UserPositionClient) GetX(ctx context.Context, id int) *UserPosition {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *UserPositionClient) Hooks() []Hook {
+	return c.hooks.UserPosition
+}
+
+// Interceptors returns the client interceptors.
+func (c *UserPositionClient) Interceptors() []Interceptor {
+	return c.inters.UserPosition
+}
+
+func (c *UserPositionClient) mutate(ctx context.Context, m *UserPositionMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&UserPositionCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&UserPositionUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&UserPositionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&UserPositionDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown UserPosition mutation op: %q", m.Op())
+	}
+}
+
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		CasbinRule, DictItem, DictType, LoginLog, Menu, Permission, Role, SystemLog,
-		Tenant, User []ent.Hook
+		CasbinRule, Department, DictItem, DictType, LoginLog, Menu, Permission,
+		Position, Role, SystemLog, Tenant, User, UserPosition []ent.Hook
 	}
 	inters struct {
-		CasbinRule, DictItem, DictType, LoginLog, Menu, Permission, Role, SystemLog,
-		Tenant, User []ent.Interceptor
+		CasbinRule, Department, DictItem, DictType, LoginLog, Menu, Permission,
+		Position, Role, SystemLog, Tenant, User, UserPosition []ent.Interceptor
 	}
 )

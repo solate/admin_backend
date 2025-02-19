@@ -258,69 +258,6 @@ func (uu *UserUpdate) AddStatus(i int) *UserUpdate {
 	return uu
 }
 
-// SetRoleID sets the "role_id" field.
-func (uu *UserUpdate) SetRoleID(u uint64) *UserUpdate {
-	uu.mutation.ResetRoleID()
-	uu.mutation.SetRoleID(u)
-	return uu
-}
-
-// SetNillableRoleID sets the "role_id" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableRoleID(u *uint64) *UserUpdate {
-	if u != nil {
-		uu.SetRoleID(*u)
-	}
-	return uu
-}
-
-// AddRoleID adds u to the "role_id" field.
-func (uu *UserUpdate) AddRoleID(u int64) *UserUpdate {
-	uu.mutation.AddRoleID(u)
-	return uu
-}
-
-// SetDeptID sets the "dept_id" field.
-func (uu *UserUpdate) SetDeptID(u uint64) *UserUpdate {
-	uu.mutation.ResetDeptID()
-	uu.mutation.SetDeptID(u)
-	return uu
-}
-
-// SetNillableDeptID sets the "dept_id" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableDeptID(u *uint64) *UserUpdate {
-	if u != nil {
-		uu.SetDeptID(*u)
-	}
-	return uu
-}
-
-// AddDeptID adds u to the "dept_id" field.
-func (uu *UserUpdate) AddDeptID(u int64) *UserUpdate {
-	uu.mutation.AddDeptID(u)
-	return uu
-}
-
-// SetPostID sets the "post_id" field.
-func (uu *UserUpdate) SetPostID(u uint64) *UserUpdate {
-	uu.mutation.ResetPostID()
-	uu.mutation.SetPostID(u)
-	return uu
-}
-
-// SetNillablePostID sets the "post_id" field if the given value is not nil.
-func (uu *UserUpdate) SetNillablePostID(u *uint64) *UserUpdate {
-	if u != nil {
-		uu.SetPostID(*u)
-	}
-	return uu
-}
-
-// AddPostID adds u to the "post_id" field.
-func (uu *UserUpdate) AddPostID(u int64) *UserUpdate {
-	uu.mutation.AddPostID(u)
-	return uu
-}
-
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -447,24 +384,6 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uu.mutation.AddedStatus(); ok {
 		_spec.AddField(user.FieldStatus, field.TypeInt, value)
-	}
-	if value, ok := uu.mutation.RoleID(); ok {
-		_spec.SetField(user.FieldRoleID, field.TypeUint64, value)
-	}
-	if value, ok := uu.mutation.AddedRoleID(); ok {
-		_spec.AddField(user.FieldRoleID, field.TypeUint64, value)
-	}
-	if value, ok := uu.mutation.DeptID(); ok {
-		_spec.SetField(user.FieldDeptID, field.TypeUint64, value)
-	}
-	if value, ok := uu.mutation.AddedDeptID(); ok {
-		_spec.AddField(user.FieldDeptID, field.TypeUint64, value)
-	}
-	if value, ok := uu.mutation.PostID(); ok {
-		_spec.SetField(user.FieldPostID, field.TypeUint64, value)
-	}
-	if value, ok := uu.mutation.AddedPostID(); ok {
-		_spec.AddField(user.FieldPostID, field.TypeUint64, value)
 	}
 	_spec.AddModifiers(uu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
@@ -718,69 +637,6 @@ func (uuo *UserUpdateOne) AddStatus(i int) *UserUpdateOne {
 	return uuo
 }
 
-// SetRoleID sets the "role_id" field.
-func (uuo *UserUpdateOne) SetRoleID(u uint64) *UserUpdateOne {
-	uuo.mutation.ResetRoleID()
-	uuo.mutation.SetRoleID(u)
-	return uuo
-}
-
-// SetNillableRoleID sets the "role_id" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableRoleID(u *uint64) *UserUpdateOne {
-	if u != nil {
-		uuo.SetRoleID(*u)
-	}
-	return uuo
-}
-
-// AddRoleID adds u to the "role_id" field.
-func (uuo *UserUpdateOne) AddRoleID(u int64) *UserUpdateOne {
-	uuo.mutation.AddRoleID(u)
-	return uuo
-}
-
-// SetDeptID sets the "dept_id" field.
-func (uuo *UserUpdateOne) SetDeptID(u uint64) *UserUpdateOne {
-	uuo.mutation.ResetDeptID()
-	uuo.mutation.SetDeptID(u)
-	return uuo
-}
-
-// SetNillableDeptID sets the "dept_id" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableDeptID(u *uint64) *UserUpdateOne {
-	if u != nil {
-		uuo.SetDeptID(*u)
-	}
-	return uuo
-}
-
-// AddDeptID adds u to the "dept_id" field.
-func (uuo *UserUpdateOne) AddDeptID(u int64) *UserUpdateOne {
-	uuo.mutation.AddDeptID(u)
-	return uuo
-}
-
-// SetPostID sets the "post_id" field.
-func (uuo *UserUpdateOne) SetPostID(u uint64) *UserUpdateOne {
-	uuo.mutation.ResetPostID()
-	uuo.mutation.SetPostID(u)
-	return uuo
-}
-
-// SetNillablePostID sets the "post_id" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillablePostID(u *uint64) *UserUpdateOne {
-	if u != nil {
-		uuo.SetPostID(*u)
-	}
-	return uuo
-}
-
-// AddPostID adds u to the "post_id" field.
-func (uuo *UserUpdateOne) AddPostID(u int64) *UserUpdateOne {
-	uuo.mutation.AddPostID(u)
-	return uuo
-}
-
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
@@ -937,24 +793,6 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.AddedStatus(); ok {
 		_spec.AddField(user.FieldStatus, field.TypeInt, value)
-	}
-	if value, ok := uuo.mutation.RoleID(); ok {
-		_spec.SetField(user.FieldRoleID, field.TypeUint64, value)
-	}
-	if value, ok := uuo.mutation.AddedRoleID(); ok {
-		_spec.AddField(user.FieldRoleID, field.TypeUint64, value)
-	}
-	if value, ok := uuo.mutation.DeptID(); ok {
-		_spec.SetField(user.FieldDeptID, field.TypeUint64, value)
-	}
-	if value, ok := uuo.mutation.AddedDeptID(); ok {
-		_spec.AddField(user.FieldDeptID, field.TypeUint64, value)
-	}
-	if value, ok := uuo.mutation.PostID(); ok {
-		_spec.SetField(user.FieldPostID, field.TypeUint64, value)
-	}
-	if value, ok := uuo.mutation.AddedPostID(); ok {
-		_spec.AddField(user.FieldPostID, field.TypeUint64, value)
 	}
 	_spec.AddModifiers(uuo.modifiers...)
 	_node = &User{config: uuo.config}

@@ -45,13 +45,7 @@ type User struct {
 	// 性别: 1：男 2：女
 	Sex int `json:"sex,omitempty"`
 	// 状态: 1:启用, 2:禁用
-	Status int `json:"status,omitempty"`
-	// 角色ID
-	RoleID uint64 `json:"role_id,omitempty"`
-	// 部门ID
-	DeptID uint64 `json:"dept_id,omitempty"`
-	// 岗位ID
-	PostID       uint64 `json:"post_id,omitempty"`
+	Status       int `json:"status,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -60,7 +54,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldID, user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldSex, user.FieldStatus, user.FieldRoleID, user.FieldDeptID, user.FieldPostID:
+		case user.FieldID, user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldSex, user.FieldStatus:
 			values[i] = new(sql.NullInt64)
 		case user.FieldTenantCode, user.FieldUserID, user.FieldUserName, user.FieldPwdHashed, user.FieldPwdSalt, user.FieldToken, user.FieldNickName, user.FieldAvatar, user.FieldPhone, user.FieldEmail:
 			values[i] = new(sql.NullString)
@@ -176,24 +170,6 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.Status = int(value.Int64)
 			}
-		case user.FieldRoleID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field role_id", values[i])
-			} else if value.Valid {
-				u.RoleID = uint64(value.Int64)
-			}
-		case user.FieldDeptID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field dept_id", values[i])
-			} else if value.Valid {
-				u.DeptID = uint64(value.Int64)
-			}
-		case user.FieldPostID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field post_id", values[i])
-			} else if value.Valid {
-				u.PostID = uint64(value.Int64)
-			}
 		default:
 			u.selectValues.Set(columns[i], values[i])
 		}
@@ -276,15 +252,6 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", u.Status))
-	builder.WriteString(", ")
-	builder.WriteString("role_id=")
-	builder.WriteString(fmt.Sprintf("%v", u.RoleID))
-	builder.WriteString(", ")
-	builder.WriteString("dept_id=")
-	builder.WriteString(fmt.Sprintf("%v", u.DeptID))
-	builder.WriteString(", ")
-	builder.WriteString("post_id=")
-	builder.WriteString(fmt.Sprintf("%v", u.PostID))
 	builder.WriteByte(')')
 	return builder.String()
 }

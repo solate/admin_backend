@@ -26,6 +26,32 @@ var (
 		Columns:    CasbinRulesColumns,
 		PrimaryKey: []*schema.Column{CasbinRulesColumns[0]},
 	}
+	// DepartmentsColumns holds the columns for the "departments" table.
+	DepartmentsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
+		{Name: "tenant_code", Type: field.TypeString, Comment: "租户编码"},
+		{Name: "department_id", Type: field.TypeString, Unique: true, Comment: "部门ID"},
+		{Name: "name", Type: field.TypeString, Comment: "部门名称"},
+		{Name: "parent_id", Type: field.TypeString, Comment: "父部门ID", Default: ""},
+		{Name: "sort", Type: field.TypeInt, Comment: "排序", Default: 0},
+	}
+	// DepartmentsTable holds the schema information for the "departments" table.
+	DepartmentsTable = &schema.Table{
+		Name:       "departments",
+		Comment:    "部门",
+		Columns:    DepartmentsColumns,
+		PrimaryKey: []*schema.Column{DepartmentsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "department_department_id",
+				Unique:  false,
+				Columns: []*schema.Column{DepartmentsColumns[5]},
+			},
+		},
+	}
 	// DictItemsColumns holds the columns for the "dict_items" table.
 	DictItemsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -119,7 +145,7 @@ var (
 		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
 		{Name: "tenant_code", Type: field.TypeString, Comment: "租户code"},
 		{Name: "menu_id", Type: field.TypeString, Unique: true, Comment: "菜单ID"},
-		{Name: "code", Type: field.TypeString, Comment: "菜单code"},
+		{Name: "code", Type: field.TypeString, Unique: true, Comment: "菜单code"},
 		{Name: "parent_id", Type: field.TypeString, Comment: "父菜单ID", Default: ""},
 		{Name: "name", Type: field.TypeString, Comment: "菜单名称"},
 		{Name: "path", Type: field.TypeString, Comment: "路由路径", Default: ""},
@@ -173,6 +199,32 @@ var (
 		Comment:    "权限",
 		Columns:    PermissionsColumns,
 		PrimaryKey: []*schema.Column{PermissionsColumns[0]},
+	}
+	// PositionsColumns holds the columns for the "positions" table.
+	PositionsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
+		{Name: "tenant_code", Type: field.TypeString, Comment: "租户编码"},
+		{Name: "position_id", Type: field.TypeString, Unique: true, Comment: "岗位ID"},
+		{Name: "name", Type: field.TypeString, Comment: "岗位名称"},
+		{Name: "department_id", Type: field.TypeString, Comment: "部门ID"},
+		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "岗位描述"},
+	}
+	// PositionsTable holds the schema information for the "positions" table.
+	PositionsTable = &schema.Table{
+		Name:       "positions",
+		Comment:    "岗位",
+		Columns:    PositionsColumns,
+		PrimaryKey: []*schema.Column{PositionsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "position_position_id",
+				Unique:  false,
+				Columns: []*schema.Column{PositionsColumns[5]},
+			},
+		},
 	}
 	// RolesColumns holds the columns for the "roles" table.
 	RolesColumns = []*schema.Column{
@@ -276,9 +328,6 @@ var (
 		{Name: "email", Type: field.TypeString, Comment: "邮箱", Default: ""},
 		{Name: "sex", Type: field.TypeInt, Comment: "性别: 1：男 2：女", Default: 0},
 		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
-		{Name: "role_id", Type: field.TypeUint64, Comment: "角色ID", Default: 0},
-		{Name: "dept_id", Type: field.TypeUint64, Comment: "部门ID", Default: 0},
-		{Name: "post_id", Type: field.TypeUint64, Comment: "岗位ID", Default: 0},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{
@@ -299,22 +348,58 @@ var (
 			},
 		},
 	}
+	// UserPositionsColumns holds the columns for the "user_positions" table.
+	UserPositionsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "user_id", Type: field.TypeString, Comment: "用户ID"},
+		{Name: "position_id", Type: field.TypeString, Comment: "岗位ID"},
+	}
+	// UserPositionsTable holds the schema information for the "user_positions" table.
+	UserPositionsTable = &schema.Table{
+		Name:       "user_positions",
+		Comment:    "用户岗位关联",
+		Columns:    UserPositionsColumns,
+		PrimaryKey: []*schema.Column{UserPositionsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "userposition_user_id",
+				Unique:  false,
+				Columns: []*schema.Column{UserPositionsColumns[1]},
+			},
+			{
+				Name:    "userposition_position_id",
+				Unique:  false,
+				Columns: []*schema.Column{UserPositionsColumns[2]},
+			},
+			{
+				Name:    "userposition_user_id_position_id",
+				Unique:  true,
+				Columns: []*schema.Column{UserPositionsColumns[1], UserPositionsColumns[2]},
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		CasbinRulesTable,
+		DepartmentsTable,
 		DictItemsTable,
 		DictTypesTable,
 		LoginLogTable,
 		MenusTable,
 		PermissionsTable,
+		PositionsTable,
 		RolesTable,
 		SystemLogsTable,
 		TenantsTable,
 		UsersTable,
+		UserPositionsTable,
 	}
 )
 
 func init() {
+	DepartmentsTable.Annotation = &entsql.Annotation{
+		Table: "departments",
+	}
 	DictItemsTable.Annotation = &entsql.Annotation{
 		Table: "dict_items",
 	}
@@ -330,6 +415,9 @@ func init() {
 	PermissionsTable.Annotation = &entsql.Annotation{
 		Table: "permissions",
 	}
+	PositionsTable.Annotation = &entsql.Annotation{
+		Table: "positions",
+	}
 	RolesTable.Annotation = &entsql.Annotation{
 		Table: "roles",
 	}
@@ -341,5 +429,8 @@ func init() {
 	}
 	UsersTable.Annotation = &entsql.Annotation{
 		Table: "users",
+	}
+	UserPositionsTable.Annotation = &entsql.Annotation{
+		Table: "user_positions",
 	}
 }

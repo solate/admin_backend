@@ -215,48 +215,6 @@ func (uc *UserCreate) SetNillableStatus(i *int) *UserCreate {
 	return uc
 }
 
-// SetRoleID sets the "role_id" field.
-func (uc *UserCreate) SetRoleID(u uint64) *UserCreate {
-	uc.mutation.SetRoleID(u)
-	return uc
-}
-
-// SetNillableRoleID sets the "role_id" field if the given value is not nil.
-func (uc *UserCreate) SetNillableRoleID(u *uint64) *UserCreate {
-	if u != nil {
-		uc.SetRoleID(*u)
-	}
-	return uc
-}
-
-// SetDeptID sets the "dept_id" field.
-func (uc *UserCreate) SetDeptID(u uint64) *UserCreate {
-	uc.mutation.SetDeptID(u)
-	return uc
-}
-
-// SetNillableDeptID sets the "dept_id" field if the given value is not nil.
-func (uc *UserCreate) SetNillableDeptID(u *uint64) *UserCreate {
-	if u != nil {
-		uc.SetDeptID(*u)
-	}
-	return uc
-}
-
-// SetPostID sets the "post_id" field.
-func (uc *UserCreate) SetPostID(u uint64) *UserCreate {
-	uc.mutation.SetPostID(u)
-	return uc
-}
-
-// SetNillablePostID sets the "post_id" field if the given value is not nil.
-func (uc *UserCreate) SetNillablePostID(u *uint64) *UserCreate {
-	if u != nil {
-		uc.SetPostID(*u)
-	}
-	return uc
-}
-
 // Mutation returns the UserMutation object of the builder.
 func (uc *UserCreate) Mutation() *UserMutation {
 	return uc.mutation
@@ -340,18 +298,6 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultStatus
 		uc.mutation.SetStatus(v)
 	}
-	if _, ok := uc.mutation.RoleID(); !ok {
-		v := user.DefaultRoleID
-		uc.mutation.SetRoleID(v)
-	}
-	if _, ok := uc.mutation.DeptID(); !ok {
-		v := user.DefaultDeptID
-		uc.mutation.SetDeptID(v)
-	}
-	if _, ok := uc.mutation.PostID(); !ok {
-		v := user.DefaultPostID
-		uc.mutation.SetPostID(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -412,15 +358,6 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "User.status"`)}
-	}
-	if _, ok := uc.mutation.RoleID(); !ok {
-		return &ValidationError{Name: "role_id", err: errors.New(`generated: missing required field "User.role_id"`)}
-	}
-	if _, ok := uc.mutation.DeptID(); !ok {
-		return &ValidationError{Name: "dept_id", err: errors.New(`generated: missing required field "User.dept_id"`)}
-	}
-	if _, ok := uc.mutation.PostID(); !ok {
-		return &ValidationError{Name: "post_id", err: errors.New(`generated: missing required field "User.post_id"`)}
 	}
 	return nil
 }
@@ -508,18 +445,6 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.Status(); ok {
 		_spec.SetField(user.FieldStatus, field.TypeInt, value)
 		_node.Status = value
-	}
-	if value, ok := uc.mutation.RoleID(); ok {
-		_spec.SetField(user.FieldRoleID, field.TypeUint64, value)
-		_node.RoleID = value
-	}
-	if value, ok := uc.mutation.DeptID(); ok {
-		_spec.SetField(user.FieldDeptID, field.TypeUint64, value)
-		_node.DeptID = value
-	}
-	if value, ok := uc.mutation.PostID(); ok {
-		_spec.SetField(user.FieldPostID, field.TypeUint64, value)
-		_node.PostID = value
 	}
 	return _node, _spec
 }
@@ -768,60 +693,6 @@ func (u *UserUpsert) UpdateStatus() *UserUpsert {
 // AddStatus adds v to the "status" field.
 func (u *UserUpsert) AddStatus(v int) *UserUpsert {
 	u.Add(user.FieldStatus, v)
-	return u
-}
-
-// SetRoleID sets the "role_id" field.
-func (u *UserUpsert) SetRoleID(v uint64) *UserUpsert {
-	u.Set(user.FieldRoleID, v)
-	return u
-}
-
-// UpdateRoleID sets the "role_id" field to the value that was provided on create.
-func (u *UserUpsert) UpdateRoleID() *UserUpsert {
-	u.SetExcluded(user.FieldRoleID)
-	return u
-}
-
-// AddRoleID adds v to the "role_id" field.
-func (u *UserUpsert) AddRoleID(v uint64) *UserUpsert {
-	u.Add(user.FieldRoleID, v)
-	return u
-}
-
-// SetDeptID sets the "dept_id" field.
-func (u *UserUpsert) SetDeptID(v uint64) *UserUpsert {
-	u.Set(user.FieldDeptID, v)
-	return u
-}
-
-// UpdateDeptID sets the "dept_id" field to the value that was provided on create.
-func (u *UserUpsert) UpdateDeptID() *UserUpsert {
-	u.SetExcluded(user.FieldDeptID)
-	return u
-}
-
-// AddDeptID adds v to the "dept_id" field.
-func (u *UserUpsert) AddDeptID(v uint64) *UserUpsert {
-	u.Add(user.FieldDeptID, v)
-	return u
-}
-
-// SetPostID sets the "post_id" field.
-func (u *UserUpsert) SetPostID(v uint64) *UserUpsert {
-	u.Set(user.FieldPostID, v)
-	return u
-}
-
-// UpdatePostID sets the "post_id" field to the value that was provided on create.
-func (u *UserUpsert) UpdatePostID() *UserUpsert {
-	u.SetExcluded(user.FieldPostID)
-	return u
-}
-
-// AddPostID adds v to the "post_id" field.
-func (u *UserUpsert) AddPostID(v uint64) *UserUpsert {
-	u.Add(user.FieldPostID, v)
 	return u
 }
 
@@ -1098,69 +969,6 @@ func (u *UserUpsertOne) AddStatus(v int) *UserUpsertOne {
 func (u *UserUpsertOne) UpdateStatus() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateStatus()
-	})
-}
-
-// SetRoleID sets the "role_id" field.
-func (u *UserUpsertOne) SetRoleID(v uint64) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.SetRoleID(v)
-	})
-}
-
-// AddRoleID adds v to the "role_id" field.
-func (u *UserUpsertOne) AddRoleID(v uint64) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.AddRoleID(v)
-	})
-}
-
-// UpdateRoleID sets the "role_id" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateRoleID() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateRoleID()
-	})
-}
-
-// SetDeptID sets the "dept_id" field.
-func (u *UserUpsertOne) SetDeptID(v uint64) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.SetDeptID(v)
-	})
-}
-
-// AddDeptID adds v to the "dept_id" field.
-func (u *UserUpsertOne) AddDeptID(v uint64) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.AddDeptID(v)
-	})
-}
-
-// UpdateDeptID sets the "dept_id" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateDeptID() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateDeptID()
-	})
-}
-
-// SetPostID sets the "post_id" field.
-func (u *UserUpsertOne) SetPostID(v uint64) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.SetPostID(v)
-	})
-}
-
-// AddPostID adds v to the "post_id" field.
-func (u *UserUpsertOne) AddPostID(v uint64) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.AddPostID(v)
-	})
-}
-
-// UpdatePostID sets the "post_id" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdatePostID() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdatePostID()
 	})
 }
 
@@ -1603,69 +1411,6 @@ func (u *UserUpsertBulk) AddStatus(v int) *UserUpsertBulk {
 func (u *UserUpsertBulk) UpdateStatus() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateStatus()
-	})
-}
-
-// SetRoleID sets the "role_id" field.
-func (u *UserUpsertBulk) SetRoleID(v uint64) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.SetRoleID(v)
-	})
-}
-
-// AddRoleID adds v to the "role_id" field.
-func (u *UserUpsertBulk) AddRoleID(v uint64) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.AddRoleID(v)
-	})
-}
-
-// UpdateRoleID sets the "role_id" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateRoleID() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateRoleID()
-	})
-}
-
-// SetDeptID sets the "dept_id" field.
-func (u *UserUpsertBulk) SetDeptID(v uint64) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.SetDeptID(v)
-	})
-}
-
-// AddDeptID adds v to the "dept_id" field.
-func (u *UserUpsertBulk) AddDeptID(v uint64) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.AddDeptID(v)
-	})
-}
-
-// UpdateDeptID sets the "dept_id" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateDeptID() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateDeptID()
-	})
-}
-
-// SetPostID sets the "post_id" field.
-func (u *UserUpsertBulk) SetPostID(v uint64) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.SetPostID(v)
-	})
-}
-
-// AddPostID adds v to the "post_id" field.
-func (u *UserUpsertBulk) AddPostID(v uint64) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.AddPostID(v)
-	})
-}
-
-// UpdatePostID sets the "post_id" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdatePostID() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdatePostID()
 	})
 }
 

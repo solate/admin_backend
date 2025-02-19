@@ -9,6 +9,9 @@ import (
 // CasbinRule is the predicate function for casbinrule builders.
 type CasbinRule func(*sql.Selector)
 
+// Department is the predicate function for department builders.
+type Department func(*sql.Selector)
+
 // DictItem is the predicate function for dictitem builders.
 type DictItem func(*sql.Selector)
 
@@ -24,6 +27,9 @@ type Menu func(*sql.Selector)
 // Permission is the predicate function for permission builders.
 type Permission func(*sql.Selector)
 
+// Position is the predicate function for position builders.
+type Position func(*sql.Selector)
+
 // Role is the predicate function for role builders.
 type Role func(*sql.Selector)
 
@@ -35,3 +41,6 @@ type Tenant func(*sql.Selector)
 
 // User is the predicate function for user builders.
 type User func(*sql.Selector)
+
+// UserPosition is the predicate function for userposition builders.
+type UserPosition func(*sql.Selector)

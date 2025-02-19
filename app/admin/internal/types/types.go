@@ -7,6 +7,11 @@ type AllMenuResp struct {
 	List []*MenuInfo `json:"list"` // 菜单列表
 }
 
+type AssignUserPositionReq struct {
+	UserID     string `json:"user_id"`     // 用户ID
+	PositionID string `json:"position_id"` // 岗位ID
+}
+
 type CaptchaResp struct {
 	CaptchaId  string `json:"captcha_id"`  // 验证码ID
 	CaptchaUrl string `json:"captcha_url"` // 验证码图片（base64）
@@ -15,6 +20,16 @@ type CaptchaResp struct {
 type ChangePasswordReq struct {
 	OldPassword string `json:"old_password" validate:"required"` // 原密码
 	NewPassword string `json:"new_password" validate:"required"` // 新密码
+}
+
+type CreateDepartmentReq struct {
+	Name     string `json:"name"`               // 部门名称
+	ParentID string `json:"parent_id,optional"` // 父部门ID
+	Sort     int    `json:"sort,optional"`      // 排序
+}
+
+type CreateDepartmentResp struct {
+	DepartmentID string `json:"department_id"` // 部门ID
 }
 
 type CreateDictItemReq struct {
@@ -75,6 +90,16 @@ type CreatePermissionResp struct {
 	PermissionID string `json:"permission_id"` // 权限规则ID
 }
 
+type CreatePositionReq struct {
+	Name         string `json:"name"`                 // 岗位名称
+	DepartmentID string `json:"department_id"`        // 部门ID
+	Description  string `json:"description,optional"` // 岗位描述
+}
+
+type CreatePositionResp struct {
+	PositionID string `json:"position_id"` // 岗位ID
+}
+
 type CreateRoleReq struct {
 	Name        string `json:"name"`                 // 角色名
 	Code        string `json:"code"`                 // 角色编码
@@ -114,6 +139,10 @@ type CreateUserResp struct {
 	UserID string `json:"user_id"` // 用户ID
 }
 
+type DeleteDepartmentReq struct {
+	DepartmentID string `path:"department_id"` // 部门ID
+}
+
 type DeleteDictItemReq struct {
 	ItemID string `path:"item_id"`
 }
@@ -130,6 +159,10 @@ type DeletePermissionReq struct {
 	PermissionID string `path:"permission_id" validate:"required"` // 权限规则ID
 }
 
+type DeletePositionReq struct {
+	PositionID string `path:"position_id"` // 岗位ID
+}
+
 type DeleteRoleReq struct {
 	RoleID string `path:"role_id"`
 }
@@ -140,6 +173,26 @@ type DeleteTenantReq struct {
 
 type DeleteUserReq struct {
 	UserID string `path:"user_id"`
+}
+
+type DepartmentInfo struct {
+	DepartmentID string `json:"department_id"` // 部门ID
+	Name         string `json:"name"`          // 部门名称
+	ParentID     string `json:"parent_id"`     // 父部门ID
+	Sort         int    `json:"sort"`          // 排序
+	CreatedAt    int64  `json:"created_at"`    // 创建时间
+	UpdatedAt    int64  `json:"updated_at"`    // 更新时间
+}
+
+type DepartmentListReq struct {
+	PageRequest
+	Name     string `form:"name,optional"`      // 部门名称
+	ParentID string `form:"parent_id,optional"` // 父部门ID
+}
+
+type DepartmentListResp struct {
+	Page *PageResponse     `json:"page"` // 分页
+	List []*DepartmentInfo `json:"list"` // 部门列表
 }
 
 type DictItemInfo struct {
@@ -190,6 +243,10 @@ type GetAllRolesResp struct {
 	List []*RoleInfo `json:"list"` // 角色列表
 }
 
+type GetDepartmentReq struct {
+	DepartmentID string `path:"department_id"` // 部门ID
+}
+
 type GetDictItemReq struct {
 	ItemID string `path:"item_id"`
 }
@@ -206,12 +263,32 @@ type GetMenuReq struct {
 	MenuID string `path:"menu_id"`
 }
 
+type GetOrgTreeReq struct {
+	TenantID string `form:"tenant_id,optional"` // 租户ID，可选参数
+}
+
+type GetOrgTreeResp struct {
+	Tree []*OrgTreeNode `json:"tree"` // 组织树
+}
+
 type GetPermissionReq struct {
 	PermissionID string `path:"permission_id" validate:"required"` // 权限规则ID
 }
 
 type GetPermissionResp struct {
 	PermissionInfo
+}
+
+type GetPositionReq struct {
+	PositionID string `path:"position_id"` // 岗位ID
+}
+
+type GetPositionUsersReq struct {
+	PositionID string `path:"position_id"` // 岗位ID
+}
+
+type GetPositionUsersResp struct {
+	List []*UserPositionInfo `json:"list"` // 用户列表
 }
 
 type GetResourceTypesResp struct {
@@ -236,6 +313,14 @@ type GetTenantReq struct {
 
 type GetTenantResp struct {
 	TenantInfo
+}
+
+type GetUserPositionsReq struct {
+	UserID string `path:"user_id"` // 用户ID
+}
+
+type GetUserPositionsResp struct {
+	List []*PositionInfo `json:"list"` // 岗位列表
 }
 
 type GetUserReq struct {
@@ -365,6 +450,15 @@ type MenuTreeResp struct {
 	List []*MenuTree `json:"list"` // 菜单树列表
 }
 
+type OrgTreeNode struct {
+	DepartmentID string          `json:"department_id"` // 部门ID
+	Name         string          `json:"name"`          // 部门名称
+	ParentID     string          `json:"parent_id"`     // 父部门ID
+	Sort         int             `json:"sort"`          // 排序
+	Positions    []*PositionInfo `json:"positions"`     // 部门下的岗位列表
+	Children     []*OrgTreeNode  `json:"children"`      // 子部门列表
+}
+
 type PageJsonRequest struct {
 	Current  int `json:"current"`   // 当前页
 	PageSize int `json:"page_size"` // 每页大小
@@ -404,6 +498,26 @@ type PermissionInfo struct {
 	CreatedAt    int64  `json:"created_at"`    // 创建时间
 }
 
+type PositionInfo struct {
+	PositionID   string `json:"position_id"`   // 岗位ID
+	Name         string `json:"name"`          // 岗位名称
+	DepartmentID string `json:"department_id"` // 部门ID
+	Description  string `json:"description"`   // 岗位描述
+	CreatedAt    int64  `json:"created_at"`    // 创建时间
+	UpdatedAt    int64  `json:"updated_at"`    // 更新时间
+}
+
+type PositionListReq struct {
+	PageRequest
+	Name         string `form:"name,optional"`          // 岗位名称
+	DepartmentID string `form:"department_id,optional"` // 部门ID
+}
+
+type PositionListResp struct {
+	Page *PageResponse   `json:"page"` // 分页
+	List []*PositionInfo `json:"list"` // 岗位列表
+}
+
 type RegisterReq struct {
 	UserName string `json:"user_name"`
 	Password string `json:"password"`
@@ -416,6 +530,11 @@ type RegisterReq struct {
 
 type RegisterResp struct {
 	UserID string `json:"user_id"`
+}
+
+type RemoveUserPositionReq struct {
+	UserID     string `json:"user_id"`     // 用户ID
+	PositionID string `json:"position_id"` // 岗位ID
 }
 
 type ResetPasswordReq struct {
@@ -479,6 +598,13 @@ type TimeRange struct {
 	EndTime   string `form:"end_time,optional"`   // 结束时间
 }
 
+type UpdateDepartmentReq struct {
+	DepartmentID string `path:"department_id"`      // 部门ID
+	Name         string `json:"name,optional"`      // 部门名称
+	ParentID     string `json:"parent_id,optional"` // 父部门ID
+	Sort         int    `json:"sort,optional"`      // 排序
+}
+
 type UpdateDictItemReq struct {
 	ItemID      string `path:"item_id"`
 	Label       string `json:"label,optional"`       // 字典标签
@@ -516,6 +642,13 @@ type UpdatePermissionReq struct {
 	Description  string `json:"description,optional"` // 描述
 	Status       int    `json:"status,optional"`      // 状态
 	MenuID       string `json:"menu_id,optional"`     // 菜单ID
+}
+
+type UpdatePositionReq struct {
+	PositionID   string `path:"position_id"`            // 岗位ID
+	Name         string `json:"name,optional"`          // 岗位名称
+	DepartmentID string `json:"department_id,optional"` // 部门ID
+	Description  string `json:"description,optional"`   // 岗位描述
 }
 
 type UpdateRoleReq struct {
@@ -564,4 +697,12 @@ type UserListReq struct {
 type UserListResp struct {
 	Page *PageResponse `json:"page"` // 分页
 	List []*UserInfo   `json:"list"` // 用户列表
+}
+
+type UserPositionInfo struct {
+	UserID     string `json:"user_id"`     // 用户ID
+	Name       string `json:"name"`        // 用户姓名
+	UserName   string `json:"user_name"`   // 用户名
+	Avatar     string `json:"avatar"`      // 头像
+	PositionID string `json:"position_id"` // 岗位ID
 }

@@ -4,15 +4,18 @@ package generated
 
 import (
 	"admin_backend/pkg/ent/generated/casbinrule"
+	"admin_backend/pkg/ent/generated/department"
 	"admin_backend/pkg/ent/generated/dictitem"
 	"admin_backend/pkg/ent/generated/dicttype"
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/menu"
 	"admin_backend/pkg/ent/generated/permission"
+	"admin_backend/pkg/ent/generated/position"
 	"admin_backend/pkg/ent/generated/role"
 	"admin_backend/pkg/ent/generated/systemlog"
 	"admin_backend/pkg/ent/generated/tenant"
 	"admin_backend/pkg/ent/generated/user"
+	"admin_backend/pkg/ent/generated/userposition"
 	"context"
 	"errors"
 	"fmt"
@@ -82,16 +85,19 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			casbinrule.Table: casbinrule.ValidColumn,
-			dictitem.Table:   dictitem.ValidColumn,
-			dicttype.Table:   dicttype.ValidColumn,
-			loginlog.Table:   loginlog.ValidColumn,
-			menu.Table:       menu.ValidColumn,
-			permission.Table: permission.ValidColumn,
-			role.Table:       role.ValidColumn,
-			systemlog.Table:  systemlog.ValidColumn,
-			tenant.Table:     tenant.ValidColumn,
-			user.Table:       user.ValidColumn,
+			casbinrule.Table:   casbinrule.ValidColumn,
+			department.Table:   department.ValidColumn,
+			dictitem.Table:     dictitem.ValidColumn,
+			dicttype.Table:     dicttype.ValidColumn,
+			loginlog.Table:     loginlog.ValidColumn,
+			menu.Table:         menu.ValidColumn,
+			permission.Table:   permission.ValidColumn,
+			position.Table:     position.ValidColumn,
+			role.Table:         role.ValidColumn,
+			systemlog.Table:    systemlog.ValidColumn,
+			tenant.Table:       tenant.ValidColumn,
+			user.Table:         user.ValidColumn,
+			userposition.Table: userposition.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

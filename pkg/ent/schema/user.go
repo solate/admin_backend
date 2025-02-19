@@ -42,9 +42,9 @@ func (User) Fields() []ent.Field {
 		field.Int("sex").Default(0).Comment("性别: 1：男 2：女"),
 		field.Int("status").Default(1).Comment("状态: 1:启用, 2:禁用"),
 
-		field.Uint64("role_id").Default(0).Comment("角色ID"),
-		field.Uint64("dept_id").Default(0).Comment("部门ID"),
-		field.Uint64("post_id").Default(0).Comment("岗位ID"),
+		// field.Uint64("role_id").Default(0).Comment("角色ID"),
+		// field.Uint64("dept_id").Default(0).Comment("部门ID"),
+		// field.Uint64("position_id").Default(0).Comment("岗位ID"),
 	}
 }
 

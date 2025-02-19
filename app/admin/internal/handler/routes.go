@@ -9,6 +9,7 @@ import (
 	auth "admin_backend/app/admin/internal/handler/auth"
 	dict "admin_backend/app/admin/internal/handler/dict"
 	menu "admin_backend/app/admin/internal/handler/menu"
+	organization "admin_backend/app/admin/internal/handler/organization"
 	permission "admin_backend/app/admin/internal/handler/permission"
 	role "admin_backend/app/admin/internal/handler/role"
 	tenant "admin_backend/app/admin/internal/handler/tenant"
@@ -190,6 +191,105 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodGet,
 					Path:    "/menus/tree",
 					Handler: menu.GetMenuTreeHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/admin/api/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.AuthMiddleware},
+			[]rest.Route{
+				{
+					// 创建部门
+					Method:  http.MethodPost,
+					Path:    "/departments",
+					Handler: organization.CreateDepartmentHandler(serverCtx),
+				},
+				{
+					// 获取部门列表
+					Method:  http.MethodGet,
+					Path:    "/departments",
+					Handler: organization.ListDepartmentHandler(serverCtx),
+				},
+				{
+					// 更新部门
+					Method:  http.MethodPut,
+					Path:    "/departments/:department_id",
+					Handler: organization.UpdateDepartmentHandler(serverCtx),
+				},
+				{
+					// 删除部门
+					Method:  http.MethodDelete,
+					Path:    "/departments/:department_id",
+					Handler: organization.DeleteDepartmentHandler(serverCtx),
+				},
+				{
+					// 获取部门详情
+					Method:  http.MethodGet,
+					Path:    "/departments/:department_id",
+					Handler: organization.GetDepartmentHandler(serverCtx),
+				},
+				{
+					// 获取组织架构树
+					Method:  http.MethodGet,
+					Path:    "/org-tree",
+					Handler: organization.GetOrgTreeHandler(serverCtx),
+				},
+				{
+					// 创建岗位
+					Method:  http.MethodPost,
+					Path:    "/positions",
+					Handler: organization.CreatePositionHandler(serverCtx),
+				},
+				{
+					// 获取岗位列表
+					Method:  http.MethodGet,
+					Path:    "/positions",
+					Handler: organization.ListPositionHandler(serverCtx),
+				},
+				{
+					// 更新岗位
+					Method:  http.MethodPut,
+					Path:    "/positions/:position_id",
+					Handler: organization.UpdatePositionHandler(serverCtx),
+				},
+				{
+					// 删除岗位
+					Method:  http.MethodDelete,
+					Path:    "/positions/:position_id",
+					Handler: organization.DeletePositionHandler(serverCtx),
+				},
+				{
+					// 获取岗位详情
+					Method:  http.MethodGet,
+					Path:    "/positions/:position_id",
+					Handler: organization.GetPositionHandler(serverCtx),
+				},
+				{
+					// 获取岗位下的用户列表
+					Method:  http.MethodGet,
+					Path:    "/positions/:position_id/users",
+					Handler: organization.GetPositionUsersHandler(serverCtx),
+				},
+				{
+					// 分配用户岗位
+					Method:  http.MethodPost,
+					Path:    "/user-positions",
+					Handler: organization.AssignUserPositionHandler(serverCtx),
+				},
+				{
+					// 移除用户岗位
+					Method:  http.MethodDelete,
+					Path:    "/user-positions",
+					Handler: organization.RemoveUserPositionHandler(serverCtx),
+				},
+				{
+					// 获取用户的岗位列表
+					Method:  http.MethodGet,
+					Path:    "/users/:user_id/positions",
+					Handler: organization.GetUserPositionsHandler(serverCtx),
 				},
 			}...,
 		),

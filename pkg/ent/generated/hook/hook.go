@@ -20,6 +20,18 @@ func (f CasbinRuleFunc) Mutate(ctx context.Context, m generated.Mutation) (gener
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.CasbinRuleMutation", m)
 }
 
+// The DepartmentFunc type is an adapter to allow the use of ordinary
+// function as Department mutator.
+type DepartmentFunc func(context.Context, *generated.DepartmentMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f DepartmentFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.DepartmentMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.DepartmentMutation", m)
+}
+
 // The DictItemFunc type is an adapter to allow the use of ordinary
 // function as DictItem mutator.
 type DictItemFunc func(context.Context, *generated.DictItemMutation) (generated.Value, error)
@@ -80,6 +92,18 @@ func (f PermissionFunc) Mutate(ctx context.Context, m generated.Mutation) (gener
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.PermissionMutation", m)
 }
 
+// The PositionFunc type is an adapter to allow the use of ordinary
+// function as Position mutator.
+type PositionFunc func(context.Context, *generated.PositionMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PositionFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.PositionMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.PositionMutation", m)
+}
+
 // The RoleFunc type is an adapter to allow the use of ordinary
 // function as Role mutator.
 type RoleFunc func(context.Context, *generated.RoleMutation) (generated.Value, error)
@@ -126,6 +150,18 @@ func (f UserFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.V
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.UserMutation", m)
+}
+
+// The UserPositionFunc type is an adapter to allow the use of ordinary
+// function as UserPosition mutator.
+type UserPositionFunc func(context.Context, *generated.UserPositionMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f UserPositionFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.UserPositionMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.UserPositionMutation", m)
 }
 
 // Condition is a hook condition function.

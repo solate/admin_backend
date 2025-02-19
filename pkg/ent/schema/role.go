@@ -31,7 +31,7 @@ func (Role) Fields() []ent.Field {
 
 		field.String("role_id").Unique().Immutable().Comment("角色ID"),
 		field.String("name").NotEmpty().Comment("角色名"),
-		field.String("code").NotEmpty().Unique().Comment("角色编码"),
+		field.String("code").Unique().NotEmpty().Comment("角色编码"),
 		field.String("description").Optional().Comment("角色描述"),
 		field.Int("status").Default(1).Comment("状态: 1:启用, 2:禁用"),
 		field.Int("sort").Default(0).Comment("排序"),

@@ -41,12 +41,6 @@ const (
 	FieldSex = "sex"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// FieldRoleID holds the string denoting the role_id field in the database.
-	FieldRoleID = "role_id"
-	// FieldDeptID holds the string denoting the dept_id field in the database.
-	FieldDeptID = "dept_id"
-	// FieldPostID holds the string denoting the post_id field in the database.
-	FieldPostID = "post_id"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 )
@@ -69,9 +63,6 @@ var Columns = []string{
 	FieldEmail,
 	FieldSex,
 	FieldStatus,
-	FieldRoleID,
-	FieldDeptID,
-	FieldPostID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -115,12 +106,6 @@ var (
 	DefaultSex int
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
-	// DefaultRoleID holds the default value on creation for the "role_id" field.
-	DefaultRoleID uint64
-	// DefaultDeptID holds the default value on creation for the "dept_id" field.
-	DefaultDeptID uint64
-	// DefaultPostID holds the default value on creation for the "post_id" field.
-	DefaultPostID uint64
 )
 
 // OrderOption defines the ordering options for the User queries.
@@ -204,19 +189,4 @@ func BySex(opts ...sql.OrderTermOption) OrderOption {
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
-}
-
-// ByRoleID orders the results by the role_id field.
-func ByRoleID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldRoleID, opts...).ToFunc()
-}
-
-// ByDeptID orders the results by the dept_id field.
-func ByDeptID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDeptID, opts...).ToFunc()
-}
-
-// ByPostID orders the results by the post_id field.
-func ByPostID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPostID, opts...).ToFunc()
 }

@@ -4,15 +4,18 @@ package generated
 
 import (
 	"admin_backend/pkg/ent/generated/casbinrule"
+	"admin_backend/pkg/ent/generated/department"
 	"admin_backend/pkg/ent/generated/dictitem"
 	"admin_backend/pkg/ent/generated/dicttype"
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/menu"
 	"admin_backend/pkg/ent/generated/permission"
+	"admin_backend/pkg/ent/generated/position"
 	"admin_backend/pkg/ent/generated/role"
 	"admin_backend/pkg/ent/generated/systemlog"
 	"admin_backend/pkg/ent/generated/tenant"
 	"admin_backend/pkg/ent/generated/user"
+	"admin_backend/pkg/ent/generated/userposition"
 	"admin_backend/pkg/ent/schema"
 )
 
@@ -50,6 +53,32 @@ func init() {
 	casbinruleDescV5 := casbinruleFields[6].Descriptor()
 	// casbinrule.DefaultV5 holds the default value on creation for the V5 field.
 	casbinrule.DefaultV5 = casbinruleDescV5.Default.(string)
+	departmentFields := schema.Department{}.Fields()
+	_ = departmentFields
+	// departmentDescCreatedAt is the schema descriptor for created_at field.
+	departmentDescCreatedAt := departmentFields[0].Descriptor()
+	// department.DefaultCreatedAt holds the default value on creation for the created_at field.
+	department.DefaultCreatedAt = departmentDescCreatedAt.Default.(int64)
+	// departmentDescUpdatedAt is the schema descriptor for updated_at field.
+	departmentDescUpdatedAt := departmentFields[1].Descriptor()
+	// department.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	department.DefaultUpdatedAt = departmentDescUpdatedAt.Default.(int64)
+	// departmentDescTenantCode is the schema descriptor for tenant_code field.
+	departmentDescTenantCode := departmentFields[3].Descriptor()
+	// department.TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
+	department.TenantCodeValidator = departmentDescTenantCode.Validators[0].(func(string) error)
+	// departmentDescName is the schema descriptor for name field.
+	departmentDescName := departmentFields[5].Descriptor()
+	// department.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	department.NameValidator = departmentDescName.Validators[0].(func(string) error)
+	// departmentDescParentID is the schema descriptor for parent_id field.
+	departmentDescParentID := departmentFields[6].Descriptor()
+	// department.DefaultParentID holds the default value on creation for the parent_id field.
+	department.DefaultParentID = departmentDescParentID.Default.(string)
+	// departmentDescSort is the schema descriptor for sort field.
+	departmentDescSort := departmentFields[7].Descriptor()
+	// department.DefaultSort holds the default value on creation for the sort field.
+	department.DefaultSort = departmentDescSort.Default.(int)
 	dictitemFields := schema.DictItem{}.Fields()
 	_ = dictitemFields
 	// dictitemDescCreatedAt is the schema descriptor for created_at field.
@@ -212,6 +241,28 @@ func init() {
 	permissionDescStatus := permissionFields[12].Descriptor()
 	// permission.DefaultStatus holds the default value on creation for the status field.
 	permission.DefaultStatus = permissionDescStatus.Default.(int)
+	positionFields := schema.Position{}.Fields()
+	_ = positionFields
+	// positionDescCreatedAt is the schema descriptor for created_at field.
+	positionDescCreatedAt := positionFields[0].Descriptor()
+	// position.DefaultCreatedAt holds the default value on creation for the created_at field.
+	position.DefaultCreatedAt = positionDescCreatedAt.Default.(int64)
+	// positionDescUpdatedAt is the schema descriptor for updated_at field.
+	positionDescUpdatedAt := positionFields[1].Descriptor()
+	// position.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	position.DefaultUpdatedAt = positionDescUpdatedAt.Default.(int64)
+	// positionDescTenantCode is the schema descriptor for tenant_code field.
+	positionDescTenantCode := positionFields[3].Descriptor()
+	// position.TenantCodeValidator is a validator for the "tenant_code" field. It is called by the builders before save.
+	position.TenantCodeValidator = positionDescTenantCode.Validators[0].(func(string) error)
+	// positionDescName is the schema descriptor for name field.
+	positionDescName := positionFields[5].Descriptor()
+	// position.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	position.NameValidator = positionDescName.Validators[0].(func(string) error)
+	// positionDescDepartmentID is the schema descriptor for department_id field.
+	positionDescDepartmentID := positionFields[6].Descriptor()
+	// position.DepartmentIDValidator is a validator for the "department_id" field. It is called by the builders before save.
+	position.DepartmentIDValidator = positionDescDepartmentID.Validators[0].(func(string) error)
 	roleFields := schema.Role{}.Fields()
 	_ = roleFields
 	// roleDescCreatedAt is the schema descriptor for created_at field.
@@ -356,16 +407,14 @@ func init() {
 	userDescStatus := userFields[14].Descriptor()
 	// user.DefaultStatus holds the default value on creation for the status field.
 	user.DefaultStatus = userDescStatus.Default.(int)
-	// userDescRoleID is the schema descriptor for role_id field.
-	userDescRoleID := userFields[15].Descriptor()
-	// user.DefaultRoleID holds the default value on creation for the role_id field.
-	user.DefaultRoleID = userDescRoleID.Default.(uint64)
-	// userDescDeptID is the schema descriptor for dept_id field.
-	userDescDeptID := userFields[16].Descriptor()
-	// user.DefaultDeptID holds the default value on creation for the dept_id field.
-	user.DefaultDeptID = userDescDeptID.Default.(uint64)
-	// userDescPostID is the schema descriptor for post_id field.
-	userDescPostID := userFields[17].Descriptor()
-	// user.DefaultPostID holds the default value on creation for the post_id field.
-	user.DefaultPostID = userDescPostID.Default.(uint64)
+	userpositionFields := schema.UserPosition{}.Fields()
+	_ = userpositionFields
+	// userpositionDescUserID is the schema descriptor for user_id field.
+	userpositionDescUserID := userpositionFields[0].Descriptor()
+	// userposition.UserIDValidator is a validator for the "user_id" field. It is called by the builders before save.
+	userposition.UserIDValidator = userpositionDescUserID.Validators[0].(func(string) error)
+	// userpositionDescPositionID is the schema descriptor for position_id field.
+	userpositionDescPositionID := userpositionFields[1].Descriptor()
+	// userposition.PositionIDValidator is a validator for the "position_id" field. It is called by the builders before save.
+	userposition.PositionIDValidator = userpositionDescPositionID.Validators[0].(func(string) error)
 }

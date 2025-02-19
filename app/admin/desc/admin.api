@@ -9,5 +9,6 @@ import (
 	"type/admin/permission.api"
 	"type/admin/menu.api"
 	"type/admin/dict.api"
+	"type/admin/organization.api"
 )
 

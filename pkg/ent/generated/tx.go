@@ -14,6 +14,8 @@ type Tx struct {
 	config
 	// CasbinRule is the client for interacting with the CasbinRule builders.
 	CasbinRule *CasbinRuleClient
+	// Department is the client for interacting with the Department builders.
+	Department *DepartmentClient
 	// DictItem is the client for interacting with the DictItem builders.
 	DictItem *DictItemClient
 	// DictType is the client for interacting with the DictType builders.
@@ -24,6 +26,8 @@ type Tx struct {
 	Menu *MenuClient
 	// Permission is the client for interacting with the Permission builders.
 	Permission *PermissionClient
+	// Position is the client for interacting with the Position builders.
+	Position *PositionClient
 	// Role is the client for interacting with the Role builders.
 	Role *RoleClient
 	// SystemLog is the client for interacting with the SystemLog builders.
@@ -32,6 +36,8 @@ type Tx struct {
 	Tenant *TenantClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
+	// UserPosition is the client for interacting with the UserPosition builders.
+	UserPosition *UserPositionClient
 
 	// lazily loaded.
 	client     *Client
@@ -164,15 +170,18 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.CasbinRule = NewCasbinRuleClient(tx.config)
+	tx.Department = NewDepartmentClient(tx.config)
 	tx.DictItem = NewDictItemClient(tx.config)
 	tx.DictType = NewDictTypeClient(tx.config)
 	tx.LoginLog = NewLoginLogClient(tx.config)
 	tx.Menu = NewMenuClient(tx.config)
 	tx.Permission = NewPermissionClient(tx.config)
+	tx.Position = NewPositionClient(tx.config)
 	tx.Role = NewRoleClient(tx.config)
 	tx.SystemLog = NewSystemLogClient(tx.config)
 	tx.Tenant = NewTenantClient(tx.config)
 	tx.User = NewUserClient(tx.config)
+	tx.UserPosition = NewUserPositionClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.
