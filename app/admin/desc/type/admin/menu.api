@@ -102,6 +102,10 @@ type (
         Status     int         `json:"status"`      // 状态
         Children   []*MenuTree `json:"children"`    // 子菜单
     }
+    // 获取所有菜单响应
+    AllMenuResp {
+        List []*MenuInfo `json:"list"` // 菜单列表
+    }
 )
 
 @server (
@@ -133,4 +137,9 @@ service admin {
     @doc "获取菜单树"
     @handler GetMenuTree
     get /menus/tree returns (MenuTreeResp)
+
+    @doc "获取所有菜单"
+    @handler GetAllMenu
+    get /menus/all returns (AllMenuResp)
+
 }

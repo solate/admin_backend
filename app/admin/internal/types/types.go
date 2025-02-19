@@ -3,6 +3,10 @@
 
 package types
 
+type AllMenuResp struct {
+	List []*MenuInfo `json:"list"` // 菜单列表
+}
+
 type CaptchaResp struct {
 	CaptchaId  string `json:"captcha_id"`  // 验证码ID
 	CaptchaUrl string `json:"captcha_url"` // 验证码图片（base64）

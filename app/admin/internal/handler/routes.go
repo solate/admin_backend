@@ -180,6 +180,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: menu.GetMenuHandler(serverCtx),
 				},
 				{
+					// 获取所有菜单
+					Method:  http.MethodGet,
+					Path:    "/menus/all",
+					Handler: menu.GetAllMenuHandler(serverCtx),
+				},
+				{
 					// 获取菜单树
 					Method:  http.MethodGet,
 					Path:    "/menus/tree",
