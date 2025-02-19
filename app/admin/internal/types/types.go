@@ -106,6 +106,10 @@ type DeleteUserReq struct {
 	UserID string `path:"user_id"`
 }
 
+type GetAllRolesResp struct {
+	List []*RoleInfo `json:"list"` // 角色列表
+}
+
 type GetMenuReq struct {
 	MenuID string `path:"menu_id"`
 }

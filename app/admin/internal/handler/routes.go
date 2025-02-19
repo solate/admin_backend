@@ -176,6 +176,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: role.GetRoleHandler(serverCtx),
 				},
 				{
+					// 获取所有角色列表
+					Method:  http.MethodGet,
+					Path:    "/roles/all",
+					Handler: role.GetAllRolesHandler(serverCtx),
+				},
+				{
 					// 设置用户角色
 					Method:  http.MethodPost,
 					Path:    "/users/:user_id/roles",

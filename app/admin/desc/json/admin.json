@@ -516,6 +516,23 @@
         ]
       }
     },
+    "/admin/api/v1/roles/all": {
+      "get": {
+        "summary": "获取所有角色列表",
+        "operationId": "GetAllRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetAllRolesResp"
+            }
+          }
+        },
+        "tags": [
+          "role"
+        ]
+      }
+    },
     "/admin/api/v1/roles/{role_id}": {
       "get": {
         "summary": "获取角色详情",
@@ -1432,6 +1449,22 @@
     "DeleteUserReq": {
       "type": "object",
       "title": "DeleteUserReq"
+    },
+    "GetAllRolesResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoleInfo"
+          },
+          "description": " 角色列表"
+        }
+      },
+      "title": "GetAllRolesResp",
+      "required": [
+        "list"
+      ]
     },
     "GetMenuReq": {
       "type": "object",
