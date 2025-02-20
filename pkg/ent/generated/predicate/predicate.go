@@ -27,6 +27,9 @@ type Menu func(*sql.Selector)
 // Permission is the predicate function for permission builders.
 type Permission func(*sql.Selector)
 
+// Plan is the predicate function for plan builders.
+type Plan func(*sql.Selector)
+
 // Position is the predicate function for position builders.
 type Position func(*sql.Selector)
 
@@ -35,6 +38,9 @@ type Role func(*sql.Selector)
 
 // SystemLog is the predicate function for systemlog builders.
 type SystemLog func(*sql.Selector)
+
+// Task is the predicate function for task builders.
+type Task func(*sql.Selector)
 
 // Tenant is the predicate function for tenant builders.
 type Tenant func(*sql.Selector)

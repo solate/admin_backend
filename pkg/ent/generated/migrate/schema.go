@@ -153,7 +153,7 @@ var (
 		{Name: "redirect", Type: field.TypeString, Comment: "重定向路径", Default: ""},
 		{Name: "icon", Type: field.TypeString, Comment: "菜单图标", Default: ""},
 		{Name: "sort", Type: field.TypeInt, Comment: "排序号", Default: 0},
-		{Name: "type", Type: field.TypeString, Comment: "菜单类型 menu/page/button", Default: ""},
+		{Name: "type", Type: field.TypeString, Comment: "菜单类型 dir/menu/button", Default: ""},
 		{Name: "status", Type: field.TypeInt, Comment: "状态 1:启用 2:禁用", Default: 1},
 	}
 	// MenusTable holds the schema information for the "menus" table.
@@ -185,7 +185,7 @@ var (
 		{Name: "permission_id", Type: field.TypeString, Unique: true, Comment: "权限ID"},
 		{Name: "name", Type: field.TypeString, Comment: "权限名称"},
 		{Name: "code", Type: field.TypeString, Unique: true, Comment: "权限编码"},
-		{Name: "type", Type: field.TypeString, Comment: "类型类型: menu/page/button/api/data"},
+		{Name: "type", Type: field.TypeString, Comment: "类型类型: dir/menu/button/api/data"},
 		{Name: "resource", Type: field.TypeString, Comment: "资源"},
 		{Name: "action", Type: field.TypeString, Comment: "操作类型"},
 		{Name: "parent_id", Type: field.TypeString, Nullable: true, Comment: "父级ID"},
@@ -199,6 +199,33 @@ var (
 		Comment:    "权限",
 		Columns:    PermissionsColumns,
 		PrimaryKey: []*schema.Column{PermissionsColumns[0]},
+	}
+	// PlansColumns holds the columns for the "plans" table.
+	PlansColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeInt64, Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true},
+		{Name: "tenant_code", Type: field.TypeString},
+		{Name: "plan_id", Type: field.TypeString, Unique: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "description", Type: field.TypeString, Nullable: true},
+		{Name: "group", Type: field.TypeString, Default: "default"},
+		{Name: "cron_spec", Type: field.TypeString},
+		{Name: "status", Type: field.TypeInt, Default: 1},
+		{Name: "plan_type", Type: field.TypeString},
+		{Name: "priority", Type: field.TypeInt, Default: 0},
+		{Name: "timeout", Type: field.TypeInt, Default: 3600},
+		{Name: "retry_times", Type: field.TypeInt, Default: 0},
+		{Name: "retry_interval", Type: field.TypeInt, Default: 0},
+		{Name: "start_time", Type: field.TypeInt64, Nullable: true},
+		{Name: "end_time", Type: field.TypeInt64, Nullable: true},
+	}
+	// PlansTable holds the schema information for the "plans" table.
+	PlansTable = &schema.Table{
+		Name:       "plans",
+		Columns:    PlansColumns,
+		PrimaryKey: []*schema.Column{PlansColumns[0]},
 	}
 	// PositionsColumns holds the columns for the "positions" table.
 	PositionsColumns = []*schema.Column{
@@ -283,6 +310,35 @@ var (
 				Columns: []*schema.Column{SystemLogsColumns[3]},
 			},
 		},
+	}
+	// TasksColumns holds the columns for the "tasks" table.
+	TasksColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeInt64, Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true},
+		{Name: "tenant_code", Type: field.TypeString},
+		{Name: "task_id", Type: field.TypeString, Unique: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "plan_id", Type: field.TypeString},
+		{Name: "plan_type", Type: field.TypeString},
+		{Name: "group", Type: field.TypeString, Default: "default"},
+		{Name: "priority", Type: field.TypeInt, Default: 0},
+		{Name: "status", Type: field.TypeString},
+		{Name: "planned_time", Type: field.TypeInt64},
+		{Name: "start_time", Type: field.TypeInt64, Nullable: true},
+		{Name: "end_time", Type: field.TypeInt64, Nullable: true},
+		{Name: "duration", Type: field.TypeInt, Nullable: true},
+		{Name: "result", Type: field.TypeString, Nullable: true, Size: 2147483647},
+		{Name: "error", Type: field.TypeString, Nullable: true, Size: 2147483647},
+		{Name: "retry_count", Type: field.TypeInt, Default: 0},
+		{Name: "next_retry_time", Type: field.TypeInt64, Nullable: true},
+	}
+	// TasksTable holds the schema information for the "tasks" table.
+	TasksTable = &schema.Table{
+		Name:       "tasks",
+		Columns:    TasksColumns,
+		PrimaryKey: []*schema.Column{TasksColumns[0]},
 	}
 	// TenantsColumns holds the columns for the "tenants" table.
 	TenantsColumns = []*schema.Column{
@@ -387,9 +443,11 @@ var (
 		LoginLogTable,
 		MenusTable,
 		PermissionsTable,
+		PlansTable,
 		PositionsTable,
 		RolesTable,
 		SystemLogsTable,
+		TasksTable,
 		TenantsTable,
 		UsersTable,
 		UserPositionsTable,

@@ -42,7 +42,7 @@ type Menu struct {
 	Icon string `json:"icon,omitempty"`
 	// 排序号
 	Sort int `json:"sort,omitempty"`
-	// 菜单类型 menu/page/button
+	// 菜单类型 dir/menu/button
 	Type string `json:"type,omitempty"`
 	// 状态 1:启用 2:禁用
 	Status       int `json:"status,omitempty"`

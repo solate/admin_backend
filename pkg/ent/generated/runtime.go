@@ -10,9 +10,11 @@ import (
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/menu"
 	"admin_backend/pkg/ent/generated/permission"
+	"admin_backend/pkg/ent/generated/plan"
 	"admin_backend/pkg/ent/generated/position"
 	"admin_backend/pkg/ent/generated/role"
 	"admin_backend/pkg/ent/generated/systemlog"
+	"admin_backend/pkg/ent/generated/task"
 	"admin_backend/pkg/ent/generated/tenant"
 	"admin_backend/pkg/ent/generated/user"
 	"admin_backend/pkg/ent/generated/userposition"
@@ -241,6 +243,40 @@ func init() {
 	permissionDescStatus := permissionFields[12].Descriptor()
 	// permission.DefaultStatus holds the default value on creation for the status field.
 	permission.DefaultStatus = permissionDescStatus.Default.(int)
+	planFields := schema.Plan{}.Fields()
+	_ = planFields
+	// planDescCreatedAt is the schema descriptor for created_at field.
+	planDescCreatedAt := planFields[0].Descriptor()
+	// plan.DefaultCreatedAt holds the default value on creation for the created_at field.
+	plan.DefaultCreatedAt = planDescCreatedAt.Default.(int64)
+	// planDescUpdatedAt is the schema descriptor for updated_at field.
+	planDescUpdatedAt := planFields[1].Descriptor()
+	// plan.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	plan.DefaultUpdatedAt = planDescUpdatedAt.Default.(int64)
+	// planDescGroup is the schema descriptor for group field.
+	planDescGroup := planFields[7].Descriptor()
+	// plan.DefaultGroup holds the default value on creation for the group field.
+	plan.DefaultGroup = planDescGroup.Default.(string)
+	// planDescStatus is the schema descriptor for status field.
+	planDescStatus := planFields[9].Descriptor()
+	// plan.DefaultStatus holds the default value on creation for the status field.
+	plan.DefaultStatus = planDescStatus.Default.(int)
+	// planDescPriority is the schema descriptor for priority field.
+	planDescPriority := planFields[11].Descriptor()
+	// plan.DefaultPriority holds the default value on creation for the priority field.
+	plan.DefaultPriority = planDescPriority.Default.(int)
+	// planDescTimeout is the schema descriptor for timeout field.
+	planDescTimeout := planFields[12].Descriptor()
+	// plan.DefaultTimeout holds the default value on creation for the timeout field.
+	plan.DefaultTimeout = planDescTimeout.Default.(int)
+	// planDescRetryTimes is the schema descriptor for retry_times field.
+	planDescRetryTimes := planFields[13].Descriptor()
+	// plan.DefaultRetryTimes holds the default value on creation for the retry_times field.
+	plan.DefaultRetryTimes = planDescRetryTimes.Default.(int)
+	// planDescRetryInterval is the schema descriptor for retry_interval field.
+	planDescRetryInterval := planFields[14].Descriptor()
+	// plan.DefaultRetryInterval holds the default value on creation for the retry_interval field.
+	plan.DefaultRetryInterval = planDescRetryInterval.Default.(int)
 	positionFields := schema.Position{}.Fields()
 	_ = positionFields
 	// positionDescCreatedAt is the schema descriptor for created_at field.
@@ -323,6 +359,28 @@ func init() {
 	systemlogDescUserID := systemlogFields[6].Descriptor()
 	// systemlog.DefaultUserID holds the default value on creation for the user_id field.
 	systemlog.DefaultUserID = systemlogDescUserID.Default.(string)
+	taskFields := schema.Task{}.Fields()
+	_ = taskFields
+	// taskDescCreatedAt is the schema descriptor for created_at field.
+	taskDescCreatedAt := taskFields[0].Descriptor()
+	// task.DefaultCreatedAt holds the default value on creation for the created_at field.
+	task.DefaultCreatedAt = taskDescCreatedAt.Default.(int64)
+	// taskDescUpdatedAt is the schema descriptor for updated_at field.
+	taskDescUpdatedAt := taskFields[1].Descriptor()
+	// task.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	task.DefaultUpdatedAt = taskDescUpdatedAt.Default.(int64)
+	// taskDescGroup is the schema descriptor for group field.
+	taskDescGroup := taskFields[8].Descriptor()
+	// task.DefaultGroup holds the default value on creation for the group field.
+	task.DefaultGroup = taskDescGroup.Default.(string)
+	// taskDescPriority is the schema descriptor for priority field.
+	taskDescPriority := taskFields[9].Descriptor()
+	// task.DefaultPriority holds the default value on creation for the priority field.
+	task.DefaultPriority = taskDescPriority.Default.(int)
+	// taskDescRetryCount is the schema descriptor for retry_count field.
+	taskDescRetryCount := taskFields[17].Descriptor()
+	// task.DefaultRetryCount holds the default value on creation for the retry_count field.
+	task.DefaultRetryCount = taskDescRetryCount.Default.(int)
 	tenantFields := schema.Tenant{}.Fields()
 	_ = tenantFields
 	// tenantDescCreatedAt is the schema descriptor for created_at field.

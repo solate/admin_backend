@@ -90,6 +90,25 @@ type CreatePermissionResp struct {
 	PermissionID string `json:"permission_id"` // 权限规则ID
 }
 
+type CreatePlanReq struct {
+	Name          string `json:"name"`                    // 计划名称
+	Description   string `json:"description,optional"`    // 计划描述
+	Group         string `json:"group,optional"`          // 任务分组
+	CronSpec      string `json:"cron_spec"`               // cron表达式
+	Status        int    `json:"status"`                  // 状态: 1:启用, 2:禁用
+	PlanType      string `json:"plan_type"`               // 计划类型: routine/special
+	Priority      int    `json:"priority,optional"`       // 任务优先级
+	Timeout       int    `json:"timeout,optional"`        // 任务超时时间(秒)
+	RetryTimes    int    `json:"retry_times,optional"`    // 重试次数
+	RetryInterval int    `json:"retry_interval,optional"` // 重试间隔(秒)
+	StartTime     int64  `json:"start_time,optional"`     // 生效开始时间
+	EndTime       int64  `json:"end_time,optional"`       // 生效结束时间
+}
+
+type CreatePlanResp struct {
+	PlanID string `json:"plan_id"` // 计划ID
+}
+
 type CreatePositionReq struct {
 	Name         string `json:"name"`                 // 岗位名称
 	DepartmentID string `json:"department_id"`        // 部门ID
@@ -157,6 +176,10 @@ type DeleteMenuReq struct {
 
 type DeletePermissionReq struct {
 	PermissionID string `path:"permission_id" validate:"required"` // 权限规则ID
+}
+
+type DeletePlanReq struct {
+	PlanID string `path:"plan_id"`
 }
 
 type DeletePositionReq struct {
@@ -277,6 +300,10 @@ type GetPermissionReq struct {
 
 type GetPermissionResp struct {
 	PermissionInfo
+}
+
+type GetPlanReq struct {
+	PlanID string `path:"plan_id"`
 }
 
 type GetPositionReq struct {
@@ -498,6 +525,37 @@ type PermissionInfo struct {
 	CreatedAt    int64  `json:"created_at"`    // 创建时间
 }
 
+type PlanInfo struct {
+	PlanID        string `json:"plan_id"`        // 计划ID
+	Name          string `json:"name"`           // 计划名称
+	Description   string `json:"description"`    // 计划描述
+	Group         string `json:"group"`          // 任务分组
+	CronSpec      string `json:"cron_spec"`      // cron表达式
+	Status        int    `json:"status"`         // 状态
+	PlanType      string `json:"plan_type"`      // 计划类型
+	Priority      int    `json:"priority"`       // 任务优先级
+	Timeout       int    `json:"timeout"`        // 任务超时时间(秒)
+	RetryTimes    int    `json:"retry_times"`    // 重试次数
+	RetryInterval int    `json:"retry_interval"` // 重试间隔(秒)
+	StartTime     int64  `json:"start_time"`     // 生效开始时间
+	EndTime       int64  `json:"end_time"`       // 生效结束时间
+	CreatedAt     int64  `json:"created_at"`     // 创建时间
+	UpdatedAt     int64  `json:"updated_at"`     // 更新时间
+}
+
+type PlanListReq struct {
+	PageRequest
+	Name     string `form:"name,optional"`      // 计划名称
+	Group    string `form:"group,optional"`     // 任务分组
+	Status   int    `form:"status,optional"`    // 状态
+	PlanType string `form:"plan_type,optional"` // 计划类型
+}
+
+type PlanListResp struct {
+	Page *PageResponse `json:"page"` // 分页信息
+	List []*PlanInfo   `json:"list"` // 计划列表
+}
+
 type PositionInfo struct {
 	PositionID   string `json:"position_id"`   // 岗位ID
 	Name         string `json:"name"`          // 岗位名称
@@ -585,6 +643,44 @@ type StatusRequest struct {
 	Status int `json:"status"` // 状态
 }
 
+type StopTaskReq struct {
+	TaskID string `path:"task_id"` // 任务ID
+}
+
+type TaskInfo struct {
+	TaskID        string `json:"task_id"`         // 任务ID
+	Name          string `json:"name"`            // 任务名称
+	PlanID        string `json:"plan_id"`         // 计划ID
+	PlanType      string `json:"plan_type"`       // 计划类型
+	Group         string `json:"group"`           // 任务分组
+	Priority      int    `json:"priority"`        // 任务优先级
+	Status        string `json:"status"`          // 任务状态
+	PlannedTime   int64  `json:"planned_time"`    // 计划执行时间
+	StartTime     int64  `json:"start_time"`      // 实际开始时间
+	EndTime       int64  `json:"end_time"`        // 实际结束时间
+	Duration      int    `json:"duration"`        // 执行时长(ms)
+	Result        string `json:"result"`          // 执行结果
+	Error         string `json:"error"`           // 错误信息
+	RetryCount    int    `json:"retry_count"`     // 已重试次数
+	NextRetryTime int64  `json:"next_retry_time"` // 下次重试时间
+	CreatedAt     int64  `json:"created_at"`      // 创建时间
+}
+
+type TaskListReq struct {
+	PageRequest
+	PlanID    string `form:"plan_id,optional"`    // 计划ID
+	Name      string `form:"name,optional"`       // 任务名称
+	Group     string `form:"group,optional"`      // 任务分组
+	Status    string `form:"status,optional"`     // 任务状态
+	StartTime int64  `form:"start_time,optional"` // 开始时间
+	EndTime   int64  `form:"end_time,optional"`   // 结束时间
+}
+
+type TaskListResp struct {
+	Page *PageResponse `json:"page"` // 分页信息
+	List []*TaskInfo   `json:"list"` // 任务列表
+}
+
 type TenantInfo struct {
 	TenantID    string `json:"tenant_id"`
 	Name        string `json:"name"`
@@ -596,6 +692,14 @@ type TenantInfo struct {
 type TimeRange struct {
 	StartTime string `form:"start_time,optional"` // 开始时间
 	EndTime   string `form:"end_time,optional"`   // 结束时间
+}
+
+type TriggerTaskReq struct {
+	PlanID string `json:"plan_id"` // 计划ID
+}
+
+type TriggerTaskResp struct {
+	TaskID string `json:"task_id"` // 任务ID
 }
 
 type UpdateDepartmentReq struct {
@@ -630,6 +734,7 @@ type UpdateMenuReq struct {
 	Icon      string `json:"icon,optional"`      // 菜单图标
 	Sort      int    `json:"sort,optional"`      // 排序号
 	Status    int    `json:"status,optional"`    // 状态
+	ParentID  string `json:"parent_id"`          // 父菜单ID
 }
 
 type UpdatePermissionReq struct {
@@ -642,6 +747,21 @@ type UpdatePermissionReq struct {
 	Description  string `json:"description,optional"` // 描述
 	Status       int    `json:"status,optional"`      // 状态
 	MenuID       string `json:"menu_id,optional"`     // 菜单ID
+}
+
+type UpdatePlanReq struct {
+	PlanID        string `path:"plan_id"`
+	Name          string `json:"name,optional"`           // 计划名称
+	Description   string `json:"description,optional"`    // 计划描述
+	Group         string `json:"group,optional"`          // 任务分组
+	CronSpec      string `json:"cron_spec,optional"`      // cron表达式
+	Status        int    `json:"status,optional"`         // 状态
+	Priority      int    `json:"priority,optional"`       // 任务优先级
+	Timeout       int    `json:"timeout,optional"`        // 任务超时时间(秒)
+	RetryTimes    int    `json:"retry_times,optional"`    // 重试次数
+	RetryInterval int    `json:"retry_interval,optional"` // 重试间隔(秒)
+	StartTime     int64  `json:"start_time,optional"`     // 生效开始时间
+	EndTime       int64  `json:"end_time,optional"`       // 生效结束时间
 }
 
 type UpdatePositionReq struct {

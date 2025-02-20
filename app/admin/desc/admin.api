@@ -10,5 +10,6 @@ import (
 	"type/admin/menu.api"
 	"type/admin/dict.api"
 	"type/admin/organization.api"
+	"type/admin/task.api"
 )
 

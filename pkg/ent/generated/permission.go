@@ -30,7 +30,7 @@ type Permission struct {
 	Name string `json:"name,omitempty"`
 	// 权限编码
 	Code string `json:"code,omitempty"`
-	// 类型类型: menu/page/button/api/data
+	// 类型类型: dir/menu/button/api/data
 	Type string `json:"type,omitempty"`
 	// 资源
 	Resource string `json:"resource,omitempty"`

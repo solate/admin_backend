@@ -63,6 +63,10 @@ func (l *UpdateMenuLogic) UpdateMenu(req *types.UpdateMenuReq) (resp bool, err e
 		menu.Status = req.Status
 	}
 
+	if req.ParentID != "" {
+		menu.ParentID = req.ParentID
+	}
+
 	_, err = l.menuRepo.Update(l.ctx, menu)
 	if err != nil {
 		l.Error("UpdateMenu Update err:", err.Error())

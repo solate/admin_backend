@@ -43,6 +43,7 @@ type (
         Icon       string  `json:"icon,optional"`       // 菜单图标
         Sort       int     `json:"sort,optional"`       // 排序号
         Status     int     `json:"status,optional"`     // 状态
+        ParentID   string  `json:"parent_id"`      // 父菜单ID
     }
 
     DeleteMenuReq {

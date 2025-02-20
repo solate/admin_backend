@@ -12,6 +12,7 @@ import (
 	organization "admin_backend/app/admin/internal/handler/organization"
 	permission "admin_backend/app/admin/internal/handler/permission"
 	role "admin_backend/app/admin/internal/handler/role"
+	task "admin_backend/app/admin/internal/handler/task"
 	tenant "admin_backend/app/admin/internal/handler/tenant"
 	user "admin_backend/app/admin/internal/handler/user"
 	"admin_backend/app/admin/internal/svc"
@@ -374,6 +375,63 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodGet,
 					Path:    "/users/:user_id/roles",
 					Handler: role.GetUserRolesHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/admin/api/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.AuthMiddleware},
+			[]rest.Route{
+				{
+					// 创建计划
+					Method:  http.MethodPost,
+					Path:    "/plans",
+					Handler: task.CreatePlanHandler(serverCtx),
+				},
+				{
+					// 获取计划列表
+					Method:  http.MethodGet,
+					Path:    "/plans",
+					Handler: task.ListPlanHandler(serverCtx),
+				},
+				{
+					// 更新计划
+					Method:  http.MethodPut,
+					Path:    "/plans/:plan_id",
+					Handler: task.UpdatePlanHandler(serverCtx),
+				},
+				{
+					// 删除计划
+					Method:  http.MethodDelete,
+					Path:    "/plans/:plan_id",
+					Handler: task.DeletePlanHandler(serverCtx),
+				},
+				{
+					// 获取计划详情
+					Method:  http.MethodGet,
+					Path:    "/plans/:plan_id",
+					Handler: task.GetPlanHandler(serverCtx),
+				},
+				{
+					// 获取任务列表
+					Method:  http.MethodGet,
+					Path:    "/tasks",
+					Handler: task.ListTaskHandler(serverCtx),
+				},
+				{
+					// 停止任务
+					Method:  http.MethodPost,
+					Path:    "/tasks/:task_id/stop",
+					Handler: task.StopTaskHandler(serverCtx),
+				},
+				{
+					// 手动触发任务
+					Method:  http.MethodPost,
+					Path:    "/tasks/trigger",
+					Handler: task.TriggerTaskHandler(serverCtx),
 				},
 			}...,
 		),

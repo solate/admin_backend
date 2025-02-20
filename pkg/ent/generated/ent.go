@@ -10,9 +10,11 @@ import (
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/menu"
 	"admin_backend/pkg/ent/generated/permission"
+	"admin_backend/pkg/ent/generated/plan"
 	"admin_backend/pkg/ent/generated/position"
 	"admin_backend/pkg/ent/generated/role"
 	"admin_backend/pkg/ent/generated/systemlog"
+	"admin_backend/pkg/ent/generated/task"
 	"admin_backend/pkg/ent/generated/tenant"
 	"admin_backend/pkg/ent/generated/user"
 	"admin_backend/pkg/ent/generated/userposition"
@@ -92,9 +94,11 @@ func checkColumn(table, column string) error {
 			loginlog.Table:     loginlog.ValidColumn,
 			menu.Table:         menu.ValidColumn,
 			permission.Table:   permission.ValidColumn,
+			plan.Table:         plan.ValidColumn,
 			position.Table:     position.ValidColumn,
 			role.Table:         role.ValidColumn,
 			systemlog.Table:    systemlog.ValidColumn,
+			task.Table:         task.ValidColumn,
 			tenant.Table:       tenant.ValidColumn,
 			user.Table:         user.ValidColumn,
 			userposition.Table: userposition.ValidColumn,
