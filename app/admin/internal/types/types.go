@@ -3,10 +3,6 @@
 
 package types
 
-type AllMenuResp struct {
-	List []*MenuInfo `json:"list"` // 菜单列表
-}
-
 type AssignUserPositionReq struct {
 	UserID     string `json:"user_id"`     // 用户ID
 	PositionID string `json:"position_id"` // 岗位ID

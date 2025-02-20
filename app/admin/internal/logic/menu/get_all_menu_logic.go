@@ -28,7 +28,7 @@ func NewGetAllMenuLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetAll
 	}
 }
 
-func (l *GetAllMenuLogic) GetAllMenu() (resp *types.AllMenuResp, err error) {
+func (l *GetAllMenuLogic) GetAllMenu() (resp *types.MenuTreeResp, err error) {
 	// 获取所有菜单列表
 	menuList, err := l.menuRepo.List(l.ctx, nil)
 	if err != nil {
@@ -37,9 +37,9 @@ func (l *GetAllMenuLogic) GetAllMenu() (resp *types.AllMenuResp, err error) {
 	}
 
 	// 构建响应数据
-	list := make([]*types.MenuInfo, 0, len(menuList))
+	var authorizedMenus []*types.MenuTree
 	for _, menuInfo := range menuList {
-		list = append(list, &types.MenuInfo{
+		authorizedMenus = append(authorizedMenus, &types.MenuTree{
 			MenuID:    menuInfo.MenuID,
 			Code:      menuInfo.Code,
 			ParentID:  menuInfo.ParentID,
@@ -51,13 +51,13 @@ func (l *GetAllMenuLogic) GetAllMenu() (resp *types.AllMenuResp, err error) {
 			Sort:      menuInfo.Sort,
 			Type:      menuInfo.Type,
 			Status:    menuInfo.Status,
-			CreatedAt: menuInfo.CreatedAt,
 		})
 	}
 
-	resp = &types.AllMenuResp{
-		List: list,
-	}
+	// 构建菜单树
+	tree := buildMenuTree(authorizedMenus, "") // 从根节点(parentId="")开始构建
 
-	return
+	return &types.MenuTreeResp{
+		List: tree,
+	}, nil
 }

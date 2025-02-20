@@ -1020,6 +1020,190 @@
         ]
       }
     },
+    "/admin/api/v1/plans": {
+      "get": {
+        "summary": "获取计划列表",
+        "operationId": "ListPlan",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlanListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": " 当前页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          },
+          {
+            "name": "page_size",
+            "description": " 每页大小",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "10"
+          },
+          {
+            "name": "name",
+            "description": " 计划名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "group",
+            "description": " 任务分组",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": " 状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "plan_type",
+            "description": " 计划类型",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "task"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      },
+      "post": {
+        "summary": "创建计划",
+        "operationId": "CreatePlan",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreatePlanResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 创建计划请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreatePlanReq"
+            }
+          }
+        ],
+        "tags": [
+          "task"
+        ]
+      }
+    },
+    "/admin/api/v1/plans/{plan_id}": {
+      "get": {
+        "summary": "获取计划详情",
+        "operationId": "GetPlan",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlanInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "task"
+        ]
+      },
+      "delete": {
+        "summary": "删除计划",
+        "operationId": "DeletePlan",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 删除计划请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeletePlanReq"
+            }
+          }
+        ],
+        "tags": [
+          "task"
+        ]
+      },
+      "put": {
+        "summary": "更新计划",
+        "operationId": "UpdatePlan",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 更新计划请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdatePlanReq"
+            }
+          }
+        ],
+        "tags": [
+          "task"
+        ]
+      }
+    },
     "/admin/api/v1/positions": {
       "get": {
         "summary": "获取岗位列表",
@@ -1477,6 +1661,152 @@
         },
         "tags": [
           "permission"
+        ]
+      }
+    },
+    "/admin/api/v1/tasks": {
+      "get": {
+        "summary": "获取任务列表",
+        "operationId": "ListTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/TaskListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": " 当前页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          },
+          {
+            "name": "page_size",
+            "description": " 每页大小",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "10"
+          },
+          {
+            "name": "plan_id",
+            "description": " 计划ID",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": " 任务名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "group",
+            "description": " 任务分组",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": " 任务状态",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start_time",
+            "description": " 开始时间",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "end_time",
+            "description": " 结束时间",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "task"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      }
+    },
+    "/admin/api/v1/tasks/trigger": {
+      "post": {
+        "summary": "手动触发任务",
+        "operationId": "TriggerTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/TriggerTaskResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 手动触发任务请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TriggerTaskReq"
+            }
+          }
+        ],
+        "tags": [
+          "task"
+        ]
+      }
+    },
+    "/admin/api/v1/tasks/{task_id}/stop": {
+      "post": {
+        "summary": "停止任务",
+        "operationId": "StopTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 停止任务请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StopTaskReq"
+            }
+          }
+        ],
+        "tags": [
+          "task"
         ]
       }
     },
@@ -2305,6 +2635,86 @@
         "permission_id"
       ]
     },
+    "CreatePlanReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 计划名称"
+        },
+        "description": {
+          "type": "string",
+          "description": " 计划描述"
+        },
+        "group": {
+          "type": "string",
+          "description": " 任务分组"
+        },
+        "cron_spec": {
+          "type": "string",
+          "description": " cron表达式"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态: 1:启用, 2:禁用"
+        },
+        "plan_type": {
+          "type": "string",
+          "description": " 计划类型: routine/special"
+        },
+        "priority": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 任务优先级"
+        },
+        "timeout": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 任务超时时间(秒)"
+        },
+        "retry_times": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 重试次数"
+        },
+        "retry_interval": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 重试间隔(秒)"
+        },
+        "start_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 生效开始时间"
+        },
+        "end_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 生效结束时间"
+        }
+      },
+      "title": "CreatePlanReq",
+      "required": [
+        "name",
+        "cron_spec",
+        "status",
+        "plan_type"
+      ]
+    },
+    "CreatePlanResp": {
+      "type": "object",
+      "properties": {
+        "plan_id": {
+          "type": "string",
+          "description": " 计划ID"
+        }
+      },
+      "title": "CreatePlanResp",
+      "required": [
+        "plan_id"
+      ]
+    },
     "CreatePositionReq": {
       "type": "object",
       "properties": {
@@ -2507,6 +2917,10 @@
     "DeletePermissionReq": {
       "type": "object",
       "title": "DeletePermissionReq"
+    },
+    "DeletePlanReq": {
+      "type": "object",
+      "title": "DeletePlanReq"
     },
     "DeletePositionReq": {
       "type": "object",
@@ -2932,6 +3346,10 @@
         }
       },
       "title": "GetPermissionResp"
+    },
+    "GetPlanReq": {
+      "type": "object",
+      "title": "GetPlanReq"
     },
     "GetPositionReq": {
       "type": "object",
@@ -3788,6 +4206,154 @@
         "created_at"
       ]
     },
+    "PlanInfo": {
+      "type": "object",
+      "properties": {
+        "plan_id": {
+          "type": "string",
+          "description": " 计划ID"
+        },
+        "name": {
+          "type": "string",
+          "description": " 计划名称"
+        },
+        "description": {
+          "type": "string",
+          "description": " 计划描述"
+        },
+        "group": {
+          "type": "string",
+          "description": " 任务分组"
+        },
+        "cron_spec": {
+          "type": "string",
+          "description": " cron表达式"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
+        "plan_type": {
+          "type": "string",
+          "description": " 计划类型"
+        },
+        "priority": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 任务优先级"
+        },
+        "timeout": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 任务超时时间(秒)"
+        },
+        "retry_times": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 重试次数"
+        },
+        "retry_interval": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 重试间隔(秒)"
+        },
+        "start_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 生效开始时间"
+        },
+        "end_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 生效结束时间"
+        },
+        "created_at": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建时间"
+        },
+        "updated_at": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 更新时间"
+        }
+      },
+      "title": "PlanInfo",
+      "required": [
+        "plan_id",
+        "name",
+        "description",
+        "group",
+        "cron_spec",
+        "status",
+        "plan_type",
+        "priority",
+        "timeout",
+        "retry_times",
+        "retry_interval",
+        "start_time",
+        "end_time",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "PlanListReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 当前页"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32",
+          "default": "10",
+          "description": " 每页大小"
+        },
+        "name": {
+          "type": "string",
+          "description": " 计划名称"
+        },
+        "group": {
+          "type": "string",
+          "description": " 任务分组"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
+        "plan_type": {
+          "type": "string",
+          "description": " 计划类型"
+        }
+      },
+      "title": "PlanListReq"
+    },
+    "PlanListResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageResponse",
+          "description": " 分页信息"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PlanInfo"
+          },
+          "description": " 计划列表"
+        }
+      },
+      "title": "PlanListResp",
+      "required": [
+        "page",
+        "list"
+      ]
+    },
     "PositionInfo": {
       "type": "object",
       "properties": {
@@ -4136,6 +4702,171 @@
         "status"
       ]
     },
+    "StopTaskReq": {
+      "type": "object",
+      "title": "StopTaskReq"
+    },
+    "TaskInfo": {
+      "type": "object",
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "description": " 任务ID"
+        },
+        "name": {
+          "type": "string",
+          "description": " 任务名称"
+        },
+        "plan_id": {
+          "type": "string",
+          "description": " 计划ID"
+        },
+        "plan_type": {
+          "type": "string",
+          "description": " 计划类型"
+        },
+        "group": {
+          "type": "string",
+          "description": " 任务分组"
+        },
+        "priority": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 任务优先级"
+        },
+        "status": {
+          "type": "string",
+          "description": " 任务状态"
+        },
+        "planned_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 计划执行时间"
+        },
+        "start_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 实际开始时间"
+        },
+        "end_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 实际结束时间"
+        },
+        "duration": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 执行时长(ms)"
+        },
+        "result": {
+          "type": "string",
+          "description": " 执行结果"
+        },
+        "error": {
+          "type": "string",
+          "description": " 错误信息"
+        },
+        "retry_count": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 已重试次数"
+        },
+        "next_retry_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 下次重试时间"
+        },
+        "created_at": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 创建时间"
+        }
+      },
+      "title": "TaskInfo",
+      "required": [
+        "task_id",
+        "name",
+        "plan_id",
+        "plan_type",
+        "group",
+        "priority",
+        "status",
+        "planned_time",
+        "start_time",
+        "end_time",
+        "duration",
+        "result",
+        "error",
+        "retry_count",
+        "next_retry_time",
+        "created_at"
+      ]
+    },
+    "TaskListReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 当前页"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32",
+          "default": "10",
+          "description": " 每页大小"
+        },
+        "plan_id": {
+          "type": "string",
+          "description": " 计划ID"
+        },
+        "name": {
+          "type": "string",
+          "description": " 任务名称"
+        },
+        "group": {
+          "type": "string",
+          "description": " 任务分组"
+        },
+        "status": {
+          "type": "string",
+          "description": " 任务状态"
+        },
+        "start_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 开始时间"
+        },
+        "end_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 结束时间"
+        }
+      },
+      "title": "TaskListReq"
+    },
+    "TaskListResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageResponse",
+          "description": " 分页信息"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TaskInfo"
+          },
+          "description": " 任务列表"
+        }
+      },
+      "title": "TaskListResp",
+      "required": [
+        "page",
+        "list"
+      ]
+    },
     "TenantInfo": {
       "type": "object",
       "properties": {
@@ -4178,6 +4909,32 @@
         }
       },
       "title": "TimeRange"
+    },
+    "TriggerTaskReq": {
+      "type": "object",
+      "properties": {
+        "plan_id": {
+          "type": "string",
+          "description": " 计划ID"
+        }
+      },
+      "title": "TriggerTaskReq",
+      "required": [
+        "plan_id"
+      ]
+    },
+    "TriggerTaskResp": {
+      "type": "object",
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "description": " 任务ID"
+        }
+      },
+      "title": "TriggerTaskResp",
+      "required": [
+        "task_id"
+      ]
     },
     "UpdateDepartmentReq": {
       "type": "object",
@@ -4277,9 +5034,16 @@
           "type": "integer",
           "format": "int32",
           "description": " 状态"
+        },
+        "parent_id": {
+          "type": "string",
+          "description": " 父菜单ID"
         }
       },
-      "title": "UpdateMenuReq"
+      "title": "UpdateMenuReq",
+      "required": [
+        "parent_id"
+      ]
     },
     "UpdatePermissionReq": {
       "type": "object",
@@ -4319,6 +5083,63 @@
         }
       },
       "title": "UpdatePermissionReq"
+    },
+    "UpdatePlanReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 计划名称"
+        },
+        "description": {
+          "type": "string",
+          "description": " 计划描述"
+        },
+        "group": {
+          "type": "string",
+          "description": " 任务分组"
+        },
+        "cron_spec": {
+          "type": "string",
+          "description": " cron表达式"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 状态"
+        },
+        "priority": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 任务优先级"
+        },
+        "timeout": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 任务超时时间(秒)"
+        },
+        "retry_times": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 重试次数"
+        },
+        "retry_interval": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 重试间隔(秒)"
+        },
+        "start_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 生效开始时间"
+        },
+        "end_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 生效结束时间"
+        }
+      },
+      "title": "UpdatePlanReq"
     },
     "UpdatePositionReq": {
       "type": "object",
