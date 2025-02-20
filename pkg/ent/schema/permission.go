@@ -32,7 +32,7 @@ func (Permission) Fields() []ent.Field {
 		field.String("permission_id").Unique().Immutable().Comment("权限ID"),
 		field.String("name").NotEmpty().Comment("权限名称"),
 		field.String("code").Unique().NotEmpty().Comment("权限编码"),
-		field.String("type").Comment("类型类型: menu/page/button/api/data"),
+		field.String("type").Comment("类型类型: dir/menu/button/api/data"),
 		field.String("resource").NotEmpty().Comment("资源"),
 		field.String("action").NotEmpty().Comment("操作类型"),
 		field.String("parent_id").Optional().Comment("父级ID"),

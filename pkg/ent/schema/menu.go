@@ -40,7 +40,7 @@ func (Menu) Fields() []ent.Field {
 		field.String("redirect").Default("").Comment("重定向路径"),
 		field.String("icon").Default("").Comment("菜单图标"),
 		field.Int("sort").Default(0).Comment("排序号"),
-		field.String("type").Default("").Comment("菜单类型 menu/page/button"),
+		field.String("type").Default("").Comment("菜单类型 dir/menu/button"),
 		field.Int("status").Default(1).Comment("状态 1:启用 2:禁用"),
 	}
 }
