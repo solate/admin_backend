@@ -8,9 +8,6 @@ import (
 	"github.com/robfig/cron/v3"
 )
 
-// JobFunc 定义任务执行函数类型
-type JobFunc func() error
-
 // CronManager cron管理器
 type CronManager struct {
 	cron     *cron.Cron
@@ -41,18 +38,14 @@ func NewCronManager() *CronManager {
 }
 
 // AddJob 添加定时任务
-func (c *CronManager) AddJob(jobID string, spec string, job JobFunc) (cron.EntryID, error) {
+func (c *CronManager) AddJob(jobID string, spec string, cmd func()) (cron.EntryID, error) {
 
 	if _, ok := c.jobMap.Load(jobID); ok {
 		return 0, fmt.Errorf("jobID %s already exists", jobID)
 	}
 
 	// 添加任务到cron
-	entryID, err := c.cron.AddFunc(spec, func() {
-		if err := job(); err != nil {
-			fmt.Printf("jobID %s run failed: %v", jobID, err)
-		}
-	})
+	entryID, err := c.cron.AddFunc(spec, cmd)
 
 	if err != nil {
 		return 0, err

@@ -20,12 +20,12 @@ func TestBasicCronJob(t *testing.T) {
 
 	// 添加每秒执行一次的任务
 	jobID := "test_basic_job"
-	_, err := cm.AddJob(jobID, "* * * * * *", func() error {
+	_, err := cm.AddJob(jobID, "* * * * * *", func() {
 		atomic.AddInt32(&counter, 1)
 		if atomic.LoadInt32(&counter) >= 3 { // 执行3次后完成
 			done <- true
 		}
-		return nil
+		return
 	})
 
 	if err != nil {
@@ -57,17 +57,17 @@ func TestConcurrentJobs(t *testing.T) {
 		jobID := fmt.Sprintf("concurrent_job_%d", i)
 		finalI := i
 
-		_, err := cm.AddJob(jobID, "* * * * * *", func() error {
+		_, err := cm.AddJob(jobID, "* * * * * *", func() {
 			atomic.AddInt32(&counters[finalI], 1)
 
 			// 检查是否所有任务都至少执行了2次
 			for _, c := range counters {
 				if atomic.LoadInt32(&c) < 2 {
-					return nil
+					return
 				}
 			}
 			done <- true
-			return nil
+			return
 		})
 
 		if err != nil {
@@ -97,9 +97,8 @@ func TestRemoveJob(t *testing.T) {
 	jobID := "test_remove_job"
 
 	// 添加每秒执行一次的任务
-	_, err := cm.AddJob(jobID, "* * * * * *", func() error {
+	_, err := cm.AddJob(jobID, "* * * * * *", func() {
 		atomic.AddInt32(&counter, 1)
-		return nil
 	})
 
 	if err != nil {
