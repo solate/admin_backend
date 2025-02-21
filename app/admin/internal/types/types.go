@@ -612,6 +612,13 @@ type RoleInfo struct {
 	CreatedAt   int64  `json:"created_at"`  // 创建时间
 }
 
+type RoleListInfo struct {
+	RoleID string `json:"role_id"` // 角色ID
+	Name   string `json:"name"`    // 角色名
+	Code   string `json:"code"`    // 角色编码
+	Sort   int    `json:"sort"`    // 排序
+}
+
 type RoleListReq struct {
 	PageRequest
 	Name   string `form:"name,optional"`   // 角色名
@@ -793,14 +800,15 @@ type UpdateUserReq struct {
 }
 
 type UserInfo struct {
-	UserID    string `json:"user_id"`    // 用户ID
-	UserName  string `json:"user_name"`  // 用户名
-	Name      string `json:"name"`       // 姓名
-	Phone     string `json:"phone"`      // 手机号
-	Email     string `json:"email"`      // 邮箱
-	Avatar    string `json:"avatar"`     // 头像
-	Status    int    `json:"status"`     // 状态
-	CreatedAt int64  `json:"created_at"` // 创建时间
+	UserID    string          `json:"user_id"`    // 用户ID
+	UserName  string          `json:"user_name"`  // 用户名
+	Name      string          `json:"name"`       // 姓名
+	Phone     string          `json:"phone"`      // 手机号
+	Email     string          `json:"email"`      // 邮箱
+	Avatar    string          `json:"avatar"`     // 头像
+	Status    int             `json:"status"`     // 状态
+	CreatedAt int64           `json:"created_at"` // 创建时间
+	RoleList  []*RoleListInfo `json:"role_list"`  // 角色列表
 }
 
 type UserListReq struct {

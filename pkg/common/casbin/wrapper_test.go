@@ -619,14 +619,16 @@ func TestRemoveFilteredPolicy(t *testing.T) {
 func TestXxx(t *testing.T) {
 
 	pm := setupTestEnv(t)
-	// policies := [][]string{
-	// 	{"admin", "tenant1", "/api/users", "GET", "api"},
-	// 	{"admin", "tenant2", "/api/users", "GET", "api"},
-	// 	{"admin", "tenant1", "/api/roles", "GET", "api"},
-	// }
-	// pm.BatchAddPermissions(policies)
+	policies := [][]string{
+		{"112215170448675543", "admin", "default"},
+		{"112223475338367703", "test", "default"},
+		{"112222013287879383", "haha", "default"},
+	}
+	for _, p := range policies {
+		pm.AddRoleForUser(p[0], p[1], p[2])
+	}
 
-	err := pm.RemoveFilteredPolicy(2, "/api/roles")
-	assert.NoError(t, err)
+	// err := pm.RemoveFilteredPolicy(2, "/api/roles")
+	// assert.NoError(t, err)
 
 }

@@ -2,6 +2,8 @@ package casbinrulerepo
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
@@ -17,8 +19,19 @@ func NewCasbinRuleRepo(db *ent.Client) *CasbinRuleRepo {
 }
 
 // QueryBySQL 直接执行 SQL 查询
-func (r *CasbinRuleRepo) QueryBySQL(ctx context.Context, query string, args ...interface{}) ([]*generated.CasbinRule, error) {
+func (r *CasbinRuleRepo) QueryBySQL(ctx context.Context, args ...any) ([]*generated.CasbinRule, error) {
+
+	if len(args) == 0 {
+		return nil, nil // 如果没有值，返回空查询和参数
+	}
+
+	// 生成占位符 ($1, $2, $3...)
+	placeholder := generatePlaceholders(len(args))
+	// 构造 SQL 查询
+	query := fmt.Sprintf("SELECT * FROM casbin_rules WHERE ptype = 'g' AND v0 IN (%s);", placeholder)
+
 	var rules []*generated.CasbinRule
+
 	rows, err := r.db.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
@@ -46,3 +59,27 @@ func (r *CasbinRuleRepo) QueryBySQL(ctx context.Context, query string, args ...i
 
 	return rules, rows.Err()
 }
+
+// generatePlaceholders 生成 PostgreSQL 的占位符 ($1, $2, $3...)
+func generatePlaceholders(count int) string {
+	var placeholders []string
+	for i := 1; i <= count; i++ {
+		placeholders = append(placeholders, fmt.Sprintf("$%d", i))
+	}
+	return strings.Join(placeholders, ",")
+}
+
+// // BuildInClauseQuery 构造带有 IN 子句的 SQL 查询和参数
+// func BuildInClauseQuery(tableName, column string, values []interface{}) (string, []interface{}) {
+// 	if len(values) == 0 {
+// 		return "", nil // 如果没有值，返回空查询和参数
+// 	}
+
+// 	// 生成占位符 ($1, $2, $3...)
+// 	placeholder := generatePlaceholders(len(values))
+
+// 	// 构造 SQL 查询
+// 	query := fmt.Sprintf("SELECT * FROM %s WHERE ptype = 'g' AND %s IN (%s);", tableName, column, placeholder)
+
+// 	return query, values
+// }
