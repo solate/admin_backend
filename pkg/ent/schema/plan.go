@@ -2,12 +2,22 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
 )
 
 // Plan 计划定义
 type Plan struct {
 	ent.Schema
+}
+
+func (Plan) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entsql.Annotation{Table: "plans"},
+		entsql.WithComments(true),
+		schema.Comment("计划"),
+	}
 }
 
 func (Plan) Fields() []ent.Field {

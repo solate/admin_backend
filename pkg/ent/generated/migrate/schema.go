@@ -203,27 +203,28 @@ var (
 	// PlansColumns holds the columns for the "plans" table.
 	PlansColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "created_at", Type: field.TypeInt64, Default: 0},
-		{Name: "updated_at", Type: field.TypeInt64, Default: 0},
-		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true},
-		{Name: "tenant_code", Type: field.TypeString},
-		{Name: "plan_id", Type: field.TypeString, Unique: true},
-		{Name: "name", Type: field.TypeString},
-		{Name: "description", Type: field.TypeString, Nullable: true},
-		{Name: "group", Type: field.TypeString, Default: "default"},
-		{Name: "cron_spec", Type: field.TypeString},
-		{Name: "status", Type: field.TypeInt, Default: 1},
-		{Name: "plan_type", Type: field.TypeString},
-		{Name: "priority", Type: field.TypeInt, Default: 0},
-		{Name: "timeout", Type: field.TypeInt, Default: 3600},
-		{Name: "retry_times", Type: field.TypeInt, Default: 0},
-		{Name: "retry_interval", Type: field.TypeInt, Default: 0},
-		{Name: "start_time", Type: field.TypeInt64, Nullable: true},
-		{Name: "end_time", Type: field.TypeInt64, Nullable: true},
+		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
+		{Name: "tenant_code", Type: field.TypeString, Comment: "租户code"},
+		{Name: "plan_id", Type: field.TypeString, Unique: true, Comment: "计划ID"},
+		{Name: "name", Type: field.TypeString, Comment: "计划名称"},
+		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "计划描述"},
+		{Name: "group", Type: field.TypeString, Comment: "任务分组", Default: "default"},
+		{Name: "cron_spec", Type: field.TypeString, Comment: "cron表达式"},
+		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
+		{Name: "plan_type", Type: field.TypeString, Comment: "计划类型: 例行 routine/特殊special"},
+		{Name: "priority", Type: field.TypeInt, Comment: "任务优先级", Default: 0},
+		{Name: "timeout", Type: field.TypeInt, Comment: "任务超时时间(秒)", Default: 3600},
+		{Name: "retry_times", Type: field.TypeInt, Comment: "重试次数", Default: 0},
+		{Name: "retry_interval", Type: field.TypeInt, Comment: "重试间隔(秒)", Default: 0},
+		{Name: "start_time", Type: field.TypeInt64, Nullable: true, Comment: "生效开始时间"},
+		{Name: "end_time", Type: field.TypeInt64, Nullable: true, Comment: "生效结束时间"},
 	}
 	// PlansTable holds the schema information for the "plans" table.
 	PlansTable = &schema.Table{
 		Name:       "plans",
+		Comment:    "计划",
 		Columns:    PlansColumns,
 		PrimaryKey: []*schema.Column{PlansColumns[0]},
 	}
@@ -314,29 +315,30 @@ var (
 	// TasksColumns holds the columns for the "tasks" table.
 	TasksColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "created_at", Type: field.TypeInt64, Default: 0},
-		{Name: "updated_at", Type: field.TypeInt64, Default: 0},
-		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true},
-		{Name: "tenant_code", Type: field.TypeString},
-		{Name: "task_id", Type: field.TypeString, Unique: true},
-		{Name: "name", Type: field.TypeString},
-		{Name: "plan_id", Type: field.TypeString},
-		{Name: "plan_type", Type: field.TypeString},
-		{Name: "group", Type: field.TypeString, Default: "default"},
-		{Name: "priority", Type: field.TypeInt, Default: 0},
-		{Name: "status", Type: field.TypeString},
-		{Name: "planned_time", Type: field.TypeInt64},
-		{Name: "start_time", Type: field.TypeInt64, Nullable: true},
-		{Name: "end_time", Type: field.TypeInt64, Nullable: true},
-		{Name: "duration", Type: field.TypeInt, Nullable: true},
-		{Name: "result", Type: field.TypeString, Nullable: true, Size: 2147483647},
-		{Name: "error", Type: field.TypeString, Nullable: true, Size: 2147483647},
-		{Name: "retry_count", Type: field.TypeInt, Default: 0},
-		{Name: "next_retry_time", Type: field.TypeInt64, Nullable: true},
+		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
+		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
+		{Name: "deleted_at", Type: field.TypeInt64, Nullable: true, Comment: "删除时间"},
+		{Name: "tenant_code", Type: field.TypeString, Comment: "租户code"},
+		{Name: "task_id", Type: field.TypeString, Unique: true, Comment: "任务ID"},
+		{Name: "name", Type: field.TypeString, Comment: "任务名称"},
+		{Name: "plan_id", Type: field.TypeString, Comment: "计划ID"},
+		{Name: "plan_type", Type: field.TypeString, Comment: "计划类型: 例行 routine/特殊special"},
+		{Name: "group", Type: field.TypeString, Comment: "任务分组", Default: "default"},
+		{Name: "priority", Type: field.TypeInt, Comment: "任务优先级", Default: 0},
+		{Name: "status", Type: field.TypeString, Comment: "任务状态: pending/running/success/failed/stop/interrupt"},
+		{Name: "planned_time", Type: field.TypeInt64, Comment: "计划执行时间"},
+		{Name: "start_time", Type: field.TypeInt64, Nullable: true, Comment: "实际开始时间"},
+		{Name: "end_time", Type: field.TypeInt64, Nullable: true, Comment: "实际结束时间"},
+		{Name: "duration", Type: field.TypeInt, Nullable: true, Comment: "执行时长(ms)"},
+		{Name: "result", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "执行结果"},
+		{Name: "error", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "错误信息"},
+		{Name: "retry_count", Type: field.TypeInt, Comment: "已重试次数", Default: 0},
+		{Name: "next_retry_time", Type: field.TypeInt64, Nullable: true, Comment: "下次重试时间"},
 	}
 	// TasksTable holds the schema information for the "tasks" table.
 	TasksTable = &schema.Table{
 		Name:       "tasks",
+		Comment:    "任务",
 		Columns:    TasksColumns,
 		PrimaryKey: []*schema.Column{TasksColumns[0]},
 	}
@@ -473,6 +475,9 @@ func init() {
 	PermissionsTable.Annotation = &entsql.Annotation{
 		Table: "permissions",
 	}
+	PlansTable.Annotation = &entsql.Annotation{
+		Table: "plans",
+	}
 	PositionsTable.Annotation = &entsql.Annotation{
 		Table: "positions",
 	}
@@ -481,6 +486,9 @@ func init() {
 	}
 	SystemLogsTable.Annotation = &entsql.Annotation{
 		Table: "system_logs",
+	}
+	TasksTable.Annotation = &entsql.Annotation{
+		Table: "tasks",
 	}
 	TenantsTable.Annotation = &entsql.Annotation{
 		Table: "tenants",

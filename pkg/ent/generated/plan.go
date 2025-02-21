@@ -11,7 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
-// Plan is the model entity for the Plan schema.
+// 计划
 type Plan struct {
 	config `json:"-"`
 	// ID of the ent.
