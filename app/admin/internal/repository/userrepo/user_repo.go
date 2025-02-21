@@ -33,7 +33,7 @@ func (r *UserRepo) Create(ctx context.Context, user *generated.User) (*generated
 		SetPwdHashed(user.PwdHashed).
 		SetPwdSalt(user.PwdSalt).
 		SetStatus(user.Status).
-		SetNickName(user.NickName).
+		SetName(user.Name).
 		SetEmail(user.Email).
 		SetSex(user.Sex).
 		Save(ctx)
@@ -46,7 +46,7 @@ func (r *UserRepo) Update(ctx context.Context, update *generated.User) (int, err
 		SetUpdatedAt(now).
 		SetPhone(update.Phone).
 		SetUserName(update.UserName).
-		SetNickName(update.NickName).
+		SetName(update.Name).
 		SetEmail(update.Email).
 		SetSex(update.Sex).
 		SetStatus(update.Status).

@@ -6,6 +6,7 @@ import (
 	"admin_backend/app/admin/internal/repository/userrepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
+	"admin_backend/pkg/common/contextutil"
 	"admin_backend/pkg/common/xerr"
 	"admin_backend/pkg/ent/generated"
 
@@ -45,7 +46,7 @@ func (l *UpdateUserLogic) UpdateUser(req *types.UpdateUserReq) (resp bool, err e
 	}
 
 	// 2. 更新用户信息
-	user.NickName = req.Name
+	user.Name = req.Name
 	user.Email = req.Email
 	user.Status = req.Status
 	user.Sex = req.Sex
@@ -55,6 +56,17 @@ func (l *UpdateUserLogic) UpdateUser(req *types.UpdateUserReq) (resp bool, err e
 	if err != nil {
 		l.Error("UpdateUser Update err:", err.Error())
 		return false, xerr.NewErrCodeMsg(xerr.DbError, "更新用户失败")
+	}
+
+	pm := l.svcCtx.CasbinManager
+	tenantCode := contextutil.GetTenantCodeFromCtx(l.ctx)
+	// 用户添加角色
+	for _, code := range req.RoleCodeList {
+		err = pm.AddRoleForUser(req.UserID, code, tenantCode)
+		if err != nil {
+			l.Errorf("添加用户角色失败: %v", err)
+			return false, err
+		}
 	}
 
 	return true, nil

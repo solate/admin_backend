@@ -44,7 +44,7 @@ func (l *ListUserLogic) ListUser(req *types.UserListReq) (resp *types.UserListRe
 	where := []predicate.User{}
 
 	if req.Name != "" {
-		where = append(where, user.NickNameContains(req.Name))
+		where = append(where, user.NameContains(req.Name))
 	}
 
 	if req.Phone != "" {
@@ -149,6 +149,7 @@ func constructResponse(userList []*generated.User, roleList []*generated.Role, c
 		userInfo := &types.UserInfo{
 			UserID:   user.UserID,
 			UserName: user.UserName,
+			Name:     user.Name,
 			Phone:    user.Phone,
 			Email:    user.Email,
 			Status:   user.Status,

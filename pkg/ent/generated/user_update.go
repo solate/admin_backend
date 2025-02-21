@@ -160,16 +160,16 @@ func (uu *UserUpdate) SetNillableToken(s *string) *UserUpdate {
 	return uu
 }
 
-// SetNickName sets the "nick_name" field.
-func (uu *UserUpdate) SetNickName(s string) *UserUpdate {
-	uu.mutation.SetNickName(s)
+// SetName sets the "name" field.
+func (uu *UserUpdate) SetName(s string) *UserUpdate {
+	uu.mutation.SetName(s)
 	return uu
 }
 
-// SetNillableNickName sets the "nick_name" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableNickName(s *string) *UserUpdate {
+// SetNillableName sets the "name" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableName(s *string) *UserUpdate {
 	if s != nil {
-		uu.SetNickName(*s)
+		uu.SetName(*s)
 	}
 	return uu
 }
@@ -361,8 +361,8 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.Token(); ok {
 		_spec.SetField(user.FieldToken, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.NickName(); ok {
-		_spec.SetField(user.FieldNickName, field.TypeString, value)
+	if value, ok := uu.mutation.Name(); ok {
+		_spec.SetField(user.FieldName, field.TypeString, value)
 	}
 	if value, ok := uu.mutation.Avatar(); ok {
 		_spec.SetField(user.FieldAvatar, field.TypeString, value)
@@ -539,16 +539,16 @@ func (uuo *UserUpdateOne) SetNillableToken(s *string) *UserUpdateOne {
 	return uuo
 }
 
-// SetNickName sets the "nick_name" field.
-func (uuo *UserUpdateOne) SetNickName(s string) *UserUpdateOne {
-	uuo.mutation.SetNickName(s)
+// SetName sets the "name" field.
+func (uuo *UserUpdateOne) SetName(s string) *UserUpdateOne {
+	uuo.mutation.SetName(s)
 	return uuo
 }
 
-// SetNillableNickName sets the "nick_name" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableNickName(s *string) *UserUpdateOne {
+// SetNillableName sets the "name" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableName(s *string) *UserUpdateOne {
 	if s != nil {
-		uuo.SetNickName(*s)
+		uuo.SetName(*s)
 	}
 	return uuo
 }
@@ -770,8 +770,8 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if value, ok := uuo.mutation.Token(); ok {
 		_spec.SetField(user.FieldToken, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.NickName(); ok {
-		_spec.SetField(user.FieldNickName, field.TypeString, value)
+	if value, ok := uuo.mutation.Name(); ok {
+		_spec.SetField(user.FieldName, field.TypeString, value)
 	}
 	if value, ok := uuo.mutation.Avatar(); ok {
 		_spec.SetField(user.FieldAvatar, field.TypeString, value)

@@ -29,8 +29,8 @@ const (
 	FieldPwdSalt = "pwd_salt"
 	// FieldToken holds the string denoting the token field in the database.
 	FieldToken = "token"
-	// FieldNickName holds the string denoting the nick_name field in the database.
-	FieldNickName = "nick_name"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
 	// FieldAvatar holds the string denoting the avatar field in the database.
 	FieldAvatar = "avatar"
 	// FieldPhone holds the string denoting the phone field in the database.
@@ -57,7 +57,7 @@ var Columns = []string{
 	FieldPwdHashed,
 	FieldPwdSalt,
 	FieldToken,
-	FieldNickName,
+	FieldName,
 	FieldAvatar,
 	FieldPhone,
 	FieldEmail,
@@ -94,8 +94,8 @@ var (
 	PwdSaltValidator func(string) error
 	// DefaultToken holds the default value on creation for the "token" field.
 	DefaultToken string
-	// DefaultNickName holds the default value on creation for the "nick_name" field.
-	DefaultNickName string
+	// DefaultName holds the default value on creation for the "name" field.
+	DefaultName string
 	// DefaultAvatar holds the default value on creation for the "avatar" field.
 	DefaultAvatar string
 	// DefaultPhone holds the default value on creation for the "phone" field.
@@ -161,9 +161,9 @@ func ByToken(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldToken, opts...).ToFunc()
 }
 
-// ByNickName orders the results by the nick_name field.
-func ByNickName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldNickName, opts...).ToFunc()
+// ByName orders the results by the name field.
+func ByName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
 // ByAvatar orders the results by the avatar field.

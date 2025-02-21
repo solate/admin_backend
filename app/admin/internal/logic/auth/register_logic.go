@@ -76,7 +76,7 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterRe
 		UserID:     userID,
 		Phone:      req.Phone,
 		UserName:   req.UserName,
-		NickName:   req.NickName,
+		Name:       req.Name,
 		Email:      req.Email,
 		Sex:        req.Sex,
 		Status:     1,

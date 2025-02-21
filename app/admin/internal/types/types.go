@@ -575,7 +575,7 @@ type PositionListResp struct {
 type RegisterReq struct {
 	UserName string `json:"user_name"`
 	Password string `json:"password"`
-	NickName string `json:"nick_name"`
+	Name     string `json:"nick_name"`
 	Avatar   string `json:"avatar,optional"`
 	Phone    string `json:"phone"`
 	Email    string `json:"email,optional"`
@@ -790,13 +790,13 @@ type UpdateTenantReq struct {
 }
 
 type UpdateUserReq struct {
-	UserID  string   `path:"user_id"`
-	Name    string   `json:"name,optional"`
-	Email   string   `json:"email,optional"`
-	Status  int      `json:"status,optional"`
-	Sex     int      `json:"sex,optional"`
-	Avatar  string   `json:"avatar,optional"`
-	RoleIDs []string `json:"role_ids,optional"`
+	UserID       string   `path:"user_id"`
+	Name         string   `json:"name,optional"`
+	Email        string   `json:"email,optional"`
+	Status       int      `json:"status,optional"`
+	Sex          int      `json:"sex,optional"`
+	Avatar       string   `json:"avatar,optional"`
+	RoleCodeList []string `json:"role_code_list,optional"`
 }
 
 type UserInfo struct {

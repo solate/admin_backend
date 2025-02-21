@@ -14013,7 +14013,7 @@ type UserMutation struct {
 	pwd_hashed    *string
 	pwd_salt      *string
 	token         *string
-	nick_name     *string
+	name          *string
 	avatar        *string
 	phone         *string
 	email         *string
@@ -14523,40 +14523,40 @@ func (m *UserMutation) ResetToken() {
 	m.token = nil
 }
 
-// SetNickName sets the "nick_name" field.
-func (m *UserMutation) SetNickName(s string) {
-	m.nick_name = &s
+// SetName sets the "name" field.
+func (m *UserMutation) SetName(s string) {
+	m.name = &s
 }
 
-// NickName returns the value of the "nick_name" field in the mutation.
-func (m *UserMutation) NickName() (r string, exists bool) {
-	v := m.nick_name
+// Name returns the value of the "name" field in the mutation.
+func (m *UserMutation) Name() (r string, exists bool) {
+	v := m.name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldNickName returns the old "nick_name" field's value of the User entity.
+// OldName returns the old "name" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldNickName(ctx context.Context) (v string, err error) {
+func (m *UserMutation) OldName(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldNickName is only allowed on UpdateOne operations")
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldNickName requires an ID field in the mutation")
+		return v, errors.New("OldName requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldNickName: %w", err)
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
 	}
-	return oldValue.NickName, nil
+	return oldValue.Name, nil
 }
 
-// ResetNickName resets all changes to the "nick_name" field.
-func (m *UserMutation) ResetNickName() {
-	m.nick_name = nil
+// ResetName resets all changes to the "name" field.
+func (m *UserMutation) ResetName() {
+	m.name = nil
 }
 
 // SetAvatar sets the "avatar" field.
@@ -14841,8 +14841,8 @@ func (m *UserMutation) Fields() []string {
 	if m.token != nil {
 		fields = append(fields, user.FieldToken)
 	}
-	if m.nick_name != nil {
-		fields = append(fields, user.FieldNickName)
+	if m.name != nil {
+		fields = append(fields, user.FieldName)
 	}
 	if m.avatar != nil {
 		fields = append(fields, user.FieldAvatar)
@@ -14885,8 +14885,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.PwdSalt()
 	case user.FieldToken:
 		return m.Token()
-	case user.FieldNickName:
-		return m.NickName()
+	case user.FieldName:
+		return m.Name()
 	case user.FieldAvatar:
 		return m.Avatar()
 	case user.FieldPhone:
@@ -14924,8 +14924,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldPwdSalt(ctx)
 	case user.FieldToken:
 		return m.OldToken(ctx)
-	case user.FieldNickName:
-		return m.OldNickName(ctx)
+	case user.FieldName:
+		return m.OldName(ctx)
 	case user.FieldAvatar:
 		return m.OldAvatar(ctx)
 	case user.FieldPhone:
@@ -15008,12 +15008,12 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetToken(v)
 		return nil
-	case user.FieldNickName:
+	case user.FieldName:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetNickName(v)
+		m.SetName(v)
 		return nil
 	case user.FieldAvatar:
 		v, ok := value.(string)
@@ -15198,8 +15198,8 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldToken:
 		m.ResetToken()
 		return nil
-	case user.FieldNickName:
-		m.ResetNickName()
+	case user.FieldName:
+		m.ResetName()
 		return nil
 	case user.FieldAvatar:
 		m.ResetAvatar()

@@ -43,7 +43,7 @@ func (l *GetCurrentUserLogic) GetCurrentUser() (resp *types.UserInfo, err error)
 	resp = &types.UserInfo{
 		UserID:    user.UserID,
 		UserName:  user.UserName,
-		Name:      user.NickName,
+		Name:      user.Name,
 		Phone:     user.Phone,
 		Email:     user.Email,
 		Avatar:    user.Avatar,

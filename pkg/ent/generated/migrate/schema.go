@@ -380,7 +380,7 @@ var (
 		{Name: "pwd_hashed", Type: field.TypeString, Comment: "hash后的密码", Default: ""},
 		{Name: "pwd_salt", Type: field.TypeString, Comment: "密码加盐", Default: ""},
 		{Name: "token", Type: field.TypeString, Comment: "登录后的token信息", Default: ""},
-		{Name: "nick_name", Type: field.TypeString, Comment: "昵称", Default: ""},
+		{Name: "name", Type: field.TypeString, Comment: "用户昵称", Default: ""},
 		{Name: "avatar", Type: field.TypeString, Comment: "头像", Default: ""},
 		{Name: "phone", Type: field.TypeString, Comment: "电话", Default: ""},
 		{Name: "email", Type: field.TypeString, Comment: "邮箱", Default: ""},

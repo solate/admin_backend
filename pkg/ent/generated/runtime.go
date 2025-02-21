@@ -441,10 +441,10 @@ func init() {
 	userDescToken := userFields[8].Descriptor()
 	// user.DefaultToken holds the default value on creation for the token field.
 	user.DefaultToken = userDescToken.Default.(string)
-	// userDescNickName is the schema descriptor for nick_name field.
-	userDescNickName := userFields[9].Descriptor()
-	// user.DefaultNickName holds the default value on creation for the nick_name field.
-	user.DefaultNickName = userDescNickName.Default.(string)
+	// userDescName is the schema descriptor for name field.
+	userDescName := userFields[9].Descriptor()
+	// user.DefaultName holds the default value on creation for the name field.
+	user.DefaultName = userDescName.Default.(string)
 	// userDescAvatar is the schema descriptor for avatar field.
 	userDescAvatar := userFields[10].Descriptor()
 	// user.DefaultAvatar holds the default value on creation for the avatar field.

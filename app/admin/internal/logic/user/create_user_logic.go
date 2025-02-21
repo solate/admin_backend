@@ -80,7 +80,7 @@ func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.Crea
 		UserID:     userID,
 		Phone:      req.Phone,
 		UserName:   req.UserName,
-		NickName:   req.Name,
+		Name:       req.Name,
 		Email:      req.Email,
 		Sex:        req.Sex,
 		PwdHashed:  hashedPassword,

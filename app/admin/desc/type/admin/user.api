@@ -43,7 +43,7 @@ type (
         Status   int      `json:"status,optional"`
         Sex      int      `json:"sex,optional"`
         Avatar   string   `json:"avatar,optional"`
-        RoleIDs  []string `json:"role_ids,optional"`
+        RoleCodeList  []string `json:"role_code_list,optional"`
     }
 
     DeleteUserReq {

@@ -131,16 +131,16 @@ func (uc *UserCreate) SetNillableToken(s *string) *UserCreate {
 	return uc
 }
 
-// SetNickName sets the "nick_name" field.
-func (uc *UserCreate) SetNickName(s string) *UserCreate {
-	uc.mutation.SetNickName(s)
+// SetName sets the "name" field.
+func (uc *UserCreate) SetName(s string) *UserCreate {
+	uc.mutation.SetName(s)
 	return uc
 }
 
-// SetNillableNickName sets the "nick_name" field if the given value is not nil.
-func (uc *UserCreate) SetNillableNickName(s *string) *UserCreate {
+// SetNillableName sets the "name" field if the given value is not nil.
+func (uc *UserCreate) SetNillableName(s *string) *UserCreate {
 	if s != nil {
-		uc.SetNickName(*s)
+		uc.SetName(*s)
 	}
 	return uc
 }
@@ -274,9 +274,9 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultToken
 		uc.mutation.SetToken(v)
 	}
-	if _, ok := uc.mutation.NickName(); !ok {
-		v := user.DefaultNickName
-		uc.mutation.SetNickName(v)
+	if _, ok := uc.mutation.Name(); !ok {
+		v := user.DefaultName
+		uc.mutation.SetName(v)
 	}
 	if _, ok := uc.mutation.Avatar(); !ok {
 		v := user.DefaultAvatar
@@ -341,8 +341,8 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.Token(); !ok {
 		return &ValidationError{Name: "token", err: errors.New(`generated: missing required field "User.token"`)}
 	}
-	if _, ok := uc.mutation.NickName(); !ok {
-		return &ValidationError{Name: "nick_name", err: errors.New(`generated: missing required field "User.nick_name"`)}
+	if _, ok := uc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "User.name"`)}
 	}
 	if _, ok := uc.mutation.Avatar(); !ok {
 		return &ValidationError{Name: "avatar", err: errors.New(`generated: missing required field "User.avatar"`)}
@@ -422,9 +422,9 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldToken, field.TypeString, value)
 		_node.Token = value
 	}
-	if value, ok := uc.mutation.NickName(); ok {
-		_spec.SetField(user.FieldNickName, field.TypeString, value)
-		_node.NickName = value
+	if value, ok := uc.mutation.Name(); ok {
+		_spec.SetField(user.FieldName, field.TypeString, value)
+		_node.Name = value
 	}
 	if value, ok := uc.mutation.Avatar(); ok {
 		_spec.SetField(user.FieldAvatar, field.TypeString, value)
@@ -612,15 +612,15 @@ func (u *UserUpsert) UpdateToken() *UserUpsert {
 	return u
 }
 
-// SetNickName sets the "nick_name" field.
-func (u *UserUpsert) SetNickName(v string) *UserUpsert {
-	u.Set(user.FieldNickName, v)
+// SetName sets the "name" field.
+func (u *UserUpsert) SetName(v string) *UserUpsert {
+	u.Set(user.FieldName, v)
 	return u
 }
 
-// UpdateNickName sets the "nick_name" field to the value that was provided on create.
-func (u *UserUpsert) UpdateNickName() *UserUpsert {
-	u.SetExcluded(user.FieldNickName)
+// UpdateName sets the "name" field to the value that was provided on create.
+func (u *UserUpsert) UpdateName() *UserUpsert {
+	u.SetExcluded(user.FieldName)
 	return u
 }
 
@@ -874,17 +874,17 @@ func (u *UserUpsertOne) UpdateToken() *UserUpsertOne {
 	})
 }
 
-// SetNickName sets the "nick_name" field.
-func (u *UserUpsertOne) SetNickName(v string) *UserUpsertOne {
+// SetName sets the "name" field.
+func (u *UserUpsertOne) SetName(v string) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.SetNickName(v)
+		s.SetName(v)
 	})
 }
 
-// UpdateNickName sets the "nick_name" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateNickName() *UserUpsertOne {
+// UpdateName sets the "name" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateName() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdateNickName()
+		s.UpdateName()
 	})
 }
 
@@ -1316,17 +1316,17 @@ func (u *UserUpsertBulk) UpdateToken() *UserUpsertBulk {
 	})
 }
 
-// SetNickName sets the "nick_name" field.
-func (u *UserUpsertBulk) SetNickName(v string) *UserUpsertBulk {
+// SetName sets the "name" field.
+func (u *UserUpsertBulk) SetName(v string) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.SetNickName(v)
+		s.SetName(v)
 	})
 }
 
-// UpdateNickName sets the "nick_name" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateNickName() *UserUpsertBulk {
+// UpdateName sets the "name" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateName() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
-		s.UpdateNickName()
+		s.UpdateName()
 	})
 }
 

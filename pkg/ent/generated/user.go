@@ -34,8 +34,8 @@ type User struct {
 	PwdSalt string `json:"pwd_salt,omitempty"`
 	// 登录后的token信息
 	Token string `json:"token,omitempty"`
-	// 昵称
-	NickName string `json:"nick_name,omitempty"`
+	// 用户昵称
+	Name string `json:"name,omitempty"`
 	// 头像
 	Avatar string `json:"avatar,omitempty"`
 	// 电话
@@ -56,7 +56,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case user.FieldID, user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldSex, user.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case user.FieldTenantCode, user.FieldUserID, user.FieldUserName, user.FieldPwdHashed, user.FieldPwdSalt, user.FieldToken, user.FieldNickName, user.FieldAvatar, user.FieldPhone, user.FieldEmail:
+		case user.FieldTenantCode, user.FieldUserID, user.FieldUserName, user.FieldPwdHashed, user.FieldPwdSalt, user.FieldToken, user.FieldName, user.FieldAvatar, user.FieldPhone, user.FieldEmail:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -134,11 +134,11 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.Token = value.String
 			}
-		case user.FieldNickName:
+		case user.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field nick_name", values[i])
+				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
-				u.NickName = value.String
+				u.Name = value.String
 			}
 		case user.FieldAvatar:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -235,8 +235,8 @@ func (u *User) String() string {
 	builder.WriteString("token=")
 	builder.WriteString(u.Token)
 	builder.WriteString(", ")
-	builder.WriteString("nick_name=")
-	builder.WriteString(u.NickName)
+	builder.WriteString("name=")
+	builder.WriteString(u.Name)
 	builder.WriteString(", ")
 	builder.WriteString("avatar=")
 	builder.WriteString(u.Avatar)

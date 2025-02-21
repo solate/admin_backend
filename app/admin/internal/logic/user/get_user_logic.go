@@ -40,7 +40,7 @@ func (l *GetUserLogic) GetUser(req *types.GetUserReq) (resp *types.UserInfo, err
 	resp = &types.UserInfo{
 		UserID:    user.UserID,
 		UserName:  user.UserName,
-		Name:      user.NickName,
+		Name:      user.Name,
 		Phone:     user.Phone,
 		Email:     user.Email,
 		Avatar:    user.Avatar,

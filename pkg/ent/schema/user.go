@@ -35,7 +35,7 @@ func (User) Fields() []ent.Field {
 		field.String("pwd_salt").NotEmpty().Default("").Comment("密码加盐"),
 		field.String("token").Default("").Comment("登录后的token信息"),
 
-		field.String("nick_name").Default("").Comment("昵称"),
+		field.String("name").Default("").Comment("用户昵称"),
 		field.String("avatar").Default("").Comment("头像"),
 		field.String("phone").Default("").Comment("电话"),
 		field.String("email").Default("").Comment("邮箱"),

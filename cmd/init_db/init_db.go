@@ -80,7 +80,7 @@ func main() {
 			SetPwdHashed(hashedPassword).
 			SetPwdSalt(salt).
 			SetStatus(1).
-			SetNickName("admin").
+			SetName("admin").
 			SetEmail("admin123@qq.com").
 			SetSex(1).
 			Save(ctx)
