@@ -58,16 +58,42 @@ func (l *UpdateUserLogic) UpdateUser(req *types.UpdateUserReq) (resp bool, err e
 		return false, xerr.NewErrCodeMsg(xerr.DbError, "更新用户失败")
 	}
 
-	pm := l.svcCtx.CasbinManager
+	// 3. 更新用户角色
 	tenantCode := contextutil.GetTenantCodeFromCtx(l.ctx)
-	// 用户添加角色
-	for _, code := range req.RoleCodeList {
-		err = pm.AddRoleForUser(req.UserID, code, tenantCode)
-		if err != nil {
-			l.Errorf("添加用户角色失败: %v", err)
-			return false, err
-		}
+	err = l.UpdateUserRoles(req.UserID, req.RoleCodeList, tenantCode)
+	if err != nil {
+		return false, xerr.NewErrCodeMsg(xerr.ServerError, "更新用户角色失败")
 	}
 
 	return true, nil
+}
+
+// UpdateUserRoles 更新用户角色
+func (l *UpdateUserLogic) UpdateUserRoles(userID string, roleCodeList []string, tenantCode string) error {
+	pm := l.svcCtx.CasbinManager
+
+	// 清空用户原有角色
+	roles, err := pm.GetRolesForUser(userID, tenantCode)
+	if err != nil {
+		l.Errorf("获取用户角色失败: %v", err)
+		return err
+	}
+	for _, role := range roles {
+		err = pm.RemoveRoleForUser(userID, role, tenantCode)
+		if err != nil {
+			l.Errorf("删除用户角色失败: %v", err)
+			return err
+		}
+	}
+
+	// 用户添加新角色
+	for _, code := range roleCodeList {
+		err = pm.AddRoleForUser(userID, code, tenantCode)
+		if err != nil {
+			l.Errorf("添加用户角色失败: %v", err)
+			return err
+		}
+	}
+
+	return nil
 }
