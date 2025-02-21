@@ -91,18 +91,6 @@ func (l *ListUserLogic) ListUser(req *types.UserListReq) (resp *types.UserListRe
 		return nil, xerr.NewErrCodeMsg(xerr.DbError, "list user page err.")
 	}
 
-	// 4. 构建返回结果
-	// userList := make([]*types.UserInfo, 0)
-	// for _, user := range list {
-	// 	userList = append(userList, &types.UserInfo{
-	// 		UserID:   user.UserID,
-	// 		UserName: user.UserName,
-	// 		Phone:    user.Phone,
-	// 		Email:    user.Email,
-	// 		Status:   user.Status,
-	// 		RoleList: []*types.RoleListInfo{},
-	// 	})
-	// }
 	userList := constructResponse(list, roles, rules)
 
 	return &types.UserListResp{
@@ -131,18 +119,22 @@ func constructResponse(userList []*generated.User, roleList []*generated.Role, c
 
 	resp := make([]*types.UserInfo, 0)
 	for _, user := range userList {
-		roleCodeList := ruleMap[user.UserID]
-
-		// 获取角色信息
+		// 获取角色
 		tmpRoleList := make([]*types.RoleListInfo, 0)
-		for _, roleCode := range roleCodeList {
-			role := roleMap[roleCode]
-			tmpRoleList = append(tmpRoleList, &types.RoleListInfo{
-				RoleID: role.RoleID,
-				Code:   role.Code,
-				Name:   role.Name,
-				Sort:   role.Sort,
-			})
+		roleCodeList, ok := ruleMap[user.UserID]
+		if ok {
+			for _, roleCode := range roleCodeList {
+				role, roleOk := roleMap[roleCode]
+				if roleOk {
+					tmpRoleList = append(tmpRoleList, &types.RoleListInfo{
+						RoleID: role.RoleID,
+						Code:   role.Code,
+						Name:   role.Name,
+						Sort:   role.Sort,
+					})
+				}
+
+			}
 		}
 
 		// 构建返回值

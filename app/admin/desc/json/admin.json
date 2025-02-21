@@ -877,7 +877,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/AllMenuResp"
+              "$ref": "#/definitions/MenuTreeResp"
             }
           }
         },
@@ -2303,22 +2303,6 @@
     }
   },
   "definitions": {
-    "AllMenuResp": {
-      "type": "object",
-      "properties": {
-        "list": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/MenuInfo"
-          },
-          "description": " 菜单列表"
-        }
-      },
-      "title": "AllMenuResp",
-      "required": [
-        "list"
-      ]
-    },
     "AssignUserPositionReq": {
       "type": "object",
       "properties": {
@@ -4598,6 +4582,35 @@
         "created_at"
       ]
     },
+    "RoleListInfo": {
+      "type": "object",
+      "properties": {
+        "role_id": {
+          "type": "string",
+          "description": " 角色ID"
+        },
+        "name": {
+          "type": "string",
+          "description": " 角色名"
+        },
+        "code": {
+          "type": "string",
+          "description": " 角色编码"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 排序"
+        }
+      },
+      "title": "RoleListInfo",
+      "required": [
+        "role_id",
+        "name",
+        "code",
+        "sort"
+      ]
+    },
     "RoleListReq": {
       "type": "object",
       "properties": {
@@ -5224,7 +5237,7 @@
         "avatar": {
           "type": "string"
         },
-        "role_ids": {
+        "role_code_list": {
           "type": "array",
           "items": {
             "type": "string"
@@ -5269,6 +5282,13 @@
           "type": "integer",
           "format": "int64",
           "description": " 创建时间"
+        },
+        "role_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoleListInfo"
+          },
+          "description": " 角色列表"
         }
       },
       "title": "UserInfo",
@@ -5280,7 +5300,8 @@
         "email",
         "avatar",
         "status",
-        "created_at"
+        "created_at",
+        "role_list"
       ]
     },
     "UserListReq": {

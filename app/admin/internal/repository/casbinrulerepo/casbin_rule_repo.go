@@ -29,15 +29,16 @@ func (r *CasbinRuleRepo) QueryBySQL(ctx context.Context, args ...any) ([]*genera
 	placeholder := generatePlaceholders(len(args))
 	// 构造 SQL 查询
 	query := fmt.Sprintf("SELECT * FROM casbin_rules WHERE ptype = 'g' AND v0 IN (%s);", placeholder)
+	fmt.Println("query:" + query)
 
-	var rules []*generated.CasbinRule
-
+	// 执行 SQL 查询
 	rows, err := r.db.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
+	var rules []*generated.CasbinRule
 	// 扫描结果到结构体切片
 	for rows.Next() {
 		rule := &generated.CasbinRule{}
