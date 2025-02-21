@@ -6,17 +6,18 @@ import (
 
 	"admin_backend/pkg/common"
 	"admin_backend/pkg/common/contextutil"
+	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
-	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/ent/generated/position"
+	"admin_backend/pkg/ent/generated/predicate"
 )
 
 type PositionRepo struct {
-	db *generated.Client
+	db *ent.Client
 }
 
 // NewPositionRepo 创建岗位仓储实例
-func NewPositionRepo(db *generated.Client) *PositionRepo {
+func NewPositionRepo(db *ent.Client) *PositionRepo {
 	return &PositionRepo{db: db}
 }
 

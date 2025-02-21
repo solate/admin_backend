@@ -6,17 +6,18 @@ import (
 
 	"admin_backend/pkg/common"
 	"admin_backend/pkg/common/contextutil"
+	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/dictitem"
 	"admin_backend/pkg/ent/generated/predicate"
 )
 
 type DictItemRepo struct {
-	db *generated.Client
+	db *ent.Client
 }
 
 // NewDictItemRepo 创建字典数据项仓储实例
-func NewDictItemRepo(db *generated.Client) *DictItemRepo {
+func NewDictItemRepo(db *ent.Client) *DictItemRepo {
 	return &DictItemRepo{db: db}
 }
 

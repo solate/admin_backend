@@ -6,17 +6,18 @@ import (
 
 	"admin_backend/pkg/common"
 	"admin_backend/pkg/common/contextutil"
+	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/ent/generated/task"
 )
 
 type TaskRepo struct {
-	db *generated.Client
+	db *ent.Client
 }
 
 // NewTaskRepo 创建任务仓储实例
-func NewTaskRepo(db *generated.Client) *TaskRepo {
+func NewTaskRepo(db *ent.Client) *TaskRepo {
 	return &TaskRepo{db: db}
 }
 

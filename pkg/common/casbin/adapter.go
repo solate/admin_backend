@@ -1,6 +1,7 @@
 package casbin
 
 import (
+	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/casbinrule"
 	"admin_backend/pkg/ent/generated/predicate"
@@ -61,9 +62,9 @@ type Option func(a *Adapter) error
 
 // NewAdapterWithClient create an adapter with client passed in.
 // This method does not ensure the existence of database, user should create database manually.
-func NewAdapterWithClient(client *generated.Client, options ...Option) (*Adapter, error) {
+func NewAdapterWithClient(client *ent.Client, options ...Option) (*Adapter, error) {
 	a := &Adapter{
-		client: client,
+		client: client.Client,
 		ctx:    context.Background(),
 	}
 	for _, option := range options {

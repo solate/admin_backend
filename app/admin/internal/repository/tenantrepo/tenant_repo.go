@@ -5,17 +5,18 @@ import (
 	"time"
 
 	"admin_backend/pkg/common"
+	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/ent/generated/tenant"
 )
 
 type TenantRepo struct {
-	db *generated.Client
+	db *ent.Client
 }
 
 // NewTenantRepo 创建租户仓储实例
-func NewTenantRepo(db *generated.Client) *TenantRepo {
+func NewTenantRepo(db *ent.Client) *TenantRepo {
 	return &TenantRepo{db: db}
 }
 

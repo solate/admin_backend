@@ -6,16 +6,17 @@ import (
 
 	"admin_backend/pkg/common"
 	"admin_backend/pkg/common/contextutil"
+	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/ent/generated/role"
 )
 
 type RoleRepo struct {
-	db *generated.Client
+	db *ent.Client
 }
 
-func NewRoleRepo(db *generated.Client) *RoleRepo {
+func NewRoleRepo(db *ent.Client) *RoleRepo {
 	return &RoleRepo{db: db}
 }
 

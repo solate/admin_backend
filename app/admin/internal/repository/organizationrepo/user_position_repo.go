@@ -3,17 +3,18 @@ package organizationrepo
 import (
 	"context"
 
+	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/ent/generated/userposition"
 )
 
 type UserPositionRepo struct {
-	db *generated.Client
+	db *ent.Client
 }
 
 // NewUserPositionRepo 创建用户岗位关联仓储实例
-func NewUserPositionRepo(db *generated.Client) *UserPositionRepo {
+func NewUserPositionRepo(db *ent.Client) *UserPositionRepo {
 	return &UserPositionRepo{db: db}
 }
 

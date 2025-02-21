@@ -6,16 +6,17 @@ import (
 
 	"admin_backend/pkg/common"
 	"admin_backend/pkg/common/contextutil"
+	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/menu"
 	"admin_backend/pkg/ent/generated/predicate"
 )
 
 type MenuRepo struct {
-	db *generated.Client
+	db *ent.Client
 }
 
-func NewMenuRepo(db *generated.Client) *MenuRepo {
+func NewMenuRepo(db *ent.Client) *MenuRepo {
 	return &MenuRepo{db: db}
 }
 

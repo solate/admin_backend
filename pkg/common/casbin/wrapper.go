@@ -1,7 +1,7 @@
 package casbin
 
 import (
-	"admin_backend/pkg/ent/generated"
+	"admin_backend/pkg/ent"
 	"sync"
 
 	"github.com/casbin/casbin/v2"
@@ -22,7 +22,7 @@ func GetCasbinManager() *CasbinManager {
 }
 
 // NewCasbinManager 创建权限管理器实例, 单例模式
-func NewCasbinManager(db *generated.Client) *CasbinManager {
+func NewCasbinManager(db *ent.Client) *CasbinManager {
 	once.Do(func() {
 		e, err := NewCasbin(db)
 		if err != nil {

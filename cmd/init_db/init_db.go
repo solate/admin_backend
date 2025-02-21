@@ -37,7 +37,7 @@ func main() {
 		log.Fatalf("failed creating schema resources: %v", err)
 	}
 
-	ent.WithTx(ctx, client, func(tx *generated.Tx) error {
+	ent.WithTx(ctx, client.Client, func(tx *generated.Tx) error {
 
 		ids, err := idgen.GenerateUUIDs(3)
 		if err != nil {

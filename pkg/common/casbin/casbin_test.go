@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func setupTestDB(_ *testing.T) (*generated.Client, error) {
+func setupTestDB(_ *testing.T) (*ent.Client, error) {
 	dataSource := "user=root password=root host=127.0.0.1 port=5432 dbname=testdb sslmode=disable"
 	client, err := ent.NewClient(context.Background(), dataSource)
 	if err != nil {
@@ -27,7 +27,7 @@ func TestNewCasbin(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to setup test database: %v", err)
 	}
-	defer cleanupTest(client)
+	defer cleanupTest(client.Client)
 
 	e, err := NewCasbin(client)
 	if err != nil {

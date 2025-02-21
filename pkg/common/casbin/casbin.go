@@ -1,14 +1,14 @@
 package casbin
 
 import (
-	"admin_backend/pkg/ent/generated"
+	"admin_backend/pkg/ent"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
 )
 
 // initCasbin 初始化Casbin配置
-func NewCasbin(db *generated.Client) (*casbin.Enforcer, error) {
+func NewCasbin(db *ent.Client) (*casbin.Enforcer, error) {
 	a, err := NewAdapterWithClient(db)
 	if err != nil {
 		return nil, err

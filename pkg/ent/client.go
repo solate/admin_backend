@@ -2,6 +2,9 @@ package ent
 
 import (
 	"context"
+	"database/sql"
+
+	entsql "entgo.io/ent/dialect/sql"
 
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/migrate"
@@ -10,15 +13,29 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-func NewClient(ctx context.Context, dataSource string, ops ...generated.Option) (*generated.Client, error) {
+type Client struct {
+	*generated.Client
+	*sql.DB
+}
+
+func NewClient(ctx context.Context, dataSource string, ops ...generated.Option) (*Client, error) {
 	logx.Infof("Initializing new client with data source: %s", dataSource)
 
-	client, err := generated.Open("postgres", dataSource, ops...)
+	drv, err := entsql.Open("postgres", dataSource)
 	if err != nil {
-		logx.Errorf("ent.Open error: %v", err)
 		return nil, err
 	}
 
+	client := &Client{
+		Client: generated.NewClient(append(ops, generated.Driver(drv))...),
+		DB:     drv.DB(),
+	}
+
+	// client, err := generated.Open("postgres", dataSource, ops...)
+	// if err != nil {
+	// 	logx.Errorf("ent.Open error: %v", err)
+	// 	return nil, err
+	// }
 	// 打印客户端信息
 	logx.Info("Created client:", client)
 

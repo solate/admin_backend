@@ -20,7 +20,7 @@ import (
 
 type ServiceContext struct {
 	Config          config.Config
-	DB              *generated.Client
+	DB              *ent.Client
 	Redis           *redis.Redis
 	AuthMiddleware  rest.Middleware
 	PermissionCache *cache.PermissionCache
@@ -45,7 +45,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 }
 
 // initOrm
-func initOrm(c config.Config) *generated.Client {
+func initOrm(c config.Config) *ent.Client {
 	ops := make([]generated.Option, 0)
 	if c.ShowSQL {
 		ops = append(ops, generated.Debug())

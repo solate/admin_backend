@@ -7,6 +7,7 @@ import (
 
 	"admin_backend/pkg/common"
 	"admin_backend/pkg/common/contextutil"
+	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/loginlog"
 	"admin_backend/pkg/ent/generated/predicate"
@@ -15,10 +16,10 @@ import (
 )
 
 type LoginLogRepo struct {
-	db *generated.Client
+	db *ent.Client
 }
 
-func NewLoginLogRepo(db *generated.Client) *LoginLogRepo {
+func NewLoginLogRepo(db *ent.Client) *LoginLogRepo {
 	return &LoginLogRepo{
 		db: db,
 	}

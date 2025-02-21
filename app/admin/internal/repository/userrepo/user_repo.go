@@ -6,17 +6,18 @@ import (
 
 	"admin_backend/pkg/common"
 	"admin_backend/pkg/common/contextutil"
+	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/predicate"
 	"admin_backend/pkg/ent/generated/user"
 )
 
 type UserRepo struct {
-	db *generated.Client
+	db *ent.Client
 }
 
 // NewUserRepo 创建用户仓储实例
-func NewUserRepo(db *generated.Client) *UserRepo {
+func NewUserRepo(db *ent.Client) *UserRepo {
 	return &UserRepo{db: db}
 }
 

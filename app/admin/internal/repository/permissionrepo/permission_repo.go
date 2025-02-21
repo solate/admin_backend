@@ -6,16 +6,17 @@ import (
 
 	"admin_backend/pkg/common"
 	"admin_backend/pkg/common/contextutil"
+	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/permission"
 	"admin_backend/pkg/ent/generated/predicate"
 )
 
 type PermissionRepo struct {
-	db *generated.Client
+	db *ent.Client
 }
 
-func NewPermissionRepo(db *generated.Client) *PermissionRepo {
+func NewPermissionRepo(db *ent.Client) *PermissionRepo {
 	return &PermissionRepo{db: db}
 }
 

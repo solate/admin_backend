@@ -6,17 +6,18 @@ import (
 
 	"admin_backend/pkg/common"
 	"admin_backend/pkg/common/contextutil"
+	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
 	"admin_backend/pkg/ent/generated/department"
 	"admin_backend/pkg/ent/generated/predicate"
 )
 
 type DepartmentRepo struct {
-	db *generated.Client
+	db *ent.Client
 }
 
 // NewDepartmentRepo 创建部门仓储实例
-func NewDepartmentRepo(db *generated.Client) *DepartmentRepo {
+func NewDepartmentRepo(db *ent.Client) *DepartmentRepo {
 	return &DepartmentRepo{db: db}
 }
 
