@@ -639,7 +639,7 @@ type RoleListResp struct {
 }
 
 type SetRolePermissionsReq struct {
-	RoleCode       string        `path:"role_code"`                           // 角色ID
+	RoleCode       string        `path:"role_code" validate:"required"`       // 角色ID
 	PermissionList []*Permission `json:"permission_list" validate:"required"` // 权限列表
 }
 

@@ -90,7 +90,7 @@ type (
 
      // 分配角色权限请求
     SetRolePermissionsReq {
-        RoleCode         string       `path:"role_code"`                           // 角色ID
+        RoleCode         string      `path:"role_code" validate:"required"`  // 角色ID
         PermissionList []*Permission `json:"permission_list" validate:"required"` // 权限列表
     }
 
@@ -154,11 +154,11 @@ service admin {
 
     @doc "设置角色权限"
     @handler SetRolePermissions
-    post /roles/:role_id/permissions (SetRolePermissionsReq) returns (bool)
+    post /roles/:role_code/permissions (SetRolePermissionsReq) returns (bool)
 
     @doc "获取角色权限列表"
     @handler GetRolePermissions
-    get /roles/:role_id/permissions (GetRolePermissionsReq) returns (GetRolePermissionsResp)
+    get /roles/:role_code/permissions (GetRolePermissionsReq) returns (GetRolePermissionsResp)
 
     @doc "获取资源类型列表"
     @handler GetResourceTypes

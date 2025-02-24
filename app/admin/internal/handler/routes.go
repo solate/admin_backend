@@ -304,13 +304,13 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					// 设置角色权限
 					Method:  http.MethodPost,
-					Path:    "/roles/:role_id/permissions",
+					Path:    "/roles/:role_code/permissions",
 					Handler: permission.SetRolePermissionsHandler(serverCtx),
 				},
 				{
 					// 获取角色权限列表
 					Method:  http.MethodGet,
-					Path:    "/roles/:role_id/permissions",
+					Path:    "/roles/:role_code/permissions",
 					Handler: permission.GetRolePermissionsHandler(serverCtx),
 				},
 				{

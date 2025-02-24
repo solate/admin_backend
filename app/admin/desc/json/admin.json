@@ -3963,7 +3963,7 @@
           },
           "description": " 子菜单"
         },
-        "casbin": {
+        "rule": {
           "$ref": "#/definitions/CasbinRuleInfo",
           "description": " 权限规则信息"
         }
@@ -3982,7 +3982,7 @@
         "type",
         "status",
         "children",
-        "casbin"
+        "rule"
       ]
     },
     "MenuTreeResp": {
@@ -4694,6 +4694,10 @@
     "SetRolePermissionsReq": {
       "type": "object",
       "properties": {
+        "role_code": {
+          "type": "string",
+          "description": " 角色ID"
+        },
         "permission_list": {
           "type": "array",
           "items": {
@@ -4704,6 +4708,7 @@
       },
       "title": "SetRolePermissionsReq",
       "required": [
+        "role_code",
         "permission_list"
       ]
     },
