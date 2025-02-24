@@ -3,6 +3,7 @@ package ent
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	entsql "entgo.io/ent/dialect/sql"
 
@@ -21,21 +22,21 @@ type Client struct {
 func NewClient(ctx context.Context, dataSource string, ops ...generated.Option) (*Client, error) {
 	logx.Infof("Initializing new client with data source: %s", dataSource)
 
-	drv, err := entsql.Open("postgres", dataSource)
+	db, err := sql.Open("postgres", dataSource)
 	if err != nil {
 		return nil, err
 	}
 
+	db.SetMaxIdleConns(10)
+	db.SetMaxOpenConns(100)
+	db.SetConnMaxLifetime(time.Hour)
+	drv := entsql.OpenDB("postgres", db)
+
 	client := &Client{
 		Client: generated.NewClient(append(ops, generated.Driver(drv))...),
-		DB:     drv.DB(),
+		DB:     db,
 	}
 
-	// client, err := generated.Open("postgres", dataSource, ops...)
-	// if err != nil {
-	// 	logx.Errorf("ent.Open error: %v", err)
-	// 	return nil, err
-	// }
 	// 打印客户端信息
 	logx.Info("Created client:", client)
 
