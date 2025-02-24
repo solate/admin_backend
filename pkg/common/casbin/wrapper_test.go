@@ -620,13 +620,18 @@ func TestXxx(t *testing.T) {
 
 	pm := setupTestEnv(t)
 	policies := [][]string{
-		{"112215170448675543", "admin", "default"},
-		{"112223475338367703", "test", "default"},
-		{"112222013287879383", "haha", "default"},
+		// {"112215170448675543", "admin", "default"},
+		// {"112223475338367703", "test", "default"},
+		// {"112222013287879383", "haha", "default"},
+
+		{"admin", "default", "sys_dir_user", "view", "dir"},
+		{"admin", "default", "sys_menu_user", "view", "menu"},
 	}
-	for _, p := range policies {
-		pm.AddRoleForUser(p[0], p[1], p[2])
-	}
+	// for _, p := range policies {
+	// 	pm.AddRoleForUser(p[0], p[1], p[2])
+	// }
+
+	pm.BatchAddPermissions(policies)
 
 	// err := pm.RemoveFilteredPolicy(2, "/api/roles")
 	// assert.NoError(t, err)

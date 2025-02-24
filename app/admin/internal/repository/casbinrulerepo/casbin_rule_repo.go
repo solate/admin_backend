@@ -18,19 +18,8 @@ func NewCasbinRuleRepo(db *ent.Client) *CasbinRuleRepo {
 	return &CasbinRuleRepo{db: db}
 }
 
-// QueryBySQL 直接执行 SQL 查询
-func (r *CasbinRuleRepo) QueryBySQL(ctx context.Context, args ...any) ([]*generated.CasbinRule, error) {
-
-	if len(args) == 0 {
-		return nil, nil // 如果没有值，返回空查询和参数
-	}
-
-	// 生成占位符 ($1, $2, $3...)
-	placeholder := generatePlaceholders(len(args))
-	// 构造 SQL 查询
-	query := fmt.Sprintf("SELECT * FROM casbin_rules WHERE ptype = 'g' AND v0 IN (%s);", placeholder)
-	fmt.Println("query:" + query)
-
+// QueryBySQL 执行自定义 SQL 查询并返回 CasbinRule 结果集
+func (r *CasbinRuleRepo) QueryBySQL(ctx context.Context, query string, args ...any) ([]*generated.CasbinRule, error) {
 	// 执行 SQL 查询
 	rows, err := r.db.QueryContext(ctx, query, args...)
 	if err != nil {
@@ -84,3 +73,32 @@ func generatePlaceholders(count int) string {
 
 // 	return query, values
 // }
+
+// QueryByUserID 根据用户 ID 列表查询角色规则
+func (r *CasbinRuleRepo) QueryByUserID(ctx context.Context, args ...any) ([]*generated.CasbinRule, error) {
+	if len(args) == 0 {
+		return nil, nil // 如果没有值，返回空查询和参数
+	}
+
+	// 生成占位符 ($1, $2, $3...)
+	placeholder := generatePlaceholders(len(args))
+	// 构造 SQL 查询
+	query := fmt.Sprintf("SELECT * FROM casbin_rules WHERE ptype = 'g' AND v0 IN (%s);", placeholder)
+	fmt.Println("sql query: " + query)
+
+	return r.QueryBySQL(ctx, query, args...)
+}
+
+// QueryByMenuCode 根据菜单编码查询权限规则
+func (r *CasbinRuleRepo) QueryByMenuCode(ctx context.Context, args ...any) ([]*generated.CasbinRule, error) {
+	if len(args) == 0 {
+		return nil, nil // 如果没有值，返回空查询和参数
+	}
+	// 生成占位符 ($1, $2, $3...)
+	placeholder := generatePlaceholders(len(args))
+
+	// 构造 SQL 查询
+	query := fmt.Sprintf("SELECT * FROM casbin_rules WHERE ptype = 'p' AND v2 IN (%s);", placeholder)
+	fmt.Println("sql query: " + query)
+	return r.QueryBySQL(ctx, query, args...)
+}

@@ -67,7 +67,7 @@ func (l *ListUserLogic) ListUser(req *types.UserListReq) (resp *types.UserListRe
 	for _, user := range list {
 		userIDs = append(userIDs, user.UserID)
 	}
-	rules, err := l.casbinRepo.QueryBySQL(l.ctx, userIDs...)
+	rules, err := l.casbinRepo.QueryByUserID(l.ctx, userIDs...)
 	if err != nil {
 		l.Error("ListUser Logic QueryBySQL err:", err.Error())
 		return nil, xerr.NewErrCodeMsg(xerr.DbError, "list user page err.")

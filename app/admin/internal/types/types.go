@@ -13,6 +13,12 @@ type CaptchaResp struct {
 	CaptchaUrl string `json:"captcha_url"` // 验证码图片（base64）
 }
 
+type CasbinRuleInfo struct {
+	Type     string `json:"type"`     // 权限类型
+	Resource string `json:"resource"` // 资源路径
+	Action   string `json:"action"`   // 操作类型
+}
+
 type ChangePasswordReq struct {
 	OldPassword string `json:"old_password" validate:"required"` // 原密码
 	NewPassword string `json:"new_password" validate:"required"` // 新密码
@@ -455,18 +461,19 @@ type MenuListResp struct {
 }
 
 type MenuTree struct {
-	MenuID    string      `json:"menu_id"`   // 菜单ID
-	Code      string      `json:"code"`      // 菜单code
-	ParentID  string      `json:"parent_id"` // 父菜单ID
-	Name      string      `json:"name"`      // 菜单名称
-	Path      string      `json:"path"`      // 路由路径
-	Component string      `json:"component"` // 前端组件路径
-	Redirect  string      `json:"redirect"`  // 重定向路径
-	Icon      string      `json:"icon"`      // 菜单图标
-	Sort      int         `json:"sort"`      // 排序号
-	Type      string      `json:"type"`      // 菜单类型
-	Status    int         `json:"status"`    // 状态
-	Children  []*MenuTree `json:"children"`  // 子菜单
+	MenuID    string         `json:"menu_id"`   // 菜单ID
+	Code      string         `json:"code"`      // 菜单code
+	ParentID  string         `json:"parent_id"` // 父菜单ID
+	Name      string         `json:"name"`      // 菜单名称
+	Path      string         `json:"path"`      // 路由路径
+	Component string         `json:"component"` // 前端组件路径
+	Redirect  string         `json:"redirect"`  // 重定向路径
+	Icon      string         `json:"icon"`      // 菜单图标
+	Sort      int            `json:"sort"`      // 排序号
+	Type      string         `json:"type"`      // 菜单类型
+	Status    int            `json:"status"`    // 状态
+	Children  []*MenuTree    `json:"children"`  // 子菜单
+	Rule      CasbinRuleInfo `json:"casbin"`    // 权限规则信息
 }
 
 type MenuTreeResp struct {

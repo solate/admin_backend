@@ -2339,6 +2339,29 @@
         "captcha_url"
       ]
     },
+    "CasbinRuleInfo": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": " 权限类型"
+        },
+        "resource": {
+          "type": "string",
+          "description": " 资源路径"
+        },
+        "action": {
+          "type": "string",
+          "description": " 操作类型"
+        }
+      },
+      "title": "CasbinRuleInfo",
+      "required": [
+        "type",
+        "resource",
+        "action"
+      ]
+    },
     "ChangePasswordReq": {
       "type": "object",
       "properties": {
@@ -3939,6 +3962,10 @@
             "$ref": "#/definitions/MenuTree"
           },
           "description": " 子菜单"
+        },
+        "casbin": {
+          "$ref": "#/definitions/CasbinRuleInfo",
+          "description": " 权限规则信息"
         }
       },
       "title": "MenuTree",
@@ -3954,7 +3981,8 @@
         "sort",
         "type",
         "status",
-        "children"
+        "children",
+        "casbin"
       ]
     },
     "MenuTreeResp": {

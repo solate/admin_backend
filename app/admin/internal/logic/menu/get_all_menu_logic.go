@@ -3,6 +3,7 @@ package menu
 import (
 	"context"
 
+	"admin_backend/app/admin/internal/repository/casbinrulerepo"
 	"admin_backend/app/admin/internal/repository/menurepo"
 	"admin_backend/app/admin/internal/svc"
 	"admin_backend/app/admin/internal/types"
@@ -13,18 +14,20 @@ import (
 
 type GetAllMenuLogic struct {
 	logx.Logger
-	ctx      context.Context
-	svcCtx   *svc.ServiceContext
-	menuRepo *menurepo.MenuRepo
+	ctx        context.Context
+	svcCtx     *svc.ServiceContext
+	menuRepo   *menurepo.MenuRepo
+	casbinRepo *casbinrulerepo.CasbinRuleRepo
 }
 
 // 获取所有菜单
 func NewGetAllMenuLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetAllMenuLogic {
 	return &GetAllMenuLogic{
-		Logger:   logx.WithContext(ctx),
-		ctx:      ctx,
-		svcCtx:   svcCtx,
-		menuRepo: menurepo.NewMenuRepo(svcCtx.DB),
+		Logger:     logx.WithContext(ctx),
+		ctx:        ctx,
+		svcCtx:     svcCtx,
+		menuRepo:   menurepo.NewMenuRepo(svcCtx.DB),
+		casbinRepo: casbinrulerepo.NewCasbinRuleRepo(svcCtx.DB),
 	}
 }
 
@@ -34,6 +37,28 @@ func (l *GetAllMenuLogic) GetAllMenu() (resp *types.MenuTreeResp, err error) {
 	if err != nil {
 		l.Errorf("获取菜单列表失败: %v", err)
 		return nil, xerr.NewErrMsg("获取菜单列表失败")
+	}
+
+	var menuCodeList []any
+	for _, menu := range menuList {
+		menuCodeList = append(menuCodeList, menu.Code)
+	}
+
+	// 获取所有菜单权限
+	rules, err := l.casbinRepo.QueryByMenuCode(l.ctx, menuCodeList...)
+	if err != nil {
+		l.Error("ListUser Logic QueryBySQL err:", err.Error())
+		return nil, xerr.NewErrCodeMsg(xerr.DbError, "list user page err.")
+	}
+
+	// menuCodeMap
+	menuCodeMap := make(map[string]types.CasbinRuleInfo)
+	for _, rule := range rules {
+		menuCodeMap[rule.V2] = types.CasbinRuleInfo{
+			Type:     rule.V4,
+			Resource: rule.V2,
+			Action:   rule.V3,
+		}
 	}
 
 	// 构建响应数据
@@ -51,6 +76,7 @@ func (l *GetAllMenuLogic) GetAllMenu() (resp *types.MenuTreeResp, err error) {
 			Sort:      menuInfo.Sort,
 			Type:      menuInfo.Type,
 			Status:    menuInfo.Status,
+			Rule:      menuCodeMap[menuInfo.Code],
 		})
 	}
 
