@@ -104,13 +104,29 @@ func (l *GetMenuTreeLogic) GetMenuTree() (resp *types.MenuTreeResp, err error) {
 
 // buildMenuTree 构建菜单树
 func buildMenuTree(menus []*types.MenuTree, parentID string) []*types.MenuTree {
-	var tree []*types.MenuTree
+	// 创建一个map来存储所有菜单，方便查找
+	menuMap := make(map[string]*types.MenuTree)
+	var rootMenus []*types.MenuTree
+
+	// 第一次遍历：将所有菜单存入map
+	for _, menu := range menus {
+		menuMap[menu.MenuID] = menu
+		// 初始化子节点切片
+		menu.Children = make([]*types.MenuTree, 0)
+	}
+
+	// 第二次遍历：构建树形结构
 	for _, menu := range menus {
 		if menu.ParentID == parentID {
-			// 递归获取子菜单
-			menu.Children = buildMenuTree(menus, menu.MenuID)
-			tree = append(tree, menu)
+			// 这是根节点
+			rootMenus = append(rootMenus, menu)
+		} else {
+			// 将当前节点添加到其父节点的子节点列表中
+			if parent, exists := menuMap[menu.ParentID]; exists {
+				parent.Children = append(parent.Children, menu)
+			}
 		}
 	}
-	return tree
+
+	return rootMenus
 }
