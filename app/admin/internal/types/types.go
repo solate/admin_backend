@@ -473,7 +473,7 @@ type MenuTree struct {
 	Type      string         `json:"type"`      // 菜单类型
 	Status    int            `json:"status"`    // 状态
 	Children  []*MenuTree    `json:"children"`  // 子菜单
-	Rule      CasbinRuleInfo `json:"casbin"`    // 权限规则信息
+	Rule      CasbinRuleInfo `json:"rule"`      // 权限规则信息
 }
 
 type MenuTreeResp struct {
