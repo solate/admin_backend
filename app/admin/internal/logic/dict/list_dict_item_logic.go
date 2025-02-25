@@ -68,9 +68,10 @@ func (l *ListDictItemLogic) ListDictItem(req *types.DictItemListReq) (resp *type
 
 	return &types.DictItemListResp{
 		Page: &types.PageResponse{
-			Current:  req.Current,
-			PageSize: req.PageSize,
-			Total:    total,
+			Total:           total,
+			PageSize:        len(list),
+			Current:         req.Current,
+			RequestPageSize: req.PageSize,
 		},
 		List: dictItems,
 	}, nil

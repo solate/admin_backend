@@ -66,9 +66,10 @@ func (l *ListDictTypeLogic) ListDictType(req *types.DictTypeListReq) (resp *type
 
 	return &types.DictTypeListResp{
 		Page: &types.PageResponse{
-			Current:  req.Current,
-			PageSize: req.PageSize,
-			Total:    total,
+			Total:           total,
+			PageSize:        len(list),
+			Current:         req.Current,
+			RequestPageSize: req.PageSize,
 		},
 		List: dictTypes,
 	}, nil
