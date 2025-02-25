@@ -326,183 +326,6 @@
         ]
       }
     },
-    "/admin/api/v1/dict-items": {
-      "get": {
-        "summary": "获取字典数据列表",
-        "operationId": "ListDictItem",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DictItemListResp"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "page",
-            "description": " 当前页",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "int32",
-            "default": "1"
-          },
-          {
-            "name": "page_size",
-            "description": " 每页大小",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "int32",
-            "default": "10"
-          },
-          {
-            "name": "type_code",
-            "description": " 字典类型编码",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "label",
-            "description": " 字典标签",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "description": " 状态",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "dict"
-        ],
-        "consumes": [
-          "multipart/form-data"
-        ]
-      },
-      "post": {
-        "summary": "创建字典数据",
-        "operationId": "CreateDictItem",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/CreateDictItemResp"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "description": " 创建字典数据请求",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/CreateDictItemReq"
-            }
-          }
-        ],
-        "tags": [
-          "dict"
-        ]
-      }
-    },
-    "/admin/api/v1/dict-items/{item_id}": {
-      "get": {
-        "summary": "获取字典数据详情",
-        "operationId": "GetDictItem",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DictItemInfo"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "item_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "dict"
-        ]
-      },
-      "delete": {
-        "summary": "删除字典数据",
-        "operationId": "DeleteDictItem",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/bool"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "item_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "description": " 删除字典数据请求",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/DeleteDictItemReq"
-            }
-          }
-        ],
-        "tags": [
-          "dict"
-        ]
-      },
-      "put": {
-        "summary": "更新字典数据",
-        "operationId": "UpdateDictItem",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/bool"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "item_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "description": " 更新字典数据请求",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UpdateDictItemReq"
-            }
-          }
-        ],
-        "tags": [
-          "dict"
-        ]
-      }
-    },
     "/admin/api/v1/dict-types": {
       "get": {
         "summary": "获取字典类型列表",
@@ -593,8 +416,8 @@
     },
     "/admin/api/v1/dict-types/{type_code}/items": {
       "get": {
-        "summary": "获取指定类型的字典数据列表",
-        "operationId": "GetDictItemsByType",
+        "summary": "获取字典数据列表",
+        "operationId": "ListDictItem",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -609,6 +432,188 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "page",
+            "description": " 当前页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          },
+          {
+            "name": "page_size",
+            "description": " 每页大小",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "10"
+          },
+          {
+            "name": "type_code",
+            "description": " 字典类型编码",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "label",
+            "description": " 字典标签",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": " 状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "dict"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      },
+      "post": {
+        "summary": "创建字典数据",
+        "operationId": "CreateDictItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateDictItemResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "type_code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 创建字典数据请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateDictItemReq"
+            }
+          }
+        ],
+        "tags": [
+          "dict"
+        ]
+      }
+    },
+    "/admin/api/v1/dict-types/{type_code}/items/{item_id}": {
+      "get": {
+        "summary": "获取字典数据详情",
+        "operationId": "GetDictItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DictItemInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "type_code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "dict"
+        ]
+      },
+      "delete": {
+        "summary": "删除字典数据",
+        "operationId": "DeleteDictItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "type_code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 删除字典数据请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteDictItemReq"
+            }
+          }
+        ],
+        "tags": [
+          "dict"
+        ]
+      },
+      "put": {
+        "summary": "更新字典数据",
+        "operationId": "UpdateDictItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "type_code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 更新字典数据请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateDictItemReq"
+            }
           }
         ],
         "tags": [
@@ -1501,6 +1506,63 @@
         ]
       }
     },
+    "/admin/api/v1/roles/{role_code}/permissions": {
+      "get": {
+        "summary": "获取角色权限列表",
+        "operationId": "GetRolePermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetRolePermissionsResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "role_code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "permission"
+        ]
+      },
+      "post": {
+        "summary": "设置角色权限",
+        "operationId": "SetRolePermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "role_code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 分配角色权限请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SetRolePermissionsReq"
+            }
+          }
+        ],
+        "tags": [
+          "permission"
+        ]
+      }
+    },
     "/admin/api/v1/roles/{role_id}": {
       "get": {
         "summary": "获取角色详情",
@@ -1587,63 +1649,6 @@
         ],
         "tags": [
           "role"
-        ]
-      }
-    },
-    "/admin/api/v1/roles/{role_id}/permissions": {
-      "get": {
-        "summary": "获取角色权限列表",
-        "operationId": "GetRolePermissions",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/GetRolePermissionsResp"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "role_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "permission"
-        ]
-      },
-      "post": {
-        "summary": "设置角色权限",
-        "operationId": "SetRolePermissions",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/bool"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "role_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "description": " 分配角色权限请求",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/SetRolePermissionsReq"
-            }
-          }
-        ],
-        "tags": [
-          "permission"
         ]
       }
     },
@@ -3252,10 +3257,6 @@
       "type": "object",
       "title": "GetDictItemReq"
     },
-    "GetDictItemsByTypeReq": {
-      "type": "object",
-      "title": "GetDictItemsByTypeReq"
-    },
     "GetDictTypeReq": {
       "type": "object",
       "title": "GetDictTypeReq"
@@ -4694,10 +4695,6 @@
     "SetRolePermissionsReq": {
       "type": "object",
       "properties": {
-        "role_code": {
-          "type": "string",
-          "description": " 角色ID"
-        },
         "permission_list": {
           "type": "array",
           "items": {
@@ -4708,7 +4705,6 @@
       },
       "title": "SetRolePermissionsReq",
       "required": [
-        "role_code",
         "permission_list"
       ]
     },
@@ -5004,6 +5000,10 @@
     "UpdateDictItemReq": {
       "type": "object",
       "properties": {
+        "type_code": {
+          "type": "string",
+          "description": " 字典类型编码"
+        },
         "label": {
           "type": "string",
           "description": " 字典标签"
@@ -5027,7 +5027,10 @@
           "description": " 状态"
         }
       },
-      "title": "UpdateDictItemReq"
+      "title": "UpdateDictItemReq",
+      "required": [
+        "type_code"
+      ]
     },
     "UpdateDictTypeReq": {
       "type": "object",

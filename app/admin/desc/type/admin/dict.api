@@ -84,6 +84,7 @@ type (
 
     // 更新字典数据请求
     UpdateDictItemReq {
+        TypeCode    string `json:"type_code"`    // 字典类型编码
         ItemID      string `path:"item_id"`
         Label       string `json:"label,optional"`        // 字典标签
         Value       string `json:"value,optional"`        // 字典键值
@@ -95,11 +96,13 @@ type (
     // 删除字典数据请求
     DeleteDictItemReq {
         ItemID string `path:"item_id"`
+        TypeCode    string `path:"type_code"`    // 字典类型编码
     }
 
     // 获取字典数据请求
     GetDictItemReq {
         ItemID string `path:"item_id"`
+        TypeCode    string `path:"type_code"`    // 字典类型编码
     }
 
     // 字典数据列表请求
@@ -128,10 +131,6 @@ type (
         CreatedAt   int64  `json:"created_at"`  // 创建时间
     }
 
-    // 获取指定类型的字典数据列表请求
-    GetDictItemsByTypeReq {
-        TypeCode string `path:"type_code"` // 字典类型编码
-    }
 )
 
 @server (
@@ -162,25 +161,21 @@ service admin {
 
     @doc "创建字典数据"
     @handler CreateDictItem
-    post /dict-items (CreateDictItemReq) returns (CreateDictItemResp)
+    post /dict-types/:type_code/items (CreateDictItemReq) returns (CreateDictItemResp)
 
     @doc "更新字典数据"
     @handler UpdateDictItem
-    put /dict-items/:item_id (UpdateDictItemReq) returns (bool)
+    put /dict-types/:type_code/items/:item_id (UpdateDictItemReq) returns (bool)
 
     @doc "删除字典数据"
     @handler DeleteDictItem
-    delete /dict-items/:item_id (DeleteDictItemReq) returns (bool)
+    delete /dict-types/:type_code/items/:item_id (DeleteDictItemReq) returns (bool)
 
     @doc "获取字典数据详情"
     @handler GetDictItem
-    get /dict-items/:item_id (GetDictItemReq) returns (DictItemInfo)
+    get /dict-types/:type_code/items/:item_id (GetDictItemReq) returns (DictItemInfo)
 
     @doc "获取字典数据列表"
     @handler ListDictItem
-    get /dict-items (DictItemListReq) returns (DictItemListResp)
-
-    @doc "获取指定类型的字典数据列表"
-    @handler GetDictItemsByType
-    get /dict-types/:type_code/items (GetDictItemsByTypeReq) returns (DictItemListResp)
+    get /dict-types/:type_code/items (DictItemListReq) returns (DictItemListResp)
 }

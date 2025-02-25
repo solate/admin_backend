@@ -165,7 +165,8 @@ type DeleteDepartmentReq struct {
 }
 
 type DeleteDictItemReq struct {
-	ItemID string `path:"item_id"`
+	ItemID   string `path:"item_id"`
+	TypeCode string `path:"type_code"` // 字典类型编码
 }
 
 type DeleteDictTypeReq struct {
@@ -273,10 +274,7 @@ type GetDepartmentReq struct {
 }
 
 type GetDictItemReq struct {
-	ItemID string `path:"item_id"`
-}
-
-type GetDictItemsByTypeReq struct {
+	ItemID   string `path:"item_id"`
 	TypeCode string `path:"type_code"` // 字典类型编码
 }
 
@@ -720,6 +718,7 @@ type UpdateDepartmentReq struct {
 }
 
 type UpdateDictItemReq struct {
+	TypeCode    string `json:"type_code"` // 字典类型编码
 	ItemID      string `path:"item_id"`
 	Label       string `json:"label,optional"`       // 字典标签
 	Value       string `json:"value,optional"`       // 字典键值
