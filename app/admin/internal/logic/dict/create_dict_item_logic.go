@@ -33,17 +33,6 @@ func NewCreateDictItemLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Cr
 
 func (l *CreateDictItemLogic) CreateDictItem(req *types.CreateDictItemReq) (resp *types.CreateDictItemResp, err error) {
 	// 1. 检查字典类型是否存在
-	dictType, err := l.dictRepo.GetByTypeCode(l.ctx, req.TypeCode)
-	if err != nil {
-		if generated.IsNotFound(err) {
-			return nil, xerr.NewErrCodeMsg(xerr.DbError, "字典类型不存在")
-		}
-		l.Error("GetDictType l.dictRepo.GetByTypeID err: ", err.Error())
-		return nil, xerr.NewErrCodeMsg(xerr.DbError, "数据库查询错误")
-	}
-	if dictType != nil {
-		return nil, xerr.NewErrCodeMsg(xerr.DbRecordExist, "字典类型已存在")
-	}
 
 	// 2. 生成字典数据项ID
 	itemID, err := idgen.GenerateUUID()
