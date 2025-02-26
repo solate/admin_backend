@@ -149,6 +149,10 @@ type (
     StopTaskReq {
         TaskID string `path:"task_id"` // 任务ID
     }
+    // 删除任务请求
+    DeleteTaskReq {
+        TaskID string `path:"task_id"` // 任务ID
+    }
 )
 
 @server (
@@ -188,4 +192,8 @@ service admin {
     @doc "停止任务"
     @handler StopTask
     post /tasks/:task_id/stop (StopTaskReq) returns (bool)
+    
+    @doc "删除任务"
+    @handler DeleteTask
+    delete /tasks/:task_id (DeleteTaskReq) returns (bool)
 }

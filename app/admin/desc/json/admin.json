@@ -1781,6 +1781,40 @@
         ]
       }
     },
+    "/admin/api/v1/tasks/{task_id}": {
+      "delete": {
+        "summary": "删除任务",
+        "operationId": "DeleteTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/bool"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " 删除任务请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteTaskReq"
+            }
+          }
+        ],
+        "tags": [
+          "task"
+        ]
+      }
+    },
     "/admin/api/v1/tasks/{task_id}/stop": {
       "post": {
         "summary": "停止任务",
@@ -2704,6 +2738,14 @@
           "type": "integer",
           "format": "int64",
           "description": " 生效结束时间"
+        },
+        "command": {
+          "type": "string",
+          "description": " 要执行的命令或方法"
+        },
+        "params": {
+          "type": "string",
+          "description": " 执行参数，支持JSON格式"
         }
       },
       "title": "CreatePlanReq",
@@ -2711,7 +2753,7 @@
         "name",
         "cron_spec",
         "status",
-        "plan_type"
+        "command"
       ]
     },
     "CreatePlanResp": {
@@ -2941,6 +2983,10 @@
     "DeleteRoleReq": {
       "type": "object",
       "title": "DeleteRoleReq"
+    },
+    "DeleteTaskReq": {
+      "type": "object",
+      "title": "DeleteTaskReq"
     },
     "DeleteTenantReq": {
       "type": "object",
@@ -4281,15 +4327,18 @@
           "format": "int64",
           "description": " 生效结束时间"
         },
+        "command": {
+          "type": "string",
+          "description": " 要执行的命令或方法"
+        },
+        "params": {
+          "type": "string",
+          "description": " 执行参数，支持JSON格式"
+        },
         "created_at": {
           "type": "integer",
           "format": "int64",
           "description": " 创建时间"
-        },
-        "updated_at": {
-          "type": "integer",
-          "format": "int64",
-          "description": " 更新时间"
         }
       },
       "title": "PlanInfo",
@@ -4307,8 +4356,9 @@
         "retry_interval",
         "start_time",
         "end_time",
-        "created_at",
-        "updated_at"
+        "command",
+        "params",
+        "created_at"
       ]
     },
     "PlanListReq": {
@@ -5186,6 +5236,14 @@
           "type": "integer",
           "format": "int64",
           "description": " 生效结束时间"
+        },
+        "command": {
+          "type": "string",
+          "description": " 要执行的命令或方法"
+        },
+        "params": {
+          "type": "string",
+          "description": " 执行参数，支持JSON格式"
         }
       },
       "title": "UpdatePlanReq"

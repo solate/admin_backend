@@ -416,6 +416,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: task.ListTaskHandler(serverCtx),
 				},
 				{
+					// 删除任务
+					Method:  http.MethodDelete,
+					Path:    "/tasks/:task_id",
+					Handler: task.DeleteTaskHandler(serverCtx),
+				},
+				{
 					// 停止任务
 					Method:  http.MethodPost,
 					Path:    "/tasks/:task_id/stop",

@@ -195,6 +195,10 @@ type DeleteRoleReq struct {
 	RoleID string `path:"role_id"`
 }
 
+type DeleteTaskReq struct {
+	TaskID string `path:"task_id"` // 任务ID
+}
+
 type DeleteTenantReq struct {
 	TenantID string `path:"tenant_id"`
 }
