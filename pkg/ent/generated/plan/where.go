@@ -138,6 +138,16 @@ func EndTime(v int64) predicate.Plan {
 	return predicate.Plan(sql.FieldEQ(FieldEndTime, v))
 }
 
+// Command applies equality check predicate on the "command" field. It's identical to CommandEQ.
+func Command(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldEQ(FieldCommand, v))
+}
+
+// Params applies equality check predicate on the "params" field. It's identical to ParamsEQ.
+func Params(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldEQ(FieldParams, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v int64) predicate.Plan {
 	return predicate.Plan(sql.FieldEQ(FieldCreatedAt, v))
@@ -1031,6 +1041,146 @@ func EndTimeIsNil() predicate.Plan {
 // EndTimeNotNil applies the NotNil predicate on the "end_time" field.
 func EndTimeNotNil() predicate.Plan {
 	return predicate.Plan(sql.FieldNotNull(FieldEndTime))
+}
+
+// CommandEQ applies the EQ predicate on the "command" field.
+func CommandEQ(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldEQ(FieldCommand, v))
+}
+
+// CommandNEQ applies the NEQ predicate on the "command" field.
+func CommandNEQ(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldNEQ(FieldCommand, v))
+}
+
+// CommandIn applies the In predicate on the "command" field.
+func CommandIn(vs ...string) predicate.Plan {
+	return predicate.Plan(sql.FieldIn(FieldCommand, vs...))
+}
+
+// CommandNotIn applies the NotIn predicate on the "command" field.
+func CommandNotIn(vs ...string) predicate.Plan {
+	return predicate.Plan(sql.FieldNotIn(FieldCommand, vs...))
+}
+
+// CommandGT applies the GT predicate on the "command" field.
+func CommandGT(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldGT(FieldCommand, v))
+}
+
+// CommandGTE applies the GTE predicate on the "command" field.
+func CommandGTE(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldGTE(FieldCommand, v))
+}
+
+// CommandLT applies the LT predicate on the "command" field.
+func CommandLT(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldLT(FieldCommand, v))
+}
+
+// CommandLTE applies the LTE predicate on the "command" field.
+func CommandLTE(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldLTE(FieldCommand, v))
+}
+
+// CommandContains applies the Contains predicate on the "command" field.
+func CommandContains(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldContains(FieldCommand, v))
+}
+
+// CommandHasPrefix applies the HasPrefix predicate on the "command" field.
+func CommandHasPrefix(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldHasPrefix(FieldCommand, v))
+}
+
+// CommandHasSuffix applies the HasSuffix predicate on the "command" field.
+func CommandHasSuffix(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldHasSuffix(FieldCommand, v))
+}
+
+// CommandEqualFold applies the EqualFold predicate on the "command" field.
+func CommandEqualFold(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldEqualFold(FieldCommand, v))
+}
+
+// CommandContainsFold applies the ContainsFold predicate on the "command" field.
+func CommandContainsFold(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldContainsFold(FieldCommand, v))
+}
+
+// ParamsEQ applies the EQ predicate on the "params" field.
+func ParamsEQ(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldEQ(FieldParams, v))
+}
+
+// ParamsNEQ applies the NEQ predicate on the "params" field.
+func ParamsNEQ(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldNEQ(FieldParams, v))
+}
+
+// ParamsIn applies the In predicate on the "params" field.
+func ParamsIn(vs ...string) predicate.Plan {
+	return predicate.Plan(sql.FieldIn(FieldParams, vs...))
+}
+
+// ParamsNotIn applies the NotIn predicate on the "params" field.
+func ParamsNotIn(vs ...string) predicate.Plan {
+	return predicate.Plan(sql.FieldNotIn(FieldParams, vs...))
+}
+
+// ParamsGT applies the GT predicate on the "params" field.
+func ParamsGT(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldGT(FieldParams, v))
+}
+
+// ParamsGTE applies the GTE predicate on the "params" field.
+func ParamsGTE(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldGTE(FieldParams, v))
+}
+
+// ParamsLT applies the LT predicate on the "params" field.
+func ParamsLT(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldLT(FieldParams, v))
+}
+
+// ParamsLTE applies the LTE predicate on the "params" field.
+func ParamsLTE(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldLTE(FieldParams, v))
+}
+
+// ParamsContains applies the Contains predicate on the "params" field.
+func ParamsContains(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldContains(FieldParams, v))
+}
+
+// ParamsHasPrefix applies the HasPrefix predicate on the "params" field.
+func ParamsHasPrefix(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldHasPrefix(FieldParams, v))
+}
+
+// ParamsHasSuffix applies the HasSuffix predicate on the "params" field.
+func ParamsHasSuffix(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldHasSuffix(FieldParams, v))
+}
+
+// ParamsIsNil applies the IsNil predicate on the "params" field.
+func ParamsIsNil() predicate.Plan {
+	return predicate.Plan(sql.FieldIsNull(FieldParams))
+}
+
+// ParamsNotNil applies the NotNil predicate on the "params" field.
+func ParamsNotNil() predicate.Plan {
+	return predicate.Plan(sql.FieldNotNull(FieldParams))
+}
+
+// ParamsEqualFold applies the EqualFold predicate on the "params" field.
+func ParamsEqualFold(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldEqualFold(FieldParams, v))
+}
+
+// ParamsContainsFold applies the ContainsFold predicate on the "params" field.
+func ParamsContainsFold(v string) predicate.Plan {
+	return predicate.Plan(sql.FieldContainsFold(FieldParams, v))
 }
 
 // And groups predicates with the AND operator between them.

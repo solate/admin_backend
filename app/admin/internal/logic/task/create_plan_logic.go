@@ -70,6 +70,8 @@ func (l *CreatePlanLogic) CreatePlan(req *types.CreatePlanReq) (resp *types.Crea
 		RetryInterval: req.RetryInterval,
 		StartTime:     req.StartTime,
 		EndTime:       req.EndTime,
+		Command:       req.Command,
+		Params:        req.Params,
 	}
 
 	plan, err = l.planRepo.Create(l.ctx, newPlan)

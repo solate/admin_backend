@@ -339,6 +339,40 @@ func (pu *PlanUpdate) ClearEndTime() *PlanUpdate {
 	return pu
 }
 
+// SetCommand sets the "command" field.
+func (pu *PlanUpdate) SetCommand(s string) *PlanUpdate {
+	pu.mutation.SetCommand(s)
+	return pu
+}
+
+// SetNillableCommand sets the "command" field if the given value is not nil.
+func (pu *PlanUpdate) SetNillableCommand(s *string) *PlanUpdate {
+	if s != nil {
+		pu.SetCommand(*s)
+	}
+	return pu
+}
+
+// SetParams sets the "params" field.
+func (pu *PlanUpdate) SetParams(s string) *PlanUpdate {
+	pu.mutation.SetParams(s)
+	return pu
+}
+
+// SetNillableParams sets the "params" field if the given value is not nil.
+func (pu *PlanUpdate) SetNillableParams(s *string) *PlanUpdate {
+	if s != nil {
+		pu.SetParams(*s)
+	}
+	return pu
+}
+
+// ClearParams clears the value of the "params" field.
+func (pu *PlanUpdate) ClearParams() *PlanUpdate {
+	pu.mutation.ClearParams()
+	return pu
+}
+
 // Mutation returns the PlanMutation object of the builder.
 func (pu *PlanUpdate) Mutation() *PlanMutation {
 	return pu.mutation
@@ -472,6 +506,15 @@ func (pu *PlanUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.EndTimeCleared() {
 		_spec.ClearField(plan.FieldEndTime, field.TypeInt64)
+	}
+	if value, ok := pu.mutation.Command(); ok {
+		_spec.SetField(plan.FieldCommand, field.TypeString, value)
+	}
+	if value, ok := pu.mutation.Params(); ok {
+		_spec.SetField(plan.FieldParams, field.TypeString, value)
+	}
+	if pu.mutation.ParamsCleared() {
+		_spec.ClearField(plan.FieldParams, field.TypeString)
 	}
 	_spec.AddModifiers(pu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
@@ -806,6 +849,40 @@ func (puo *PlanUpdateOne) ClearEndTime() *PlanUpdateOne {
 	return puo
 }
 
+// SetCommand sets the "command" field.
+func (puo *PlanUpdateOne) SetCommand(s string) *PlanUpdateOne {
+	puo.mutation.SetCommand(s)
+	return puo
+}
+
+// SetNillableCommand sets the "command" field if the given value is not nil.
+func (puo *PlanUpdateOne) SetNillableCommand(s *string) *PlanUpdateOne {
+	if s != nil {
+		puo.SetCommand(*s)
+	}
+	return puo
+}
+
+// SetParams sets the "params" field.
+func (puo *PlanUpdateOne) SetParams(s string) *PlanUpdateOne {
+	puo.mutation.SetParams(s)
+	return puo
+}
+
+// SetNillableParams sets the "params" field if the given value is not nil.
+func (puo *PlanUpdateOne) SetNillableParams(s *string) *PlanUpdateOne {
+	if s != nil {
+		puo.SetParams(*s)
+	}
+	return puo
+}
+
+// ClearParams clears the value of the "params" field.
+func (puo *PlanUpdateOne) ClearParams() *PlanUpdateOne {
+	puo.mutation.ClearParams()
+	return puo
+}
+
 // Mutation returns the PlanMutation object of the builder.
 func (puo *PlanUpdateOne) Mutation() *PlanMutation {
 	return puo.mutation
@@ -969,6 +1046,15 @@ func (puo *PlanUpdateOne) sqlSave(ctx context.Context) (_node *Plan, err error) 
 	}
 	if puo.mutation.EndTimeCleared() {
 		_spec.ClearField(plan.FieldEndTime, field.TypeInt64)
+	}
+	if value, ok := puo.mutation.Command(); ok {
+		_spec.SetField(plan.FieldCommand, field.TypeString, value)
+	}
+	if value, ok := puo.mutation.Params(); ok {
+		_spec.SetField(plan.FieldParams, field.TypeString, value)
+	}
+	if puo.mutation.ParamsCleared() {
+		_spec.ClearField(plan.FieldParams, field.TypeString)
 	}
 	_spec.AddModifiers(puo.modifiers...)
 	_node = &Plan{config: puo.config}

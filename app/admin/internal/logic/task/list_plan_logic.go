@@ -71,6 +71,8 @@ func (l *ListPlanLogic) ListPlan(req *types.PlanListReq) (resp *types.PlanListRe
 			RetryInterval: p.RetryInterval,
 			StartTime:     p.StartTime,
 			EndTime:       p.EndTime,
+			Command:       p.Command,
+			Params:        p.Params,
 			CreatedAt:     p.CreatedAt,
 		})
 	}

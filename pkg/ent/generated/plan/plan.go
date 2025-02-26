@@ -45,6 +45,10 @@ const (
 	FieldStartTime = "start_time"
 	// FieldEndTime holds the string denoting the end_time field in the database.
 	FieldEndTime = "end_time"
+	// FieldCommand holds the string denoting the command field in the database.
+	FieldCommand = "command"
+	// FieldParams holds the string denoting the params field in the database.
+	FieldParams = "params"
 	// Table holds the table name of the plan in the database.
 	Table = "plans"
 )
@@ -69,6 +73,8 @@ var Columns = []string{
 	FieldRetryInterval,
 	FieldStartTime,
 	FieldEndTime,
+	FieldCommand,
+	FieldParams,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -191,4 +197,14 @@ func ByStartTime(opts ...sql.OrderTermOption) OrderOption {
 // ByEndTime orders the results by the end_time field.
 func ByEndTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEndTime, opts...).ToFunc()
+}
+
+// ByCommand orders the results by the command field.
+func ByCommand(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCommand, opts...).ToFunc()
+}
+
+// ByParams orders the results by the params field.
+func ByParams(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldParams, opts...).ToFunc()
 }

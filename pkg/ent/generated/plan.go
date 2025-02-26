@@ -49,7 +49,11 @@ type Plan struct {
 	// 生效开始时间
 	StartTime int64 `json:"start_time,omitempty"`
 	// 生效结束时间
-	EndTime      int64 `json:"end_time,omitempty"`
+	EndTime int64 `json:"end_time,omitempty"`
+	// 要执行的命令或方法
+	Command string `json:"command,omitempty"`
+	// 执行参数，支持JSON格式
+	Params       string `json:"params,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -60,7 +64,7 @@ func (*Plan) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case plan.FieldID, plan.FieldCreatedAt, plan.FieldUpdatedAt, plan.FieldDeletedAt, plan.FieldStatus, plan.FieldPriority, plan.FieldTimeout, plan.FieldRetryTimes, plan.FieldRetryInterval, plan.FieldStartTime, plan.FieldEndTime:
 			values[i] = new(sql.NullInt64)
-		case plan.FieldTenantCode, plan.FieldPlanID, plan.FieldName, plan.FieldDescription, plan.FieldGroup, plan.FieldCronSpec, plan.FieldPlanType:
+		case plan.FieldTenantCode, plan.FieldPlanID, plan.FieldName, plan.FieldDescription, plan.FieldGroup, plan.FieldCronSpec, plan.FieldPlanType, plan.FieldCommand, plan.FieldParams:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -186,6 +190,18 @@ func (pl *Plan) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pl.EndTime = value.Int64
 			}
+		case plan.FieldCommand:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field command", values[i])
+			} else if value.Valid {
+				pl.Command = value.String
+			}
+		case plan.FieldParams:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field params", values[i])
+			} else if value.Valid {
+				pl.Params = value.String
+			}
 		default:
 			pl.selectValues.Set(columns[i], values[i])
 		}
@@ -274,6 +290,12 @@ func (pl *Plan) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("end_time=")
 	builder.WriteString(fmt.Sprintf("%v", pl.EndTime))
+	builder.WriteString(", ")
+	builder.WriteString("command=")
+	builder.WriteString(pl.Command)
+	builder.WriteString(", ")
+	builder.WriteString("params=")
+	builder.WriteString(pl.Params)
 	builder.WriteByte(')')
 	return builder.String()
 }

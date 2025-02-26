@@ -50,6 +50,8 @@ func (l *GetPlanLogic) GetPlan(req *types.GetPlanReq) (resp *types.PlanInfo, err
 		RetryInterval: plan.RetryInterval,
 		StartTime:     plan.StartTime,
 		EndTime:       plan.EndTime,
+		Command:       plan.Command,
+		Params:        plan.Params,
 		CreatedAt:     plan.CreatedAt,
 	}
 

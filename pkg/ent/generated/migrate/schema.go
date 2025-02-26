@@ -220,6 +220,8 @@ var (
 		{Name: "retry_interval", Type: field.TypeInt, Comment: "重试间隔(秒)", Default: 0},
 		{Name: "start_time", Type: field.TypeInt64, Nullable: true, Comment: "生效开始时间"},
 		{Name: "end_time", Type: field.TypeInt64, Nullable: true, Comment: "生效结束时间"},
+		{Name: "command", Type: field.TypeString, Comment: "要执行的命令或方法"},
+		{Name: "params", Type: field.TypeString, Nullable: true, Comment: "执行参数，支持JSON格式"},
 	}
 	// PlansTable holds the schema information for the "plans" table.
 	PlansTable = &schema.Table{

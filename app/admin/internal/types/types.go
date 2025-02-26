@@ -98,13 +98,15 @@ type CreatePlanReq struct {
 	Group         string `json:"group,optional"`          // 任务分组
 	CronSpec      string `json:"cron_spec"`               // cron表达式
 	Status        int    `json:"status"`                  // 状态: 1:启用, 2:禁用
-	PlanType      string `json:"plan_type"`               // 计划类型: routine/special
+	PlanType      string `json:"plan_type,optional"`      // 计划类型: routine/special
 	Priority      int    `json:"priority,optional"`       // 任务优先级
 	Timeout       int    `json:"timeout,optional"`        // 任务超时时间(秒)
 	RetryTimes    int    `json:"retry_times,optional"`    // 重试次数
 	RetryInterval int    `json:"retry_interval,optional"` // 重试间隔(秒)
 	StartTime     int64  `json:"start_time,optional"`     // 生效开始时间
 	EndTime       int64  `json:"end_time,optional"`       // 生效结束时间
+	Command       string `json:"command"`                 // 要执行的命令或方法
+	Params        string `json:"params,optional"`         // 执行参数，支持JSON格式
 }
 
 type CreatePlanResp struct {
@@ -540,8 +542,9 @@ type PlanInfo struct {
 	RetryInterval int    `json:"retry_interval"` // 重试间隔(秒)
 	StartTime     int64  `json:"start_time"`     // 生效开始时间
 	EndTime       int64  `json:"end_time"`       // 生效结束时间
+	Command       string `json:"command"`        // 要执行的命令或方法
+	Params        string `json:"params"`         // 执行参数，支持JSON格式
 	CreatedAt     int64  `json:"created_at"`     // 创建时间
-	UpdatedAt     int64  `json:"updated_at"`     // 更新时间
 }
 
 type PlanListReq struct {
@@ -771,6 +774,8 @@ type UpdatePlanReq struct {
 	RetryInterval int    `json:"retry_interval,optional"` // 重试间隔(秒)
 	StartTime     int64  `json:"start_time,optional"`     // 生效开始时间
 	EndTime       int64  `json:"end_time,optional"`       // 生效结束时间
+	Command       string `json:"command,optional"`        // 要执行的命令或方法
+	Params        string `json:"params,optional"`         // 执行参数，支持JSON格式
 }
 
 type UpdatePositionReq struct {

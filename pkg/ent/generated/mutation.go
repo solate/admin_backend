@@ -7233,6 +7233,8 @@ type PlanMutation struct {
 	addstart_time     *int64
 	end_time          *int64
 	addend_time       *int64
+	command           *string
+	params            *string
 	clearedFields     map[string]struct{}
 	done              bool
 	oldValue          func(context.Context) (*Plan, error)
@@ -8204,6 +8206,91 @@ func (m *PlanMutation) ResetEndTime() {
 	delete(m.clearedFields, plan.FieldEndTime)
 }
 
+// SetCommand sets the "command" field.
+func (m *PlanMutation) SetCommand(s string) {
+	m.command = &s
+}
+
+// Command returns the value of the "command" field in the mutation.
+func (m *PlanMutation) Command() (r string, exists bool) {
+	v := m.command
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCommand returns the old "command" field's value of the Plan entity.
+// If the Plan object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PlanMutation) OldCommand(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCommand is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCommand requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCommand: %w", err)
+	}
+	return oldValue.Command, nil
+}
+
+// ResetCommand resets all changes to the "command" field.
+func (m *PlanMutation) ResetCommand() {
+	m.command = nil
+}
+
+// SetParams sets the "params" field.
+func (m *PlanMutation) SetParams(s string) {
+	m.params = &s
+}
+
+// Params returns the value of the "params" field in the mutation.
+func (m *PlanMutation) Params() (r string, exists bool) {
+	v := m.params
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldParams returns the old "params" field's value of the Plan entity.
+// If the Plan object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PlanMutation) OldParams(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldParams is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldParams requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldParams: %w", err)
+	}
+	return oldValue.Params, nil
+}
+
+// ClearParams clears the value of the "params" field.
+func (m *PlanMutation) ClearParams() {
+	m.params = nil
+	m.clearedFields[plan.FieldParams] = struct{}{}
+}
+
+// ParamsCleared returns if the "params" field was cleared in this mutation.
+func (m *PlanMutation) ParamsCleared() bool {
+	_, ok := m.clearedFields[plan.FieldParams]
+	return ok
+}
+
+// ResetParams resets all changes to the "params" field.
+func (m *PlanMutation) ResetParams() {
+	m.params = nil
+	delete(m.clearedFields, plan.FieldParams)
+}
+
 // Where appends a list predicates to the PlanMutation builder.
 func (m *PlanMutation) Where(ps ...predicate.Plan) {
 	m.predicates = append(m.predicates, ps...)
@@ -8238,7 +8325,7 @@ func (m *PlanMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PlanMutation) Fields() []string {
-	fields := make([]string, 0, 17)
+	fields := make([]string, 0, 19)
 	if m.created_at != nil {
 		fields = append(fields, plan.FieldCreatedAt)
 	}
@@ -8290,6 +8377,12 @@ func (m *PlanMutation) Fields() []string {
 	if m.end_time != nil {
 		fields = append(fields, plan.FieldEndTime)
 	}
+	if m.command != nil {
+		fields = append(fields, plan.FieldCommand)
+	}
+	if m.params != nil {
+		fields = append(fields, plan.FieldParams)
+	}
 	return fields
 }
 
@@ -8332,6 +8425,10 @@ func (m *PlanMutation) Field(name string) (ent.Value, bool) {
 		return m.StartTime()
 	case plan.FieldEndTime:
 		return m.EndTime()
+	case plan.FieldCommand:
+		return m.Command()
+	case plan.FieldParams:
+		return m.Params()
 	}
 	return nil, false
 }
@@ -8375,6 +8472,10 @@ func (m *PlanMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldStartTime(ctx)
 	case plan.FieldEndTime:
 		return m.OldEndTime(ctx)
+	case plan.FieldCommand:
+		return m.OldCommand(ctx)
+	case plan.FieldParams:
+		return m.OldParams(ctx)
 	}
 	return nil, fmt.Errorf("unknown Plan field %s", name)
 }
@@ -8502,6 +8603,20 @@ func (m *PlanMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetEndTime(v)
+		return nil
+	case plan.FieldCommand:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCommand(v)
+		return nil
+	case plan.FieldParams:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetParams(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Plan field %s", name)
@@ -8668,6 +8783,9 @@ func (m *PlanMutation) ClearedFields() []string {
 	if m.FieldCleared(plan.FieldEndTime) {
 		fields = append(fields, plan.FieldEndTime)
 	}
+	if m.FieldCleared(plan.FieldParams) {
+		fields = append(fields, plan.FieldParams)
+	}
 	return fields
 }
 
@@ -8693,6 +8811,9 @@ func (m *PlanMutation) ClearField(name string) error {
 		return nil
 	case plan.FieldEndTime:
 		m.ClearEndTime()
+		return nil
+	case plan.FieldParams:
+		m.ClearParams()
 		return nil
 	}
 	return fmt.Errorf("unknown Plan nullable field %s", name)
@@ -8752,6 +8873,12 @@ func (m *PlanMutation) ResetField(name string) error {
 		return nil
 	case plan.FieldEndTime:
 		m.ResetEndTime()
+		return nil
+	case plan.FieldCommand:
+		m.ResetCommand()
+		return nil
+	case plan.FieldParams:
+		m.ResetParams()
 		return nil
 	}
 	return fmt.Errorf("unknown Plan field %s", name)

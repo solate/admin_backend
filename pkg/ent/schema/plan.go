@@ -40,6 +40,8 @@ func (Plan) Fields() []ent.Field {
 		field.Int("retry_interval").Default(0).Comment("重试间隔(秒)"),
 		field.Int64("start_time").Optional().Comment("生效开始时间"),
 		field.Int64("end_time").Optional().Comment("生效结束时间"),
+		field.String("command").Comment("要执行的命令或方法"),
+		field.String("params").Optional().Comment("执行参数，支持JSON格式"),
 	}
 }
 

@@ -219,6 +219,26 @@ func (pc *PlanCreate) SetNillableEndTime(i *int64) *PlanCreate {
 	return pc
 }
 
+// SetCommand sets the "command" field.
+func (pc *PlanCreate) SetCommand(s string) *PlanCreate {
+	pc.mutation.SetCommand(s)
+	return pc
+}
+
+// SetParams sets the "params" field.
+func (pc *PlanCreate) SetParams(s string) *PlanCreate {
+	pc.mutation.SetParams(s)
+	return pc
+}
+
+// SetNillableParams sets the "params" field if the given value is not nil.
+func (pc *PlanCreate) SetNillableParams(s *string) *PlanCreate {
+	if s != nil {
+		pc.SetParams(*s)
+	}
+	return pc
+}
+
 // Mutation returns the PlanMutation object of the builder.
 func (pc *PlanCreate) Mutation() *PlanMutation {
 	return pc.mutation
@@ -329,6 +349,9 @@ func (pc *PlanCreate) check() error {
 	if _, ok := pc.mutation.RetryInterval(); !ok {
 		return &ValidationError{Name: "retry_interval", err: errors.New(`generated: missing required field "Plan.retry_interval"`)}
 	}
+	if _, ok := pc.mutation.Command(); !ok {
+		return &ValidationError{Name: "command", err: errors.New(`generated: missing required field "Plan.command"`)}
+	}
 	return nil
 }
 
@@ -423,6 +446,14 @@ func (pc *PlanCreate) createSpec() (*Plan, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.EndTime(); ok {
 		_spec.SetField(plan.FieldEndTime, field.TypeInt64, value)
 		_node.EndTime = value
+	}
+	if value, ok := pc.mutation.Command(); ok {
+		_spec.SetField(plan.FieldCommand, field.TypeString, value)
+		_node.Command = value
+	}
+	if value, ok := pc.mutation.Params(); ok {
+		_spec.SetField(plan.FieldParams, field.TypeString, value)
+		_node.Params = value
 	}
 	return _node, _spec
 }
@@ -743,6 +774,36 @@ func (u *PlanUpsert) AddEndTime(v int64) *PlanUpsert {
 // ClearEndTime clears the value of the "end_time" field.
 func (u *PlanUpsert) ClearEndTime() *PlanUpsert {
 	u.SetNull(plan.FieldEndTime)
+	return u
+}
+
+// SetCommand sets the "command" field.
+func (u *PlanUpsert) SetCommand(v string) *PlanUpsert {
+	u.Set(plan.FieldCommand, v)
+	return u
+}
+
+// UpdateCommand sets the "command" field to the value that was provided on create.
+func (u *PlanUpsert) UpdateCommand() *PlanUpsert {
+	u.SetExcluded(plan.FieldCommand)
+	return u
+}
+
+// SetParams sets the "params" field.
+func (u *PlanUpsert) SetParams(v string) *PlanUpsert {
+	u.Set(plan.FieldParams, v)
+	return u
+}
+
+// UpdateParams sets the "params" field to the value that was provided on create.
+func (u *PlanUpsert) UpdateParams() *PlanUpsert {
+	u.SetExcluded(plan.FieldParams)
+	return u
+}
+
+// ClearParams clears the value of the "params" field.
+func (u *PlanUpsert) ClearParams() *PlanUpsert {
+	u.SetNull(plan.FieldParams)
 	return u
 }
 
@@ -1103,6 +1164,41 @@ func (u *PlanUpsertOne) UpdateEndTime() *PlanUpsertOne {
 func (u *PlanUpsertOne) ClearEndTime() *PlanUpsertOne {
 	return u.Update(func(s *PlanUpsert) {
 		s.ClearEndTime()
+	})
+}
+
+// SetCommand sets the "command" field.
+func (u *PlanUpsertOne) SetCommand(v string) *PlanUpsertOne {
+	return u.Update(func(s *PlanUpsert) {
+		s.SetCommand(v)
+	})
+}
+
+// UpdateCommand sets the "command" field to the value that was provided on create.
+func (u *PlanUpsertOne) UpdateCommand() *PlanUpsertOne {
+	return u.Update(func(s *PlanUpsert) {
+		s.UpdateCommand()
+	})
+}
+
+// SetParams sets the "params" field.
+func (u *PlanUpsertOne) SetParams(v string) *PlanUpsertOne {
+	return u.Update(func(s *PlanUpsert) {
+		s.SetParams(v)
+	})
+}
+
+// UpdateParams sets the "params" field to the value that was provided on create.
+func (u *PlanUpsertOne) UpdateParams() *PlanUpsertOne {
+	return u.Update(func(s *PlanUpsert) {
+		s.UpdateParams()
+	})
+}
+
+// ClearParams clears the value of the "params" field.
+func (u *PlanUpsertOne) ClearParams() *PlanUpsertOne {
+	return u.Update(func(s *PlanUpsert) {
+		s.ClearParams()
 	})
 }
 
@@ -1629,6 +1725,41 @@ func (u *PlanUpsertBulk) UpdateEndTime() *PlanUpsertBulk {
 func (u *PlanUpsertBulk) ClearEndTime() *PlanUpsertBulk {
 	return u.Update(func(s *PlanUpsert) {
 		s.ClearEndTime()
+	})
+}
+
+// SetCommand sets the "command" field.
+func (u *PlanUpsertBulk) SetCommand(v string) *PlanUpsertBulk {
+	return u.Update(func(s *PlanUpsert) {
+		s.SetCommand(v)
+	})
+}
+
+// UpdateCommand sets the "command" field to the value that was provided on create.
+func (u *PlanUpsertBulk) UpdateCommand() *PlanUpsertBulk {
+	return u.Update(func(s *PlanUpsert) {
+		s.UpdateCommand()
+	})
+}
+
+// SetParams sets the "params" field.
+func (u *PlanUpsertBulk) SetParams(v string) *PlanUpsertBulk {
+	return u.Update(func(s *PlanUpsert) {
+		s.SetParams(v)
+	})
+}
+
+// UpdateParams sets the "params" field to the value that was provided on create.
+func (u *PlanUpsertBulk) UpdateParams() *PlanUpsertBulk {
+	return u.Update(func(s *PlanUpsert) {
+		s.UpdateParams()
+	})
+}
+
+// ClearParams clears the value of the "params" field.
+func (u *PlanUpsertBulk) ClearParams() *PlanUpsertBulk {
+	return u.Update(func(s *PlanUpsert) {
+		s.ClearParams()
 	})
 }
 

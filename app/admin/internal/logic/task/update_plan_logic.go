@@ -52,6 +52,8 @@ func (l *UpdatePlanLogic) UpdatePlan(req *types.UpdatePlanReq) (resp bool, err e
 	plan.RetryInterval = req.RetryInterval
 	plan.StartTime = req.StartTime
 	plan.EndTime = req.EndTime
+	plan.Command = req.Command
+	plan.Params = req.Params
 
 	_, err = l.planRepo.Update(l.ctx, plan)
 	if err != nil {
