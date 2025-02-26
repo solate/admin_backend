@@ -40,6 +40,8 @@ func (r *PlanRepo) Create(ctx context.Context, plan *generated.Plan) (*generated
 		SetRetryInterval(plan.RetryInterval).
 		SetStartTime(plan.StartTime).
 		SetEndTime(plan.EndTime).
+		SetCommand(plan.Command).
+		SetParams(plan.Params).
 		Save(ctx)
 }
 
@@ -60,6 +62,8 @@ func (r *PlanRepo) Update(ctx context.Context, update *generated.Plan) (int, err
 		SetRetryInterval(update.RetryInterval).
 		SetStartTime(update.StartTime).
 		SetEndTime(update.EndTime).
+		SetCommand(update.Command).
+		SetParams(update.Params).
 		Where(plan.PlanID(update.PlanID)).Save(ctx)
 }
 
