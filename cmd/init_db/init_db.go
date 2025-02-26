@@ -2,23 +2,14 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"time"
 
+	"admin_backend/cmd/init_db/initialize"
 	"admin_backend/pkg/ent"
 	"admin_backend/pkg/ent/generated"
-	"admin_backend/pkg/utils/idgen"
-	"admin_backend/pkg/utils/passwordgen"
-)
-
-const (
-	tenantCode = "default"
-	password   = "admin@123"
 )
 
 func main() {
-
 	/*
 		DROP DATABASE IF EXISTS testdb;
 		CREATE DATABASE testdb WITH ENCODING 'UTF8' LC_COLLATE='zh_CN.UTF-8' LC_CTYPE='zh_CN.UTF-8' TEMPLATE=template0;
@@ -39,59 +30,38 @@ func main() {
 
 	ent.WithTx(ctx, client.Client, func(tx *generated.Tx) error {
 
-		ids, err := idgen.GenerateUUIDs(3)
+		// 初始化租户
+		_, err = initialize.InitTenant(ctx, tx)
 		if err != nil {
 			return err
 		}
 
-		now := time.Now().UnixMilli()
-		_, err = tx.Tenant.Create().
-			SetCreatedAt(now).
-			SetUpdatedAt(now).
-			SetTenantID(ids[0]).
-			SetCode(tenantCode).
-			SetName("默认租户").
-			SetDescription("默认租户").
-			SetStatus(1).
-			Save(ctx)
-		if err != nil {
-			fmt.Println("failed creating schema tenant resources:", err)
-			return err
-		}
-
-		fmt.Println("tenant:", ids[0], "code:", tenantCode, "name:", "默认租户", "description:", "默认租户", "status:", 1)
-
-		salt, err := passwordgen.GenerateSalt()
-		if err != nil {
-			return err
-		}
-		hashedPassword, err := passwordgen.Argon2Hash(password, salt)
+		// 初始化用户
+		_, err = initialize.InitUser(ctx, tx, initialize.TenantCode)
 		if err != nil {
 			return err
 		}
 
-		user, err := tx.User.Create().
-			SetCreatedAt(now).
-			SetUpdatedAt(now).
-			SetTenantCode(tenantCode).
-			SetUserID(ids[1]).
-			SetPhone("18888888888").
-			SetUserName("admin").
-			SetPwdHashed(hashedPassword).
-			SetPwdSalt(salt).
-			SetStatus(1).
-			SetName("admin").
-			SetEmail("admin123@qq.com").
-			SetSex(1).
-			Save(ctx)
-		if err != nil {
-			fmt.Println("failed creating schema user esources:", err)
+		// 初始化菜单
+		if err := initialize.InitMenus(ctx, tx, initialize.TenantCode); err != nil {
 			return err
 		}
 
-		fmt.Println("user:", user.UserName, "password:", password)
+		// 初始化商品分类
+		if err := initialize.InitCategories(ctx, tx, initialize.TenantCode); err != nil {
+			return err
+		}
+
+		// 初始化字典类型
+		if err := initialize.InitDictTypes(ctx, tx, initialize.TenantCode); err != nil {
+			return err
+		}
+
+		// 初始化字典项
+		if err := initialize.InitDictItems(ctx, tx, initialize.TenantCode); err != nil {
+			return err
+		}
 
 		return nil
 	})
-
 }
