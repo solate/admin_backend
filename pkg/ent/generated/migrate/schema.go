@@ -63,7 +63,7 @@ var (
 		{Name: "type_code", Type: field.TypeString, Comment: "字典类型code"},
 		{Name: "label", Type: field.TypeString, Comment: "字典标签"},
 		{Name: "value", Type: field.TypeString, Comment: "字典键值"},
-		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "字典项描述"},
+		{Name: "description", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "字典项描述"},
 		{Name: "sort", Type: field.TypeInt, Comment: "排序", Default: 0},
 		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
 	}
@@ -91,7 +91,7 @@ var (
 		{Name: "type_id", Type: field.TypeString, Unique: true, Comment: "字典类型ID"},
 		{Name: "name", Type: field.TypeString, Comment: "字典类型名称"},
 		{Name: "code", Type: field.TypeString, Unique: true, Comment: "字典类型编码"},
-		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "字典类型描述"},
+		{Name: "description", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "字典类型描述"},
 		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
 	}
 	// DictTypesTable holds the schema information for the "dict_types" table.
@@ -189,7 +189,7 @@ var (
 		{Name: "resource", Type: field.TypeString, Comment: "资源"},
 		{Name: "action", Type: field.TypeString, Comment: "操作类型"},
 		{Name: "parent_id", Type: field.TypeString, Nullable: true, Comment: "父级ID"},
-		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "描述"},
+		{Name: "description", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "描述"},
 		{Name: "status", Type: field.TypeInt, Comment: "状态 1:启用 2:禁用", Default: 1},
 		{Name: "menu_id", Type: field.TypeString, Nullable: true, Comment: "菜单ID"},
 	}
@@ -209,7 +209,7 @@ var (
 		{Name: "tenant_code", Type: field.TypeString, Comment: "租户code"},
 		{Name: "plan_id", Type: field.TypeString, Unique: true, Comment: "计划ID"},
 		{Name: "name", Type: field.TypeString, Comment: "计划名称"},
-		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "计划描述"},
+		{Name: "description", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "计划描述"},
 		{Name: "group", Type: field.TypeString, Comment: "任务分组", Default: "default"},
 		{Name: "cron_spec", Type: field.TypeString, Comment: "cron表达式"},
 		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
@@ -240,7 +240,7 @@ var (
 		{Name: "position_id", Type: field.TypeString, Unique: true, Comment: "岗位ID"},
 		{Name: "name", Type: field.TypeString, Comment: "岗位名称"},
 		{Name: "department_id", Type: field.TypeString, Comment: "部门ID"},
-		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "岗位描述"},
+		{Name: "description", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "岗位描述"},
 	}
 	// PositionsTable holds the schema information for the "positions" table.
 	PositionsTable = &schema.Table{
@@ -266,7 +266,7 @@ var (
 		{Name: "role_id", Type: field.TypeString, Unique: true, Comment: "角色ID"},
 		{Name: "name", Type: field.TypeString, Comment: "角色名"},
 		{Name: "code", Type: field.TypeString, Unique: true, Comment: "角色编码"},
-		{Name: "description", Type: field.TypeString, Nullable: true, Comment: "角色描述"},
+		{Name: "description", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "角色描述"},
 		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
 		{Name: "sort", Type: field.TypeInt, Comment: "排序", Default: 0},
 	}
@@ -353,7 +353,7 @@ var (
 		{Name: "tenant_id", Type: field.TypeString, Unique: true, Comment: "租户ID"},
 		{Name: "name", Type: field.TypeString, Comment: "租户名称", Default: ""},
 		{Name: "code", Type: field.TypeString, Unique: true, Comment: "租户编码"},
-		{Name: "description", Type: field.TypeString, Comment: "租户描述", Default: ""},
+		{Name: "description", Type: field.TypeString, Size: 2147483647, Comment: "租户描述", Default: ""},
 		{Name: "status", Type: field.TypeInt, Comment: "租户状态：1: 启用, 2: 禁用", Default: 1},
 	}
 	// TenantsTable holds the schema information for the "tenants" table.

@@ -31,7 +31,7 @@ func (Tenant) Fields() []ent.Field {
 		field.String("tenant_id").Unique().Comment("租户ID"),
 		field.String("name").NotEmpty().Default("").Comment("租户名称"),
 		field.String("code").Unique().NotEmpty().Comment("租户编码"),
-		field.String("description").Default("").Comment("租户描述"),
+		field.Text("description").Default("").Comment("租户描述"),
 		field.Int("status").Default(1).Comment("租户状态：1: 启用, 2: 禁用"),
 
 		// // 配置管理

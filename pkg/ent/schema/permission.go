@@ -36,7 +36,7 @@ func (Permission) Fields() []ent.Field {
 		field.String("resource").NotEmpty().Comment("资源"),
 		field.String("action").NotEmpty().Comment("操作类型"),
 		field.String("parent_id").Optional().Comment("父级ID"),
-		field.String("description").Optional().Comment("描述"),
+		field.Text("description").Optional().Comment("描述"),
 		field.Int("status").Default(1).Comment("状态 1:启用 2:禁用"),
 		field.String("menu_id").Optional().Comment("菜单ID"),
 	}

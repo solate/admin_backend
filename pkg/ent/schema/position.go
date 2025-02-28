@@ -32,7 +32,7 @@ func (Position) Fields() []ent.Field {
 		field.String("position_id").Unique().Comment("岗位ID"),
 		field.String("name").NotEmpty().Comment("岗位名称"),
 		field.String("department_id").NotEmpty().Comment("部门ID"),
-		field.String("description").Optional().Comment("岗位描述"),
+		field.Text("description").Optional().Comment("岗位描述"),
 	}
 }
 

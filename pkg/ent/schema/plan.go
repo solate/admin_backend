@@ -29,7 +29,7 @@ func (Plan) Fields() []ent.Field {
 
 		field.String("plan_id").Unique().Comment("计划ID"),
 		field.String("name").Comment("计划名称"),
-		field.String("description").Optional().Comment("计划描述"),
+		field.Text("description").Optional().Comment("计划描述"),
 		field.String("group").Default("default").Comment("任务分组"),
 		field.String("cron_spec").Comment("cron表达式"),
 		field.Int("status").Default(1).Comment("状态: 1:启用, 2:禁用"),

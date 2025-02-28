@@ -32,7 +32,7 @@ func (DictType) Fields() []ent.Field {
 		field.String("type_id").Unique().Comment("字典类型ID"),
 		field.String("name").NotEmpty().Comment("字典类型名称"),
 		field.String("code").NotEmpty().Unique().Comment("字典类型编码"),
-		field.String("description").Optional().Comment("字典类型描述"),
+		field.Text("description").Optional().Comment("字典类型描述"),
 		field.Int("status").Default(1).Comment("状态: 1:启用, 2:禁用"),
 	}
 }

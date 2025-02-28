@@ -33,7 +33,7 @@ func (DictItem) Fields() []ent.Field {
 		field.String("type_code").NotEmpty().Comment("字典类型code"),
 		field.String("label").NotEmpty().Comment("字典标签"),
 		field.String("value").NotEmpty().Comment("字典键值"),
-		field.String("description").Optional().Comment("字典项描述"),
+		field.Text("description").Optional().Comment("字典项描述"),
 		field.Int("sort").Default(0).Comment("排序"),
 		field.Int("status").Default(1).Comment("状态: 1:启用, 2:禁用"),
 	}
