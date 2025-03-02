@@ -15,7 +15,7 @@ type DictType struct {
 
 func (DictType) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "dict_types"},
+		entsql.Annotation{Table: "sys_dict_types"},
 		entsql.WithComments(true),
 		schema.Comment("字典类型"),
 	}

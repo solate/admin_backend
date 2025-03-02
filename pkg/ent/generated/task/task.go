@@ -50,7 +50,7 @@ const (
 	// FieldNextRetryTime holds the string denoting the next_retry_time field in the database.
 	FieldNextRetryTime = "next_retry_time"
 	// Table holds the table name of the task in the database.
-	Table = "tasks"
+	Table = "sys_tasks"
 )
 
 // Columns holds all SQL columns for task fields.

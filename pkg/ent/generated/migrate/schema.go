@@ -26,8 +26,8 @@ var (
 		Columns:    CasbinRulesColumns,
 		PrimaryKey: []*schema.Column{CasbinRulesColumns[0]},
 	}
-	// DepartmentsColumns holds the columns for the "departments" table.
-	DepartmentsColumns = []*schema.Column{
+	// SysDepartmentsColumns holds the columns for the "sys_departments" table.
+	SysDepartmentsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
@@ -38,22 +38,22 @@ var (
 		{Name: "parent_id", Type: field.TypeString, Comment: "父部门ID", Default: ""},
 		{Name: "sort", Type: field.TypeInt, Comment: "排序", Default: 0},
 	}
-	// DepartmentsTable holds the schema information for the "departments" table.
-	DepartmentsTable = &schema.Table{
-		Name:       "departments",
+	// SysDepartmentsTable holds the schema information for the "sys_departments" table.
+	SysDepartmentsTable = &schema.Table{
+		Name:       "sys_departments",
 		Comment:    "部门",
-		Columns:    DepartmentsColumns,
-		PrimaryKey: []*schema.Column{DepartmentsColumns[0]},
+		Columns:    SysDepartmentsColumns,
+		PrimaryKey: []*schema.Column{SysDepartmentsColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "department_department_id",
 				Unique:  false,
-				Columns: []*schema.Column{DepartmentsColumns[5]},
+				Columns: []*schema.Column{SysDepartmentsColumns[5]},
 			},
 		},
 	}
-	// DictItemsColumns holds the columns for the "dict_items" table.
-	DictItemsColumns = []*schema.Column{
+	// SysDictItemsColumns holds the columns for the "sys_dict_items" table.
+	SysDictItemsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
@@ -67,22 +67,22 @@ var (
 		{Name: "sort", Type: field.TypeInt, Comment: "排序", Default: 0},
 		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
 	}
-	// DictItemsTable holds the schema information for the "dict_items" table.
-	DictItemsTable = &schema.Table{
-		Name:       "dict_items",
+	// SysDictItemsTable holds the schema information for the "sys_dict_items" table.
+	SysDictItemsTable = &schema.Table{
+		Name:       "sys_dict_items",
 		Comment:    "字典数据",
-		Columns:    DictItemsColumns,
-		PrimaryKey: []*schema.Column{DictItemsColumns[0]},
+		Columns:    SysDictItemsColumns,
+		PrimaryKey: []*schema.Column{SysDictItemsColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "dictitem_type_code",
 				Unique:  false,
-				Columns: []*schema.Column{DictItemsColumns[6]},
+				Columns: []*schema.Column{SysDictItemsColumns[6]},
 			},
 		},
 	}
-	// DictTypesColumns holds the columns for the "dict_types" table.
-	DictTypesColumns = []*schema.Column{
+	// SysDictTypesColumns holds the columns for the "sys_dict_types" table.
+	SysDictTypesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
@@ -94,22 +94,22 @@ var (
 		{Name: "description", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "字典类型描述"},
 		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
 	}
-	// DictTypesTable holds the schema information for the "dict_types" table.
-	DictTypesTable = &schema.Table{
-		Name:       "dict_types",
+	// SysDictTypesTable holds the schema information for the "sys_dict_types" table.
+	SysDictTypesTable = &schema.Table{
+		Name:       "sys_dict_types",
 		Comment:    "字典类型",
-		Columns:    DictTypesColumns,
-		PrimaryKey: []*schema.Column{DictTypesColumns[0]},
+		Columns:    SysDictTypesColumns,
+		PrimaryKey: []*schema.Column{SysDictTypesColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "dicttype_code",
 				Unique:  true,
-				Columns: []*schema.Column{DictTypesColumns[7]},
+				Columns: []*schema.Column{SysDictTypesColumns[7]},
 			},
 		},
 	}
-	// LoginLogColumns holds the columns for the "login_log" table.
-	LoginLogColumns = []*schema.Column{
+	// SysLoginLogColumns holds the columns for the "sys_login_log" table.
+	SysLoginLogColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Default: 0},
 		{Name: "tenant_code", Type: field.TypeString},
@@ -124,21 +124,21 @@ var (
 		{Name: "device", Type: field.TypeString, Nullable: true},
 		{Name: "login_time", Type: field.TypeInt64, Nullable: true},
 	}
-	// LoginLogTable holds the schema information for the "login_log" table.
-	LoginLogTable = &schema.Table{
-		Name:       "login_log",
-		Columns:    LoginLogColumns,
-		PrimaryKey: []*schema.Column{LoginLogColumns[0]},
+	// SysLoginLogTable holds the schema information for the "sys_login_log" table.
+	SysLoginLogTable = &schema.Table{
+		Name:       "sys_login_log",
+		Columns:    SysLoginLogColumns,
+		PrimaryKey: []*schema.Column{SysLoginLogColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "loginlog_user_id",
 				Unique:  false,
-				Columns: []*schema.Column{LoginLogColumns[4]},
+				Columns: []*schema.Column{SysLoginLogColumns[4]},
 			},
 		},
 	}
-	// MenusColumns holds the columns for the "menus" table.
-	MenusColumns = []*schema.Column{
+	// SysMenusColumns holds the columns for the "sys_menus" table.
+	SysMenusColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
@@ -156,27 +156,27 @@ var (
 		{Name: "type", Type: field.TypeString, Comment: "菜单类型 dir/menu/button", Default: ""},
 		{Name: "status", Type: field.TypeInt, Comment: "状态 1:启用 2:禁用", Default: 1},
 	}
-	// MenusTable holds the schema information for the "menus" table.
-	MenusTable = &schema.Table{
-		Name:       "menus",
+	// SysMenusTable holds the schema information for the "sys_menus" table.
+	SysMenusTable = &schema.Table{
+		Name:       "sys_menus",
 		Comment:    "菜单",
-		Columns:    MenusColumns,
-		PrimaryKey: []*schema.Column{MenusColumns[0]},
+		Columns:    SysMenusColumns,
+		PrimaryKey: []*schema.Column{SysMenusColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "menu_menu_id",
 				Unique:  false,
-				Columns: []*schema.Column{MenusColumns[5]},
+				Columns: []*schema.Column{SysMenusColumns[5]},
 			},
 			{
 				Name:    "menu_parent_id",
 				Unique:  false,
-				Columns: []*schema.Column{MenusColumns[7]},
+				Columns: []*schema.Column{SysMenusColumns[7]},
 			},
 		},
 	}
-	// PermissionsColumns holds the columns for the "permissions" table.
-	PermissionsColumns = []*schema.Column{
+	// SysPermissionsColumns holds the columns for the "sys_permissions" table.
+	SysPermissionsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
@@ -193,15 +193,15 @@ var (
 		{Name: "status", Type: field.TypeInt, Comment: "状态 1:启用 2:禁用", Default: 1},
 		{Name: "menu_id", Type: field.TypeString, Nullable: true, Comment: "菜单ID"},
 	}
-	// PermissionsTable holds the schema information for the "permissions" table.
-	PermissionsTable = &schema.Table{
-		Name:       "permissions",
+	// SysPermissionsTable holds the schema information for the "sys_permissions" table.
+	SysPermissionsTable = &schema.Table{
+		Name:       "sys_permissions",
 		Comment:    "权限",
-		Columns:    PermissionsColumns,
-		PrimaryKey: []*schema.Column{PermissionsColumns[0]},
+		Columns:    SysPermissionsColumns,
+		PrimaryKey: []*schema.Column{SysPermissionsColumns[0]},
 	}
-	// PlansColumns holds the columns for the "plans" table.
-	PlansColumns = []*schema.Column{
+	// SysPlansColumns holds the columns for the "sys_plans" table.
+	SysPlansColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
@@ -223,15 +223,15 @@ var (
 		{Name: "command", Type: field.TypeString, Comment: "要执行的命令或方法"},
 		{Name: "params", Type: field.TypeString, Nullable: true, Comment: "执行参数，支持JSON格式"},
 	}
-	// PlansTable holds the schema information for the "plans" table.
-	PlansTable = &schema.Table{
-		Name:       "plans",
+	// SysPlansTable holds the schema information for the "sys_plans" table.
+	SysPlansTable = &schema.Table{
+		Name:       "sys_plans",
 		Comment:    "计划",
-		Columns:    PlansColumns,
-		PrimaryKey: []*schema.Column{PlansColumns[0]},
+		Columns:    SysPlansColumns,
+		PrimaryKey: []*schema.Column{SysPlansColumns[0]},
 	}
-	// PositionsColumns holds the columns for the "positions" table.
-	PositionsColumns = []*schema.Column{
+	// SysPositionsColumns holds the columns for the "sys_positions" table.
+	SysPositionsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
@@ -242,22 +242,22 @@ var (
 		{Name: "department_id", Type: field.TypeString, Comment: "部门ID"},
 		{Name: "description", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "岗位描述"},
 	}
-	// PositionsTable holds the schema information for the "positions" table.
-	PositionsTable = &schema.Table{
-		Name:       "positions",
+	// SysPositionsTable holds the schema information for the "sys_positions" table.
+	SysPositionsTable = &schema.Table{
+		Name:       "sys_positions",
 		Comment:    "岗位",
-		Columns:    PositionsColumns,
-		PrimaryKey: []*schema.Column{PositionsColumns[0]},
+		Columns:    SysPositionsColumns,
+		PrimaryKey: []*schema.Column{SysPositionsColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "position_position_id",
 				Unique:  false,
-				Columns: []*schema.Column{PositionsColumns[5]},
+				Columns: []*schema.Column{SysPositionsColumns[5]},
 			},
 		},
 	}
-	// RolesColumns holds the columns for the "roles" table.
-	RolesColumns = []*schema.Column{
+	// SysRolesColumns holds the columns for the "sys_roles" table.
+	SysRolesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
@@ -270,22 +270,22 @@ var (
 		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
 		{Name: "sort", Type: field.TypeInt, Comment: "排序", Default: 0},
 	}
-	// RolesTable holds the schema information for the "roles" table.
-	RolesTable = &schema.Table{
-		Name:       "roles",
+	// SysRolesTable holds the schema information for the "sys_roles" table.
+	SysRolesTable = &schema.Table{
+		Name:       "sys_roles",
 		Comment:    "角色",
-		Columns:    RolesColumns,
-		PrimaryKey: []*schema.Column{RolesColumns[0]},
+		Columns:    SysRolesColumns,
+		PrimaryKey: []*schema.Column{SysRolesColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "role_code",
 				Unique:  true,
-				Columns: []*schema.Column{RolesColumns[7]},
+				Columns: []*schema.Column{SysRolesColumns[7]},
 			},
 		},
 	}
-	// SystemLogsColumns holds the columns for the "system_logs" table.
-	SystemLogsColumns = []*schema.Column{
+	// SysSystemLogsColumns holds the columns for the "sys_system_logs" table.
+	SysSystemLogsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "tenant_code", Type: field.TypeString, Comment: "租户编码"},
@@ -295,27 +295,27 @@ var (
 		{Name: "operator", Type: field.TypeString, Comment: "操作人", Default: ""},
 		{Name: "user_id", Type: field.TypeString, Comment: "用户ID", Default: ""},
 	}
-	// SystemLogsTable holds the schema information for the "system_logs" table.
-	SystemLogsTable = &schema.Table{
-		Name:       "system_logs",
+	// SysSystemLogsTable holds the schema information for the "sys_system_logs" table.
+	SysSystemLogsTable = &schema.Table{
+		Name:       "sys_system_logs",
 		Comment:    "系统日志",
-		Columns:    SystemLogsColumns,
-		PrimaryKey: []*schema.Column{SystemLogsColumns[0]},
+		Columns:    SysSystemLogsColumns,
+		PrimaryKey: []*schema.Column{SysSystemLogsColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "systemlog_user_id",
 				Unique:  false,
-				Columns: []*schema.Column{SystemLogsColumns[7]},
+				Columns: []*schema.Column{SysSystemLogsColumns[7]},
 			},
 			{
 				Name:    "systemlog_module",
 				Unique:  false,
-				Columns: []*schema.Column{SystemLogsColumns[3]},
+				Columns: []*schema.Column{SysSystemLogsColumns[3]},
 			},
 		},
 	}
-	// TasksColumns holds the columns for the "tasks" table.
-	TasksColumns = []*schema.Column{
+	// SysTasksColumns holds the columns for the "sys_tasks" table.
+	SysTasksColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
@@ -337,15 +337,15 @@ var (
 		{Name: "retry_count", Type: field.TypeInt, Comment: "已重试次数", Default: 0},
 		{Name: "next_retry_time", Type: field.TypeInt64, Nullable: true, Comment: "下次重试时间"},
 	}
-	// TasksTable holds the schema information for the "tasks" table.
-	TasksTable = &schema.Table{
-		Name:       "tasks",
+	// SysTasksTable holds the schema information for the "sys_tasks" table.
+	SysTasksTable = &schema.Table{
+		Name:       "sys_tasks",
 		Comment:    "任务",
-		Columns:    TasksColumns,
-		PrimaryKey: []*schema.Column{TasksColumns[0]},
+		Columns:    SysTasksColumns,
+		PrimaryKey: []*schema.Column{SysTasksColumns[0]},
 	}
-	// TenantsColumns holds the columns for the "tenants" table.
-	TenantsColumns = []*schema.Column{
+	// SysTenantsColumns holds the columns for the "sys_tenants" table.
+	SysTenantsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
@@ -356,22 +356,22 @@ var (
 		{Name: "description", Type: field.TypeString, Size: 2147483647, Comment: "租户描述", Default: ""},
 		{Name: "status", Type: field.TypeInt, Comment: "租户状态：1: 启用, 2: 禁用", Default: 1},
 	}
-	// TenantsTable holds the schema information for the "tenants" table.
-	TenantsTable = &schema.Table{
-		Name:       "tenants",
+	// SysTenantsTable holds the schema information for the "sys_tenants" table.
+	SysTenantsTable = &schema.Table{
+		Name:       "sys_tenants",
 		Comment:    "租户",
-		Columns:    TenantsColumns,
-		PrimaryKey: []*schema.Column{TenantsColumns[0]},
+		Columns:    SysTenantsColumns,
+		PrimaryKey: []*schema.Column{SysTenantsColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "tenant_tenant_id",
 				Unique:  false,
-				Columns: []*schema.Column{TenantsColumns[4]},
+				Columns: []*schema.Column{SysTenantsColumns[4]},
 			},
 		},
 	}
-	// UsersColumns holds the columns for the "users" table.
-	UsersColumns = []*schema.Column{
+	// SysUsersColumns holds the columns for the "sys_users" table.
+	SysUsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeInt64, Comment: "创建时间", Default: 0},
 		{Name: "updated_at", Type: field.TypeInt64, Comment: "修改时间", Default: 0},
@@ -389,116 +389,116 @@ var (
 		{Name: "sex", Type: field.TypeInt, Comment: "性别: 1：男 2：女", Default: 0},
 		{Name: "status", Type: field.TypeInt, Comment: "状态: 1:启用, 2:禁用", Default: 1},
 	}
-	// UsersTable holds the schema information for the "users" table.
-	UsersTable = &schema.Table{
-		Name:       "users",
+	// SysUsersTable holds the schema information for the "sys_users" table.
+	SysUsersTable = &schema.Table{
+		Name:       "sys_users",
 		Comment:    "用户",
-		Columns:    UsersColumns,
-		PrimaryKey: []*schema.Column{UsersColumns[0]},
+		Columns:    SysUsersColumns,
+		PrimaryKey: []*schema.Column{SysUsersColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "user_phone",
 				Unique:  false,
-				Columns: []*schema.Column{UsersColumns[12]},
+				Columns: []*schema.Column{SysUsersColumns[12]},
 			},
 			{
 				Name:    "user_user_id",
 				Unique:  false,
-				Columns: []*schema.Column{UsersColumns[5]},
+				Columns: []*schema.Column{SysUsersColumns[5]},
 			},
 		},
 	}
-	// UserPositionsColumns holds the columns for the "user_positions" table.
-	UserPositionsColumns = []*schema.Column{
+	// SysUserPositionsRelationColumns holds the columns for the "sys_user_positions_relation" table.
+	SysUserPositionsRelationColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "user_id", Type: field.TypeString, Comment: "用户ID"},
 		{Name: "position_id", Type: field.TypeString, Comment: "岗位ID"},
 	}
-	// UserPositionsTable holds the schema information for the "user_positions" table.
-	UserPositionsTable = &schema.Table{
-		Name:       "user_positions",
+	// SysUserPositionsRelationTable holds the schema information for the "sys_user_positions_relation" table.
+	SysUserPositionsRelationTable = &schema.Table{
+		Name:       "sys_user_positions_relation",
 		Comment:    "用户岗位关联",
-		Columns:    UserPositionsColumns,
-		PrimaryKey: []*schema.Column{UserPositionsColumns[0]},
+		Columns:    SysUserPositionsRelationColumns,
+		PrimaryKey: []*schema.Column{SysUserPositionsRelationColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "userposition_user_id",
 				Unique:  false,
-				Columns: []*schema.Column{UserPositionsColumns[1]},
+				Columns: []*schema.Column{SysUserPositionsRelationColumns[1]},
 			},
 			{
 				Name:    "userposition_position_id",
 				Unique:  false,
-				Columns: []*schema.Column{UserPositionsColumns[2]},
+				Columns: []*schema.Column{SysUserPositionsRelationColumns[2]},
 			},
 			{
 				Name:    "userposition_user_id_position_id",
 				Unique:  true,
-				Columns: []*schema.Column{UserPositionsColumns[1], UserPositionsColumns[2]},
+				Columns: []*schema.Column{SysUserPositionsRelationColumns[1], SysUserPositionsRelationColumns[2]},
 			},
 		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		CasbinRulesTable,
-		DepartmentsTable,
-		DictItemsTable,
-		DictTypesTable,
-		LoginLogTable,
-		MenusTable,
-		PermissionsTable,
-		PlansTable,
-		PositionsTable,
-		RolesTable,
-		SystemLogsTable,
-		TasksTable,
-		TenantsTable,
-		UsersTable,
-		UserPositionsTable,
+		SysDepartmentsTable,
+		SysDictItemsTable,
+		SysDictTypesTable,
+		SysLoginLogTable,
+		SysMenusTable,
+		SysPermissionsTable,
+		SysPlansTable,
+		SysPositionsTable,
+		SysRolesTable,
+		SysSystemLogsTable,
+		SysTasksTable,
+		SysTenantsTable,
+		SysUsersTable,
+		SysUserPositionsRelationTable,
 	}
 )
 
 func init() {
-	DepartmentsTable.Annotation = &entsql.Annotation{
-		Table: "departments",
+	SysDepartmentsTable.Annotation = &entsql.Annotation{
+		Table: "sys_departments",
 	}
-	DictItemsTable.Annotation = &entsql.Annotation{
-		Table: "dict_items",
+	SysDictItemsTable.Annotation = &entsql.Annotation{
+		Table: "sys_dict_items",
 	}
-	DictTypesTable.Annotation = &entsql.Annotation{
-		Table: "dict_types",
+	SysDictTypesTable.Annotation = &entsql.Annotation{
+		Table: "sys_dict_types",
 	}
-	LoginLogTable.Annotation = &entsql.Annotation{
-		Table: "login_log",
+	SysLoginLogTable.Annotation = &entsql.Annotation{
+		Table: "sys_login_log",
 	}
-	MenusTable.Annotation = &entsql.Annotation{
-		Table: "menus",
+	SysMenusTable.Annotation = &entsql.Annotation{
+		Table: "sys_menus",
 	}
-	PermissionsTable.Annotation = &entsql.Annotation{
-		Table: "permissions",
+	SysPermissionsTable.Annotation = &entsql.Annotation{
+		Table: "sys_permissions",
 	}
-	PlansTable.Annotation = &entsql.Annotation{
-		Table: "plans",
+	SysPlansTable.Annotation = &entsql.Annotation{
+		Table: "sys_plans",
 	}
-	PositionsTable.Annotation = &entsql.Annotation{
-		Table: "positions",
+	SysPositionsTable.Annotation = &entsql.Annotation{
+		Table: "sys_positions",
 	}
-	RolesTable.Annotation = &entsql.Annotation{
-		Table: "roles",
+	SysRolesTable.Annotation = &entsql.Annotation{
+		Table: "sys_roles",
 	}
-	SystemLogsTable.Annotation = &entsql.Annotation{
-		Table: "system_logs",
+	SysSystemLogsTable.Annotation = &entsql.Annotation{
+		Table: "sys_system_logs",
 	}
-	TasksTable.Annotation = &entsql.Annotation{
-		Table: "tasks",
+	SysTasksTable.Annotation = &entsql.Annotation{
+		Table: "sys_tasks",
 	}
-	TenantsTable.Annotation = &entsql.Annotation{
-		Table: "tenants",
+	SysTenantsTable.Annotation = &entsql.Annotation{
+		Table: "sys_tenants",
 	}
-	UsersTable.Annotation = &entsql.Annotation{
-		Table: "users",
+	SysUsersTable.Annotation = &entsql.Annotation{
+		Table: "sys_users",
 	}
-	UserPositionsTable.Annotation = &entsql.Annotation{
-		Table: "user_positions",
+	SysUserPositionsRelationTable.Annotation = &entsql.Annotation{
+		Table: "sys_user_positions_relation",
 	}
 }

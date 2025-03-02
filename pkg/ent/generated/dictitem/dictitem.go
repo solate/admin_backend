@@ -34,7 +34,7 @@ const (
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// Table holds the table name of the dictitem in the database.
-	Table = "dict_items"
+	Table = "sys_dict_items"
 )
 
 // Columns holds all SQL columns for dictitem fields.

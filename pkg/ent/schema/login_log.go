@@ -15,7 +15,7 @@ type LoginLog struct {
 
 func (LoginLog) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "login_log"},
+		entsql.Annotation{Table: "sys_login_log"},
 	}
 }
 

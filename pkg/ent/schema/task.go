@@ -14,7 +14,7 @@ type Task struct {
 
 func (Task) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "tasks"},
+		entsql.Annotation{Table: "sys_tasks"},
 		entsql.WithComments(true),
 		schema.Comment("任务"),
 	}

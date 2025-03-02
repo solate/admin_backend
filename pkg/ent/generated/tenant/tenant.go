@@ -28,7 +28,7 @@ const (
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// Table holds the table name of the tenant in the database.
-	Table = "tenants"
+	Table = "sys_tenants"
 )
 
 // Columns holds all SQL columns for tenant fields.

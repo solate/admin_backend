@@ -36,7 +36,7 @@ const (
 	// FieldLoginTime holds the string denoting the login_time field in the database.
 	FieldLoginTime = "login_time"
 	// Table holds the table name of the loginlog in the database.
-	Table = "login_log"
+	Table = "sys_login_log"
 )
 
 // Columns holds all SQL columns for loginlog fields.

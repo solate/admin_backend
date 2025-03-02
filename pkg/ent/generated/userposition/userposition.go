@@ -16,7 +16,7 @@ const (
 	// FieldPositionID holds the string denoting the position_id field in the database.
 	FieldPositionID = "position_id"
 	// Table holds the table name of the userposition in the database.
-	Table = "user_positions"
+	Table = "sys_user_positions_relation"
 )
 
 // Columns holds all SQL columns for userposition fields.

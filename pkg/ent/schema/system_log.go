@@ -15,7 +15,7 @@ type SystemLog struct {
 
 func (SystemLog) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "system_logs"},
+		entsql.Annotation{Table: "sys_system_logs"},
 		entsql.WithComments(true),
 		schema.Comment("系统日志"),
 	}

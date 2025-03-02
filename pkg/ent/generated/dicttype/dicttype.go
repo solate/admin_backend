@@ -30,7 +30,7 @@ const (
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// Table holds the table name of the dicttype in the database.
-	Table = "dict_types"
+	Table = "sys_dict_types"
 )
 
 // Columns holds all SQL columns for dicttype fields.

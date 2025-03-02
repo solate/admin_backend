@@ -14,7 +14,7 @@ type Permission struct {
 
 func (Permission) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "permissions"},
+		entsql.Annotation{Table: "sys_permissions"},
 		entsql.WithComments(true),
 		schema.Comment("权限"),
 	}

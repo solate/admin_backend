@@ -28,7 +28,7 @@ const (
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
 	// Table holds the table name of the position in the database.
-	Table = "positions"
+	Table = "sys_positions"
 )
 
 // Columns holds all SQL columns for position fields.

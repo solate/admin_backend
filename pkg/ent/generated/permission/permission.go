@@ -40,7 +40,7 @@ const (
 	// FieldMenuID holds the string denoting the menu_id field in the database.
 	FieldMenuID = "menu_id"
 	// Table holds the table name of the permission in the database.
-	Table = "permissions"
+	Table = "sys_permissions"
 )
 
 // Columns holds all SQL columns for permission fields.

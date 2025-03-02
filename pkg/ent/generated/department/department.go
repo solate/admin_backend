@@ -28,7 +28,7 @@ const (
 	// FieldSort holds the string denoting the sort field in the database.
 	FieldSort = "sort"
 	// Table holds the table name of the department in the database.
-	Table = "departments"
+	Table = "sys_departments"
 )
 
 // Columns holds all SQL columns for department fields.

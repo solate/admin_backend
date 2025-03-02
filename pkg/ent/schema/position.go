@@ -15,7 +15,7 @@ type Position struct {
 
 func (Position) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "positions"},
+		entsql.Annotation{Table: "sys_positions"},
 		entsql.WithComments(true),
 		schema.Comment("岗位"),
 	}

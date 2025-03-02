@@ -32,7 +32,7 @@ const (
 	// FieldSort holds the string denoting the sort field in the database.
 	FieldSort = "sort"
 	// Table holds the table name of the role in the database.
-	Table = "roles"
+	Table = "sys_roles"
 )
 
 // Columns holds all SQL columns for role fields.

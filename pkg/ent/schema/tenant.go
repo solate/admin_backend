@@ -15,7 +15,7 @@ type Tenant struct {
 
 func (Tenant) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "tenants"},
+		entsql.Annotation{Table: "sys_tenants"},
 		entsql.WithComments(true),
 		schema.Comment("租户"),
 	}

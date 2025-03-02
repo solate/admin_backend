@@ -42,7 +42,7 @@ const (
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// Table holds the table name of the menu in the database.
-	Table = "menus"
+	Table = "sys_menus"
 )
 
 // Columns holds all SQL columns for menu fields.

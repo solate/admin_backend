@@ -50,7 +50,7 @@ const (
 	// FieldParams holds the string denoting the params field in the database.
 	FieldParams = "params"
 	// Table holds the table name of the plan in the database.
-	Table = "plans"
+	Table = "sys_plans"
 )
 
 // Columns holds all SQL columns for plan fields.

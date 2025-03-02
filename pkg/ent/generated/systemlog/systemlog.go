@@ -26,7 +26,7 @@ const (
 	// FieldUserID holds the string denoting the user_id field in the database.
 	FieldUserID = "user_id"
 	// Table holds the table name of the systemlog in the database.
-	Table = "system_logs"
+	Table = "sys_system_logs"
 )
 
 // Columns holds all SQL columns for systemlog fields.

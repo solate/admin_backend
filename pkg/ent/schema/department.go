@@ -15,7 +15,7 @@ type Department struct {
 
 func (Department) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "departments"},
+		entsql.Annotation{Table: "sys_departments"},
 		entsql.WithComments(true),
 		schema.Comment("部门"),
 	}
