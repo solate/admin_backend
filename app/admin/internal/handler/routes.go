@@ -42,7 +42,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: auth.RegisterHandler(serverCtx),
 			},
 		},
-		rest.WithPrefix("/admin/api/v1/auth"),
+		rest.WithPrefix("/api/admin/v1/auth"),
 	)
 
 	server.AddRoutes(
@@ -69,7 +69,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/admin/api/v1/auth"),
+		rest.WithPrefix("/api/admin/v1/auth"),
 	)
 
 	server.AddRoutes(
@@ -138,7 +138,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/admin/api/v1"),
+		rest.WithPrefix("/api/admin/v1"),
 	)
 
 	server.AddRoutes(
@@ -189,7 +189,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/admin/api/v1"),
+		rest.WithPrefix("/api/admin/v1"),
 	)
 
 	server.AddRoutes(
@@ -288,7 +288,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/admin/api/v1"),
+		rest.WithPrefix("/api/admin/v1"),
 	)
 
 	server.AddRoutes(
@@ -315,7 +315,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/admin/api/v1"),
+		rest.WithPrefix("/api/admin/v1"),
 	)
 
 	server.AddRoutes(
@@ -372,7 +372,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/admin/api/v1"),
+		rest.WithPrefix("/api/admin/v1"),
 	)
 
 	server.AddRoutes(
@@ -435,7 +435,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/admin/api/v1"),
+		rest.WithPrefix("/api/admin/v1"),
 	)
 
 	server.AddRoutes(
@@ -474,7 +474,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/admin/api/v1"),
+		rest.WithPrefix("/api/admin/v1"),
 	)
 
 	server.AddRoutes(
@@ -525,6 +525,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/admin/api/v1"),
+		rest.WithPrefix("/api/admin/v1"),
 	)
 }

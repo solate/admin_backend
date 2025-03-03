@@ -127,7 +127,7 @@ type (
 )
 
 @server (
-    prefix: /admin/api/v1
+    prefix: /api/admin/v1
     group: permission
     middleware: AuthMiddleware
 )

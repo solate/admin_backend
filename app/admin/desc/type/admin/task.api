@@ -156,7 +156,7 @@ type (
 )
 
 @server (
-    prefix: /admin/api/v1
+    prefix: /api/admin/v1
     group: task
     middleware: AuthMiddleware
 )

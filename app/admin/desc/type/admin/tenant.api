@@ -75,7 +75,7 @@ type (
 
 @server (
 	middleware: AuthMiddleware
-	prefix:     /admin/api/v1
+    prefix: /api/admin/v1
 	group:      tenant
 )
 service admin {

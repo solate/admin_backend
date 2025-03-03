@@ -15,7 +15,7 @@
     "application/json"
   ],
   "paths": {
-    "/admin/api/v1/auth/captcha": {
+    "/api/admin/v1/auth/captcha": {
       "get": {
         "summary": "获取验证码",
         "operationId": "GetCaptcha",
@@ -32,7 +32,7 @@
         ]
       }
     },
-    "/admin/api/v1/auth/change-password": {
+    "/api/admin/v1/auth/change-password": {
       "post": {
         "summary": "修改密码",
         "operationId": "ChangePassword",
@@ -60,7 +60,7 @@
         ]
       }
     },
-    "/admin/api/v1/auth/login": {
+    "/api/admin/v1/auth/login": {
       "post": {
         "summary": "用户登录",
         "operationId": "Login",
@@ -87,7 +87,7 @@
         ]
       }
     },
-    "/admin/api/v1/auth/logout": {
+    "/api/admin/v1/auth/logout": {
       "post": {
         "summary": "用户登出",
         "operationId": "Logout",
@@ -104,7 +104,7 @@
         ]
       }
     },
-    "/admin/api/v1/auth/register": {
+    "/api/admin/v1/auth/register": {
       "post": {
         "summary": "用户注册",
         "operationId": "Register",
@@ -131,7 +131,7 @@
         ]
       }
     },
-    "/admin/api/v1/auth/reset-password": {
+    "/api/admin/v1/auth/reset-password": {
       "post": {
         "summary": "重置密码",
         "operationId": "ResetPassword",
@@ -159,7 +159,7 @@
         ]
       }
     },
-    "/admin/api/v1/departments": {
+    "/api/admin/v1/departments": {
       "get": {
         "summary": "获取部门列表",
         "operationId": "ListDepartment",
@@ -239,7 +239,7 @@
         ]
       }
     },
-    "/admin/api/v1/departments/{department_id}": {
+    "/api/admin/v1/departments/{department_id}": {
       "get": {
         "summary": "获取部门详情",
         "operationId": "GetDepartment",
@@ -326,7 +326,7 @@
         ]
       }
     },
-    "/admin/api/v1/dict-types": {
+    "/api/admin/v1/dict-types": {
       "get": {
         "summary": "获取字典类型列表",
         "operationId": "ListDictType",
@@ -414,7 +414,7 @@
         ]
       }
     },
-    "/admin/api/v1/dict-types/{type_code}/items": {
+    "/api/admin/v1/dict-types/{type_code}/items": {
       "get": {
         "summary": "获取字典数据列表",
         "operationId": "ListDictItem",
@@ -514,7 +514,7 @@
         ]
       }
     },
-    "/admin/api/v1/dict-types/{type_code}/items/{item_id}": {
+    "/api/admin/v1/dict-types/{type_code}/items/{item_id}": {
       "get": {
         "summary": "获取字典数据详情",
         "operationId": "GetDictItem",
@@ -621,7 +621,7 @@
         ]
       }
     },
-    "/admin/api/v1/dict-types/{type_id}": {
+    "/api/admin/v1/dict-types/{type_id}": {
       "get": {
         "summary": "获取字典类型详情",
         "operationId": "GetDictType",
@@ -710,7 +710,7 @@
         ]
       }
     },
-    "/admin/api/v1/login-logs": {
+    "/api/admin/v1/login-logs": {
       "get": {
         "summary": "查询登录记录",
         "operationId": "ListLoginLog",
@@ -786,7 +786,7 @@
         ]
       }
     },
-    "/admin/api/v1/menus": {
+    "/api/admin/v1/menus": {
       "get": {
         "summary": "获取菜单列表",
         "operationId": "ListMenu",
@@ -874,7 +874,7 @@
         ]
       }
     },
-    "/admin/api/v1/menus/all": {
+    "/api/admin/v1/menus/all": {
       "get": {
         "summary": "获取所有菜单",
         "operationId": "GetAllMenu",
@@ -891,7 +891,7 @@
         ]
       }
     },
-    "/admin/api/v1/menus/tree": {
+    "/api/admin/v1/menus/tree": {
       "get": {
         "summary": "获取菜单树",
         "operationId": "GetMenuTree",
@@ -908,7 +908,7 @@
         ]
       }
     },
-    "/admin/api/v1/menus/{menu_id}": {
+    "/api/admin/v1/menus/{menu_id}": {
       "get": {
         "summary": "获取菜单详情",
         "operationId": "GetMenu",
@@ -996,7 +996,7 @@
         ]
       }
     },
-    "/admin/api/v1/org-tree": {
+    "/api/admin/v1/org-tree": {
       "get": {
         "summary": "获取组织架构树",
         "operationId": "GetOrgTree",
@@ -1025,7 +1025,7 @@
         ]
       }
     },
-    "/admin/api/v1/plans": {
+    "/api/admin/v1/plans": {
       "get": {
         "summary": "获取计划列表",
         "operationId": "ListPlan",
@@ -1120,7 +1120,7 @@
         ]
       }
     },
-    "/admin/api/v1/plans/{plan_id}": {
+    "/api/admin/v1/plans/{plan_id}": {
       "get": {
         "summary": "获取计划详情",
         "operationId": "GetPlan",
@@ -1209,7 +1209,7 @@
         ]
       }
     },
-    "/admin/api/v1/positions": {
+    "/api/admin/v1/positions": {
       "get": {
         "summary": "获取岗位列表",
         "operationId": "ListPosition",
@@ -1289,7 +1289,7 @@
         ]
       }
     },
-    "/admin/api/v1/positions/{position_id}": {
+    "/api/admin/v1/positions/{position_id}": {
       "get": {
         "summary": "获取岗位详情",
         "operationId": "GetPosition",
@@ -1376,7 +1376,7 @@
         ]
       }
     },
-    "/admin/api/v1/positions/{position_id}/users": {
+    "/api/admin/v1/positions/{position_id}/users": {
       "get": {
         "summary": "获取岗位下的用户列表",
         "operationId": "GetPositionUsers",
@@ -1401,7 +1401,7 @@
         ]
       }
     },
-    "/admin/api/v1/roles": {
+    "/api/admin/v1/roles": {
       "get": {
         "summary": "获取角色列表",
         "operationId": "ListRole",
@@ -1489,7 +1489,7 @@
         ]
       }
     },
-    "/admin/api/v1/roles/all": {
+    "/api/admin/v1/roles/all": {
       "get": {
         "summary": "获取所有角色列表",
         "operationId": "GetAllRoles",
@@ -1506,7 +1506,7 @@
         ]
       }
     },
-    "/admin/api/v1/roles/{role_code}/permissions": {
+    "/api/admin/v1/roles/{role_code}/permissions": {
       "get": {
         "summary": "获取角色权限列表",
         "operationId": "GetRolePermissions",
@@ -1563,7 +1563,7 @@
         ]
       }
     },
-    "/admin/api/v1/roles/{role_id}": {
+    "/api/admin/v1/roles/{role_id}": {
       "get": {
         "summary": "获取角色详情",
         "operationId": "GetRole",
@@ -1652,7 +1652,7 @@
         ]
       }
     },
-    "/admin/api/v1/rules/resource-types": {
+    "/api/admin/v1/rules/resource-types": {
       "get": {
         "summary": "获取资源类型列表",
         "operationId": "GetResourceTypes",
@@ -1669,7 +1669,7 @@
         ]
       }
     },
-    "/admin/api/v1/tasks": {
+    "/api/admin/v1/tasks": {
       "get": {
         "summary": "获取任务列表",
         "operationId": "ListTask",
@@ -1753,7 +1753,7 @@
         ]
       }
     },
-    "/admin/api/v1/tasks/trigger": {
+    "/api/admin/v1/tasks/trigger": {
       "post": {
         "summary": "手动触发任务",
         "operationId": "TriggerTask",
@@ -1781,7 +1781,7 @@
         ]
       }
     },
-    "/admin/api/v1/tasks/{task_id}": {
+    "/api/admin/v1/tasks/{task_id}": {
       "delete": {
         "summary": "删除任务",
         "operationId": "DeleteTask",
@@ -1815,7 +1815,7 @@
         ]
       }
     },
-    "/admin/api/v1/tasks/{task_id}/stop": {
+    "/api/admin/v1/tasks/{task_id}/stop": {
       "post": {
         "summary": "停止任务",
         "operationId": "StopTask",
@@ -1849,7 +1849,7 @@
         ]
       }
     },
-    "/admin/api/v1/tenants": {
+    "/api/admin/v1/tenants": {
       "get": {
         "summary": "获取租户列表",
         "operationId": "ListTenant",
@@ -1923,7 +1923,7 @@
         ]
       }
     },
-    "/admin/api/v1/tenants/{tenant_id}": {
+    "/api/admin/v1/tenants/{tenant_id}": {
       "get": {
         "summary": "获取租户详情",
         "operationId": "GetTenant",
@@ -2012,7 +2012,7 @@
         ]
       }
     },
-    "/admin/api/v1/user-positions": {
+    "/api/admin/v1/user-positions": {
       "delete": {
         "summary": "移除用户岗位",
         "operationId": "RemoveUserPosition",
@@ -2065,7 +2065,7 @@
         ]
       }
     },
-    "/admin/api/v1/users": {
+    "/api/admin/v1/users": {
       "get": {
         "summary": "获取用户列表",
         "operationId": "ListUser",
@@ -2153,7 +2153,7 @@
         ]
       }
     },
-    "/admin/api/v1/users/me": {
+    "/api/admin/v1/users/me": {
       "get": {
         "summary": "获取当前用户信息",
         "operationId": "GetCurrentUser",
@@ -2170,7 +2170,7 @@
         ]
       }
     },
-    "/admin/api/v1/users/{user_id}": {
+    "/api/admin/v1/users/{user_id}": {
       "get": {
         "summary": "获取用户详情",
         "operationId": "GetUser",
@@ -2258,7 +2258,7 @@
         ]
       }
     },
-    "/admin/api/v1/users/{user_id}/positions": {
+    "/api/admin/v1/users/{user_id}/positions": {
       "get": {
         "summary": "获取用户的岗位列表",
         "operationId": "GetUserPositions",
@@ -2283,7 +2283,7 @@
         ]
       }
     },
-    "/admin/api/v1/users/{user_id}/roles": {
+    "/api/admin/v1/users/{user_id}/roles": {
       "get": {
         "summary": "获取用户角色列表",
         "operationId": "GetUserRoles",
