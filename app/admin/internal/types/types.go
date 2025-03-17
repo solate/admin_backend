@@ -244,9 +244,9 @@ type DictItemInfo struct {
 
 type DictItemListReq struct {
 	PageRequest
-	TypeCode string `form:"type_code,optional"` // 字典类型编码
-	Label    string `form:"label,optional"`     // 字典标签
-	Status   int    `form:"status,optional"`    // 状态
+	TypeCode string `path:"type_code"`       // 字典类型编码
+	Label    string `form:"label,optional"`  // 字典标签
+	Status   int    `form:"status,optional"` // 状态
 }
 
 type DictItemListResp struct {

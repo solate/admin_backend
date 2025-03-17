@@ -452,13 +452,6 @@
             "default": "10"
           },
           {
-            "name": "type_code",
-            "description": " 字典类型编码",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "label",
             "description": " 字典标签",
             "in": "query",
@@ -3182,10 +3175,6 @@
           "format": "int32",
           "default": "10",
           "description": " 每页大小"
-        },
-        "type_code": {
-          "type": "string",
-          "description": " 字典类型编码"
         },
         "label": {
           "type": "string",
