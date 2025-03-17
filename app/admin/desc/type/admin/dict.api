@@ -191,5 +191,5 @@ service admin {
 
     @doc "获取字典项选项列表"
     @handler GetDictItemAll
-    get /dict-types/:type_code/items/all (GetDictItemAllReq) returns (DictItemAllResp)
+    get /items/all (GetDictItemAllReq) returns (DictItemAllResp)
 }

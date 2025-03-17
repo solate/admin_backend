@@ -514,31 +514,6 @@
         ]
       }
     },
-    "/api/admin/v1/dict-types/{type_code}/items/all": {
-      "get": {
-        "summary": "获取字典项选项列表",
-        "operationId": "GetDictItemAll",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DictItemAllResp"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "type_code",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "dict"
-        ]
-      }
-    },
     "/api/admin/v1/dict-types/{type_code}/items/{item_id}": {
       "get": {
         "summary": "获取字典数据详情",
@@ -730,6 +705,23 @@
             }
           }
         ],
+        "tags": [
+          "dict"
+        ]
+      }
+    },
+    "/api/admin/v1/items/all": {
+      "get": {
+        "summary": "获取字典项选项列表",
+        "operationId": "GetDictItemAll",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DictItemAllResp"
+            }
+          }
+        },
         "tags": [
           "dict"
         ]
