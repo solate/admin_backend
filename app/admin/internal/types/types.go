@@ -227,6 +227,10 @@ type DepartmentListResp struct {
 	List []*DepartmentInfo `json:"list"` // 部门列表
 }
 
+type DictItemAllResp struct {
+	List []*DictItemInfo `json:"list"` // 字典项选项列表
+}
+
 type DictItemInfo struct {
 	ItemID      string `json:"item_id"`     // 字典项ID
 	TypeCode    string `json:"type_code"`   // 字典类型编码
@@ -277,6 +281,10 @@ type GetAllRolesResp struct {
 
 type GetDepartmentReq struct {
 	DepartmentID string `path:"department_id"` // 部门ID
+}
+
+type GetDictItemAllReq struct {
+	TypeCode string `path:"type_code"` // 字典类型编码
 }
 
 type GetDictItemReq struct {

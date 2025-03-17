@@ -119,6 +119,16 @@ type (
         List []*DictItemInfo `json:"list"` // 字典数据列表
     }
 
+    // 获取字典项选项请求
+    GetDictItemAllReq {
+        TypeCode string `path:"type_code"` // 字典类型编码
+    }
+
+    // 字典项选项响应
+    DictItemAllResp {
+        List []*DictItemInfo `json:"list"` // 字典项选项列表
+    }
+
     // 字典数据信息
     DictItemInfo {
         ItemID      string `json:"item_id"`      // 字典项ID
@@ -178,4 +188,8 @@ service admin {
     @doc "获取字典数据列表"
     @handler ListDictItem
     get /dict-types/:type_code/items (DictItemListReq) returns (DictItemListResp)
+
+    @doc "获取字典项选项列表"
+    @handler GetDictItemAll
+    get /dict-types/:type_code/items/all (GetDictItemAllReq) returns (DictItemAllResp)
 }

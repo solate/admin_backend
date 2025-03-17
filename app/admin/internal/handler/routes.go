@@ -119,6 +119,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: dict.GetDictItemHandler(serverCtx),
 				},
 				{
+					// 获取字典项选项列表
+					Method:  http.MethodGet,
+					Path:    "/dict-types/:type_code/items/all",
+					Handler: dict.GetDictItemAllHandler(serverCtx),
+				},
+				{
 					// 更新字典类型
 					Method:  http.MethodPut,
 					Path:    "/dict-types/:type_id",

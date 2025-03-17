@@ -514,6 +514,31 @@
         ]
       }
     },
+    "/api/admin/v1/dict-types/{type_code}/items/all": {
+      "get": {
+        "summary": "获取字典项选项列表",
+        "operationId": "GetDictItemAll",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DictItemAllResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "type_code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "dict"
+        ]
+      }
+    },
     "/api/admin/v1/dict-types/{type_code}/items/{item_id}": {
       "get": {
         "summary": "获取字典数据详情",
@@ -3084,6 +3109,22 @@
         "list"
       ]
     },
+    "DictItemAllResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DictItemInfo"
+          },
+          "description": " 字典项选项列表"
+        }
+      },
+      "title": "DictItemAllResp",
+      "required": [
+        "list"
+      ]
+    },
     "DictItemInfo": {
       "type": "object",
       "properties": {
@@ -3298,6 +3339,10 @@
     "GetDepartmentReq": {
       "type": "object",
       "title": "GetDepartmentReq"
+    },
+    "GetDictItemAllReq": {
+      "type": "object",
+      "title": "GetDictItemAllReq"
     },
     "GetDictItemReq": {
       "type": "object",
